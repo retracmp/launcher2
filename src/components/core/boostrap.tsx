@@ -2,6 +2,8 @@ import { useLayoutEffect } from "react";
 import * as app from "@tauri-apps/api/app";
 import { useApplicationInformation } from "src/wrapper/tauri";
 
+const ANTI_SHORTCUTS = ["ctrl+p", "ctrl+f", "ctrl+u", "ctrl+j"];
+
 const Boostrap = () => {
   const application = useApplicationInformation();
 
@@ -12,7 +14,10 @@ const Boostrap = () => {
   const nil = (e: MouseEvent) => e.preventDefault();
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    if ((event.ctrlKey || event.metaKey) && event.key === "p") {
+    if (
+      (event.ctrlKey || event.metaKey) &&
+      ANTI_SHORTCUTS.includes(`${event.ctrlKey ? "ctrl+" : ""}${event.key}`)
+    ) {
       event.preventDefault();
     }
   };
