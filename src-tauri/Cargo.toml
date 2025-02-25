@@ -1,0 +1,24 @@
+[package]
+name = "retrac"
+version = "0.1.0"
+description = "The game launcher for Retrac, an OG Fortnite Experience."
+authors = ["ectrc"]
+edition = "2021"
+
+[lib]
+name = "retrac_launcher_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+tauri = { version = "2.2.5", features = [] }
+tauri-plugin-opener = "2"
+
+[dependencies.tao]
+git = "https://github.com/tauri-apps/tao"
+rev = "d9ee4a781b9acdb910181c1a46885c8f35a3f227"
