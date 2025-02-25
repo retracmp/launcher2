@@ -9,8 +9,15 @@ const Boostrap = () => {
     application.load(await app.getName(), await app.getVersion());
   };
 
+  const nil = (e: MouseEvent) => e.preventDefault();
+
   useLayoutEffect(() => {
     boostrap();
+
+    document.addEventListener("contextmenu", nil);
+    return () => {
+      document.removeEventListener("contextmenu", nil);
+    };
   }, []);
 
   return null;
