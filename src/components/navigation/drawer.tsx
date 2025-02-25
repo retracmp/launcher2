@@ -11,6 +11,10 @@ const Drawer = () => {
         icon="IoTrophySharp"
         label="leaderboard"
       />
+
+      <s className="mt-auto" />
+
+      <DrawerItem path="/settings" icon="IoSettingsSharp" label="settings" />
     </nav>
   );
 };

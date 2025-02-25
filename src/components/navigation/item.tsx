@@ -14,13 +14,13 @@ const DrawerItem = (props: DrawerItemProps) => {
     <rr.Link
       to={props.path as any}
       draggable={false}
-      className="flex items-center justify-center w-9 h-9 min-h-9 cursor-pointer hover:not-data-[status=active]:bg-[#1f1f1fa4] rounded-xs"
+      className="ditem flex items-center justify-center w-9 h-9 min-h-9 cursor-pointer hover:not-data-[status=active]:bg-[#1f1f1fa4] rounded-xs text-neutral-400"
       activeProps={{
         className:
-          "bg-[#1f1f1f] bg-opacity-50 rounded-xs border-[#2e2e2e] hover:none border-1 border-solid",
+          "bg-[#1f1f1f] bg-opacity-50 rounded-xs border-[#2e2e2e] hover:none border-1 border-solid text-white",
       }}
     >
-      <Icon className="text-neutral-400" />
+      <Icon />
     </rr.Link>
   );
 };
