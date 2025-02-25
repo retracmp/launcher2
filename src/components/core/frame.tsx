@@ -4,6 +4,7 @@ import * as rr from "@tanstack/react-router";
 
 import { IoCloseSharp, IoArrowBackSharp } from "react-icons/io5";
 import Drawer from "src/components/navigation/drawer";
+import BannerRenderer from "../banner/parent";
 
 const Frame = () => {
   const application = useApplicationInformation();
@@ -48,6 +49,7 @@ const Frame = () => {
           </button>
         </nav>
 
+        <BannerRenderer />
         <rr.Outlet />
       </div>
     </main>

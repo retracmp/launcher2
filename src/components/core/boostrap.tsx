@@ -8,7 +8,11 @@ const Boostrap = () => {
   const application = useApplicationInformation();
 
   const boostrap = async () => {
-    application.load(await app.getName(), await app.getVersion());
+    application.load(
+      await app.getName(),
+      await app.getVersion(),
+      import.meta.env.MODE === "development"
+    );
   };
 
   const nil = (e: MouseEvent) => e.preventDefault();
@@ -20,6 +24,8 @@ const Boostrap = () => {
     ) {
       event.preventDefault();
     }
+
+    if (event.key === "Tab") event.preventDefault();
   };
 
   useLayoutEffect(() => {
