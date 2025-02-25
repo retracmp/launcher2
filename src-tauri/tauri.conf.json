@@ -19,7 +19,9 @@
         "windowClassname": "Retrac",
         "backgroundColor": "#2e2e2e",
         "decorations": false,
-        "shadow": true
+        "shadow": true,
+        "maximizable": false,
+        "focus": true
       }
     ],
     "security": {
