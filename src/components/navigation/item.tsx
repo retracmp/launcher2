@@ -13,6 +13,7 @@ const DrawerItem = (props: DrawerItemProps) => {
   return (
     <rr.Link
       to={props.path as any}
+      draggable={false}
       className="flex items-center justify-center w-9 h-9 min-h-9 cursor-pointer hover:not-data-[status=active]:bg-[#1f1f1fa4] rounded-xs"
       activeProps={{
         className:
