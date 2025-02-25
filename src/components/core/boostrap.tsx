@@ -11,12 +11,21 @@ const Boostrap = () => {
 
   const nil = (e: MouseEvent) => e.preventDefault();
 
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if ((event.ctrlKey || event.metaKey) && event.key === "p") {
+      event.preventDefault();
+    }
+  };
+
   useLayoutEffect(() => {
     boostrap();
 
     document.addEventListener("contextmenu", nil);
+    document.addEventListener("keydown", handleKeyDown);
+
     return () => {
       document.removeEventListener("contextmenu", nil);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 
