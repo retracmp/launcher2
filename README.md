@@ -2,7 +2,7 @@
 
 > The game launcher for Retrac, an OG Fortnite Experience.
 
-![preview](https://github.com/user-attachments/assets/54af9c2a-b860-465b-b715-082706bf6a86)
+![image](https://github.com/user-attachments/assets/bf159010-114b-4205-b5d5-9dcbc8c87433)
 
 ## main ideas
 
