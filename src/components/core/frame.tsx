@@ -1,13 +1,7 @@
 import { getCurrentWindow } from "@tauri-apps/api/window";
 
-import {
-  IoCloseSharp,
-  IoArrowBackSharp,
-  IoHomeSharp,
-  IoDownloadSharp,
-  IoFileTrayFullSharp,
-  IoStatsChartSharp,
-} from "react-icons/io5";
+import { IoCloseSharp, IoArrowBackSharp } from "react-icons/io5";
+import Drawer from "src/components/navigation/drawer";
 
 const Frame = () => {
   return (
@@ -15,25 +9,7 @@ const Frame = () => {
       className="flex flex-row w-full h-full bg-neutral-900"
       data-tauri-drag-region
     >
-      <nav className="flex flex-col items-center gap-1 p-1.5 h-full w-12 border-r-[#2e2e2e] border-r-1 border-solid">
-        <button className="flex items-center justify-center w-9 h-9 cursor-pointer hover:bg-[#1f1f1f3f] rounded-xs">
-          <IoHomeSharp className="text-neutral-400" />
-        </button>
-
-        {/* selected */}
-        <button className="flex items-center justify-center w-9 h-9 cursor-pointer bg-[#1f1f1f] bg-opacity-50 rounded-xs border-[#2e2e2e] border-1 border-solid">
-          <IoDownloadSharp className="text-neutral-300" />
-        </button>
-
-        <button className="flex items-center justify-center w-9 h-9 cursor-pointer hover:bg-[#1f1f1f3f] rounded-xs">
-          <IoFileTrayFullSharp className="text-neutral-400" />
-        </button>
-
-        {/* selected */}
-        <button className="flex items-center justify-center w-9 h-9 cursor-pointer">
-          <IoStatsChartSharp className="text-neutral-400" />
-        </button>
-      </nav>
+      <Drawer />
 
       <div className="flex flex-1 flex-col">
         <nav
