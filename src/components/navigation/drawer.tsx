@@ -1,4 +1,4 @@
-import DrawerItem from "src/components/navigation/item";
+import DrawerItem, { SparklyDrawerItem } from "src/components/navigation/item";
 
 const Drawer = () => {
   return (
@@ -10,6 +10,12 @@ const Drawer = () => {
         path="/leaderboard"
         icon="IoTrophySharp"
         label="leaderboard"
+      />
+      <SparklyDrawerItem
+        path="/donate"
+        icon="IoSparklesSharp"
+        label="donate"
+        colour="yellow"
       />
 
       <s className="mt-auto" />

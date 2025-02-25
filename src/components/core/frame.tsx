@@ -27,7 +27,7 @@ const Frame = () => {
             {application.name}
           </p>
           <p
-            className="ml-1 mt-0.5 text-neutral-500 font-plex text-[10px] text-base"
+            className="ml-1 mt-[2px] min-w-max text-neutral-500 font-plex text-[11px] text-base"
             data-tauri-drag-region
           >
             build {application.version}
