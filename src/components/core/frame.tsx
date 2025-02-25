@@ -1,9 +1,13 @@
 import { getCurrentWindow } from "@tauri-apps/api/window";
+import { useApplicationInformation } from "src/wrapper/tauri";
+import * as rr from "@tanstack/react-router";
 
 import { IoCloseSharp, IoArrowBackSharp } from "react-icons/io5";
 import Drawer from "src/components/navigation/drawer";
 
 const Frame = () => {
+  const application = useApplicationInformation();
+
   return (
     <main
       className="flex flex-row w-full h-full bg-neutral-900"
@@ -17,10 +21,16 @@ const Frame = () => {
           data-tauri-drag-region
         >
           <p
-            className="text-neutral-300 font-plex text-[14px] leading-[14px] text-base"
+            className="text-neutral-300 font-plex text-[14px]  text-base"
             data-tauri-drag-region
           >
-            Retrac
+            {application.name}
+          </p>
+          <p
+            className="ml-1 mt-0.5 text-neutral-500 font-plex text-[10px] text-base"
+            data-tauri-drag-region
+          >
+            build {application.version}
           </p>
           <s className="ml-auto" />
 
@@ -37,6 +47,8 @@ const Frame = () => {
             <IoCloseSharp className="text-neutral-400" />
           </button>
         </nav>
+
+        <rr.Outlet />
       </div>
     </main>
   );
