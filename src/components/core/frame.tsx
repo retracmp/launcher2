@@ -2,6 +2,7 @@ import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useApplicationInformation } from "src/wrapper/tauri";
 import * as rr from "@tanstack/react-router";
 
+import { HiMinus } from "react-icons/hi";
 import { IoCloseSharp, IoArrowBackSharp } from "react-icons/io5";
 import Drawer from "src/components/navigation/drawer";
 import BannerRenderer from "../banner/parent";
@@ -40,6 +41,12 @@ const Frame = () => {
             onClick={() => history.back()}
           >
             <IoArrowBackSharp className="text-neutral-400 w-[14px] h-[14px]" />
+          </button>
+          <button
+            className="flex items-center justify-center w-9 h-full cursor-pointer hover:bg-[#2e2e2e] hover:bg-opacity-50"
+            onClick={() => getCurrentWindow().minimize()}
+          >
+            <HiMinus className="text-neutral-400 w-[14px] h-[14px]" />
           </button>
           <button
             className="flex items-center justify-center w-9 h-full cursor-pointer hover:bg-[#2e2e2e] hover:bg-opacity-50"

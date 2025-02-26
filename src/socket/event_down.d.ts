@@ -8,6 +8,10 @@ type SocketDownEvent_Error = SocketBasicDownEvent & {
   colour_override?: string;
 };
 
+type SocketDownEvent_Welcome = SocketBasicDownEvent & {
+  id: "welcome";
+};
+
 type SocketDownEvent_RequestHeartbeat = SocketBasicDownEvent & {
   id: "request_heartbeat";
 };
@@ -18,6 +22,7 @@ type SocketDownEvent_RequestLogout = SocketBasicDownEvent & {
 
 type SocketDownEvent =
   | SocketDownEvent_Error
+  | SocketDownEvent_Welcome
   | SocketDownEvent_RequestHeartbeat
   | SocketDownEvent_RequestLogout;
 
@@ -32,5 +37,7 @@ type SocketDownEventFn<T extends SocketDownEventType> = (
 
 //
 
+type error_test = SocketDownEventDataFromType<"error">;
+type welcome_test = SocketDownEventDataFromType<"welcome">;
 type heartbeat_test = SocketDownEventDataFromType<"request_heartbeat">;
 type logout_test = SocketDownEventDataFromType<"request_logout">;
