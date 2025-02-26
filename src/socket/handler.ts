@@ -36,9 +36,16 @@ export const newRetracSocket = ({
   });
 
   _socket.addEventListener("close", () => {
-    // console.log("[socket] disconnected");
+    console.log("[socket] disconnected");
+
+    const listeners = (state._listeners["close"] ||
+      []) as SocketDownEventFn<"close">[];
+    if (listeners !== undefined) {
+      listeners.forEach((listener) => listener({ id: "close" }));
+    }
+
     state.disconnect();
-    // setTimeout(() => state.connect(url, version), 2000);
+    setTimeout(() => state.connect(url, version), 2000);
   });
 
   _socket.addEventListener("message", (event) => {
@@ -58,7 +65,7 @@ export const newRetracSocket = ({
   });
 
   _socket.addEventListener("error", (error) => {
-    // console.log("[socket] error", error);
+    console.log("[socket] error", error);
   });
 
   return _socket;

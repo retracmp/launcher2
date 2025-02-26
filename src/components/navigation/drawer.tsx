@@ -5,11 +5,11 @@ import DrawerItem, { SparklyDrawerItem } from "src/components/navigation/item";
 
 const Drawer = () => {
   const application = useApplicationInformation();
-  const userToken = useUserManager((s) => s._token);
+  const userManager = useUserManager();
 
   return (
     <nav className="flex flex-col items-center gap-1 p-1.5 h-full w-12 border-r-[#2e2e2e] border-r-1 border-solid">
-      {userToken === null ? <EmptyRoutes /> : <AuthenticatedRoutes />}
+      {!userManager.access() ? <EmptyRoutes /> : <AuthenticatedRoutes />}
 
       {application.dev && (
         <DrawerItem

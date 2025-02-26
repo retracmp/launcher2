@@ -1,8 +1,13 @@
-import React from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { useBannerManager } from "src/wrapper/banner";
+import { useUserManager } from "src/wrapper/user";
+
+import React from "react";
 
 const DeveloperPage = () => {
   const bannerManager = useBannerManager();
+  const userManger = useUserManager();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -53,6 +58,18 @@ const DeveloperPage = () => {
             }
           >
             websocket failue
+          </Button>
+        </div>
+      </div>
+      <div className="flex flex-col gap-1 p-1.5 border-b-[#2e2e2e] border-b-1 border-solid">
+        <div className="flex flex-row gap-1 flex-wrap">
+          <Button
+            onClick={() => {
+              userManger.logout();
+              navigate({ to: "/" });
+            }}
+          >
+            logut
           </Button>
         </div>
       </div>

@@ -5,7 +5,7 @@ import {
   bannerColours,
   useBannerManager,
 } from "src/wrapper/banner";
-import { useUserManager } from "src/wrapper/user";
+import { LauncherStage, useUserManager } from "src/wrapper/user";
 import { useSocket } from "src/socket";
 import * as app from "@tauri-apps/api/app";
 
@@ -40,8 +40,8 @@ const Boostrap = () => {
   };
 
   const socketConnect = () => {
-    if (socket._socket !== null) return;
     if (userManager._token === null) return;
+    if (socket._socket !== null) socket.disconnect();
 
     const tokenBase64 = btoa(userManager._token);
     socket.connect(
@@ -78,15 +78,38 @@ const Boostrap = () => {
     userManager.load(data.user);
   };
 
+  const onSocketclose = (data: SocketDownEvent_Close) => {
+    console.log("[socket] close", data);
+  };
+
+  const syncUserStages = () => {
+    if (
+      userManager._token != null &&
+      userManager._stage === LauncherStage.NoToken
+    ) {
+      userManager.set_stage(LauncherStage.TestingToken);
+    }
+
+    if (
+      userManager._token === null &&
+      userManager._stage !== LauncherStage.NoToken
+    ) {
+      userManager.set_stage(LauncherStage.NoToken);
+    }
+  };
+
   useEffect(() => {
     socketConnect();
+    syncUserStages();
 
+    socket.bind("close", onSocketclose);
     socket.bind("error", onSocketError);
     socket.bind("welcome", onSocketWelcome);
     socket.bind("request_heartbeat", onSocketRequestHeartbeat);
     socket.bind("user", onSocketUser);
 
     return () => {
+      socket.unbind("close", onSocketclose);
       socket.unbind("error", onSocketError);
       socket.unbind("welcome", onSocketWelcome);
       socket.unbind("request_heartbeat", onSocketRequestHeartbeat);
@@ -96,7 +119,7 @@ const Boostrap = () => {
 
   useEffect(() => {
     const check = () => {
-      if (bannerManager.exists("websocket_error")) {
+      if (bannerManager.exists("websocket_error") || !userManager.access()) {
         return bannerManager.remove("websocket");
       }
 
@@ -131,7 +154,6 @@ const Boostrap = () => {
     return () => {
       document.removeEventListener("contextmenu", nil);
       document.removeEventListener("keydown", handleKeyDown);
-      socket.disconnect();
     };
   }, []);
 

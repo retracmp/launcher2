@@ -1,16 +1,38 @@
+import { useEffect } from "react";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useApplicationInformation } from "src/wrapper/tauri";
-import { useUserManager } from "src/wrapper/user";
+import { LauncherStage, useUserManager } from "src/wrapper/user";
 import * as rr from "@tanstack/react-router";
 
 import { HiMinus } from "react-icons/hi";
 import { IoCloseSharp, IoArrowBackSharp } from "react-icons/io5";
+import UI from "src/components/core/default";
 import Drawer from "src/components/navigation/drawer";
-import BannerRenderer from "../banner/parent";
+import BannerRenderer from "src/components/banner/parent";
 
 const Frame = () => {
   const application = useApplicationInformation();
   const userManager = useUserManager();
+  const navigate = rr.useNavigate();
+
+  const show = userManager.access() || !userManager.loading();
+
+  useEffect(() => {
+    if (
+      userManager._stage === LauncherStage.NoToken ||
+      userManager._stage === LauncherStage.TestingToken
+    ) {
+      navigate({
+        to: "/",
+      });
+    }
+
+    if (userManager._stage === LauncherStage.AllGood) {
+      navigate({
+        to: "/home",
+      });
+    }
+  }, [userManager._stage]);
 
   return (
     <main
@@ -58,10 +80,18 @@ const Frame = () => {
           </button>
         </nav>
 
-        {userManager._token != null && <BannerRenderer />}
-        <rr.Outlet />
+        {userManager.access() && <BannerRenderer />}
+        {show ? <rr.Outlet /> : <LoadingIndicator />}
       </div>
     </main>
+  );
+};
+
+const LoadingIndicator = () => {
+  return (
+    <UI.ColBox>
+      <UI.P>Please wait while we connect you to our services.</UI.P>
+    </UI.ColBox>
   );
 };
 

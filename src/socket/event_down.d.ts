@@ -2,6 +2,10 @@ type SocketBasicDownEvent = {
   id: string;
 };
 
+type SocketDownEvent_Close = SocketBasicDownEvent & {
+  id: "close";
+};
+
 type SocketDownEvent_Error = SocketBasicDownEvent & {
   id: "error";
   error: string;
@@ -26,6 +30,7 @@ type SocketDownEvent_User = SocketBasicDownEvent & {
 };
 
 type SocketDownEvent =
+  | SocketDownEvent_Close
   | SocketDownEvent_Error
   | SocketDownEvent_Welcome
   | SocketDownEvent_RequestHeartbeat

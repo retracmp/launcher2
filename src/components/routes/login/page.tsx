@@ -1,7 +1,9 @@
+import { useEffect } from "react";
 import { UnlistenFn } from "@tauri-apps/api/event";
 import { useUserManager } from "src/wrapper/user";
-import { useEffect } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { openUrl } from "@tauri-apps/plugin-opener";
+
 import * as deeplink from "@tauri-apps/plugin-deep-link";
 import client from "src/axios/client";
 
@@ -9,6 +11,7 @@ import UI from "src/components/core/default";
 
 const LoginPage = () => {
   const userManager = useUserManager();
+  const navigate = useNavigate();
 
   const handleAuthenticate = async () => {
     const redirect = await client.get_discord_login_url();
@@ -25,6 +28,9 @@ const LoginPage = () => {
           .replace("/", "")
           .trim();
         userManager.login(token);
+        navigate({
+          to: "/home",
+        });
       }
     }
   };
@@ -36,6 +42,14 @@ const LoginPage = () => {
       unlisten.then((fn: UnlistenFn) => fn());
     };
   }, []);
+
+  useEffect(() => {
+    if (userManager.access()) {
+      navigate({
+        to: "/home",
+      });
+    }
+  }, [userManager._token]);
 
   return (
     <>
