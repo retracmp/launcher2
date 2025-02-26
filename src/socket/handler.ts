@@ -36,17 +36,19 @@ export const socket = ({ state, url, version }: socketProps) => {
   });
 
   _socket.addEventListener("message", (event) => {
-    const data = JSON.parse(event.data) as Record<string, unknown>;
-    if (data === null || typeof data !== "object") return;
-    if (!("id" in data) || typeof data.id !== "string") return;
+    const object = JSON.parse(event.data) as Record<string, unknown>;
+    if (object === null || typeof object !== "object") return;
+    if (!("id" in object) || typeof object.id !== "string") return;
 
-    const T = data.id as keyof typeof state._listeners;
+    const T = object.id as keyof typeof state._listeners;
+    const data = object as SocketDownEventDataFromType<typeof T>;
+
     const listeners = (state._listeners[
       data.id as keyof typeof state._listeners
     ] || []) as SocketDownEventFn<typeof T>[];
     if (listeners === undefined) return;
 
-    listeners.forEach((listener) => listener(data as any));
+    listeners.forEach((listener) => listener(data));
   });
 
   _socket.onerror = (error) => {

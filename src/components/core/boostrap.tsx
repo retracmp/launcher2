@@ -21,7 +21,7 @@ const Boostrap = () => {
     );
 
     socket.connect(
-      "ws://localhost:3000/launcher/ws?token=helloworld",
+      "ws://localhost:3000/launcher/ws?token=ectrc",
       application.version
     );
   };
@@ -50,11 +50,6 @@ const Boostrap = () => {
 
   useEffect(() => {
     const check = () => {
-      console.log(
-        "[socket] checking websocket connection",
-        socket._socket?.readyState || 0
-      );
-
       if (bannerManager.exists("websocket_error")) {
         return bannerManager.remove("websocket");
       }
