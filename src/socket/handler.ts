@@ -22,6 +22,10 @@ export const socket = ({ state, url, version }: socketProps) => {
     state.bind("request_heartbeat", () =>
       state.send({ id: "heartbeat", version })
     );
+    state.bind("error", (data) => {
+      console.log("[socket] error", data.error);
+      state.disconnect();
+    });
 
     console.log("[socket] connected");
   });
