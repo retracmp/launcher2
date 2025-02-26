@@ -18,7 +18,7 @@ const DeveloperPage = () => {
           <Button
             onClick={() =>
               bannerManager.push({
-                id: "banner",
+                id: "slow",
                 text: "Some services might be unavailable, please check back later.",
                 colour: "yellow",
                 closable: true,
@@ -40,6 +40,19 @@ const DeveloperPage = () => {
           >
             add notification banner (would come from websocket to notify user of
             something)
+          </Button>
+
+          <Button
+            onClick={() =>
+              bannerManager.push({
+                id: "websocket",
+                text: "Websocket connection failed, please check your internet connection.",
+                colour: "red",
+                closable: false,
+              })
+            }
+          >
+            websocket failue
           </Button>
         </div>
       </div>
