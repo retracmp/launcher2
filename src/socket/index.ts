@@ -1,8 +1,8 @@
 import { create } from "zustand";
-import { socket } from "src/socket/handler";
+import { RetracSocket, newRetracSocket } from "src/socket/handler";
 
 export type SocketManager = {
-  _socket: WebSocket | null;
+  _socket: RetracSocket | null;
   _listeners: Partial<{ [K in SocketDownEventType]: SocketDownEventFn<K>[] }>;
 
   connect: (url: string, version: string) => void;
@@ -17,7 +17,7 @@ export type SocketManager = {
     listener: SocketDownEventFn<T>
   ) => void;
 
-  send: (event: SocketUpEvent) => void;
+  send: (event: Omit<SocketUpEvent, "version">) => void;
 };
 
 export const useSocket = create<SocketManager>()((set, get) => ({
@@ -29,7 +29,7 @@ export const useSocket = create<SocketManager>()((set, get) => ({
     const state = get();
     if (state._socket !== null) return;
 
-    const _socket = socket({
+    const _socket = newRetracSocket({
       state,
       url,
       version,
@@ -76,6 +76,11 @@ export const useSocket = create<SocketManager>()((set, get) => ({
     if (state._socket === null || state._socket.readyState !== WebSocket.OPEN)
       return;
 
-    state._socket.send(JSON.stringify(event));
+    state._socket.send(
+      JSON.stringify({
+        ...event,
+        version: state._socket.version,
+      })
+    );
   },
 }));

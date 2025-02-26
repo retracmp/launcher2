@@ -5,6 +5,7 @@ type SocketBasicDownEvent = {
 type SocketDownEvent_Error = SocketBasicDownEvent & {
   id: "error";
   error: string;
+  colour_override?: string;
 };
 
 type SocketDownEvent_RequestHeartbeat = SocketBasicDownEvent & {

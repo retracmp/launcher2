@@ -1,6 +1,10 @@
 import { useEffect, useLayoutEffect } from "react";
 import { useApplicationInformation } from "src/wrapper/tauri";
-import { BANNER_DEFAULTS, useBannerManager } from "src/wrapper/banner";
+import {
+  BANNER_DEFAULTS,
+  bannerColours,
+  useBannerManager,
+} from "src/wrapper/banner";
 import { useSocket } from "src/socket";
 import * as app from "@tauri-apps/api/app";
 
@@ -41,7 +45,10 @@ const Boostrap = () => {
   const onSocketError = (data: SocketDownEvent_Error) => {
     console.log("[socket] error", data);
     bannerManager.push({
-      colour: "red",
+      colour:
+        data.colour_override != null
+          ? (data.colour_override as keyof typeof bannerColours)
+          : "red",
       id: "websocket_error",
       text: data.error,
       closable: true,

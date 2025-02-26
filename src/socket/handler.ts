@@ -1,15 +1,28 @@
 import { SocketManager } from "src/socket";
 
+export class RetracSocket extends WebSocket {
+  public version: string;
+
+  constructor(url: string, version: string) {
+    super(url);
+    this.version = version;
+  }
+}
+
 type socketProps = {
   state: SocketManager;
   url: string;
   version: string;
 };
 
-export const socket = ({ state, url, version }: socketProps) => {
+export const newRetracSocket = ({
+  state,
+  url,
+  version,
+}: socketProps): RetracSocket | null => {
   const _socket = (() => {
     try {
-      return new WebSocket(url);
+      return new RetracSocket(url, version);
     } catch (error) {
       console.log("[socket] failed to connect", error);
       return null;
@@ -18,10 +31,8 @@ export const socket = ({ state, url, version }: socketProps) => {
   if (_socket === null) return null;
 
   _socket.addEventListener("open", () => {
-    state.send({ id: "heartbeat", version });
-    state.bind("request_heartbeat", () =>
-      state.send({ id: "heartbeat", version })
-    );
+    state.send({ id: "heartbeat" });
+    state.bind("request_heartbeat", () => state.send({ id: "heartbeat" }));
     state.bind("error", (data) => {
       console.log("[socket] error", data.error);
       state.disconnect();
