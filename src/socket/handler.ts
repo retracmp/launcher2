@@ -32,18 +32,13 @@ export const newRetracSocket = ({
 
   _socket.addEventListener("open", () => {
     state.send({ id: "heartbeat" });
-    state.bind("request_heartbeat", () => state.send({ id: "heartbeat" }));
-    state.bind("error", (data) => {
-      console.log("[socket] error", data.error);
-      state.disconnect();
-    });
-
     console.log("[socket] connected");
   });
 
   _socket.addEventListener("close", () => {
-    console.log("[socket] disconnected");
+    // console.log("[socket] disconnected");
     state.disconnect();
+    // setTimeout(() => state.connect(url, version), 2000);
   });
 
   _socket.addEventListener("message", (event) => {
@@ -62,10 +57,9 @@ export const newRetracSocket = ({
     listeners.forEach((listener) => listener(data));
   });
 
-  _socket.onerror = (error) => {
-    console.log("[socket] error", error);
-    if (state._socket) state._socket.close();
-  };
+  _socket.addEventListener("error", (error) => {
+    // console.log("[socket] error", error);
+  });
 
   return _socket;
 };

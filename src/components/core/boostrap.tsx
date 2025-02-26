@@ -5,6 +5,7 @@ import {
   bannerColours,
   useBannerManager,
 } from "src/wrapper/banner";
+import { useUserManager } from "src/wrapper/user";
 import { useSocket } from "src/socket";
 import * as app from "@tauri-apps/api/app";
 
@@ -13,6 +14,7 @@ const ANTI_SHORTCUTS = ["ctrl+p", "ctrl+f", "ctrl+u", "ctrl+j"];
 const Boostrap = () => {
   const application = useApplicationInformation();
   const bannerManager = useBannerManager();
+  const userManager = useUserManager();
   const socket = useSocket();
 
   const boostrap = async () => {
@@ -22,11 +24,6 @@ const Boostrap = () => {
       await app.getName(),
       await app.getVersion(),
       import.meta.env.MODE === "development"
-    );
-
-    socket.connect(
-      "ws://localhost:3000/launcher/ws?token=ectrc",
-      application.version
     );
   };
 
@@ -42,6 +39,17 @@ const Boostrap = () => {
     if (event.key === "Tab") event.preventDefault();
   };
 
+  const socketConnect = () => {
+    if (socket._socket !== null) return;
+    if (userManager._token === null) return;
+
+    const tokenBase64 = btoa(userManager._token);
+    socket.connect(
+      `ws://localhost:3000/launcher/ws?token=${tokenBase64}`,
+      application.version
+    );
+  };
+
   const onSocketError = (data: SocketDownEvent_Error) => {
     console.log("[socket] error", data);
     bannerManager.push({
@@ -54,6 +62,37 @@ const Boostrap = () => {
       closable: true,
     });
   };
+
+  const onSocketWelcome = (data: SocketDownEvent_Welcome) => {
+    console.log("[socket] welcome", data);
+    socket.send({ id: "request_user" });
+  };
+
+  const onSocketRequestHeartbeat = (data: SocketDownEvent_RequestHeartbeat) => {
+    console.log("[socket] request_heartbeat", data);
+    socket.send({ id: "heartbeat" });
+  };
+
+  const onSocketUser = (data: SocketDownEvent_User) => {
+    console.log("[socket] user", data);
+    userManager.load(data.user);
+  };
+
+  useEffect(() => {
+    socketConnect();
+
+    socket.bind("error", onSocketError);
+    socket.bind("welcome", onSocketWelcome);
+    socket.bind("request_heartbeat", onSocketRequestHeartbeat);
+    socket.bind("user", onSocketUser);
+
+    return () => {
+      socket.unbind("error", onSocketError);
+      socket.unbind("welcome", onSocketWelcome);
+      socket.unbind("request_heartbeat", onSocketRequestHeartbeat);
+      socket.unbind("user", onSocketUser);
+    };
+  }, [userManager._token]);
 
   useEffect(() => {
     const check = () => {
@@ -75,13 +114,11 @@ const Boostrap = () => {
 
       bannerManager.remove("websocket");
     };
-    const interval = setInterval(check, 1000);
 
-    socket.bind("error", onSocketError);
+    const interval = setInterval(check, 1000);
 
     return () => {
       clearInterval(interval);
-      socket.unbind("error", onSocketError);
     };
   }, [socket._socket]);
 

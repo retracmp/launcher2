@@ -1,5 +1,6 @@
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useApplicationInformation } from "src/wrapper/tauri";
+import { useUserManager } from "src/wrapper/user";
 import * as rr from "@tanstack/react-router";
 
 import { HiMinus } from "react-icons/hi";
@@ -9,6 +10,7 @@ import BannerRenderer from "../banner/parent";
 
 const Frame = () => {
   const application = useApplicationInformation();
+  const userManager = useUserManager();
 
   return (
     <main
@@ -56,7 +58,7 @@ const Frame = () => {
           </button>
         </nav>
 
-        <BannerRenderer />
+        {userManager._token != null && <BannerRenderer />}
         <rr.Outlet />
       </div>
     </main>

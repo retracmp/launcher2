@@ -20,11 +20,17 @@ type SocketDownEvent_RequestLogout = SocketBasicDownEvent & {
   id: "request_logout";
 };
 
+type SocketDownEvent_User = SocketBasicDownEvent & {
+  id: "user";
+  user: User;
+};
+
 type SocketDownEvent =
   | SocketDownEvent_Error
   | SocketDownEvent_Welcome
   | SocketDownEvent_RequestHeartbeat
-  | SocketDownEvent_RequestLogout;
+  | SocketDownEvent_RequestLogout
+  | SocketDownEvent_User;
 
 type SocketDownEventType = SocketDownEvent["id"];
 type SocketDownEventDataFromType<T extends SocketDownEventType> = Extract<
