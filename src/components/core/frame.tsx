@@ -9,6 +9,7 @@ import { IoCloseSharp, IoArrowBackSharp } from "react-icons/io5";
 import UI from "src/components/core/default";
 import Drawer from "src/components/navigation/drawer";
 import BannerRenderer from "src/components/banner/parent";
+import FriendsList from "../navigation/friends";
 
 const Frame = () => {
   const application = useApplicationInformation();
@@ -81,7 +82,13 @@ const Frame = () => {
         </nav>
 
         {userManager.access() && <BannerRenderer />}
-        {show ? <rr.Outlet /> : <LoadingIndicator />}
+        <div className="flex flex-row flex-1">
+          <div className="flex flex-col flex-1">
+            {show ? <rr.Outlet /> : <LoadingIndicator />}
+          </div>
+
+          {userManager.access() && <FriendsList />}
+        </div>
       </div>
     </main>
   );
@@ -89,9 +96,10 @@ const Frame = () => {
 
 const LoadingIndicator = () => {
   return (
-    <UI.ColBox>
+    <UI.RowBox>
+      <UI.LoadingSpinner />
       <UI.P>Please wait while we connect you to our services.</UI.P>
-    </UI.ColBox>
+    </UI.RowBox>
   );
 };
 
