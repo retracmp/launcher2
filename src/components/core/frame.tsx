@@ -22,7 +22,7 @@ const Frame = () => {
           data-tauri-drag-region
         >
           <p
-            className="text-neutral-300 font-plex text-[14px]  text-base"
+            className="text-neutral-300 font-plex text-[14px] text-base"
             data-tauri-drag-region
           >
             {application.name}
