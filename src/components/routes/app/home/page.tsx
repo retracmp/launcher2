@@ -1,73 +1,54 @@
 import { useUserManager } from "src/wrapper/user";
-import { formatTime } from "src/helpers/time";
 
 import UI from "src/components/core/default";
+import CharacterWidget from "src/components/routes/app/home/character";
+import StatisticsWidget from "src/components/routes/app/home/statistics";
 
 const HomePage = () => {
   const userManager = useUserManager();
   if (userManager._user == null || userManager._season == null) return null;
 
-  const seasonStat = userManager._user.Account.Stats[userManager._season];
-  if (!seasonStat) return null;
-
-  const eliminations = Object.values(seasonStat.Matches).reduce(
-    (acc, match) => acc + match.Eliminations,
-    0
-  );
-  const matchesPlayed = Object.values(seasonStat.Matches).length;
-  const victoryRoyales = Object.values(seasonStat.Matches).filter(
-    (match) => match.Placement === 1
-  ).length;
-  const timeAlive = Object.values(seasonStat.Matches).reduce((acc, match) => {
-    return acc + new Date(match.TimeAlive).getTime();
-  }, 0);
-
   return (
     <>
       <div className="flex flex-row gap-1 p-1.5 pb-0">
-        <div className="flex flex-col p-2 w-[60%] min-w-max bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid">
+        <CharacterWidget user={userManager._user} />
+        <StatisticsWidget
+          account={userManager._user.Account}
+          season={userManager._season}
+        />
+      </div>
+
+      <UI.ColBox>
+        <div className="flex flex-col p-2 gap-1 min-w-max bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid">
           <UI.P>
-            Welcome back,
-            <span className="font-bold font-geist">
-              {" " + userManager._user.Account.DisplayName}
-            </span>
-            .
-          </UI.P>
-        </div>
-        <div className="flex flex-col p-2 w-[40%] min-w-max bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid">
-          <UI.P>
-            <span className="font-[500] font-geist">Your Statistics</span>
+            <span className="font-[500] font-geist">Recent News</span>
           </UI.P>
 
-          <div className="flex flex-col gap-[3px] mt-[5px]">
-            <div className="flex flex-row w-full items-center gap-2">
-              <UI.P className="text-neutral-500">Eliminations</UI.P>
-              <div className="w-full min-w-8 h-[1px] bg-neutral-600/20"></div>
-              <UI.P>{eliminations}</UI.P>
-            </div>
-            <div className="flex flex-row w-full items-center gap-2">
-              <UI.P className="text-neutral-500">Victory Royales</UI.P>
-              <div className="w-full min-w-8 h-[1px] bg-neutral-600/20"></div>
-              <UI.P>{victoryRoyales}</UI.P>
-            </div>
-            <div className="flex flex-row w-full items-center gap-2">
-              <UI.P className="text-neutral-500">Matches Played</UI.P>
-              <div className="w-full min-w-8 h-[1px] bg-neutral-600/20"></div>
-              <UI.P>{matchesPlayed}</UI.P>
-            </div>
-            <div className="flex flex-row w-full items-center gap-2">
-              <UI.P className="text-neutral-500">Time Alive</UI.P>
-              <div className="w-full min-w-8 h-[1px] bg-neutral-600/20"></div>
-              <UI.P>{formatTime(timeAlive)}</UI.P>
-            </div>
+          <div className="flex flex-col gap-[2px]">
+            <UI.P className="cursor-pointer hover:underline text-neutral-400">
+              <span className="text-blue-300 text-[12px]">NEW! </span>
+              Update 21/03/2024 -{" "}
+              <span className="text-neutral-300">
+                Quick Updates to Lategame & Arena.
+              </span>
+            </UI.P>
+
+            <UI.P className="cursor-pointer hover:underline text-neutral-400">
+              Cosmetic Update 17/03/2024 -{" "}
+              <span className="text-neutral-300">New Cosmetics & Bundles.</span>
+            </UI.P>
+
+            <UI.P className="cursor-pointer hover:underline text-neutral-400">
+              Economy Reset 02/03/2024 -{" "}
+              <span className="text-neutral-300">
+                V-Bucks reward price changes.
+              </span>
+            </UI.P>
+
+            <p className="font-plex leading-[14px] min-w-max cursor-pointer hover:underline text-neutral-500 text-[12px]">
+              View All...
+            </p>
           </div>
-        </div>
-      </div>
-      <UI.ColBox>
-        <div className="flex flex-col p-2 min-w-max bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid">
-          <UI.P>
-            <span className="font-[500] font-geist">Recent Matches</span>
-          </UI.P>
         </div>
       </UI.ColBox>
     </>

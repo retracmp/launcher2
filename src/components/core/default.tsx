@@ -63,19 +63,19 @@ namespace UI {
 
   export const BUTTON_COLOURS = {
     neutral: [
-      "bg-neutral-500/20 border-neutral-500/20 border-1 border-solid min-w-max p-1 rounded-xs cursor-pointer text-neutral-300 font-plex text-[14px] text-base hover:bg-neutral-500/30",
+      "bg-neutral-500/20 border-neutral-500/20 border-1 border-solid min-w-max p-0.5 rounded-xs cursor-pointer text-neutral-300 font-plex text-[14px] text-base hover:bg-neutral-500/30",
     ],
     red: [
-      "bg-red-500/20 border-red-500/20 border-1 border-solid min-w-max p-1 rounded-xs cursor-pointer text-red-300 font-plex text-[14px] text-base hover:bg-red-500/30",
+      "bg-red-500/20 border-red-500/20 border-1 border-solid min-w-max p-0.5 rounded-xs cursor-pointer text-red-300 font-plex text-[14px] text-base hover:bg-red-500/30",
     ],
     green: [
-      "bg-emerald-500/20 border-emerald-500/20 border-1 border-solid min-w-max p-1 rounded-xs cursor-pointer text-emerald-300 font-plex text-[14px] text-base hover:bg-emerald-500/30",
+      "bg-green-500/20 border-green-500/20 border-1 border-solid min-w-max p-0.5 rounded-xs cursor-pointer text-green-400 font-plex text-[14px] text-base hover:bg-green-500/30",
     ],
     blue: [
-      "bg-blue-500/20 border-blue-500/20 border-1 border-solid min-w-max p-1 rounded-xs cursor-pointer text-blue-300 font-plex text-[14px] text-base hover:bg-blue-500/30",
+      "bg-blue-500/20 border-blue-500/20 border-1 border-solid min-w-max p-0.5 rounded-xs cursor-pointer text-blue-300 font-plex text-[14px] text-base hover:bg-blue-500/30",
     ],
     discord: [
-      "bg-[#5865f2]/20 border-[#5865f2]/20 border-1 border-solid min-w-max p-1 rounded-xs cursor-pointer text-neutral-300 font-plex text-[14px] text-base hover:bg-[#5865f2]/30",
+      "bg-[#5865f2]/20 border-[#5865f2]/20 border-1 border-solid min-w-max p-0.5 rounded-xs cursor-pointer text-neutral-300 font-plex text-[14px] text-base hover:bg-[#5865f2]/30",
     ],
   };
 
