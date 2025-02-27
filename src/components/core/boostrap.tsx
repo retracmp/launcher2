@@ -6,6 +6,7 @@ import {
   useBannerManager,
 } from "src/wrapper/banner";
 import { LauncherStage, useUserManager } from "src/wrapper/user";
+import { useRetrac } from "src/wrapper/retrac";
 import { useSocket } from "src/socket";
 import * as app from "@tauri-apps/api/app";
 
@@ -16,6 +17,7 @@ const Boostrap = () => {
   const application = useApplicationInformation();
   const bannerManager = useBannerManager();
   const userManager = useUserManager();
+  const retrac = useRetrac();
   const socket = useSocket();
 
   const boostrap = async () => {
@@ -100,8 +102,12 @@ const Boostrap = () => {
     userManager.load(data.user);
   };
 
-  const onSocketclose = (data: SocketDownEvent_Close) => {
+  const onSocketClose = (data: SocketDownEvent_Close) => {
     console.log("[socket] close", data);
+  };
+
+  const onSocketPlayerCount = (data: SocketDownEvent_PlayerCount) => {
+    retrac.set_players_online(data.count);
   };
 
   const syncUserStages = () => {
@@ -133,18 +139,20 @@ const Boostrap = () => {
   useEffect(() => {
     syncUserStages();
 
-    socket.bind("close", onSocketclose);
+    socket.bind("close", onSocketClose);
     socket.bind("error", onSocketError);
     socket.bind("welcome", onSocketWelcome);
     socket.bind("request_heartbeat", onSocketRequestHeartbeat);
     socket.bind("user", onSocketUser);
+    socket.bind("player_count", onSocketPlayerCount);
 
     return () => {
-      socket.unbind("close", onSocketclose);
+      socket.unbind("close", onSocketClose);
       socket.unbind("error", onSocketError);
       socket.unbind("welcome", onSocketWelcome);
       socket.unbind("request_heartbeat", onSocketRequestHeartbeat);
       socket.unbind("user", onSocketUser);
+      socket.unbind("player_count", onSocketPlayerCount);
     };
   }, []);
 

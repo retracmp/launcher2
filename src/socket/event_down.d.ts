@@ -20,8 +20,9 @@ type SocketDownEvent_RequestHeartbeat = SocketBasicDownEvent & {
   id: "request_heartbeat";
 };
 
-type SocketDownEvent_RequestLogout = SocketBasicDownEvent & {
-  id: "request_logout";
+type SocketDownEvent_PlayerCount = SocketBasicDownEvent & {
+  id: "player_count";
+  count: number;
 };
 
 type SocketDownEvent_User = SocketBasicDownEvent & {
@@ -34,7 +35,7 @@ type SocketDownEvent =
   | SocketDownEvent_Error
   | SocketDownEvent_Welcome
   | SocketDownEvent_RequestHeartbeat
-  | SocketDownEvent_RequestLogout
+  | SocketDownEvent_PlayerCount
   | SocketDownEvent_User;
 
 type SocketDownEventType = SocketDownEvent["id"];
@@ -51,4 +52,5 @@ type SocketDownEventFn<T extends SocketDownEventType> = (
 type error_test = SocketDownEventDataFromType<"error">;
 type welcome_test = SocketDownEventDataFromType<"welcome">;
 type heartbeat_test = SocketDownEventDataFromType<"request_heartbeat">;
-type logout_test = SocketDownEventDataFromType<"request_logout">;
+type player_count_test = SocketDownEventDataFromType<"player_count">;
+type user_test = SocketDownEventDataFromType<"user">;

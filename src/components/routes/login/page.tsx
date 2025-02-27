@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import { getCurrentWindow, UserAttentionType } from "@tauri-apps/api/window";
 import { UnlistenFn } from "@tauri-apps/api/event";
+import { useEffect } from "react";
 import { useUserManager } from "src/wrapper/user";
 import { useNavigate } from "@tanstack/react-router";
 import { openUrl } from "@tauri-apps/plugin-opener";
@@ -31,6 +32,7 @@ const LoginPage = () => {
         navigate({
           to: "/app",
         });
+        getCurrentWindow().requestUserAttention(UserAttentionType.Critical);
       }
     }
   };
@@ -60,7 +62,12 @@ const LoginPage = () => {
         </UI.P>
       </UI.Box>
       <UI.ColBox>
-        <UI.Button colour="discord" onClick={handleAuthenticate}>
+        <UI.Button
+          loadAfterClick={true}
+          loadAfterClickText="Waiting for callback"
+          colour="discord"
+          onClick={handleAuthenticate}
+        >
           Authenticate with Discord
         </UI.Button>
       </UI.ColBox>
