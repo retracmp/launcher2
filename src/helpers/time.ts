@@ -8,9 +8,6 @@ const formatTime = (ms: number): string => {
   const remainingMinutes = minutes % 60;
 
   let result = [];
-  if (years > 0) result.push(`${years}y`);
-  if (months > 0) result.push(`${months}mo`);
-  if (weeks > 0) result.push(`${weeks}w`);
   if (days > 0) result.push(`${days}d`);
   if (remainingHours > 0) result.push(`${remainingHours}h`);
   if (remainingMinutes > 0) result.push(`${remainingMinutes}m`);

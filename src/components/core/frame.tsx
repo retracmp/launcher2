@@ -96,7 +96,9 @@ const LoadingIndicator = () => {
         <UI.LoadingSpinner />
       </div>
       <div className="flex p-1.5 border-1 border-solid border-[#2e2e2e] rounded-xs w-full">
-        <UI.P>Please wait while we connect you to our services.</UI.P>
+        <UI.P className="text-neutral-500">
+          Please wait while we connect you to our services.
+        </UI.P>
       </div>
     </UI.RowBox>
   );
