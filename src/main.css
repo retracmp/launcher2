@@ -48,3 +48,17 @@ body {
 .font-geist {
   font-family: "Geist", sans-serif;
 }
+
+*::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+*::-webkit-scrollbar-track {
+  border-radius: 0px;
+  background-color: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  border-radius: 0px;
+  background-color: #2e2e2e;
+  border: 5px solid transparent;
+}

@@ -33,17 +33,21 @@ const EmptyRoutes = () => {
 const AuthenticatedRoutes = () => {
   return (
     <>
-      <DrawerItem path="/home" icon="IoHomeSharp" label="home" />
-      <DrawerItem path="/shop" icon="IoPricetagsSharp" label="shop" />
-      <DrawerItem path="/library" icon="IoFileTrayFullSharp" label="library" />
-      <DrawerItem path="/servers" icon="IoPulseSharp" label="servers" />
+      <DrawerItem path="/app" icon="IoHomeSharp" label="home" />
+      <DrawerItem path="/app/shop" icon="IoPricetagsSharp" label="shop" />
       <DrawerItem
-        path="/leaderboard"
+        path="/app/library"
+        icon="IoFileTrayFullSharp"
+        label="library"
+      />
+      <DrawerItem path="/app/servers" icon="IoPulseSharp" label="servers" />
+      <DrawerItem
+        path="/app/leaderboard"
         icon="IoTrophySharp"
         label="leaderboard"
       />
       <SparklyDrawerItem
-        path="/donate"
+        path="/app/donate"
         icon="IoSparklesSharp"
         label="donate"
         colour="yellow"
@@ -51,7 +55,11 @@ const AuthenticatedRoutes = () => {
 
       <s className="mt-auto" />
 
-      <DrawerItem path="/settings" icon="IoSettingsSharp" label="settings" />
+      <DrawerItem
+        path="/app/settings"
+        icon="IoSettingsSharp"
+        label="settings"
+      />
     </>
   );
 };

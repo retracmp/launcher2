@@ -30,14 +30,25 @@ type Profile = {
   Attributes: Record<string, any>;
 };
 
+type StatMatch = {
+  ID: string;
+  Eliminations: number;
+  Placement: number;
+  TeamType: "solo" | "duo" | "trio" | "squad";
+  TimeAlive: string;
+};
+
 type Stat = {
   Season: number;
   XP: number;
   BookXP: number;
   Premium: bool;
+  Matches: Record<string, StatMatch>;
   TierFreeClaimed: number;
   TierPaidClaimed: number;
   LevelClaimed: number;
+  PersistentScores: Record<string, number>;
+  Tokens: string[];
 };
 
 type User = {

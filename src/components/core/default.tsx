@@ -42,8 +42,8 @@ namespace UI {
   ) => {
     return (
       <p
-        className="text-neutral-300 font-plex text-[14px] text-base leading-[14px]"
         {...props}
+        className={`text-neutral-300 font-plex text-[14px] text-base leading-[14px] min-w-max ${props.className}`}
       />
     );
   };

@@ -67,6 +67,7 @@ const SparklyDrawerItem = (props: SparklyDrawerItemProps) => {
       activeProps={{
         className: colours[props.colour][1],
       }}
+      activeOptions={{ exact: true }}
     >
       <Icon />
     </rr.Link>

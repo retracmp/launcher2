@@ -19,8 +19,10 @@ type UserManager = {
 
   login: (token: string) => void;
   logout: () => void;
-
   load: (user: User) => void;
+
+  _season: number | null;
+  set_season: (season: number) => void;
 };
 
 export const useUserManager = create<UserManager>()(
@@ -50,6 +52,11 @@ export const useUserManager = create<UserManager>()(
 
       load: (user) => {
         set({ _user: user, _stage: LauncherStage.AllGood });
+      },
+
+      _season: 14,
+      set_season: (season) => {
+        set({ _season: season });
       },
     }),
     {

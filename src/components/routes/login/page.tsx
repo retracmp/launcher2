@@ -29,7 +29,7 @@ const LoginPage = () => {
           .trim();
         userManager.login(token);
         navigate({
-          to: "/home",
+          to: "/app",
         });
       }
     }
@@ -46,7 +46,7 @@ const LoginPage = () => {
   useEffect(() => {
     if (userManager.access()) {
       navigate({
-        to: "/home",
+        to: "/app",
       });
     }
   }, [userManager._token]);
