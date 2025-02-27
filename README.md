@@ -1,13 +1,15 @@
 # `launcher`
 
-> The game launcher for Retrac, an OG Fortnite Experience.
+> The new game launcher for Retrac, an OG Fortnite Experience.
 
-![image](https://github.com/user-attachments/assets/bf159010-114b-4205-b5d5-9dcbc8c87433)
+![image](https://github.com/user-attachments/assets/cd99a2a8-9ac5-49a5-82a9-2b8e3a788a45)
+![image](https://github.com/user-attachments/assets/66cffdba-c9f9-4740-8510-85d40d861aac)
 
 ## main ideas
 
 - no framer motion
 - as low dependencies as possible
+- design is boxy, modern and made for purpose
 
 ## contribute
 
