@@ -1,11 +1,14 @@
 import { SocketManager } from "src/socket";
+import { useUserManager } from "src/wrapper/user";
 
 export class RetracSocket extends WebSocket {
   public version: string;
+  public token: string | null = null;
 
-  constructor(url: string, version: string) {
+  constructor(url: string, version: string, token: string) {
     super(url);
     this.version = version;
+    this.token = token;
   }
 }
 
@@ -13,16 +16,18 @@ type socketProps = {
   state: SocketManager;
   url: string;
   version: string;
+  token: string;
 };
 
 export const newRetracSocket = ({
   state,
   url,
   version,
+  token,
 }: socketProps): RetracSocket | null => {
   const _socket = (() => {
     try {
-      return new RetracSocket(url, version);
+      return new RetracSocket(url, version, token);
     } catch (error) {
       console.log("[socket] failed to connect", error);
       return null;
@@ -35,17 +40,33 @@ export const newRetracSocket = ({
     console.log("[socket] connected");
   });
 
-  _socket.addEventListener("close", () => {
+  _socket.addEventListener("close", (e) => {
     console.log("[socket] disconnected");
 
-    const listeners = (state._listeners["close"] ||
+    const error_listeners = (state._listeners["error"] ||
+      []) as SocketDownEventFn<"error">[];
+    if (error_listeners !== undefined) {
+      error_listeners.forEach((listener) =>
+        listener({
+          id: "error",
+          error: `You have been disconnected from the server. (code ${e.code})`,
+        })
+      );
+    }
+    if (e.code === 1006) {
+      state.disconnect();
+      useUserManager.getState().logout();
+      return;
+    }
+
+    const close_listeners = (state._listeners["close"] ||
       []) as SocketDownEventFn<"close">[];
-    if (listeners !== undefined) {
-      listeners.forEach((listener) => listener({ id: "close" }));
+    if (close_listeners !== undefined) {
+      close_listeners.forEach((listener) => listener({ id: "close" }));
     }
 
     state.disconnect();
-    setTimeout(() => state.connect(url, version), 2000);
+    setTimeout(() => state.connect(url, version, token), 2000);
   });
 
   _socket.addEventListener("message", (event) => {

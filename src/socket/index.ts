@@ -5,7 +5,7 @@ export type SocketManager = {
   _socket: RetracSocket | null;
   _listeners: Partial<{ [K in SocketDownEventType]: SocketDownEventFn<K>[] }>;
 
-  connect: (url: string, version: string) => void;
+  connect: (url: string, version: string, token: string) => void;
   disconnect: () => void;
 
   bind: <T extends SocketDownEventType>(
@@ -25,7 +25,7 @@ export const useSocket = create<SocketManager>()((set, get) => ({
   _listeners: {},
   _onclose: [],
 
-  connect: (url, version) => {
+  connect: (url, version, token) => {
     const state = get();
     if (state._socket !== null) return;
 
@@ -33,12 +33,15 @@ export const useSocket = create<SocketManager>()((set, get) => ({
       state,
       url,
       version,
+      token,
     });
     if (_socket === null) return;
 
     set({ _socket });
   },
   disconnect: () => {
+    console.log("reached disconnect");
+
     const state = get();
     if (state._socket === null) return;
     state._socket.close();

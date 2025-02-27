@@ -5,7 +5,7 @@ type ApplicationInformation = {
   version: string;
   dev: boolean;
 
-  load(name: string, version: string, developer: boolean): void;
+  load(name: string, version: string, dev: boolean): void;
 };
 
 export const useApplicationInformation = create<ApplicationInformation>()(
@@ -13,7 +13,6 @@ export const useApplicationInformation = create<ApplicationInformation>()(
     name: "Retrac",
     version: "0.1.0",
     dev: false,
-    load: (name, version, developer) =>
-      set(() => ({ name, version, dev: developer })),
+    load: (name, version, dev) => set(() => ({ name, version, dev })),
   })
 );

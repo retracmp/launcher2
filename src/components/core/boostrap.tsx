@@ -10,6 +10,7 @@ import { useSocket } from "src/socket";
 import * as app from "@tauri-apps/api/app";
 
 const ANTI_SHORTCUTS = ["ctrl+p", "ctrl+f", "ctrl+u", "ctrl+j"];
+const ANTI_SHORTCUTS_ALLOW_IN_DEV = ["ctrl+r", "f5"];
 
 const Boostrap = () => {
   const application = useApplicationInformation();
@@ -36,17 +37,38 @@ const Boostrap = () => {
       event.preventDefault();
     }
 
+    if (import.meta.env.MODE !== "development") {
+      if (
+        (event.ctrlKey || event.metaKey) &&
+        ANTI_SHORTCUTS_ALLOW_IN_DEV.includes(
+          `${event.ctrlKey ? "ctrl+" : ""}${event.key}`
+        )
+      ) {
+        event.preventDefault();
+      }
+
+      if (
+        ANTI_SHORTCUTS_ALLOW_IN_DEV.includes(event.key.toLowerCase()) &&
+        event.key.startsWith("F")
+      ) {
+        event.preventDefault();
+      }
+    }
+
     if (event.key === "Tab") event.preventDefault();
   };
 
   const socketConnect = () => {
     if (userManager._token === null) return;
+    if (socket._socket !== null && socket._socket.token === userManager._token)
+      return;
     if (socket._socket !== null) socket.disconnect();
 
     const tokenBase64 = btoa(userManager._token);
     socket.connect(
       `ws://localhost:3000/launcher/ws?token=${tokenBase64}`,
-      application.version
+      application.version,
+      userManager._token
     );
   };
 
@@ -100,6 +122,15 @@ const Boostrap = () => {
 
   useEffect(() => {
     socketConnect();
+
+    return () => {
+      if (socket._socket !== null) {
+        socket.disconnect();
+      }
+    };
+  }, [userManager._token]);
+
+  useEffect(() => {
     syncUserStages();
 
     socket.bind("close", onSocketclose);
@@ -115,7 +146,7 @@ const Boostrap = () => {
       socket.unbind("request_heartbeat", onSocketRequestHeartbeat);
       socket.unbind("user", onSocketUser);
     };
-  }, [userManager._token]);
+  }, []);
 
   useEffect(() => {
     const check = () => {
