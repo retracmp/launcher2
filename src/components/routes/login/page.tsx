@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import { getCurrentWindow, UserAttentionType } from "@tauri-apps/api/window";
 import { UnlistenFn } from "@tauri-apps/api/event";
-import { useEffect } from "react";
+import { useBannerManager } from "src/wrapper/banner";
 import { useUserManager } from "src/wrapper/user";
 import { useNavigate } from "@tanstack/react-router";
 import { openUrl } from "@tauri-apps/plugin-opener";
@@ -12,11 +13,20 @@ import UI from "src/components/core/default";
 
 const LoginPage = () => {
   const userManager = useUserManager();
+  const bannerManager = useBannerManager();
   const navigate = useNavigate();
 
   const handleAuthenticate = async () => {
     const redirect = await client.get_discord_login_url();
-    if (!redirect.ok) return;
+    if (!redirect.ok) {
+      bannerManager.push({
+        id: "login-error",
+        text: "Our servers seem to be down, please try again later.",
+        closable: true,
+        colour: "red",
+      });
+      throw new Error("Failed to get Discord login URL");
+    }
     await openUrl(redirect.data);
   };
 

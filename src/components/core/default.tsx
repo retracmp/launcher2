@@ -111,8 +111,13 @@ namespace UI {
       <button
         {...normalReactProps}
         onClick={(e) => {
-          if (props.loadAfterClick) clicked[1](true);
-          props.onClick && props.onClick(e);
+          try {
+            clicked[1](true);
+            props.onClick && props.onClick(e);
+            setTimeout(() => clicked[1](false), 10000);
+          } catch (error) {
+            clicked[1](false);
+          }
         }}
         type="button"
         className={`${BUTTON_COLOURS[props.colour][0]} ${props.className}`}
