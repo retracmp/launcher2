@@ -4,6 +4,9 @@ type RetracState = {
   players_online: number;
   set_players_online: (players_online: number) => void;
 
+  launcher_news: LauncherNewsItem[];
+  set_launcher_news: (launcher_news: LauncherNewsItem[]) => void;
+
   // servers: Server[];
   // add_server: (server: Server) => void;
   // remove_server: (server: Server) => void;
@@ -14,4 +17,6 @@ type RetracState = {
 export const useRetrac = create<RetracState>((set) => ({
   players_online: 0,
   set_players_online: (players_online) => set({ players_online }),
+  launcher_news: [],
+  set_launcher_news: (launcher_news) => set({ launcher_news }),
 }));

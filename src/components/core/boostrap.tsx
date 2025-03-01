@@ -90,6 +90,7 @@ const Boostrap = () => {
   const onSocketWelcome = (data: SocketDownEvent_Welcome) => {
     console.log("[socket] welcome", data);
     socket.send({ id: "request_user" });
+    retrac.set_launcher_news(data.news);
   };
 
   const onSocketRequestHeartbeat = (data: SocketDownEvent_RequestHeartbeat) => {

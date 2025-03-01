@@ -1,6 +1,10 @@
+import { useRetrac } from "src/wrapper/retrac";
+
 import UI from "src/components/core/default";
 
 const NewsWidget = () => {
+  const retrac = useRetrac();
+
   return (
     <div className="flex flex-col p-2 gap-1 w-[60%] max-w-[60%] bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid overflow-hidden">
       <UI.P>
@@ -8,39 +12,40 @@ const NewsWidget = () => {
       </UI.P>
 
       <div className="flex flex-col gap-[2px] ">
-        <p className="font-plex text-[14px] text-base leading-[14px] cursor-pointer hover:underline text-neutral-400 whitespace-nowrap overflow-hidden overflow-ellipsis">
-          <span className="text-blue-300 text-[12px] whitespace-nowrap overflow-hidden overflow-ellipsis">
-            NEW!{" "}
-          </span>
-          Update 21/03/2024 -{" "}
-          <span className="text-neutral-300 whitespace-nowrap overflow-hidden max-w-2 overflow-ellipsis">
-            Quick Updates to Lategame & Arena.
-          </span>
-        </p>
-
-        <p className="font-plex text-[14px] text-base leading-[14px] cursor-pointer hover:underline text-neutral-400 whitespace-nowrap overflow-hidden overflow-ellipsis">
-          Cosmetic Update 17/03/2024 -{" "}
-          <span className="text-neutral-300">New Cosmetics & Bundles.</span>
-        </p>
-
-        <p className="font-plex text-[14px] text-base leading-[14px] cursor-pointer hover:underline text-neutral-400 whitespace-nowrap overflow-hidden overflow-ellipsis">
-          Economy Reset 02/03/2024 -{" "}
-          <span className="text-neutral-300">
-            V-Bucks reward price changes.
-          </span>
-        </p>
-        <p className="font-plex text-[14px] text-base leading-[14px] cursor-pointer hover:underline text-neutral-400 whitespace-nowrap overflow-hidden overflow-ellipsis">
-          Server Update 27/02/2024 -{" "}
-          <span className="text-neutral-300">
-            EU French servers now available.
-          </span>
-        </p>
+        {retrac.launcher_news.slice(0, 4).map((item, index) => (
+          <NewsItem key={index} {...item} />
+        ))}
 
         <p className="font-plex leading-[14px] min-w-max cursor-pointer hover:underline text-neutral-500 text-[12px]">
           View All...
         </p>
       </div>
     </div>
+  );
+};
+
+const NewsItem = (props: LauncherNewsItem) => {
+  const isnew =
+    new Date(props.date).getTime() > new Date().getTime() - 60 * 60 * 24 * 7;
+
+  const date = new Date(props.date);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = String(date.getFullYear()).slice(-2);
+
+  return (
+    <p className="font-plex text-[14px] text-base leading-[14px] cursor-pointer hover:underline text-neutral-400 whitespace-nowrap overflow-hidden overflow-ellipsis">
+      {isnew && (
+        <span className="text-blue-300 text-[12px] whitespace-nowrap overflow-visible overflow-x-hidden overflow-ellipsis">
+          NEW!{" "}
+        </span>
+      )}
+      {props.updateType !== "" ? props.updateType + " " : ""}Update{" "}
+      {`${day}/${month}/${year}`} -{" "}
+      <span className="text-neutral-300 whitespace-nowrap overflow-visible overflow-x-hidden max-w-2 overflow-ellipsis">
+        {props.title}
+      </span>
+    </p>
   );
 };
 

@@ -69,3 +69,11 @@ type User = {
     common_core: Profile;
   };
 };
+
+type LauncherNewsItem = {
+  updateType: string;
+  title: string;
+  date: string;
+  body: string;
+  authors: string;
+};

@@ -14,6 +14,7 @@ type SocketDownEvent_Error = SocketBasicDownEvent & {
 
 type SocketDownEvent_Welcome = SocketBasicDownEvent & {
   id: "welcome";
+  news: LauncherNewsItem[];
 };
 
 type SocketDownEvent_RequestHeartbeat = SocketBasicDownEvent & {
