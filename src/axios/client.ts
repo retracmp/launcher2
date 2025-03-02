@@ -1,13 +1,12 @@
 import axios, { AxiosError } from "axios";
 
-export const axiosClient =
-  import.meta.env.MODE === "development"
-    ? axios.create({
-        baseURL: "http://127.0.0.1:3000",
-      })
-    : axios.create({
-        baseURL: "https://retrac.site/",
-      });
+const dev = false || import.meta.env.MODE === "development";
+export const protocol = dev ? "http" : "https";
+export const hostname = dev ? "localhost:3000" : "retrac.site";
+
+export const axiosClient = axios.create({
+  baseURL: `${protocol}://${hostname}`,
+});
 
 const get_discord_login_url = async (): Promise<RResponse<string>> => {
   const response = await axiosClient

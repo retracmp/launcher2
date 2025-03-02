@@ -3,8 +3,9 @@ import { useUserManager } from "src/wrapper/user";
 import UI from "src/components/core/default";
 import CharacterWidget from "src/components/routes/app/home/widgets/character";
 import StatisticsWidget from "src/components/routes/app/home/widgets/statistics";
-import FortniteWidget from "./widgets/fortnite";
-import NewsWidget from "./widgets/news";
+import FortniteWidget from "src/components/routes/app/home/widgets/fortnite";
+import NewsWidget from "src/components/routes/app/home/widgets/news";
+import PanelWidget from "src/components/routes/app/home/widgets/panels";
 
 const HomePage = () => {
   const userManager = useUserManager();
@@ -26,6 +27,10 @@ const HomePage = () => {
       <UI.RowBox>
         <FortniteWidget />
         <NewsWidget />
+      </UI.RowBox>
+
+      <UI.RowBox>
+        <PanelWidget />
       </UI.RowBox>
     </>
   );

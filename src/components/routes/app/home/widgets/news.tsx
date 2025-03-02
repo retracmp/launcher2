@@ -12,11 +12,11 @@ const NewsWidget = () => {
       </UI.P>
 
       <div className="flex flex-col gap-[2px] ">
-        {retrac.launcher_news.slice(0, 4).map((item, index) => (
+        {retrac.launcher_news.slice(0, 3).map((item, index) => (
           <NewsItem key={index} {...item} />
         ))}
 
-        <p className="font-plex leading-[14px] min-w-max cursor-pointer hover:underline text-neutral-500 text-[12px]">
+        <p className="font-plex leading-[16px] min-w-max cursor-pointer hover:underline text-neutral-500 text-[12px]">
           View All...
         </p>
       </div>
@@ -34,7 +34,7 @@ const NewsItem = (props: LauncherNewsItem) => {
   const year = String(date.getFullYear()).slice(-2);
 
   return (
-    <p className="font-plex text-[14px] text-base leading-[14px] cursor-pointer hover:underline text-neutral-400 whitespace-nowrap overflow-hidden overflow-ellipsis">
+    <p className="font-plex text-[14px] text-base leading-[16px] cursor-pointer hover:underline text-neutral-400 whitespace-nowrap overflow-hidden overflow-ellipsis">
       {isnew && (
         <span className="text-blue-300 text-[12px] whitespace-nowrap overflow-visible overflow-x-hidden overflow-ellipsis">
           NEW!{" "}

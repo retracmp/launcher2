@@ -40,8 +40,6 @@ export const useSocket = create<SocketManager>()((set, get) => ({
     set({ _socket });
   },
   disconnect: () => {
-    console.log("reached disconnect");
-
     const state = get();
     if (state._socket === null) return;
     state._socket.close();

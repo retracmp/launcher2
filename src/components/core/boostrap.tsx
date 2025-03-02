@@ -6,6 +6,7 @@ import {
   useBannerManager,
 } from "src/wrapper/banner";
 import { LauncherStage, useUserManager } from "src/wrapper/user";
+import { hostname } from "src/axios/client";
 import { useRetrac } from "src/wrapper/retrac";
 import { useSocket } from "src/socket";
 import * as app from "@tauri-apps/api/app";
@@ -68,7 +69,7 @@ const Boostrap = () => {
 
     const tokenBase64 = btoa(userManager._token);
     socket.connect(
-      `ws://localhost:3000/launcher/ws?token=${tokenBase64}`,
+      `ws://${hostname}/launcher/ws?token=${tokenBase64}`,
       application.version,
       userManager._token
     );

@@ -20,7 +20,7 @@ const StatisticsWidget = (props: StatisticsWidgetProps) => {
     (match) => match.Placement === 1
   ).length;
   const timeAlive = Object.values(seasonStat.Matches).reduce((acc, match) => {
-    return acc + new Date(match.TimeAlive).getTime();
+    return acc + new Date(match.TimeAlive).getTime() / 1000 / 1000;
   }, 0);
 
   return (
@@ -33,17 +33,17 @@ const StatisticsWidget = (props: StatisticsWidgetProps) => {
         <div className="flex flex-row w-full items-center gap-2">
           <UI.P className="text-neutral-500">Eliminations</UI.P>
           <div className="w-full min-w-8 h-[1px] bg-neutral-600/20"></div>
-          <UI.P>{eliminations}</UI.P>
+          <UI.P>{eliminations.toLocaleString()}</UI.P>
         </div>
         <div className="flex flex-row w-full items-center gap-2">
           <UI.P className="text-neutral-500">Victory Royales</UI.P>
           <div className="w-full min-w-8 h-[1px] bg-neutral-600/20"></div>
-          <UI.P>{victoryRoyales}</UI.P>
+          <UI.P>{victoryRoyales.toLocaleString()}</UI.P>
         </div>
         <div className="flex flex-row w-full items-center gap-2">
           <UI.P className="text-neutral-500">Matches Played</UI.P>
           <div className="w-full min-w-8 h-[1px] bg-neutral-600/20"></div>
-          <UI.P>{matchesPlayed}</UI.P>
+          <UI.P>{matchesPlayed.toLocaleString()}</UI.P>
         </div>
         <div className="flex flex-row w-full items-center gap-2">
           <UI.P className="text-neutral-500">Time Alive</UI.P>
