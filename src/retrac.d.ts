@@ -42,7 +42,7 @@ type Stat = {
   Season: number;
   XP: number;
   BookXP: number;
-  Premium: bool;
+  Premium: boolean;
   Matches: Record<string, StatMatch>;
   TierFreeClaimed: number;
   TierPaidClaimed: number;
@@ -76,4 +76,97 @@ type LauncherNewsItem = {
   date: string;
   body: string;
   authors: string;
+};
+
+type EventItem = {
+  ID: string;
+  DisplayID: string;
+  Begins: string;
+  Expire: string;
+  PlaylistID: string;
+  ScoreID: string;
+  IsArena: boolean;
+  ArenaProgressionRules: any;
+  Windows: {
+    ID: string;
+    Round: number;
+    TBD: boolean;
+    CanLiveSpectate: boolean;
+    Meta: Record<string, any>;
+    DivisionRank: number;
+    ThresholdToAdvanceDivision: number;
+    Start: string;
+    End: string;
+    TemplateID: string;
+    UseIndividualScores: boolean;
+  }[];
+  Templates: {
+    ID: string;
+    MatchLimit: number;
+    PlaylistID: string;
+    DivRank: number;
+    PointNeeded: number;
+    ScoringRules: {
+      Stat: string;
+      Type: string;
+      Tiers: {
+        Value: number;
+        Points: number;
+        Multiply: boolean;
+      }[];
+    }[];
+    NextToken: string;
+    PayoutTable: {
+      ranks: {
+        payouts: {
+          quantity: number;
+          rewardMode: string;
+          rewardType: string;
+          value: string;
+        }[];
+        threshold: number;
+      }[];
+      rolling: boolean;
+      scoreId: string;
+      scoringType: string;
+    };
+  }[];
+  OnlyEnabledForPackages: boolean;
+  MinimumAccountLevel: number;
+  EnabledForPackages: string[];
+  RegionsAllowed: string[];
+};
+
+type EventStyle = {
+  tournament_display_id: string;
+  title_line_1: string;
+  title_line_2: string;
+  schedule_info: string;
+  poster_front_image: string;
+  poster_back_image: string;
+  flavor_description: string;
+  details_description: string;
+  short_format_title: string;
+  long_format_title: string;
+  background_title: string;
+  pin_score_requirement: number;
+  pin_earned_text: string;
+  base_color: string;
+  primary_color: string;
+  secondary_color: string;
+  highlight_color: string;
+  title_color: string;
+  shadow_color: string;
+  background_left_color: string;
+  background_right_color: string;
+  background_text_color: string;
+  poster_fade_color: string;
+  playlist_tile_image: string;
+  loading_screen_image: string;
+  style_info_id: string;
+};
+
+type LauncherEventItem = {
+  event: EventItem;
+  style: EventStyle;
 };

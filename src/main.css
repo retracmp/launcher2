@@ -62,3 +62,16 @@ body {
   background-color: #2e2e2e;
   border: 5px solid transparent;
 }
+
+.animate-move {
+  animation: move 7s linear infinite;
+}
+
+@keyframes move {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}

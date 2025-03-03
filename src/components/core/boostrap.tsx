@@ -92,6 +92,16 @@ const Boostrap = () => {
     console.log("[socket] welcome", data);
     socket.send({ id: "request_user" });
     retrac.set_launcher_news(data.news);
+    retrac.set_events(
+      data.event_information.events.map((e) => {
+        return {
+          event: e,
+          style: data.event_information.style.find(
+            (s) => s.tournament_display_id === e.DisplayID
+          )!,
+        };
+      })
+    );
   };
 
   const onSocketRequestHeartbeat = (data: SocketDownEvent_RequestHeartbeat) => {

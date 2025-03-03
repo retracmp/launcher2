@@ -1,4 +1,8 @@
-const formatTime = (ms: number): string => {
+const formatTime = (
+  ms: number,
+  maxLength: number = 999,
+  short: boolean = true
+): string => {
   const seconds = Math.floor(ms / 1000);
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
@@ -8,11 +12,18 @@ const formatTime = (ms: number): string => {
   const remainingMinutes = minutes % 60;
 
   let result = [];
-  if (days > 0) result.push(`${days}d`);
-  if (remainingHours > 0) result.push(`${remainingHours}h`);
-  if (remainingMinutes > 0) result.push(`${remainingMinutes}m`);
-  if (result.length === 0) result.push("0s");
+  if (days > 0) result.push(`${days}${short ? "d" : " days"}`);
+  if (result.length > maxLength) return result.join(", ");
 
+  if (remainingHours > 0)
+    result.push(`${remainingHours}${short ? "h" : " hours"}`);
+  if (result.length > maxLength) return result.join(", ");
+
+  if (remainingMinutes > 0)
+    result.push(`${remainingMinutes}${short ? "m" : " minutes"}`);
+  if (result.length > maxLength) return result.join(", ");
+
+  if (result.length === 0) result.push(`0${short ? "s" : " seconds"}`);
   return result.join(", ");
 };
 

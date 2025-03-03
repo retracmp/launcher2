@@ -5,7 +5,7 @@ import CharacterWidget from "src/components/routes/app/home/widgets/character";
 import StatisticsWidget from "src/components/routes/app/home/widgets/statistics";
 import FortniteWidget from "src/components/routes/app/home/widgets/fortnite";
 import NewsWidget from "src/components/routes/app/home/widgets/news";
-import PanelWidget from "src/components/routes/app/home/widgets/panels";
+import EventsWidget from "src/components/routes/app/home/widgets/events";
 
 const HomePage = () => {
   const userManager = useUserManager();
@@ -30,7 +30,8 @@ const HomePage = () => {
       </UI.RowBox>
 
       <UI.RowBox>
-        <PanelWidget />
+        <EventsWidget />
+        <div className="flex flex-row p-2 gap-2 flex-1 min-w-max bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid"></div>
       </UI.RowBox>
     </>
   );
