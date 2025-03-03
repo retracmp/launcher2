@@ -13,7 +13,7 @@ const HomePage = () => {
 
   return (
     <>
-      <div className="flex flex-row gap-1 p-1.5 pb-0">
+      <div className="flex flex-row gap-1 p-1.5 pb-0 @max-xl:flex-col">
         <CharacterWidget
           user={userManager._user}
           season={userManager._season}

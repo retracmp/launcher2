@@ -12,18 +12,28 @@ const formatTime = (
   const remainingMinutes = minutes % 60;
 
   let result = [];
-  if (days > 0) result.push(`${days}${short ? "d" : " days"}`);
+  if (days > 0)
+    result.push(`${days}${short ? "d" : ` day${days > 1 ? "s" : ""}`}`);
   if (result.length > maxLength) return result.join(", ");
 
   if (remainingHours > 0)
-    result.push(`${remainingHours}${short ? "h" : " hours"}`);
+    result.push(
+      `${remainingHours}${
+        short ? "h" : ` hour${remainingHours > 1 ? "s" : ""}`
+      }`
+    );
   if (result.length > maxLength) return result.join(", ");
 
   if (remainingMinutes > 0)
-    result.push(`${remainingMinutes}${short ? "m" : " minutes"}`);
+    result.push(
+      `${remainingMinutes}${
+        short ? "m" : ` minute${remainingMinutes > 1 ? "s" : ""}`
+      }`
+    );
   if (result.length > maxLength) return result.join(", ");
 
-  if (result.length === 0) result.push(`0${short ? "s" : " seconds"}`);
+  if (result.length === 0)
+    result.push(`0${short ? "s" : ` second${seconds > 1 ? "s" : ""}`}`);
   return result.join(", ");
 };
 

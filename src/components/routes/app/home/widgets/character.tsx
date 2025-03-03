@@ -1,6 +1,7 @@
 import { useRetrac } from "src/wrapper/retrac";
 
 import UI from "src/components/core/default";
+import { useState } from "react";
 
 type CharacterWidgetProps = {
   user: User;
@@ -30,7 +31,7 @@ const CharacterWidget = (props: CharacterWidgetProps) => {
   if (!seasonStat) return null;
 
   return (
-    <div className="flex flex-row p-2 gap-2 w-[60%] min-w-max bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid">
+    <div className="flex flex-row p-2 gap-2 min-w-max w-[60%] @max-xl:w-full bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid">
       <div className="flex flex-col w-full gap-1">
         <div className="flex flex-col w-full gap-0.5">
           <UI.P>
@@ -77,13 +78,26 @@ const CharacterWidget = (props: CharacterWidgetProps) => {
       </div>
 
       <div className="relative flex items-center justify-center overflow-hidden min-w-max h-full aspect-square ml-auto bg-neutral-900 border-neutral-500/10 border-1 border-solid rounded-xs">
-        <img
-          src={icon}
-          className="absolute min-w-[114%] h-[114%]"
-          draggable={false}
-        />
+        <CharacterImage url={icon} />
       </div>
     </div>
+  );
+};
+
+type CharacterImageProps = {
+  url: string;
+};
+
+const CharacterImage = (props: CharacterImageProps) => {
+  const [url, setUrl] = useState(props.url);
+
+  return (
+    <img
+      src={url}
+      className="absolute min-w-[114%] h-[114%]"
+      draggable={false}
+      onError={() => setUrl("/missing.png")}
+    />
   );
 };
 

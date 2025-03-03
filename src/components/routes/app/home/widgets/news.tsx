@@ -6,7 +6,7 @@ const NewsWidget = () => {
   const retrac = useRetrac();
 
   return (
-    <div className="flex flex-col p-2 gap-1 w-[60%] max-w-[60%] bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid overflow-hidden">
+    <div className="flex flex-col p-2 gap-1 w-[60%] @max-xl:w-full max-w-[60%] @max-xl:max-w-full bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid overflow-hidden">
       <UI.P>
         <span className="font-[500] font-geist">Updates & News</span>
       </UI.P>
@@ -36,7 +36,7 @@ const NewsItem = (props: LauncherNewsItem) => {
   const year = String(date.getFullYear()).slice(-2);
 
   return (
-    <p className="font-plex text-[14px] text-base leading-[14px] cursor-pointer hover:underline text-neutral-400 whitespace-nowrap overflow-ellipsis">
+    <p className="font-plex text-[14px] text-base leading-[14px] cursor-pointer hover:underline text-neutral-400 whitespace-nowrap overflow-ellipsis overflow-hidden">
       {isnew && (
         <span className="text-blue-300 text-[12px] whitespace-nowrap overflow-visible overflow-x-hidden overflow-ellipsis">
           NEW!{" "}

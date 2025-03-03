@@ -2,7 +2,7 @@ import UI from "src/components/core/default";
 
 const FortniteWidget = () => {
   return (
-    <div className="flex flex-col p-2 gap-0.5 w-[50%] min-w-80 bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid">
+    <div className="flex flex-col p-2 gap-0.5 w-[50%] @max-xl:w-full min-w-80 bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid">
       <UI.P className="text-neutral-400">
         <span className="font-[600] font-geist text-neutral-300">
           {" "}

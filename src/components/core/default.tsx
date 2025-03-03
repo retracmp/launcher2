@@ -30,7 +30,7 @@ namespace UI {
     return (
       <Box
         {...props}
-        className={`flex flex-row gap-1 p-1.5 ${props.className}`}
+        className={`flex flex-row gap-1 p-1.5 ${props.className} @max-xl:flex-col`}
       />
     );
   };
