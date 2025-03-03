@@ -43,6 +43,7 @@ const LoginPage = () => {
           to: "/app",
         });
         getCurrentWindow().requestUserAttention(UserAttentionType.Critical);
+        getCurrentWindow().setFocus();
       }
     }
   };

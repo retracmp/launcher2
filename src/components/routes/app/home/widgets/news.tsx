@@ -11,12 +11,14 @@ const NewsWidget = () => {
         <span className="font-[500] font-geist">Updates & News</span>
       </UI.P>
 
-      <div className="flex flex-col gap-[2px] ">
-        {retrac.launcher_news.slice(0, 3).map((item, index) => (
-          <NewsItem key={index} {...item} />
+      <div className="flex flex-col gap-[2px] overflow-hidden">
+        {retrac.launcher_news.slice(0, 4).map((item, index) => (
+          <div className="overflow-hidden whitespace-nowrap overflow-ellipsis">
+            <NewsItem key={index} {...item} />
+          </div>
         ))}
 
-        <p className="font-plex leading-[16px] min-w-max cursor-pointer hover:underline text-neutral-500 text-[12px]">
+        <p className="mt-auto font-plex leading-[14px] min-w-max cursor-pointer hover:underline text-neutral-500 text-[12px]">
           View All...
         </p>
       </div>
@@ -34,7 +36,7 @@ const NewsItem = (props: LauncherNewsItem) => {
   const year = String(date.getFullYear()).slice(-2);
 
   return (
-    <p className="font-plex text-[14px] text-base leading-[16px] cursor-pointer hover:underline text-neutral-400 whitespace-nowrap overflow-hidden overflow-ellipsis">
+    <p className="font-plex text-[14px] text-base leading-[14px] cursor-pointer hover:underline text-neutral-400 whitespace-nowrap overflow-ellipsis">
       {isnew && (
         <span className="text-blue-300 text-[12px] whitespace-nowrap overflow-visible overflow-x-hidden overflow-ellipsis">
           NEW!{" "}
