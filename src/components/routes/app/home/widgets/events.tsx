@@ -25,7 +25,7 @@ const EventsWidget = () => {
   }, [filtered]);
 
   return (
-    <div className="group flex flex-col gap-2 relative max-h-[14.1rem] w-[55%] aspect-[16/8.5] min-w-max bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid cursor-pointer overflow-hidden">
+    <div className="group flex flex-col gap-2 relative max-h-[14.1rem] w-[55%] aspect-[16/8.5] bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid cursor-pointer overflow-hidden">
       <EventDisplay event={filtered[selected]} />
     </div>
   );

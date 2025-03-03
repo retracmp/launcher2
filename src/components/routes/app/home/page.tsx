@@ -31,7 +31,9 @@ const HomePage = () => {
 
       <UI.RowBox>
         <EventsWidget />
-        <div className="flex flex-row p-2 gap-2 flex-1 min-w-max bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid"></div>
+        <div className="flex flex-col gap-2 flex-1 min-w-max">
+          <UI.Button colour="invisible">asd</UI.Button>
+        </div>
       </UI.RowBox>
     </>
   );

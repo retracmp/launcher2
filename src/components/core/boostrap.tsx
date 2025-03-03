@@ -69,7 +69,7 @@ const Boostrap = () => {
 
     const tokenBase64 = btoa(userManager._token);
     socket.connect(
-      `ws://${hostname}/launcher/ws?token=${tokenBase64}`,
+      `wss://${hostname}/launcher/ws?token=${tokenBase64}`,
       application.version,
       userManager._token
     );
