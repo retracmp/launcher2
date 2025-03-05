@@ -94,7 +94,7 @@ namespace UI {
       "bg-fuchsia-500/20 border-fuchsia-500/20 border-1 border-solid min-w-max p-0.5 rounded-xs cursor-pointer text-fuchsia-300 font-plex text-[14px] text-base hover:bg-fuchsia-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-fuchsia-500/20 cursor-not-allowed",
     ],
     invisible: [
-      "bg-transparent border-neutral-500/20 border-1 border-solid min-w-max p-0.5 rounded-xs cursor-pointer text-neutral-300 font-plex text-[14px] text-base hover:bg-neutral-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-neutral-500/20 cursor-not-allowed",
+      "bg-transparent border-neutral-500/20 border-1 border-solid min-w-max p-0.5 rounded-xs cursor-pointer text-neutral-300 font-plex text-[14px] text-base hover:bg-neutral-500/10 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-neutral-500/20 cursor-not-allowed",
     ],
   };
 

@@ -26,14 +26,17 @@ const HomePage = () => {
 
       <UI.RowBox>
         <FortniteWidget />
-        <NewsWidget />
       </UI.RowBox>
 
       <UI.RowBox>
         <EventsWidget />
-        <div className="flex flex-col gap-2 flex-1 min-w-max">
+        {/* <div className="flex flex-col gap-2 flex-1 min-w-max">
           <UI.Button colour="invisible">asd</UI.Button>
-        </div>
+        </div> */}
+      </UI.RowBox>
+
+      <UI.RowBox>
+        <NewsWidget />
       </UI.RowBox>
     </>
   );

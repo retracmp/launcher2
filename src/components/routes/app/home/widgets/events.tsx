@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useRetrac } from "src/wrapper/retrac";
+import { formatTime } from "src/helpers/time";
 
 import { IoTimeSharp } from "react-icons/io5";
 import UI from "src/components/core/default";
-import { formatTime } from "src/helpers/time";
 
 const EventsWidget = () => {
   const [selected, setSelected] = useState(0);
@@ -25,9 +25,13 @@ const EventsWidget = () => {
   }, [filtered]);
 
   return (
-    <div className="group flex flex-col gap-2 relative max-h-[14.1rem] w-[55%] @max-xl:w-full aspect-[16/8.5] bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid cursor-pointer overflow-hidden">
-      <EventDisplay event={filtered[selected]} />
-    </div>
+    <>
+      <div className="group flex flex-col gap-2 relative max-h-[14.1rem] w-[55%] @max-xl:w-full aspect-[16/8.5] bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid cursor-pointer overflow-hidden">
+        <EventDisplay event={filtered[selected]} />
+      </div>
+
+      <ScoringRules event={filtered[selected]} />
+    </>
   );
 };
 
@@ -126,6 +130,79 @@ const StartsInTag = (props: StartsInTagProps) => {
       <IoTimeSharp className="text-neutral-100" />
       STARTS IN {formatTime(diff, 0, false).toUpperCase()}
     </UI.P>
+  );
+};
+
+type ScoringRulesProps = {
+  event: LauncherEventItem;
+};
+
+const ScoringRules = (props: ScoringRulesProps) => {
+  return (
+    <div className="flex flex-col gap-2 flex-1 p-1">
+      {/* p-2 bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid">
+      {/* <div className="flex flex-col gap-[1px]"> */}
+      {/* <UI.P className="font-geist font-[600] text-neutral-400">
+          Scoring Rules
+        </UI.P> */}
+
+      {/* <UI.P className="text-neutral-500">
+          You will earn points based on the following scoring rules.
+        </UI.P> */}
+      {/* </div> */}
+
+      <div className="flex flex-col gap-2 flex-1">
+        {/* put TEAM_ELIMS_STAT_INDEX first */}
+        {props.event.event.Templates[0].ScoringRules.sort((a, b) => {
+          if (a.Stat === "TEAM_ELIMS_STAT_INDEX") return -1;
+          if (b.Stat === "TEAM_ELIMS_STAT_INDEX") return 1;
+          return 0;
+        }).map((rule) => (
+          <ScoringRule rule={rule} key={rule.Stat} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+type ScoringRuleProps = {
+  rule: LauncherEventItem["event"]["Templates"][0]["ScoringRules"][0];
+};
+
+const ScoringRule = (props: ScoringRuleProps) => {
+  return (
+    <div className="relative flex flex-row flex-wrap flex-1 gap-0.5 p-1.5 border-[#2e2e2e] border-1 border-solid pt-2.5">
+      <UI.P
+        className="text-neutral-500 bg-[#191919] absolute top-[-0.5rem] left-1 p-[0.1rem] pb-0"
+        style={{
+          fontSize: "12px",
+        }}
+      >
+        {props.rule.Stat}
+      </UI.P>
+
+      {props.rule.Tiers.map((tier) => (
+        <UI.P
+          className="text-neutral-400 p-0.5 border-[#2e2e2e]/20 border-1 border-solid"
+          style={{
+            fontSize: "12px",
+            width: "calc(50% - 2px)",
+          }}
+          key={tier.Value}
+        >
+          {props.rule.Stat === "TEAM_ELIMS_STAT_INDEX" ? (
+            <span className="text-neutral-400">Each Elimination</span>
+          ) : (
+            <span className="text-neutral-400">Reach Top {tier.Value}</span>
+          )}
+
+          <span className="text-neutral-300 font-geist font-[600]">
+            {" +"}
+            {tier.Points} Points
+          </span>
+        </UI.P>
+      ))}
+    </div>
   );
 };
 
