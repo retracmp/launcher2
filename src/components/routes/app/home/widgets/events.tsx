@@ -5,7 +5,11 @@ import { formatTime } from "src/helpers/time";
 import { IoTimeSharp } from "react-icons/io5";
 import UI from "src/components/core/default";
 
-const EventsWidget = () => {
+type EventsWidgetProps = {
+  withScoringRules?: boolean;
+};
+
+const EventsWidget = (props: EventsWidgetProps) => {
   const [selected, setSelected] = useState(0);
 
   const news = useRetrac((s) => s.events);
@@ -26,11 +30,11 @@ const EventsWidget = () => {
 
   return (
     <>
-      <div className="group flex flex-col gap-2 relative max-h-[14.1rem] w-[55%] @max-xl:w-full aspect-[16/8.5] bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid cursor-pointer overflow-hidden">
+      <div className="group flex flex-col gap-2 relative max-h-50 w-[60%] @max-xl:w-full aspect-[16/8.5] bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid cursor-pointer overflow-hidden">
         <EventDisplay event={filtered[selected]} />
       </div>
 
-      <ScoringRules event={filtered[selected]} />
+      {props.withScoringRules && <ScoringRules event={filtered[selected]} />}
     </>
   );
 };
@@ -73,6 +77,10 @@ const EventDisplay = (props: EventDisplayProps) => {
         className="absolute w-full h-full object-center object-cover opacity-80 group-hover:opacity-75 top-0 left-0"
         src={props.event.style.playlist_tile_image}
         draggable={false}
+        style={{
+          maskImage:
+            "linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0.25))",
+        }}
       />
 
       <div className="absolute z-10 top-2 left-2 flex flex-row gap-1">
@@ -82,13 +90,13 @@ const EventDisplay = (props: EventDisplayProps) => {
           />
         )}
         {currentWindowIndex !== -1 && (
-          <UI.P className="bg-red-600/20 uppercase p-0.5 px-1 font-geist font-[700] text-[12px] text-neutral-100 backdrop-blur-xs">
+          <UI.P className="bg-red-600/20 uppercase p-0.5 px-1 font-geist font-[700] text-[12px] text-neutral-400 backdrop-blur-xs">
             LIVE NOW
           </UI.P>
         )}
         {props.event.style.schedule_info !== "" && (
           <UI.P
-            className="uppercase p-0.5 px-1 font-geist font-[700] text-[12px] text-neutral-100 backdrop-blur-xs"
+            className="uppercase p-0.5 px-1 font-geist font-[700] text-[12px] text-neutral-400 backdrop-blur-xs"
             style={{
               backgroundColor: `#${props.event.style.secondary_color}40`,
             }}
@@ -102,14 +110,14 @@ const EventDisplay = (props: EventDisplayProps) => {
         <UI.P className="text-[16px] font-geist font-[700]">
           {props.event.style.short_format_title}
         </UI.P>
-        <UI.P className="text-neutral-300">
+        <UI.P className="text-neutral-400">
           {props.event.style.details_description}
         </UI.P>
       </div>
 
       <div
         key={props.event.event.ID}
-        className="absolute w-full h-0.5 bg-white z-10 animate-move opacity-50"
+        className="absolute w-full h-0.5 bg-white/20 z-10 animate-move opacity-50"
       ></div>
     </>
   );
@@ -127,7 +135,7 @@ const StartsInTag = (props: StartsInTagProps) => {
 
   return (
     <UI.P className="flex flex-row gap-0.5 bg-neutral-800/30 uppercase p-0.5 px-1 font-geist font-[700] text-[12px] text-neutral-100 backdrop-blur-xs">
-      <IoTimeSharp className="text-neutral-100" />
+      <IoTimeSharp className="text-neutral-400" />
       STARTS IN {formatTime(diff, 0, false).toUpperCase()}
     </UI.P>
   );
@@ -152,7 +160,6 @@ const ScoringRules = (props: ScoringRulesProps) => {
       {/* </div> */}
 
       <div className="flex flex-col gap-2 flex-1">
-        {/* put TEAM_ELIMS_STAT_INDEX first */}
         {props.event.event.Templates[0].ScoringRules.sort((a, b) => {
           if (a.Stat === "TEAM_ELIMS_STAT_INDEX") return -1;
           if (b.Stat === "TEAM_ELIMS_STAT_INDEX") return 1;
@@ -183,7 +190,7 @@ const ScoringRule = (props: ScoringRuleProps) => {
 
       {props.rule.Tiers.map((tier) => (
         <UI.P
-          className="text-neutral-400 p-0.5 border-[#2e2e2e]/20 border-1 border-solid"
+          className="text-neutral-400"
           style={{
             fontSize: "12px",
             width: "calc(50% - 2px)",

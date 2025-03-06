@@ -25,6 +25,7 @@ body {
   -ms-user-select: none;
   -webkit-user-drag: none;
   outline: none;
+  overflow: hidden;
 }
 
 * {

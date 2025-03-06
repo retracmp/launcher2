@@ -2,7 +2,7 @@ import UI from "src/components/core/default";
 
 const FortniteWidget = () => {
   return (
-    <div className="relative flex flex-col p-2 gap-0.5 w-[65%] max-w-120 @max-xl:w-full min-w-80 aspect-[5/2] bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid">
+    <div className="relative flex flex-col p-2 gap-0.5 min-w-[45%] w-[52%] max-w-120 @max-xl:w-full @max-xl:max-w-full aspect-[5/2] bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid">
       <UI.P className="text-neutral-400 z-10">
         <span className="font-[600] font-geist text-neutral-300">
           {" "}
@@ -17,17 +17,17 @@ const FortniteWidget = () => {
         December 1st 2020.
       </UI.P>
 
-      {/* <UI.Button colour="blue" className="p-1.5 mt-auto">
+      <UI.Button colour="blue" className="p-1.5 mt-auto z-10 backdrop-blur-2xl">
         <UI.P className="text-neutral-300">
           <span className="font-[500]">Download</span>
         </UI.P>
-      </UI.Button> */}
+      </UI.Button>
 
-      <UI.Button colour="green" className="p-1.5 mt-auto z-10">
+      {/* <UI.Button colour="green" className="p-1.5 mt-auto z-10 backdrop-blur-2xl">
         <UI.P className="text-neutral-300">
           <span className="font-[500]">Launch</span>
         </UI.P>
-      </UI.Button>
+      </UI.Button> */}
 
       <img
         src="https://d1lss44hh2trtw.cloudfront.net/assets/article/2020/08/27/fortnite-chapter-2-season-4-marvel_feature.jpg"
@@ -41,7 +41,7 @@ const FortniteWidget = () => {
 
       {/* <UI.Button
         colour="neutral"
-        className="p-1.5 mt-auto bg-neutral-800"
+        className="p-1.5 mt-auto bg-neutral-800 backdrop-blur-2xl z-10"
         disabled
         style={{
           cursor: "not-allowed",
