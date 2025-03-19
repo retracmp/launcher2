@@ -56,9 +56,10 @@ const Friend = (props: FriendProps) => {
       <img
         src={props.friend.discordAvatarUrl}
         alt="Friend Avatar"
-        className="w-full h-full object-cover object-center"
+        className="w-full h-full object-cover object-center pointer-events-none"
         style={{ display: imageRendered ? "block" : "none" }}
         onLoad={() => setImageRendered(true)}
+        draggable={false}
       />
 
       <IoPersonSharp className="text-[#2f2f2f] text-2xl" />

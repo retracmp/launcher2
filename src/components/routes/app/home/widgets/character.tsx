@@ -66,11 +66,12 @@ const CharacterWidget = (props: CharacterWidgetProps) => {
             <UI.P>{seasonStat.LevelClaimed.toLocaleString()}</UI.P>
           </div>
           <div className="flex flex-row w-full items-center gap-2">
-            <UI.P className="text-neutral-500">Arena Hype</UI.P>
+            <UI.P className="text-neutral-500">Overall Hype</UI.P>
             <div className="w-full min-w-8 h-[1px] bg-neutral-600/20"></div>
             <UI.P>
               {(
-                seasonStat.PersistentScores["NormalHype"] || 0
+                (seasonStat.PersistentScores["NormalHype"] || 0) +
+                (seasonStat.PersistentScores["LategameHype"] || 0)
               ).toLocaleString()}
             </UI.P>
           </div>

@@ -76,3 +76,7 @@ body {
     width: 100%;
   }
 }
+
+.no-scroll::-webkit-scrollbar {
+  display: none;
+}

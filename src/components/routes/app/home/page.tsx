@@ -4,8 +4,8 @@ import UI from "src/components/core/default";
 import CharacterWidget from "src/components/routes/app/home/widgets/character";
 import StatisticsWidget from "src/components/routes/app/home/widgets/statistics";
 import FortniteWidget from "src/components/routes/app/home/widgets/fortnite";
-import NewsWidget from "src/components/routes/app/home/widgets/news";
-import EventsWidget from "src/components/routes/app/home/widgets/events";
+// import NewsWidget from "src/components/routes/app/home/widgets/news";
+// import EventsWidget from "src/components/routes/app/home/widgets/events";
 import LootLabsWidget from "src/components/routes/app/home/widgets/lootlabs";
 // import RecentMatchesWidget from "src/components/routes/app/home/widgets/matches";
 
@@ -31,10 +31,10 @@ const HomePage = () => {
         <LootLabsWidget />
       </UI.RowBox>
 
-      <UI.RowBox>
+      {/* <UI.RowBox>
         <EventsWidget />
         <NewsWidget />
-      </UI.RowBox>
+      </UI.RowBox> */}
     </>
   );
 };

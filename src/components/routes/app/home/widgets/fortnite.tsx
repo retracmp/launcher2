@@ -39,6 +39,14 @@ const FortniteWidget = () => {
         }}
       />
 
+      <div
+        className="absolute top-0 left-0 w-full h-full bg-center bg-cover overflow-hidden"
+        style={{
+          backgroundImage:
+            "radial-gradient(100% 60% at 0% 100%, #0f9bfb10 0%, #00000000 100%)",
+        }}
+      ></div>
+
       {/* <UI.Button
         colour="neutral"
         className="p-1.5 mt-auto bg-neutral-800 backdrop-blur-2xl z-10"
