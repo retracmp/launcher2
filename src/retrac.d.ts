@@ -72,6 +72,15 @@ type User = {
       Packages: string[];
       ClaimedPackages: Record<string, string>;
     };
+    Relationships: Record<
+      string,
+      {
+        ID: string;
+        Account: string;
+        Friend: string;
+        Status: "PENDING" | "ACCEPTED";
+      }
+    >;
   };
   Profiles: {
     athena: Profile;
@@ -178,4 +187,11 @@ type EventStyle = {
 type LauncherEventItem = {
   event: EventItem;
   style: EventStyle;
+};
+
+type FriendInformation = {
+  accountId: string;
+  displayName: string;
+  discordAvatarUrl: string;
+  currentEquippedCharacter: string;
 };

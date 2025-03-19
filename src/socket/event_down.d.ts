@@ -35,13 +35,19 @@ type SocketDownEvent_User = SocketBasicDownEvent & {
   user: User;
 };
 
+type SocketDownEvent_FriendInfos = SocketBasicUpEvent & {
+  id: "friend_infos";
+  friendInformation: FriendInformation[];
+};
+
 type SocketDownEvent =
   | SocketDownEvent_Close
   | SocketDownEvent_Error
   | SocketDownEvent_Welcome
   | SocketDownEvent_RequestHeartbeat
   | SocketDownEvent_PlayerCount
-  | SocketDownEvent_User;
+  | SocketDownEvent_User
+  | SocketDownEvent_FriendInfos;
 
 type SocketDownEventType = SocketDownEvent["id"];
 type SocketDownEventDataFromType<T extends SocketDownEventType> = Extract<
