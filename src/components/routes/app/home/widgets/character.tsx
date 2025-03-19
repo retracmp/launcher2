@@ -89,15 +89,34 @@ type CharacterImageProps = {
 };
 
 const CharacterImage = (props: CharacterImageProps) => {
-  const [url, setUrl] = useState(props.url);
+  const [showFake, setShowFake] = useState(true);
 
   return (
-    <img
-      src={url}
-      className="absolute min-w-[114%] h-[114%]"
-      draggable={false}
-      onError={() => setUrl("/missing.png")}
-    />
+    <>
+      {showFake && (
+        <img
+          src="/missing.png"
+          className="absolute min-w-[114%] h-[114%]"
+          draggable={false}
+        />
+      )}
+
+      <img
+        src={props.url}
+        className="absolute min-w-[114%] h-[114%] opacity-0"
+        draggable={false}
+        onLoad={() => setShowFake(false)}
+      />
+
+      {!showFake && (
+        <img
+          src={props.url}
+          className="absolute min-w-[114%] h-[114%]"
+          draggable={false}
+          onError={() => setShowFake(true)}
+        />
+      )}
+    </>
   );
 };
 

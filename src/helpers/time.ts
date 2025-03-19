@@ -33,7 +33,7 @@ const formatTime = (
   if (result.length > maxLength) return result.join(", ");
 
   if (result.length === 0)
-    result.push(`0${short ? "s" : ` second${seconds > 1 ? "s" : ""}`}`);
+    result.push(`0${short ? "s" : ` second${seconds === 1 ? "" : "s"}`}`);
   return result.join(", ");
 };
 

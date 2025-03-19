@@ -30,7 +30,7 @@ const EventsWidget = (props: EventsWidgetProps) => {
 
   return (
     <>
-      <div className="group flex flex-col gap-2 relative max-h-50 w-[60%] @max-xl:w-full aspect-[16/8.5] bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid cursor-pointer overflow-hidden">
+      <div className="group flex flex-col gap-2 relative max-h-50 w-[60%] min-w-[50%] @max-xl:w-full aspect-[16/8.5] bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid cursor-pointer overflow-hidden">
         <EventDisplay event={filtered[selected]} />
       </div>
 

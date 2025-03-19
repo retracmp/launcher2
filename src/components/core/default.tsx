@@ -68,8 +68,8 @@ namespace UI {
   ) => {
     return (
       <h1
-        className="text-neutral-300 font-plex text-[20px] text-base leading-[20px] font-[600] font-geist"
         {...props}
+        className={`text-neutral-300 font-plex text-[20px] text-base leading-[20px] font-[600] font-geist ${props.className}`}
       />
     );
   };
