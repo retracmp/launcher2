@@ -14,7 +14,6 @@ const FriendsList = () => {
   ) => {
     friends.populateFriends(data.friendInformation);
   };
-
   useEffect(() => {
     if (socket._socket === null) return;
     if (user._user === null) return;
@@ -23,7 +22,7 @@ const FriendsList = () => {
 
     socket.send({
       id: "request_friend_info",
-      friendIds: Object.values(user._user.Account.Relationships)
+      friendIds: Object.values(user._user.Account.Friendships)
         .filter((f) => f.Status == "ACCEPTED")
         .map((f) => (f.Account === user._user?.ID ? f.Friend : f.Account)),
     } as Omit<SocketUpEventDataFromType<"request_friend_info">, "version">);

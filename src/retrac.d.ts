@@ -72,7 +72,7 @@ type User = {
       Packages: string[];
       ClaimedPackages: Record<string, string>;
     };
-    Relationships: Record<
+    Friendships: Record<
       string,
       {
         ID: string;
