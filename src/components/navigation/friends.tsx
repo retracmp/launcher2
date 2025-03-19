@@ -37,8 +37,8 @@ const FriendsList = () => {
 
   return (
     <div className="no-scroll flex flex-col p-2 gap-2 h-full w-[58px] bg-[#191919] border-l-[#2e2e2e] border-l-1 border-solid overflow-y-auto overflow-x-hidden">
-      {friends._friendInformation.map((friend) => (
-        <Friend key={friend.accountId} friend={friend} />
+      {Array.from(friends._set).map((friend) => (
+        <Friend key={friend[1].accountId} friend={friend[1]} />
       ))}
     </div>
   );
