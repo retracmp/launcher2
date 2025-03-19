@@ -24,7 +24,8 @@ const FriendsList = () => {
       id: "request_friend_info",
       friendIds: Object.values(user._user.Account.Friendships)
         .filter((f) => f.Status == "ACCEPTED")
-        .map((f) => (f.Account === user._user?.ID ? f.Friend : f.Account)),
+        .map((f) => (f.Account === user._user?.ID ? f.Friend : f.Account))
+        .filter((f) => !friends._set.has(f)),
     } as Omit<SocketUpEventDataFromType<"request_friend_info">, "version">);
 
     return () => {
