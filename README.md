@@ -4,7 +4,7 @@
 
 `homepage so far`
 
-![image](https://github.com/user-attachments/assets/443654d8-6cc8-4e6c-b979-7291d17cd095)
+![image](https://github.com/user-attachments/assets/74948fc4-861c-43c9-8f93-1c746e787d80)
 
 `nice error messages so users can report easily`
 
