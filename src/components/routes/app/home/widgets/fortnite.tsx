@@ -1,5 +1,11 @@
 import UI from "src/components/core/default";
 
+const IMAGES = [
+  "https://d1lss44hh2trtw.cloudfront.net/assets/article/2020/08/26/fortnite-chapter-2-season-4-trailer-shows-marvel-heroes-teaming-up-against-galactus_feature.jpg",
+  "https://d1lss44hh2trtw.cloudfront.net/assets/article/2020/08/27/fortnite-chapter-2-season-4-marvel_feature.jpg",
+  "https://fortniteinsider.com/wp-content/uploads/2020/08/Fortnite-Chapter-2-Season-4-Battle-Pass-Skins.jpg",
+];
+
 const FortniteWidget = () => {
   return (
     <div className="relative flex flex-col p-2 gap-0.5 min-w-[45%] w-[100%] aspect-[5/2] bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid">
@@ -30,12 +36,12 @@ const FortniteWidget = () => {
       </UI.Button> */}
 
       <img
-        src="https://d1lss44hh2trtw.cloudfront.net/assets/article/2020/08/27/fortnite-chapter-2-season-4-marvel_feature.jpg"
+        src={IMAGES[Math.floor(Math.random() * IMAGES.length)]}
         className="absolute top-0 left-0 w-full h-full object-cover object-center"
         draggable={false}
         style={{
           maskImage:
-            "linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0))",
+            "linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0.05))",
         }}
       />
 
