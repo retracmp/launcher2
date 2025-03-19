@@ -1,7 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSocket } from "src/socket";
 import { useFriends } from "src/wrapper/friends";
 import { useUserManager } from "src/wrapper/user";
+
+import { IoPersonSharp } from "react-icons/io5";
 
 const FriendsList = () => {
   const socket = useSocket();
@@ -34,7 +36,7 @@ const FriendsList = () => {
   }, [socket._socket, user._user]);
 
   return (
-    <div className="flex flex-col p-2 gap-2 h-full w-[58px] bg-[#191919] border-l-[#2e2e2e] border-l-1 border-solid">
+    <div className="no-scroll flex flex-col p-2 gap-2 h-full w-[58px] bg-[#191919] border-l-[#2e2e2e] border-l-1 border-solid overflow-y-auto overflow-x-hidden">
       {friends._friendInformation.map((friend) => (
         <Friend key={friend.accountId} friend={friend} />
       ))}
@@ -47,13 +49,19 @@ type FriendProps = {
 };
 
 const Friend = (props: FriendProps) => {
+  const [imageRendered, setImageRendered] = useState(false);
+
   return (
-    <div className="flex aspect-square w-full bg-neutral-800/30 rounded-xs border-[#292929] border-1 border-solid overflow-hidden">
+    <div className="flex items-center justify-center aspect-square w-full bg-neutral-800/30 rounded-xs border-[#292929] border-1 border-solid overflow-hidden min-h-[40px] min-w-[40px]">
       <img
         src={props.friend.discordAvatarUrl}
         alt="Friend Avatar"
         className="w-full h-full object-cover object-center"
+        style={{ display: imageRendered ? "block" : "none" }}
+        onLoad={() => setImageRendered(true)}
       />
+
+      <IoPersonSharp className="text-[#2f2f2f] text-2xl" />
     </div>
   );
 };
