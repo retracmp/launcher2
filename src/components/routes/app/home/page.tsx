@@ -8,7 +8,6 @@ import FortniteWidget from "src/components/routes/app/home/widgets/fortnite";
 // import EventsWidget from "src/components/routes/app/home/widgets/events";
 import LootLabsWidget from "src/components/routes/app/home/widgets/lootlabs";
 // import RecentMatchesWidget from "src/components/routes/app/home/widgets/matches";
-import DonateWidget from "src/components/routes/app/home/widgets/donate";
 
 const HomePage = () => {
   const userManager = useUserManager();
@@ -32,9 +31,10 @@ const HomePage = () => {
         <LootLabsWidget />
       </UI.RowBox>
 
-      <div className="flex flex-1 p-1.5">
-        <DonateWidget />
-      </div>
+      {/* <UI.RowBox>
+        <EventsWidget />
+        <NewsWidget />
+      </UI.RowBox> */}
     </>
   );
 };
