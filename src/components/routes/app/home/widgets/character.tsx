@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { useRetrac } from "src/wrapper/retrac";
 
 import UI from "src/components/core/default";
-import { useState } from "react";
+import { useUserManager } from "src/wrapper/user";
 
 type CharacterWidgetProps = {
   user: User;
@@ -9,6 +10,8 @@ type CharacterWidgetProps = {
 };
 
 const CharacterWidget = (props: CharacterWidgetProps) => {
+  const donationTier = useUserManager((s) => s.user_best_donation_tier)();
+
   const online = useRetrac((s) => s.players_online);
 
   const loadout = props.user.Profiles.athena.Loadouts.find(
@@ -36,7 +39,10 @@ const CharacterWidget = (props: CharacterWidgetProps) => {
         <div className="flex flex-col w-full gap-0.5">
           <UI.P>
             Welcome back,
-            <span className="font-bold font-geist">
+            <span
+              className="font-bold font-geist"
+              style={donationTier != null ? { color: donationTier.colour } : {}}
+            >
               {" " + props.user.Account.DisplayName}
             </span>
             .

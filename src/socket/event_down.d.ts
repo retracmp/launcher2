@@ -59,9 +59,10 @@ type SocketDownEventFn<T extends SocketDownEventType> = (
 ) => void;
 
 //
-
+type close_test = SocketDownEventDataFromType<"close">;
 type error_test = SocketDownEventDataFromType<"error">;
 type welcome_test = SocketDownEventDataFromType<"welcome">;
 type heartbeat_test = SocketDownEventDataFromType<"request_heartbeat">;
 type player_count_test = SocketDownEventDataFromType<"player_count">;
 type user_test = SocketDownEventDataFromType<"user">;
+type friend_infos_test = SocketDownEventDataFromType<"friend_infos">;

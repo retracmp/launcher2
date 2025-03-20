@@ -1,6 +1,54 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
+export const DONATION_TIERS = {
+  booster: {
+    colour: "#f47fff",
+    text: "Server Booster",
+    tier: 1,
+  },
+  pubg: {
+    colour: "#4e42ff",
+    text: "PUBG",
+    tier: 2,
+  },
+  fever: {
+    colour: "#f14949",
+    text: "Fever",
+    tier: 3,
+  },
+  carti: {
+    colour: "#ffffff",
+    text: "Carti",
+    tier: 4,
+  },
+  fncs: {
+    colour: "#f1d214",
+    text: "FNCS",
+    tier: 5,
+  },
+  gamer: {
+    colour: "#c3ff00",
+    text: "Gamer",
+    tier: 6,
+  },
+  llama: {
+    colour: "#00ffec",
+    text: "OG",
+    tier: 7,
+  },
+  crystal: {
+    colour: "#b135ff",
+    text: "Crystal",
+    tier: 8,
+  },
+  ultimate: {
+    colour: "#ff7300",
+    text: "Ultimate",
+    tier: 9,
+  },
+};
+
 export enum LauncherStage {
   NoToken,
   TestingToken,
@@ -10,6 +58,10 @@ export enum LauncherStage {
 type UserManager = {
   _token: string | null;
   _user: User | null;
+
+  user_best_donation_tier: () =>
+    | (typeof DONATION_TIERS)[keyof typeof DONATION_TIERS]
+    | null;
 
   _stage: LauncherStage;
   set_stage: (stage: LauncherStage) => void;
@@ -30,6 +82,33 @@ export const useUserManager = create<UserManager>()(
     (set, get) => ({
       _token: null,
       _user: null,
+
+      user_best_donation_tier: () => {
+        const user = get()._user;
+        if (user === null) return null;
+
+        const donationPackages = user.Account.State.Packages;
+        const highestDonationPackage = donationPackages.reduce(
+          (prev: string, current: string) => {
+            if (!DONATION_TIERS[current as keyof typeof DONATION_TIERS])
+              return prev;
+            return DONATION_TIERS[current as keyof typeof DONATION_TIERS].tier >
+              (
+                DONATION_TIERS[prev as keyof typeof DONATION_TIERS] || {
+                  tier: 0,
+                }
+              ).tier
+              ? current
+              : prev;
+          },
+          ""
+        );
+        if (!highestDonationPackage) return null;
+
+        const donationTier =
+          DONATION_TIERS[highestDonationPackage as keyof typeof DONATION_TIERS];
+        return donationTier;
+      },
 
       _stage: LauncherStage.NoToken,
       set_stage: (stage) => {

@@ -1,7 +1,6 @@
 import UI from "src/components/core/default";
 
 const IMAGES = [
-  "https://d1lss44hh2trtw.cloudfront.net/assets/article/2020/08/26/fortnite-chapter-2-season-4-trailer-shows-marvel-heroes-teaming-up-against-galactus_feature.jpg",
   "https://d1lss44hh2trtw.cloudfront.net/assets/article/2020/08/27/fortnite-chapter-2-season-4-marvel_feature.jpg",
   "https://fortniteinsider.com/wp-content/uploads/2020/08/Fortnite-Chapter-2-Season-4-Battle-Pass-Skins.jpg",
 ];
