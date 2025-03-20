@@ -7,7 +7,7 @@ import FortniteWidget from "src/components/routes/app/home/widgets/fortnite";
 // import NewsWidget from "src/components/routes/app/home/widgets/news";
 // import EventsWidget from "src/components/routes/app/home/widgets/events";
 import LootLabsWidget from "src/components/routes/app/home/widgets/lootlabs";
-// import RecentMatchesWidget from "src/components/routes/app/home/widgets/matches";
+import RecentMatchesWidget from "src/components/routes/app/home/widgets/matches";
 
 const HomePage = () => {
   const userManager = useUserManager();
@@ -31,10 +31,9 @@ const HomePage = () => {
         <LootLabsWidget />
       </UI.RowBox>
 
-      {/* <UI.RowBox>
-        <EventsWidget />
-        <NewsWidget />
-      </UI.RowBox> */}
+      <UI.ColBox>
+        <RecentMatchesWidget />
+      </UI.ColBox>
     </>
   );
 };
