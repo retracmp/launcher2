@@ -1,5 +1,6 @@
 import { MutableRefObject, useEffect, useRef } from "react";
 import { DONATION_TIERS, useUserManager } from "src/wrapper/user";
+import { openUrl } from "@tauri-apps/plugin-opener";
 
 import UI from "src/components/core/default";
 
@@ -27,9 +28,6 @@ const DonatedMessage = (type: DonatedMessageProps) => {
       }}
     >
       <UI.P className="text-neutral-300">
-        {/* Thank you for being a donator! Your {type.entry.text.toLowerCase()}{" "}
-        package has funded servers for thousands of users! Make sure to check
-        out all of the perks you have access to! */}
         {type.entry.text} Perks are activated and are available for you to use!
       </UI.P>
     </div>
@@ -70,6 +68,7 @@ const NotDonatedMessage = () => {
         borderColor: "#43e97b30",
       }}
       ref={widgetReference}
+      onClick={() => openUrl("https://shop.retrac.site")}
     >
       <UI.P className="text-neutral-300">
         Considered Donating?{" "}
