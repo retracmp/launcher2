@@ -17,16 +17,17 @@ type DonatedMessageProps = {
 const DonatedMessage = (type: DonatedMessageProps) => {
   return (
     <div
-      className="flex flex-row gap-1 w-full h-min p-2 bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid"
+      className="flex flex-row gap-1 w-full min-h-min h-full p-2 bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid text-center items-center justify-center"
       style={{
         backgroundColor: `${type.entry.colour}10`,
         borderColor: `${type.entry.colour}20`,
       }}
     >
       <UI.P className="text-neutral-300">
-        Thank you for being a donator! Your {type.entry.text.toLowerCase()}{" "}
+        {/* Thank you for being a donator! Your {type.entry.text.toLowerCase()}{" "}
         package has funded servers for thousands of users! Make sure to check
-        out all of the perks you have access to!
+        out all of the perks you have access to! */}
+        asd
       </UI.P>
     </div>
   );

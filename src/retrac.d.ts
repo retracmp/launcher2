@@ -35,7 +35,7 @@ type StatMatch = {
   Eliminations: number;
   Placement: number;
   TeamType: "solo" | "duo" | "trio" | "squad";
-  TimeAlive: string;
+  TimeAlive: int;
   CreatedAt: string;
   DeathLocation: {
     X: number;

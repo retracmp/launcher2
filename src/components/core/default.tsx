@@ -4,6 +4,7 @@ namespace UI {
   export const Box = (
     props: { children: React.ReactNode } & React.HTMLAttributes<HTMLDivElement>
   ) => {
+    if (props.children === null) return null;
     return (
       <div
         className={`border-b-[#2e2e2e] border-b-1 border-solid ${props.className}`}
@@ -16,6 +17,7 @@ namespace UI {
   export const ColBox = (
     props: { children: React.ReactNode } & React.HTMLAttributes<HTMLDivElement>
   ) => {
+    if (props.children === null) return null;
     return (
       <Box
         {...props}
@@ -27,6 +29,7 @@ namespace UI {
   export const RowBox = (
     props: { children: React.ReactNode } & React.HTMLAttributes<HTMLDivElement>
   ) => {
+    if (props.children === null) return null;
     return (
       <Box
         {...props}
@@ -76,25 +79,25 @@ namespace UI {
 
   export const BUTTON_COLOURS = {
     neutral: [
-      "bg-neutral-500/20 border-neutral-500/20 border-1 border-solid min-w-max p-0.5 rounded-xs cursor-pointer text-neutral-300 font-plex text-[14px] text-base hover:bg-neutral-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-neutral-500/1s0 cursor-not-allowed",
+      "bg-neutral-500/20 border-neutral-500/20 border-1 border-solid min-w-max p-0.5 rounded-xs cursor-pointer text-neutral-300 font-plex text-[14px] text-base hover:bg-neutral-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-neutral-500/1s0 disabled:cursor-not-allowed",
     ],
     red: [
-      "bg-red-500/20 border-red-500/20 border-1 border-solid min-w-max p-0.5 rounded-xs cursor-pointer text-red-300 font-plex text-[14px] text-base hover:bg-red-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-red-500/20 cursor-not-allowed",
+      "bg-red-500/20 border-red-500/20 border-1 border-solid min-w-max p-0.5 rounded-xs cursor-pointer text-red-300 font-plex text-[14px] text-base hover:bg-red-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-red-500/20 disabled:cursor-not-allowed",
     ],
     green: [
-      "bg-green-500/20 border-green-500/20 border-1 border-solid min-w-max p-0.5 rounded-xs cursor-pointer text-green-400 font-plex text-[14px] text-base hover:bg-green-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-green-500/20 cursor-not-allowed",
+      "bg-green-500/20 border-green-500/20 border-1 border-solid min-w-max p-0.5 rounded-xs cursor-pointer text-green-400 font-plex text-[14px] text-base hover:bg-green-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-green-500/20 disabled:cursor-not-allowed",
     ],
     blue: [
-      "bg-blue-500/20 border-blue-500/20 border-1 border-solid min-w-max p-0.5 rounded-xs cursor-pointer text-blue-300 font-plex text-[14px] text-base hover:bg-blue-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-blue-500/20 cursor-not-allowed",
+      "bg-blue-500/20 border-blue-500/20 border-1 border-solid min-w-max p-0.5 rounded-xs cursor-pointer text-blue-300 font-plex text-[14px] text-base hover:bg-blue-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-blue-500/20 disabled:cursor-not-allowed",
     ],
     discord: [
-      "bg-[#5865f2]/20 border-[#5865f2]/20 border-1 border-solid min-w-max p-0.5 rounded-xs cursor-pointer text-neutral-300 font-plex text-[14px] text-base hover:bg-[#5865f2]/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-[#5865f2]/20 cursor-not-allowed",
+      "bg-[#5865f2]/20 border-[#5865f2]/20 border-1 border-solid min-w-max p-0.5 rounded-xs cursor-pointer text-neutral-300 font-plex text-[14px] text-base hover:bg-[#5865f2]/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-[#5865f2]/20 disabled:cursor-not-allowed",
     ],
     pink: [
-      "bg-fuchsia-500/20 border-fuchsia-500/20 border-1 border-solid min-w-max p-0.5 rounded-xs cursor-pointer text-fuchsia-300 font-plex text-[14px] text-base hover:bg-fuchsia-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-fuchsia-500/20 cursor-not-allowed",
+      "bg-fuchsia-500/20 border-fuchsia-500/20 border-1 border-solid min-w-max p-0.5 rounded-xs cursor-pointer text-fuchsia-300 font-plex text-[14px] text-base hover:bg-fuchsia-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-fuchsia-500/20 disabled:cursor-not-allowed",
     ],
     invisible: [
-      "bg-transparent border-neutral-500/20 border-1 border-solid min-w-max p-0.5 rounded-xs cursor-pointer text-neutral-300 font-plex text-[14px] text-base hover:bg-neutral-500/10 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-neutral-500/20 cursor-not-allowed",
+      "bg-transparent border-neutral-500/20 border-1 border-solid min-w-max p-0.5 rounded-xs cursor-pointer text-neutral-300 font-plex text-[14px] text-base hover:bg-neutral-500/10 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-neutral-500/20 disabled:cursor-not-allowed",
     ],
   };
 

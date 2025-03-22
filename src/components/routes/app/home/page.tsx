@@ -7,6 +7,7 @@ import FortniteWidget from "src/components/routes/app/home/widgets/fortnite";
 // import NewsWidget from "src/components/routes/app/home/widgets/news";
 // import EventsWidget from "src/components/routes/app/home/widgets/events";
 import LootLabsWidget from "src/components/routes/app/home/widgets/lootlabs";
+import DonateWidget from "src/components/routes/app/home/widgets/donate";
 // import RecentMatchesWidget from "src/components/routes/app/home/widgets/matches";
 
 const HomePage = () => {
@@ -31,10 +32,19 @@ const HomePage = () => {
         <LootLabsWidget />
       </UI.RowBox>
 
-      {/* <UI.RowBox>
-        <EventsWidget />
-        <NewsWidget />
-      </UI.RowBox> */}
+      <UI.RowBox>
+        <div className="flex flex-col gap-1 min-w-50">
+          <UI.Button colour="invisible" className="h-8">
+            Recent Matches
+          </UI.Button>
+          <UI.Button colour="invisible" className="h-8">
+            News & Updates
+          </UI.Button>
+        </div>
+        <div className="flex flex-col gap-1 flex-1">
+          <DonateWidget />
+        </div>
+      </UI.RowBox>
     </>
   );
 };

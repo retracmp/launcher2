@@ -123,7 +123,7 @@ const Emoji = () => {
         duration: Math.random() * 500 + 10000,
         easing: "ease-in-out",
         iterations: Infinity,
-        delay: Math.random() * 50000,
+        delay: Math.random() * -50000,
       }
     );
   }, [reference]);

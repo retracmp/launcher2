@@ -59,6 +59,7 @@ const Friend = (props: FriendProps) => {
         className="w-full h-full object-cover object-center pointer-events-none"
         style={{ display: imageRendered ? "block" : "none" }}
         onLoad={() => setImageRendered(true)}
+        onError={(e) => e.preventDefault()}
         draggable={false}
       />
 
