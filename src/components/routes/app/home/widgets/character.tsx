@@ -17,10 +17,11 @@ const CharacterWidget = (props: CharacterWidgetProps) => {
   const loadout = props.user.Profiles.athena.Loadouts.find(
     (l) => l.ID === props.user.Profiles.athena.Attributes["loadouts"][0]
   );
-  if (loadout == null) return null;
+  if (loadout == null) return console.error("failed to get loadout") ?? null;
 
   const character = props.user.Profiles.athena.Items[loadout.CharacterID || ""];
-  if (character == null) return null;
+  if (character == null)
+    return console.error("failed to get character") ?? null;
 
   const template = character.Template.replace("_Retrac", "");
   const icon = `https://fortnite-api.com/images/cosmetics/br/${template}/icon.png`;
@@ -28,10 +29,10 @@ const CharacterWidget = (props: CharacterWidgetProps) => {
   const currency = Object.values(props.user.Profiles.common_core.Items).find(
     (i) => i.Template === "MtxPurchased"
   );
-  if (currency == null) return null;
+  if (currency == null) return console.error("failed to get currency") ?? null;
 
   const seasonStat = props.user.Account.Stats[props.season];
-  if (!seasonStat) return null;
+  if (!seasonStat) return console.error("failed to get account stats") ?? null;
 
   return (
     <div className="flex flex-row p-2 gap-2 min-w-max w-[60%] @max-xl:w-full bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid">

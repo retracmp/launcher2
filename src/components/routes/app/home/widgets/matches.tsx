@@ -5,7 +5,11 @@ import UI from "src/components/core/default";
 
 const RecentMatchesWidget = () => {
   const user = useUserManager();
-  if (user._user === null) return null;
+  if (user._user === null)
+    return (
+      console.error("cannot load recent matches widget: user._user = null") ??
+      null
+    );
 
   const stats = Object.values(user._user.Account.Stats);
   const matches = stats
@@ -17,7 +21,11 @@ const RecentMatchesWidget = () => {
     )
     .filter((match) => match.TimeAlive != 0);
 
-  if (matches.length === 0) return null;
+  if (matches.length === 0)
+    return (
+      console.error("cannot load recent matches widget: matches.length = 0") ??
+      null
+    );
 
   return (
     <div className="flex flex-col gap-1.5 w-full @max-xl:w-full max-w-full @max-xl:max-w-full overflow-hidden">
@@ -38,7 +46,6 @@ type RecentMatchProps = {
 };
 
 const RecentMatch = (props: RecentMatchProps) => {
-  console.log(props.match);
   const shortId = props.match.ID.slice(0, 8);
   const niceTeamType =
     props.match.TeamType.charAt(0).toUpperCase() +

@@ -5,7 +5,10 @@ import UI from "src/components/core/default";
 
 const DonateWidget = () => {
   const user = useUserManager();
-  if (user._user === null) return null;
+  if (user._user === null)
+    return (
+      console.error("cannot load donate widget: user._user == null") ?? null
+    );
   if (user.user_best_donation_tier() === null) return <NotDonatedMessage />;
   return <DonatedMessage entry={user.user_best_donation_tier()!} />;
 };
@@ -27,7 +30,7 @@ const DonatedMessage = (type: DonatedMessageProps) => {
         {/* Thank you for being a donator! Your {type.entry.text.toLowerCase()}{" "}
         package has funded servers for thousands of users! Make sure to check
         out all of the perks you have access to! */}
-        asd
+        {type.entry.text} Perks are activated and are available for you to use!
       </UI.P>
     </div>
   );
@@ -60,7 +63,7 @@ const NotDonatedMessage = () => {
 
   return (
     <div
-      className="flex flex-row gap-1 w-full h-min p-2 bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid hover:underline cursor-pointer text-neutral-300/60"
+      className="flex flex-row flex-wrap gap-1 w-full min-h-min h-full p-2 bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid hover:underline cursor-pointer text-neutral-300/60 text-center items-center justify-center"
       style={{
         backgroundImage:
           "linear-gradient(to right, #43e97b30 0%, #38f9d730 100%)",
@@ -68,9 +71,11 @@ const NotDonatedMessage = () => {
       }}
       ref={widgetReference}
     >
-      <UI.P className="text-neutral-300">Consider Donating?</UI.P>
-      <UI.P className="text-neutral-300/60">
-        Every donation to Retrac helps fund servers for the community!
+      <UI.P className="text-neutral-300">
+        Considered Donating?{" "}
+        <span className="text-neutral-300/60">
+          Every donation to Retrac helps fund servers for the community!
+        </span>
       </UI.P>
     </div>
   );

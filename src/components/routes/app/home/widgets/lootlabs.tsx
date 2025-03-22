@@ -8,7 +8,10 @@ import { formatTime } from "src/helpers/time";
 
 const LootLabsWidget = () => {
   const user = useUserManager();
-  if (user._user === null) return null;
+  if (user._user === null)
+    return (
+      console.error("cannot load loot labs widget: user._user = null") ?? null
+    );
 
   const claimed = user._user.Account.State.ClaimedPackages["lootlabs_1kvbucks"];
   const difference = new Date().getTime() - new Date(claimed || 0).getTime();

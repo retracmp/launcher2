@@ -9,7 +9,11 @@ type StatisticsWidgetProps = {
 
 const StatisticsWidget = (props: StatisticsWidgetProps) => {
   const seasonStat = props.account.Stats[props.season];
-  if (!seasonStat) return null;
+  if (!seasonStat)
+    return (
+      console.error("cannot load stats matches widget: seasonStat = null 0") ??
+      null
+    );
 
   const eliminations = Object.values(seasonStat.Matches).reduce(
     (acc, match) => acc + match.Eliminations,

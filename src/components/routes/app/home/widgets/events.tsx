@@ -13,12 +13,16 @@ const EventsWidget = (props: EventsWidgetProps) => {
   const [selected, setSelected] = useState(0);
 
   const news = useRetrac((s) => s.events);
-  if (news.length === 0) return null;
+  if (news.length === 0)
+    return console.error("cannot load events widget: news.length = 0") ?? null;
 
   const filtered = news.filter(
     (e) => !e.event.IsArena && new Date(e.event.Expire) > new Date()
   );
-  if (filtered.length === 0) return null;
+  if (filtered.length === 0)
+    return (
+      console.error("cannot load events widget: filtered.length = 0") ?? null
+    );
 
   useEffect(() => {
     const interval = setInterval(() => {
