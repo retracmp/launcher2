@@ -6,6 +6,7 @@ import DeveloperPage from "src/components/routes/dev/page";
 import HomePage from "src/components/routes/app/home/page";
 import LoginPage from "src/components/routes/login/page";
 import AppContainer from "./routes/app";
+import RecentMatchesPage from "./routes/app/home/matches";
 
 export const rootRoute = rr.createRootRoute({
   component: () => <Frame />,
@@ -59,11 +60,17 @@ export const home = rr.createRoute({
   path: "/",
 });
 
+const recentMatches = rr.createRoute({
+  getParentRoute: () => home,
+  component: () => <RecentMatchesPage />,
+  path: "/matches",
+});
+
 const router = rr.createRouter({
   routeTree: rootRoute.addChildren([
     login,
     dev,
-    appContainer.addChildren([home]),
+    appContainer.addChildren([home.addChildren([recentMatches])]),
   ]),
 });
 

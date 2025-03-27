@@ -78,7 +78,7 @@ const Frame = () => {
 
         <BannerRenderer />
         <div className="flex flex-row flex-1 max-w-full max-h-full overflow-hidden">
-          <div className="flex flex-col flex-1 max-w-full max-h-full overflow-hidden overflow-y-auto @container">
+          <div className="relative flex flex-col flex-1 max-w-full max-h-full overflow-hidden overflow-y-auto @container">
             {show ? <rr.Outlet /> : <LoadingIndicator />}
           </div>
 
