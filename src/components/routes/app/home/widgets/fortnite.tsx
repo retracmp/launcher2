@@ -6,14 +6,11 @@ const IMAGES = [
 ];
 
 const FortniteWidget = () => {
+  const imageIndex = new Date().getMinutes() % IMAGES.length;
+
   return (
-    <div className="relative flex flex-col p-2 gap-0.5 min-w-[45%] w-[100%] aspect-[5/2] bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid">
-      <UI.P className="text-neutral-400 z-10">
-        <span className="font-[600] font-geist text-neutral-300">
-          {" "}
-          Chapter 2 Season 4
-        </span>{" "}
-      </UI.P>
+    <div className="relative flex flex-col p-2 gap-0.5 min-w-[45%] w-[70%] aspect-[5/2] bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid overflow-hidden">
+      <UI.H1 className="z-20">Chapter 2 Season 4</UI.H1>
 
       <UI.P className="text-neutral-400 max-w-0 mb-2 z-10">
         Also known as
@@ -22,7 +19,10 @@ const FortniteWidget = () => {
         December 1st 2020.
       </UI.P>
 
-      <UI.Button colour="blue" className="p-1.5 mt-auto z-10 backdrop-blur-2xl">
+      <UI.Button
+        colour="blue"
+        className="p-1.5 py-1.5 mt-auto z-10 backdrop-blur-2xl"
+      >
         <UI.P className="text-neutral-300">
           <span className="font-[500]">Download</span>
         </UI.P>
@@ -35,7 +35,7 @@ const FortniteWidget = () => {
       </UI.Button> */}
 
       <img
-        src={IMAGES[Math.floor(Math.random() * IMAGES.length)]}
+        src={IMAGES[imageIndex]}
         className="absolute top-0 left-0 w-full h-full object-cover object-center"
         draggable={false}
         style={{

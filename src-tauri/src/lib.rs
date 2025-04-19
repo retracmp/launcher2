@@ -11,11 +11,11 @@ pub fn run() {
     builder = builder.invoke_handler(tauri::generate_handler![]);
 
     builder = builder.setup(|app| {
-        let main_window = app.get_webview_window("main").expect("no main window");
+        // let main_window = app.get_webview_window("main").expect("no main window");
 
-        if main_window.set_shadow(true).is_err() {
-            eprintln!("Failed to set window shadow");
-        }
+        // if main_window.set_shadow(true).is_err() {
+        //     eprintln!("Failed to set window shadow");
+        // }
 
         #[cfg(desktop)]
         app.deep_link().register("retrac")?;

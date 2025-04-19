@@ -1,5 +1,5 @@
 import { useUserManager } from "src/wrapper/user";
-import { useNavigate, useRouterState } from "@tanstack/react-router";
+import { useRouterState } from "@tanstack/react-router";
 
 import { AnimatePresence } from "motion/react";
 import UI from "src/components/core/default";
@@ -9,12 +9,12 @@ import FortniteWidget from "src/components/routes/app/home/widgets/fortnite";
 // import NewsWidget from "src/components/routes/app/home/widgets/news";
 // import EventsWidget from "src/components/routes/app/home/widgets/events";
 import LootLabsWidget from "src/components/routes/app/home/widgets/lootlabs";
-import DonateWidget from "src/components/routes/app/home/widgets/donate";
+// import DonateWidget from "src/components/routes/app/home/widgets/donate";
 import RecentMatchesPage from "./matches";
 // import RecentMatchesWidget from "src/components/routes/app/home/widgets/matches";
 
 const HomePage = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const router = useRouterState();
 
   const userManager = useUserManager();
@@ -27,7 +27,6 @@ const HomePage = () => {
           <RecentMatchesPage key="recent-matches" />
         )}
       </AnimatePresence>
-
       <div className="flex flex-row gap-1 p-1.5 pb-0 @max-xl:flex-col">
         <CharacterWidget
           user={userManager._user}
@@ -38,13 +37,12 @@ const HomePage = () => {
           season={userManager._season}
         />
       </div>
-
       <UI.RowBox>
         <FortniteWidget />
         <LootLabsWidget />
       </UI.RowBox>
 
-      <UI.RowBox>
+      {/* <UI.RowBox>
         <div className="flex flex-col gap-1 min-w-50">
           <UI.Button
             colour="invisible"
@@ -65,7 +63,7 @@ const HomePage = () => {
         <div className="flex flex-col gap-1 flex-1">
           <DonateWidget />
         </div>
-      </UI.RowBox>
+      </UI.RowBox> */}
     </>
   );
 };

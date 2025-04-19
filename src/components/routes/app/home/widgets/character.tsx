@@ -35,7 +35,7 @@ const CharacterWidget = (props: CharacterWidgetProps) => {
   if (!seasonStat) return console.error("failed to get account stats") ?? null;
 
   return (
-    <div className="flex flex-row p-2 gap-2 min-w-max w-[60%] @max-xl:w-full bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid">
+    <div className="flex flex-row p-2 gap-2 min-w-max w-[60%] @max-xl:w-full bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid">
       <div className="flex flex-col w-full gap-1">
         <div className="flex flex-col w-full gap-0.5">
           <UI.P>
@@ -67,11 +67,13 @@ const CharacterWidget = (props: CharacterWidgetProps) => {
             <div className="w-full min-w-8 h-[1px] bg-neutral-600/20"></div>
             <UI.P>{currency.Quantity.toLocaleString()}</UI.P>
           </div>
+
           <div className="flex flex-row w-full items-center gap-2">
             <UI.P className="text-neutral-500">Season Level</UI.P>
             <div className="w-full min-w-8 h-[1px] bg-neutral-600/20"></div>
             <UI.P>{seasonStat.LevelClaimed.toLocaleString()}</UI.P>
           </div>
+
           <div className="flex flex-row w-full items-center gap-2">
             <UI.P className="text-neutral-500">Overall Hype</UI.P>
             <div className="w-full min-w-8 h-[1px] bg-neutral-600/20"></div>

@@ -40,7 +40,7 @@ const LootLabsWidget = () => {
   };
 
   return (
-    <div className="relative flex flex-col p-2 gap-0.5 w-[70%] @max-xl:w-[100%] @max-xl:h-40 bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid">
+    <div className="relative flex flex-col p-2 gap-0.5 w-[70%] @max-xl:w-[100%] @max-xl:h-40 bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid">
       <UI.H1 className="z-20">Looking for more?</UI.H1>
       <UI.P className="z-20">
         Receive a gift package of V-Bucks every hour, for completely free! All
@@ -59,7 +59,7 @@ const LootLabsWidget = () => {
 
       <UI.Button
         colour="neutral"
-        className="p-1.5 mt-auto backdrop-blur-2xl z-20 pointer-events-auto"
+        className="p-1.5 py-1.5 mt-auto backdrop-blur-2xl z-20 pointer-events-auto"
         onClick={handleClaimOffer}
         disabled={disabled}
       >

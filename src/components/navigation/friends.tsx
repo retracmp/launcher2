@@ -52,7 +52,7 @@ const Friend = (props: FriendProps) => {
   const [imageRendered, setImageRendered] = useState(false);
 
   return (
-    <div className="flex items-center justify-center aspect-square w-full bg-neutral-800/30 rounded-xs border-[#292929] border-1 border-solid overflow-hidden min-h-[40px] min-w-[40px]">
+    <div className="flex items-center justify-center aspect-square w-full bg-neutral-800/30 rounded-sm border-[#292929] border-1 border-solid overflow-hidden min-h-[40px] min-w-[40px]">
       <img
         src={props.friend.discordAvatarUrl}
         alt="Friend Avatar"

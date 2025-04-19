@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useNavigate } from "@tanstack/react-router";
 
 import { motion } from "motion/react";
+import { HiX } from "react-icons/hi";
 import RecentMatchesWidget from "./widgets/matches";
 
 const RecentMatchesPage = () => {
@@ -53,13 +54,21 @@ const RecentMatchesPage = () => {
     >
       <motion.div
         ref={widgetReference}
-        className="flex flex-col p-2 gap-2 min-w-96 w-[60%] max-h-[80%] bg-[#1c1c1c] rounded-xs border-[#2e2e2e] border-1 border-solid shadow-neutral-900/30 shadow-lg"
+        className="relative flex flex-col p-2 gap-2 min-w-96 w-[60%] max-h-[80%] bg-[#1a1a1a] rounded-xs border-[#2e2e2e] border-1 border-solid shadow-neutral-900/30 shadow-lg"
         initial={{ scale: 0.95 }}
         animate={{ scale: 1 }}
         exit={{ scale: 0.95 }}
         transition={{ duration: 0.075, type: "tween" }}
       >
         <RecentMatchesWidget />
+        <HiX
+          className="absolute right-1.5 top-1.5 text-neutral-500 hover:text-neutral-300 cursor-pointer"
+          onClick={() =>
+            navigate({
+              to: "/app",
+            })
+          }
+        />
       </motion.div>
     </motion.div>
   );

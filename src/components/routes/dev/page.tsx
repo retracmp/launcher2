@@ -2,7 +2,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useBannerManager } from "src/wrapper/banner";
 import { useUserManager } from "src/wrapper/user";
 
-import React from "react";
+import UI from "src/components/core/default";
 
 const DeveloperPage = () => {
   const bannerManager = useBannerManager();
@@ -20,7 +20,7 @@ const DeveloperPage = () => {
       </div>
       <div className="flex flex-col gap-1 p-1.5 border-b-[#2e2e2e] border-b-1 border-solid">
         <div className="flex flex-row gap-1 flex-wrap">
-          <Button
+          <UI.Button
             onClick={() =>
               bannerManager.push({
                 id: "slow",
@@ -29,11 +29,12 @@ const DeveloperPage = () => {
                 closable: true,
               })
             }
+            colour="invisible"
           >
             add closeable warning banner
-          </Button>
+          </UI.Button>
 
-          <Button
+          <UI.Button
             onClick={() =>
               bannerManager.push({
                 id: "notification",
@@ -42,12 +43,13 @@ const DeveloperPage = () => {
                 closable: false,
               })
             }
+            colour="invisible"
           >
             add notification banner (would come from websocket to notify user of
             something)
-          </Button>
+          </UI.Button>
 
-          <Button
+          <UI.Button
             onClick={() =>
               bannerManager.push({
                 id: "websocket",
@@ -56,39 +58,26 @@ const DeveloperPage = () => {
                 closable: false,
               })
             }
+            colour="invisible"
           >
             websocket failue
-          </Button>
+          </UI.Button>
         </div>
       </div>
       <div className="flex flex-col gap-1 p-1.5 border-b-[#2e2e2e] border-b-1 border-solid">
         <div className="flex flex-row gap-1 flex-wrap">
-          <Button
+          <UI.Button
             onClick={() => {
               userManger.logout();
               navigate({ to: "/" });
             }}
+            colour="invisible"
           >
             logut
-          </Button>
+          </UI.Button>
         </div>
       </div>
     </>
   );
 };
-
-type ButtonProps = {} & React.HTMLProps<HTMLButtonElement>;
-
-const Button = (props: ButtonProps) => {
-  return (
-    <button
-      {...props}
-      type="button"
-      className={`bg-neutral-500/20 border-neutral-500/20 border-1 border-solid min-w-max p-1 rounded-xs cursor-pointer text-neutral-300 font-plex text-[14px] text-base hover:bg-neutral-500/30`}
-    >
-      {props.children}
-    </button>
-  );
-};
-
 export default DeveloperPage;
