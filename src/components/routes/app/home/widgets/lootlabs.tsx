@@ -1,6 +1,7 @@
-import { MutableRefObject, useEffect, useRef, useState } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { useUserManager } from "src/wrapper/user";
 import { openUrl } from "@tauri-apps/plugin-opener";
+import { motion } from "motion/react";
 import client from "src/axios/client";
 
 import UI from "src/components/core/default";
@@ -54,7 +55,7 @@ const LootLabsWidget = () => {
             "radial-gradient(65% 80% at 50% 0%, #ff9b0b25 0%, #00000000 100%)",
         }}
       >
-        <RainingEmojis />
+        <RainingVBucks />
       </div>
 
       {!disabled ? (
@@ -84,73 +85,59 @@ const LootLabsWidget = () => {
   );
 };
 
-const RainingEmojis = () => {
+const RainingVBucks = () => {
   return (
-    <div className="absolute top-0 left-0 w-full h-full">
-      {[...Array(20)].map((_, idx) => (
-        <Emoji key={idx} />
+    <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
+      {Array.from({ length: 50 }).map((_, idx) => (
+        <VBuck key={idx} />
       ))}
     </div>
   );
 };
 
-const Emoji = () => {
-  const reference =
-    useRef<HTMLDivElement>() as MutableRefObject<HTMLDivElement>;
-  const size = Math.random() * 1 + 1;
+const VBuck = () => {
+  const props = useMemo(() => {
+    const size = Math.random() * 1 + 1;
+    const left = Math.random() * 100;
+    const duration = Math.random() * 5 + 15;
+    const delay = Math.random() * -20;
+    const rotation = Math.random() * 360 - 180;
 
-  useEffect(() => {
-    if (!reference.current) return;
-
-    const offset = Math.random() * 100;
-
-    reference.current.animate(
-      [
-        {
-          opacity: 0,
-          top: "-10%",
-          left: `${offset}%`,
-        },
-        {
-          opacity: 0.2,
-          left: `${offset + 5}%`,
-        },
-        {
-          opacity: 0.3,
-          left: `${offset}%`,
-        },
-        {
-          opacity: 0.2,
-          left: `${offset + 5}%`,
-        },
-        {
-          top: "100%",
-          left: `${offset}%`,
-          opacity: 0,
-        },
-      ],
-      {
-        duration: Math.random() * 500 + 10000,
-        easing: "ease-in-out",
-        iterations: Infinity,
-        delay: Math.random() * -50000,
-      }
-    );
-  }, [reference]);
+    return { size, left, duration, delay, rotation };
+  }, []);
 
   return (
-    <div
-      className="absolute"
-      ref={reference}
+    <motion.div
+      initial={{
+        y: "-10vh",
+        rotate: 0,
+        // opacity: 0,
+      }}
+      animate={{
+        y: "110vh",
+        rotate: props.rotation,
+        // opacity: [0, 0.6, 0],
+      }}
+      transition={{
+        duration: props.duration,
+        delay: props.delay,
+        repeat: Infinity,
+        ease: "easeInOut",
+      }}
       style={{
-        height: `${size}rem`,
-        width: `${size}rem`,
+        position: "absolute",
+        top: 0,
+        left: `${props.left}%`,
+        height: `${props.size}rem`,
+        width: `${props.size}rem`,
         backgroundImage: "url(/vbuck.png)",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        opacity: 0,
+        pointerEvents: "none",
+        filter: "brightness(0.4)",
       }}
-    ></div>
+    />
   );
 };
+
 export default LootLabsWidget;
