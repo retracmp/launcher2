@@ -154,7 +154,7 @@ const LeaderboardPage = () => {
               ))}
         </div>
 
-        <div className="flex flex-row gap-1">
+        <div className="flex flex-row gap-1 pt-[0.2rem]">
           <div className="bg-transparent border-neutral-500/20 border-1 border-solid min-w-max p-0.5 px-2 rounded-sm text-neutral-300 font-plex text-[14px] text-base flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-neutral-500/20 disabled:cursor-not-allowed">
             <span className="text-neutral-400 text-sm">
               Page {leaderboard._page} of {leaderboard._pageInfo.totalPages}
