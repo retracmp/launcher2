@@ -8,6 +8,7 @@ import LoginPage from "src/components/routes/login/page";
 import AppContainer from "./routes/app";
 import RecentMatchesPage from "./routes/app/home/matches";
 import SettingsPage from "./routes/app/settings/page";
+import LeaderboardPage from "./routes/app/leaderboard/page";
 
 export const rootRoute = rr.createRootRoute({
   component: () => <Frame />,
@@ -73,11 +74,21 @@ export const settings = rr.createRoute({
   path: "/settings",
 });
 
+export const leaderboard = rr.createRoute({
+  getParentRoute: () => appContainer,
+  component: () => <LeaderboardPage />,
+  path: "/leaderboard",
+});
+
 const router = rr.createRouter({
   routeTree: rootRoute.addChildren([
     login,
     dev,
-    appContainer.addChildren([home.addChildren([recentMatches]), settings]),
+    appContainer.addChildren([
+      home.addChildren([recentMatches]),
+      settings,
+      leaderboard,
+    ]),
   ]),
 });
 

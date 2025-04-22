@@ -6,7 +6,7 @@ import UI from "src/components/core/default";
 import { AnimatePresence, motion } from "motion/react";
 
 export type OptionTypeFile = {};
-type AllowedOptionTypes = string | boolean | OptionTypeFile;
+type AllowedOptionTypes = string | boolean | number | OptionTypeFile;
 
 type OptionProps<T extends AllowedOptionTypes> = {
   title: React.ReactNode;
@@ -24,6 +24,7 @@ const Option = <T extends AllowedOptionTypes>(props: OptionProps<T>) => {
 
   const isString = typeof props.state === "string";
   const isBoolean = typeof props.state === "boolean";
+  const isNumber = typeof props.state === "number";
   const isFile = props._is_file_override || props.state instanceof Object;
 
   return (
@@ -58,6 +59,12 @@ const Option = <T extends AllowedOptionTypes>(props: OptionProps<T>) => {
             set={props.set as (state: boolean) => void}
           />
         )}
+        {isNumber && !isFile && !isString && (
+          <ControlStateNumber
+            state={props.state as number}
+            set={props.set as (state: number) => void}
+          />
+        )}
         {isFile && (
           <ControlStateFile
             state={props.state as string}
@@ -77,7 +84,7 @@ type ControlStateProps<T extends AllowedOptionTypes> = {
 const ControlStateBoolean = (props: ControlStateProps<boolean>) => {
   return props.state ? (
     <div
-      className="absolute right-2 top-[50%] bg-green-700/50 w-7 h-7 rounded-sm flex items-center justify-center cursor-pointer border-1 border-solid border-green-500/20 hover:bg-green-800/70 active:scale-[0.97]"
+      className="absolute right-2 top-[50%] bg-green-700/40 w-7 h-7 rounded-sm flex items-center justify-center cursor-pointer border-1 border-solid border-green-500/20 hover:bg-green-800/50 active:scale-[0.97]"
       style={{
         transform: "translateY(-50%)",
       }}
@@ -173,6 +180,44 @@ const ControlStateFile = (props: ControlStateProps<string>) => {
   );
 };
 
+const ControlStateNumber = (_: ControlStateProps<number>) => {
+  const onFocusLost = (e: React.FocusEvent<HTMLInputElement>) => {
+    const value = parseFloat(e.target.value);
+    if (isNaN(value)) {
+      e.target.value = "0";
+      return;
+    }
+    if (value < 0) {
+      e.target.value = "0";
+      return;
+    }
+    if (value > 100) {
+      e.target.value = "100";
+      return;
+    }
+    _.set(value);
+  };
+
+  return (
+    <div
+      className="absolute right-2 top-[50%] flex flex-row-reverse items-center gap-1.5"
+      style={{ transform: "translateY(-50%)" }}
+    >
+      <input
+        type="number"
+        className="bg-[#242424] h-7 p-[5px] pr-2 pl-2 rounded-sm border-1 border-solid border-neutral-500/20 hover:bg-[#222222] text-neutral-300 font-code outline-none"
+        value={_.state}
+        onChange={(e) => _.set(parseFloat(e.target.value))}
+        step={1}
+        min={0}
+        max={100}
+        onFocus={(e) => e.target.select()}
+        onBlur={onFocusLost}
+      />
+    </div>
+  );
+};
+
 const BooleanOption = (props: OptionProps<boolean>) => {
   return <Option {...props} />;
 };
@@ -181,8 +226,12 @@ const StringOption = (props: OptionProps<string>) => {
   return <Option {...props} />;
 };
 
+const NumberOption = (props: OptionProps<number>) => {
+  return <Option {...props} />;
+};
+
 const FileOption = (props: OptionProps<string>) => {
   return <Option {...props} _is_file_override />;
 };
 
-export { StringOption, BooleanOption, FileOption };
+export { StringOption, BooleanOption, NumberOption, FileOption };

@@ -16,6 +16,9 @@ type OptionsState = {
 
   reset_on_release: boolean;
   set_reset_on_release: (value: boolean) => void;
+
+  leaderboard_page_size: number;
+  set_leaderboard_page_size: (value: number) => void;
 };
 
 export const useOptions = create<OptionsState>()(
@@ -37,6 +40,10 @@ export const useOptions = create<OptionsState>()(
 
       reset_on_release: false,
       set_reset_on_release: (value) => set(() => ({ reset_on_release: value })),
+
+      leaderboard_page_size: 10,
+      set_leaderboard_page_size: (value) =>
+        set(() => ({ leaderboard_page_size: value })),
     }),
     {
       name: "options",

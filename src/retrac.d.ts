@@ -195,3 +195,22 @@ type FriendInformation = {
   discordAvatarUrl: string;
   currentEquippedCharacter: string;
 };
+
+type LeaderboardEntry = {
+  accountId: string;
+  sortedBy: string;
+  value: number;
+  displayName: string;
+  otherWinValue: number;
+  otherElimValue: number;
+  otherHypeValue: number;
+  position: number;
+};
+
+type LeaderboardPageInfo = {
+  page: number;
+  pageSize: number;
+  totalPages: number;
+  totalResults: number;
+  sortBy: "eliminations" | "points" | "hype";
+};

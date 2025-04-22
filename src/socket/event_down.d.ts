@@ -40,6 +40,18 @@ type SocketDownEvent_FriendInfos = SocketBasicUpEvent & {
   friendInformation: FriendInformation[];
 };
 
+type SocketDownEvent_Leaderboard = SocketBasicUpEvent & {
+  id: "leaderboard";
+  leaderboard: LeaderboardEntry[];
+  you: LeaderboardEntry;
+  pageInfo: LeaderboardPageInfo;
+};
+
+type SocketDownEvent_Usernames = SocketBasicUpEvent & {
+  id: "user_names";
+  friendInformation: Record<string, string>;
+};
+
 type SocketDownEvent =
   | SocketDownEvent_Close
   | SocketDownEvent_Error
@@ -47,7 +59,9 @@ type SocketDownEvent =
   | SocketDownEvent_RequestHeartbeat
   | SocketDownEvent_PlayerCount
   | SocketDownEvent_User
-  | SocketDownEvent_FriendInfos;
+  | SocketDownEvent_FriendInfos
+  | SocketDownEvent_Leaderboard
+  | SocketDownEvent_Usernames;
 
 type SocketDownEventType = SocketDownEvent["id"];
 type SocketDownEventDataFromType<T extends SocketDownEventType> = Extract<
@@ -66,3 +80,5 @@ type heartbeat_test = SocketDownEventDataFromType<"request_heartbeat">;
 type player_count_test = SocketDownEventDataFromType<"player_count">;
 type user_test = SocketDownEventDataFromType<"user">;
 type friend_infos_test = SocketDownEventDataFromType<"friend_infos">;
+type leaderboard_test = SocketDownEventDataFromType<"leaderboard">;
+type usernames_test = SocketDownEventDataFromType<"user_names">;

@@ -89,3 +89,19 @@ body {
 .no-scroll::-webkit-scrollbar {
   display: none;
 }
+
+@keyframes shimmer {
+  100% {
+    mask-position: left;
+  }
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}

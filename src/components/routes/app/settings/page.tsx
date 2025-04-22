@@ -6,6 +6,8 @@ import UI from "src/components/core/default";
 import {
   BooleanOption,
   FileOption,
+  NumberOption,
+  StringOption,
 } from "src/components/routes/app/settings/option";
 import React from "react";
 import { IoLogOutSharp } from "react-icons/io5";
@@ -104,6 +106,39 @@ const SettingsPage = () => {
           icon="IoMapSharp"
           colour="pink"
         />
+        <span></span>
+      </div>
+
+      <div className="relative flex flex-col gap-1.5 p-2.5 border-[#2e2e2e] border-b-[1px] border-solid pt-[0.75rem]">
+        <UI.P className="text-neutral-500 absolute top-[-0.5rem] bg-neutral-900 px-1">
+          Client Preferences
+        </UI.P>
+
+        <NumberOption
+          title="Leaderboard Page Size"
+          description={
+            <>Changes how many players are shown on the leaderboard per page.</>
+          }
+          state={options.leaderboard_page_size}
+          set={(num) => {
+            options.set_leaderboard_page_size(Math.max(1, Math.min(num, 100)));
+          }}
+          icon="IoList"
+          colour="purple"
+        />
+
+        <StringOption
+          title="Theme"
+          description={
+            <>Show off style with colourful redesigns of the launcher!</>
+          }
+          state={""}
+          set={() => {}}
+          icon="IoColorPaletteSharp"
+          colour="red"
+        />
+
+        <span></span>
       </div>
 
       <div className="flex flex-col gap-1.5 p-2">
