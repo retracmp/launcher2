@@ -57,20 +57,29 @@ const LootLabsWidget = () => {
         <RainingEmojis />
       </div>
 
-      <UI.Button
-        colour="neutral"
-        className="p-1.5 py-1 mt-auto backdrop-blur-2xl z-20 pointer-events-auto"
-        onClick={handleClaimOffer}
-        disabled={disabled}
-      >
-        {!disabled ? (
+      {!disabled ? (
+        <UI.Button
+          colour="neutral"
+          className="p-1.5 py-1 mt-auto backdrop-blur-2xl z-20 pointer-events-auto"
+          onClick={handleClaimOffer}
+          disabled={disabled}
+        >
           <span className="text-neutral-300">Claim your reward now!</span>
-        ) : (
-          <span className="text-neutral-300">
-            Come back in {originalText} to claim your reward!
+        </UI.Button>
+      ) : (
+        <UI.Button
+          colour="neutral"
+          className="p-1.5 mt-auto bg-neutral-800 backdrop-blur-2xl z-10 hover:bg-neutral-800/50"
+          disabled
+          style={{
+            cursor: "not-allowed",
+          }}
+        >
+          <span className="text-neutral-400">
+            Offer refreshes in {originalText}!
           </span>
-        )}
-      </UI.Button>
+        </UI.Button>
+      )}
     </div>
   );
 };

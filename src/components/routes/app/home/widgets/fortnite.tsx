@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import UI from "src/components/core/default";
 
 const IMAGES = [
@@ -9,7 +10,7 @@ const FortniteWidget = () => {
   const imageIndex = new Date().getMinutes() % IMAGES.length;
 
   return (
-    <div className="relative flex flex-col p-2 gap-0.5 min-w-[45%] w-[70%] @max-xl:w-[100%] aspect-[5/2] bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid overflow-hidden">
+    <div className="relative flex flex-col p-2 gap-0.5 min-w-[45%] w-[70%] @max-xl:w-[100%] aspect-[5/2.4] bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid overflow-hidden">
       <UI.H1 className="z-20">Chapter 2 Season 4</UI.H1>
 
       <UI.P className="text-neutral-400 max-w-0 mb-2 z-10">
@@ -33,14 +34,19 @@ const FortniteWidget = () => {
         <span className="text-neutral-300">Launch Process</span>
       </UI.Button>
 
-      <img
-        src={IMAGES[imageIndex]}
-        className="absolute top-0 left-0 w-full h-full object-cover object-center"
-        draggable={false}
-        style={{
-          maskImage:
-            "linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0.05))",
-        }}
+      <VideoDisplay
+        address={"https://cdn.retrac.site/chatper2season4card.mp4"}
+        backup={
+          <img
+            src={IMAGES[imageIndex]}
+            className="absolute top-0 left-0 w-full h-full object-cover object-center z-50"
+            draggable={false}
+            style={{
+              maskImage:
+                "linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0.05))",
+            }}
+          />
+        }
       />
 
       <div
@@ -62,6 +68,49 @@ const FortniteWidget = () => {
         <span className="text-neutral-400">Process already running.</span>
       </UI.Button> */}
     </div>
+  );
+};
+
+type VideoDisplayProps = {
+  address: string;
+  backup: React.ReactNode;
+};
+
+const VideoDisplay = (props: VideoDisplayProps) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+
+  const handleLoadedData = () => {
+    setVideoLoaded(true);
+  };
+
+  useEffect(() => {
+    if (!videoRef.current) return;
+    videoRef.current.addEventListener("loadeddata", handleLoadedData);
+
+    return () => {
+      if (!videoRef.current) return;
+      videoRef.current.removeEventListener("loadeddata", handleLoadedData);
+    };
+  }, [videoRef]);
+
+  return (
+    <>
+      <video
+        className="absolute top-0 left-0 w-full h-full object-cover object-center"
+        style={{
+          maskImage:
+            "linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.10))",
+        }}
+        ref={videoRef}
+        src={props.address}
+        autoPlay
+        loop
+        muted
+      />
+
+      {!videoLoaded && props.backup}
+    </>
   );
 };
 
