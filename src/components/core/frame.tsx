@@ -56,7 +56,6 @@ const Frame = () => {
             data-tauri-drag-region
           >
             {application.name}
-            {application.windowsVersion}
           </p>
           <p
             className="ml-1 mt-[2px] min-w-max text-neutral-500 font-plex text-[11px] text-base"

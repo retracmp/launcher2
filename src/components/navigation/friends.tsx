@@ -3,7 +3,7 @@ import { useSocket } from "src/socket";
 import { useFriends } from "src/wrapper/friends";
 import { useUserManager } from "src/wrapper/user";
 
-import { IoPersonSharp } from "react-icons/io5";
+import { IoPersonAddSharp, IoPersonSharp } from "react-icons/io5";
 
 const FriendsList = () => {
   const socket = useSocket();
@@ -40,6 +40,12 @@ const FriendsList = () => {
       {Array.from(friends._set).map((friend) => (
         <Friend key={friend[1].accountId} friend={friend[1]} />
       ))}
+
+      {friends._set.size === 0 && (
+        <div className="flex items-center justify-center aspect-square w-full bg-neutral-800/30 rounded-sm border-[#292929] border-1 border-solid overflow-hidden min-h-[40px] min-w-[40px] cursor-pointer hover:bg-neutral-800/50">
+          <IoPersonAddSharp className="text-[#4a4949] text-xl" />
+        </div>
+      )}
     </div>
   );
 };

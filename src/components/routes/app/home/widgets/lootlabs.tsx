@@ -59,19 +59,17 @@ const LootLabsWidget = () => {
 
       <UI.Button
         colour="neutral"
-        className="p-1.5 py-1.5 mt-auto backdrop-blur-2xl z-20 pointer-events-auto"
+        className="p-1.5 py-1 mt-auto backdrop-blur-2xl z-20 pointer-events-auto"
         onClick={handleClaimOffer}
         disabled={disabled}
       >
-        <UI.P className="text-neutral-300">
-          {!disabled ? (
-            <span className="font-[500]">Claim your reward now!</span>
-          ) : (
-            <span className="font-[500]">
-              Come back in {originalText} to claim your reward!
-            </span>
-          )}
-        </UI.P>
+        {!disabled ? (
+          <span className="text-neutral-300">Claim your reward now!</span>
+        ) : (
+          <span className="text-neutral-300">
+            Come back in {originalText} to claim your reward!
+          </span>
+        )}
       </UI.Button>
     </div>
   );
