@@ -10,6 +10,10 @@
 
 ![image](https://github.com/user-attachments/assets/66cffdba-c9f9-4740-8510-85d40d861aac)
 
+`leaderboard`
+
+![image](https://github.com/user-attachments/assets/2c93c6e6-ba64-4356-8d49-d212c5e652c2)
+
 `settings`
 
 ![image](https://github.com/user-attachments/assets/c57a3f6d-f2ce-4985-b751-bd50f5104e52)
