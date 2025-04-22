@@ -15,6 +15,7 @@ pub fn run() {
   builder = builder.plugin(tauri_plugin_single_instance::init(|_app, _argv, _cwd| {}));
   builder = builder.plugin(tauri_plugin_deep_link::init());
   builder = builder.plugin(tauri_plugin_opener::init());
+  builder = builder.plugin(tauri_plugin_dialog::init());
   builder = builder.invoke_handler(tauri::generate_handler![
     #[cfg(target_os = "windows")]
     get_windows_version

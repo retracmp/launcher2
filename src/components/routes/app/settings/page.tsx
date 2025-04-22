@@ -5,8 +5,10 @@ import { useOptions } from "src/wrapper/options";
 import UI from "src/components/core/default";
 import {
   BooleanOption,
-  StringOption,
+  FileOption,
 } from "src/components/routes/app/settings/option";
+import React from "react";
+import { IoLogOutSharp } from "react-icons/io5";
 
 const SettingsPage = () => {
   const application = useApplicationInformation();
@@ -15,6 +17,12 @@ const SettingsPage = () => {
 
   return (
     <>
+      <InvisibleItem className="text-blue-300" />
+      <InvisibleItem className="text-orange-300" />
+      <InvisibleItem className="text-purple-300" />
+      <InvisibleItem className="text-red-300" />
+      <InvisibleItem className="text-pink-300" />
+
       <div className="flex flex-col gap-1.5 p-2.5 border-[#2e2e2e] border-b-[1px] border-solid pb-[0.85rem]">
         <div className="flex flex-col gap-[0.2rem]">
           <UI.H1 className="font-[300] text-neutral-300">
@@ -45,7 +53,7 @@ const SettingsPage = () => {
           colour="blue"
         />
 
-        <StringOption
+        <FileOption
           title="Content Directory"
           description={
             <>
@@ -108,8 +116,26 @@ const SettingsPage = () => {
             {user._user?.ID}
           </span>
         </div>
+
+        <UI.Button
+          colour="invisible"
+          className="py-0 px-2 mt-auto z-10 w-min gap-0"
+          onClick={() => user.logout()}
+        >
+          <IoLogOutSharp className="text-neutral-400 w-4 h-4" />
+          <span className="text-neutral-400">Logout</span>
+        </UI.Button>
       </div>
     </>
+  );
+};
+
+const InvisibleItem = (props: React.HTMLAttributes<HTMLDivElement>) => {
+  return (
+    <div
+      {...props}
+      className={`${props.className} min-w-0 max-w-0 min-h-0 max-h-0 hidden`}
+    />
   );
 };
 

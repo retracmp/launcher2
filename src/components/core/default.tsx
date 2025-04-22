@@ -79,7 +79,7 @@ namespace UI {
 
   export const BUTTON_COLOURS = {
     neutral: [
-      "bg-neutral-500/20 border-neutral-500/20 border-1 border-solid min-w-max p-0.5 py-1 rounded-sm cursor-pointer text-neutral-300 font-plex text-[14px] text-base hover:bg-neutral-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-neutral-500/1s0 disabled:cursor-not-allowed",
+      "bg-neutral-500/20 border-neutral-500/20 border-1 border-solid min-w-max p-0.5 py-1 rounded-sm cursor-pointer text-neutral-300 font-inter text-[14px] text-base hover:bg-neutral-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-neutral-500/1s0 disabled:cursor-not-allowed",
     ],
     red: [
       "bg-red-500/20 border-red-500/20 border-1 border-solid min-w-max p-0.5 py-1 rounded-sm cursor-pointer text-red-300 font-plex text-[14px] text-base hover:bg-red-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-red-500/20 disabled:cursor-not-allowed",
