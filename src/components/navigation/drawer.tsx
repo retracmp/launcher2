@@ -33,7 +33,7 @@ const EmptyRoutes = () => {
 const AuthenticatedRoutes = () => {
   return (
     <>
-      <DrawerItem path="/app" icon="IoHomeSharp" label="home" />
+      <DrawerItem path="/app/home" icon="IoHomeSharp" label="home" />
       <DrawerItem path="/app/shop" icon="IoPricetagsSharp" label="shop" />
       <DrawerItem
         path="/app/library"
