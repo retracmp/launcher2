@@ -36,7 +36,7 @@ const SettingsPage = () => {
         </div>
       </div>
 
-      <div className="relative flex flex-col gap-1.5 p-2.5 border-[#2e2e2e] border-b-[1px] border-solid pt-[0.85rem]">
+      <div className="relative flex flex-col gap-2 p-2.5 border-[#2e2e2e] border-b-[1px] border-solid py-[0.85rem]">
         <UI.P className="text-neutral-500 absolute top-[-0.5rem] bg-neutral-900 px-1">
           Network
         </UI.P>
@@ -67,11 +67,9 @@ const SettingsPage = () => {
           icon="IoFolderOpenSharp"
           colour="orange"
         />
-
-        <span></span>
       </div>
 
-      <div className="relative flex flex-col gap-1.5 p-2.5 border-[#2e2e2e] border-b-[1px] border-solid pt-[0.75rem]">
+      <div className="relative flex flex-col gap-2 p-2.5 border-[#2e2e2e] border-b-[1px] border-solid py-[0.85rem]">
         <UI.P className="text-neutral-500 absolute top-[-0.5rem] bg-neutral-900 px-1">
           Gameplay Tweaks
         </UI.P>
@@ -106,10 +104,9 @@ const SettingsPage = () => {
           icon="IoMapSharp"
           colour="pink"
         />
-        <span></span>
       </div>
 
-      <div className="relative flex flex-col gap-1.5 p-2.5 border-[#2e2e2e] border-b-[1px] border-solid pt-[0.75rem]">
+      <div className="relative flex flex-col gap-2 p-2.5 border-[#2e2e2e] border-b-[1px] border-solid py-[0.85rem]">
         <UI.P className="text-neutral-500 absolute top-[-0.5rem] bg-neutral-900 px-1">
           Client Preferences
         </UI.P>
@@ -137,8 +134,6 @@ const SettingsPage = () => {
           icon="IoColorPaletteSharp"
           colour="red"
         />
-
-        <span></span>
       </div>
 
       <div className="flex flex-col gap-1.5 p-2">
