@@ -4,11 +4,15 @@
 
 `homepage so far`
 
-![image](https://github.com/user-attachments/assets/74948fc4-861c-43c9-8f93-1c746e787d80)
+![image](https://github.com/user-attachments/assets/40101c12-3baa-4ae2-a295-8c6c2aa5a634)
 
 `nice error messages so users can report easily`
 
 ![image](https://github.com/user-attachments/assets/66cffdba-c9f9-4740-8510-85d40d861aac)
+
+`settings`
+
+![image](https://github.com/user-attachments/assets/c57a3f6d-f2ce-4985-b751-bd50f5104e52)
 
 ## main ideas
 
