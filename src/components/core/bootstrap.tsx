@@ -10,6 +10,7 @@ import { hostname } from "src/axios/client";
 import { useRetrac } from "src/wrapper/retrac";
 import { useSocket } from "src/socket";
 import * as app from "@tauri-apps/api/app";
+import invoke from "src/invoke";
 
 const ANTI_SHORTCUTS = ["ctrl+p", "ctrl+f", "ctrl+u", "ctrl+j"];
 const ANTI_SHORTCUTS_ALLOW_IN_DEV = ["ctrl+r", "f5"];
@@ -27,7 +28,8 @@ const Boostrap = () => {
     application.load(
       await app.getName(),
       await app.getVersion(),
-      import.meta.env.MODE === "development"
+      import.meta.env.MODE === "development",
+      await invoke.get_windows_version()
     );
   };
 

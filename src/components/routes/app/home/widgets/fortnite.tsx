@@ -9,7 +9,7 @@ const FortniteWidget = () => {
   const imageIndex = new Date().getMinutes() % IMAGES.length;
 
   return (
-    <div className="relative flex flex-col p-2 gap-0.5 min-w-[45%] w-[70%] aspect-[5/2] bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid overflow-hidden">
+    <div className="relative flex flex-col p-2 gap-0.5 min-w-[45%] w-[70%] @max-xl:w-[100%] aspect-[5/2] bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid overflow-hidden">
       <UI.H1 className="z-20">Chapter 2 Season 4</UI.H1>
 
       <UI.P className="text-neutral-400 max-w-0 mb-2 z-10">
@@ -19,20 +19,19 @@ const FortniteWidget = () => {
         December 1st 2020.
       </UI.P>
 
-      <UI.Button
+      {/* <UI.Button
         colour="blue"
-        className="p-1.5 py-1.5 mt-auto z-10 backdrop-blur-2xl"
+        className="p-1.5 py-1 mt-auto z-10 backdrop-blur-2xl"
       >
-        <UI.P className="text-neutral-300">
-          <span className="font-[500]">Download</span>
-        </UI.P>
-      </UI.Button>
-
-      {/* <UI.Button colour="green" className="p-1.5 mt-auto z-10 backdrop-blur-2xl">
-        <UI.P className="text-neutral-300">
-          <span className="font-[500]">Launch</span>
-        </UI.P>
+        <span className="text-neutral-300">Download Now</span>
       </UI.Button> */}
+
+      <UI.Button
+        colour="green"
+        className="p-1.5 mt-auto z-10 backdrop-blur-2xl"
+      >
+        <span className="text-neutral-300">Launch Process</span>
+      </UI.Button>
 
       <img
         src={IMAGES[imageIndex]}
@@ -54,15 +53,13 @@ const FortniteWidget = () => {
 
       {/* <UI.Button
         colour="neutral"
-        className="p-1.5 mt-auto bg-neutral-800 backdrop-blur-2xl z-10"
+        className="p-1.5 mt-auto bg-neutral-800 backdrop-blur-2xl z-10 hover:bg-neutral-800/50"
         disabled
         style={{
           cursor: "not-allowed",
         }}
       >
-        <UI.P className="text-neutral-400">
-          <span className="font-[500]">Fortnite is already running.</span>
-        </UI.P>
+        <span className="text-neutral-400">Process already running.</span>
       </UI.Button> */}
     </div>
   );
