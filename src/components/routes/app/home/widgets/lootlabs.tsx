@@ -101,7 +101,7 @@ const VBuck = () => {
     const left = Math.random() * 100;
     const duration = Math.random() * 5 + 15;
     const delay = Math.random() * -20;
-    const rotation = Math.random() * 360 - 180;
+    const rotation = Math.random() * 360 - 90;
 
     return { size, left, duration, delay, rotation };
   }, []);

@@ -13,7 +13,7 @@ export const useFriends = create<FriendsState>((set, get) => ({
   populateFriends: (friends) => {
     const _set = get()._set;
 
-    friends.forEach((friend) => {
+    friends?.forEach((friend) => {
       _set.set(friend.accountId, friend);
     });
 

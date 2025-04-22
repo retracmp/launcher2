@@ -40,7 +40,7 @@ const LoginPage = () => {
           .trim();
         userManager.login(token);
         navigate({
-          to: "/app",
+          to: "/app/home",
         });
         getCurrentWindow().requestUserAttention(UserAttentionType.Critical);
         getCurrentWindow().setFocus();
@@ -59,7 +59,7 @@ const LoginPage = () => {
   useEffect(() => {
     if (userManager.access()) {
       navigate({
-        to: "/app",
+        to: "/app/home",
       });
     }
   }, [userManager._token]);

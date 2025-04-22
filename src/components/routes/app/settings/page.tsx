@@ -7,6 +7,7 @@ import {
   IoFolderOpenSharp,
   IoGridSharp,
   IoMapSharp,
+  IoRocketSharp,
 } from "react-icons/io5";
 
 const SettingsPage = () => {
@@ -59,6 +60,16 @@ const SettingsPage = () => {
         <UI.P className="text-neutral-500 absolute top-[-0.5rem] bg-neutral-900 px-1">
           Gameplay Tweaks
         </UI.P>
+
+        <div className="relative flex flex-col p-2 py-1.5 gap-[0.1rem] w-[100%] bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid overflow-hidden">
+          <span className="flex flex-row items-center gap-1 font-[500] text-neutral-300 text-[1rem] leading-5">
+            <IoRocketSharp className="text-purple-300" />
+            Simple Edit
+          </span>
+          <span className="text-sm font-[400] text-neutral-500 leading-4">
+            Edit at lightning speed, exactly like latest Fortnite.
+          </span>
+        </div>
 
         <div className="relative flex flex-col p-2 py-1.5 gap-[0.1rem] w-[100%] bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid overflow-hidden">
           <span className="flex flex-row items-center gap-1 font-[500] text-neutral-300 text-[1rem] leading-5">

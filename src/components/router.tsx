@@ -37,7 +37,7 @@ export const appContainer = rr.createRoute({
   getParentRoute: () => rootRoute,
   component: () => <AppContainer />,
   path: "/app",
-  notFoundComponent: () => <rr.Navigate to="/app" />,
+  notFoundComponent: () => <rr.Navigate to="/app/home" />,
   errorComponent: (props) => (
     <div className="flex flex-col p-2 gap-2">
       <div className="flex flex-col p-2 border-1 border-solid border-[#2e2e2e] rounded-xs w-full max-w-full overflow-auto">

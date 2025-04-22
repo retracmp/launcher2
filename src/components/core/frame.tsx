@@ -31,7 +31,7 @@ const Frame = () => {
 
     if (userManager._stage === LauncherStage.AllGood) {
       navigate({
-        to: "/app",
+        to: "/app/home",
       });
     }
   }, [userManager._stage]);
