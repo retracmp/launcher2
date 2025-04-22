@@ -40,9 +40,13 @@ const Frame = () => {
     <main
       className="flex flex-row w-full h-full bg-neutral-900 max-w-[100dvw] max-h-[100dvh] overflow-hidden"
       data-tauri-drag-region
-      style={{
-        marginTop: application.windowsVersion >= 22000 ? "0px" : "1px",
-      }}
+      style={
+        application.windowsVersion >= 22000
+          ? {}
+          : {
+              borderTop: "1px solid #303030",
+            }
+      }
     >
       <Drawer />
 

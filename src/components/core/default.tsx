@@ -131,7 +131,6 @@ namespace UI {
       >
         {props.loadAfterClick && clicked[0] ? (
           <>
-            z
             <LoadingSpinner />
             {props.loadAfterClickText}
           </>

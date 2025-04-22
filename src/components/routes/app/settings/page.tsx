@@ -1,18 +1,17 @@
 import { useApplicationInformation } from "src/wrapper/tauri";
 import { useUserManager } from "src/wrapper/user";
+import { useOptions } from "src/wrapper/options";
 
 import UI from "src/components/core/default";
 import {
-  IoCodeDownloadSharp,
-  IoFolderOpenSharp,
-  IoGridSharp,
-  IoMapSharp,
-  IoRocketSharp,
-} from "react-icons/io5";
+  BooleanOption,
+  StringOption,
+} from "src/components/routes/app/settings/option";
 
 const SettingsPage = () => {
   const application = useApplicationInformation();
   const user = useUserManager();
+  const options = useOptions();
 
   return (
     <>
@@ -32,26 +31,32 @@ const SettingsPage = () => {
           Network
         </UI.P>
 
-        <div className="relative flex flex-col p-2 py-1.5 gap-[0.1rem] w-[100%] bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid overflow-hidden">
-          <span className="flex flex-row items-center gap-1 font-[500] text-neutral-300 text-[1rem] leading-5">
-            <IoCodeDownloadSharp className="text-blue-300" />
-            Auto Download
-          </span>
-          <span className="text-sm font-[400] text-neutral-500 leading-4">
-            Any new content patches will be downloaded and installed
-            <b> automatically</b>.
-          </span>
-        </div>
+        <BooleanOption
+          title="Auto Download"
+          description={
+            <>
+              Any new content patches will be downloaded and installed{" "}
+              <b>automatically</b>.
+            </>
+          }
+          state={options.auto_download}
+          set={options.set_auto_download}
+          icon="IoCodeDownloadSharp"
+          colour="blue"
+        />
 
-        <div className="relative flex flex-col p-2 py-1.5 gap-[0.1rem] w-[100%] bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid overflow-hidden">
-          <span className="flex flex-row items-center gap-1 font-[500] text-neutral-300 text-[1rem] leading-5">
-            <IoFolderOpenSharp className="text-orange-300" />
-            Content Directory
-          </span>
-          <span className="text-sm font-[400] text-neutral-500 leading-4">
-            The path that all builds will be <b>downloaded</b> into.
-          </span>
-        </div>
+        <StringOption
+          title="Content Directory"
+          description={
+            <>
+              The path that all builds will be <b>downloaded</b> into.
+            </>
+          }
+          state={options.content_directory}
+          set={options.set_content_directory}
+          icon="IoFolderOpenSharp"
+          colour="orange"
+        />
 
         <span></span>
       </div>
@@ -61,35 +66,36 @@ const SettingsPage = () => {
           Gameplay Tweaks
         </UI.P>
 
-        <div className="relative flex flex-col p-2 py-1.5 gap-[0.1rem] w-[100%] bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid overflow-hidden">
-          <span className="flex flex-row items-center gap-1 font-[500] text-neutral-300 text-[1rem] leading-5">
-            <IoRocketSharp className="text-purple-300" />
-            Simple Edit
-          </span>
-          <span className="text-sm font-[400] text-neutral-500 leading-4">
-            Edit at lightning speed, exactly like latest Fortnite.
-          </span>
-        </div>
+        <BooleanOption
+          title="Simple Edit"
+          description={
+            <>Edit at lightning speed, exactly like latest Fortnite.</>
+          }
+          state={options.simple_edit}
+          set={options.set_simple_edit}
+          icon="IoRocketSharp"
+          colour="purple"
+        />
 
-        <div className="relative flex flex-col p-2 py-1.5 gap-[0.1rem] w-[100%] bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid overflow-hidden">
-          <span className="flex flex-row items-center gap-1 font-[500] text-neutral-300 text-[1rem] leading-5">
-            <IoGridSharp className="text-yellow-100" />
-            Disable Pre-Edits
-          </span>
-          <span className="text-sm font-[400] text-neutral-500 leading-4">
-            Prevent accidental pre-edits when building.
-          </span>
-        </div>
+        <BooleanOption
+          title="Disable Pre-Edits"
+          description={<>Prevent accidental pre-edits when building.</>}
+          state={options.disable_pre_edits}
+          set={options.set_disable_pre_edits}
+          icon="IoGridSharp"
+          colour="red"
+        />
 
-        <div className="relative flex flex-col p-2 py-1.5 gap-[0.1rem] w-[100%] bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid overflow-hidden">
-          <span className="flex flex-row items-center gap-1 font-[500] text-neutral-300 text-[1rem] leading-5">
-            <IoMapSharp className="text-neutral-500" />
-            Reset on Release
-          </span>
-          <span className="text-sm font-[400] text-neutral-500 leading-4">
-            Reset builds on the release of a key, improves editing speed.
-          </span>
-        </div>
+        <BooleanOption
+          title="Reset on Release"
+          description={
+            <>Reset builds on the release of a key, improves editing speed.</>
+          }
+          state={options.reset_on_release}
+          set={options.set_reset_on_release}
+          icon="IoMapSharp"
+          colour="pink"
+        />
       </div>
 
       <div className="flex flex-col gap-1.5 p-2">
