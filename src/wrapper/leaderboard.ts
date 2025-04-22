@@ -4,6 +4,8 @@ type LeaderboardState = {
   _set: Map<string, LeaderboardEntry[][]>;
   _setMe: Map<string, LeaderboardEntry>;
   activeSortedBy: "eliminations" | "points" | "hype";
+  setSortedBy: (sortedBy: "eliminations" | "points" | "hype") => void;
+
   _pageInfo: LeaderboardPageInfo;
   setPageInfo: (pageInfo: LeaderboardPageInfo) => void;
 
@@ -56,6 +58,9 @@ export const useLeaderboard = create<LeaderboardState>((set, get) => ({
   _set: new Map(),
   _setMe: new Map(),
   activeSortedBy: "eliminations",
+  setSortedBy: (sortedBy) => {
+    set({ activeSortedBy: sortedBy });
+  },
   populateLeaderboard: (type, leaderboard, page) => {
     const _set = get()._set;
     let currentLeaderboard = _set.get(type);

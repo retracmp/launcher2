@@ -49,7 +49,11 @@ const LeaderboardPage = () => {
         sortBy: leaderboard.activeSortedBy,
       },
     } as Omit<SocketUpEventDataFromType<"request_leaderboard">, "version">);
-  }, [leaderboard._page, options.leaderboard_page_size]);
+  }, [
+    leaderboard._page,
+    options.leaderboard_page_size,
+    leaderboard.activeSortedBy,
+  ]);
 
   const currentLeaderboard = leaderboard.getLeaderboard(
     leaderboard.activeSortedBy,
@@ -107,10 +111,24 @@ const LeaderboardPage = () => {
               Display Name
             </UI.P>
             <span className="ml-auto"></span>
-            <UI.P className="flex items-center justify-center py-1.5 min-w-16 w-16 border-[#2e2e2e] border-l-[1px] border-solid text-neutral-500">
+            <UI.P
+              className={`flex items-center justify-center py-1.5 min-w-16 w-16 border-[#2e2e2e] border-l-[1px] border-solid cursor-pointer ${
+                leaderboard.activeSortedBy === "eliminations"
+                  ? "font-[600]"
+                  : "text-neutral-500"
+              }`}
+              onClick={() => leaderboard.setSortedBy("eliminations")}
+            >
               Kills
             </UI.P>
-            <UI.P className="flex items-center justify-center py-1.5 min-w-16 w-16 border-[#2e2e2e] border-l-[1px] border-solid text-neutral-500">
+            <UI.P
+              className={`flex items-center justify-center py-1.5 min-w-16 w-16 border-[#2e2e2e] border-l-[1px] border-solid cursor-pointer ${
+                leaderboard.activeSortedBy === "points"
+                  ? "font-[600]"
+                  : "text-neutral-500"
+              }`}
+              onClick={() => leaderboard.setSortedBy("points")}
+            >
               Wins
             </UI.P>
           </div>
