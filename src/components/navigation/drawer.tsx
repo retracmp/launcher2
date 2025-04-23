@@ -2,13 +2,14 @@ import { useApplicationInformation } from "src/wrapper/tauri";
 import { useUserManager } from "src/wrapper/user";
 
 import DrawerItem, { SparklyDrawerItem } from "src/components/navigation/item";
+import { motion } from "motion/react";
 
 const Drawer = () => {
   const application = useApplicationInformation();
   const userManager = useUserManager();
 
   return (
-    <nav
+    <motion.nav
       className="flex flex-col items-center gap-1 p-1.5 h-full w-12 border-r-[#2e2e2e] border-r-1 border-solid"
       // className="flex flex-col items-center gap-1 p-1.5 h-full w-42 border-r-[#2e2e2e] border-r-1 border-solid"
     >
@@ -21,7 +22,7 @@ const Drawer = () => {
           label="Developer"
         />
       )}
-    </nav>
+    </motion.nav>
   );
 };
 

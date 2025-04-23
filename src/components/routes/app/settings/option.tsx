@@ -36,7 +36,9 @@ type OptionProps<T extends AllowedOptionTypes> = {
 };
 
 const Option = <T extends AllowedOptionTypes>(props: OptionProps<T>) => {
-  const Icon = (props.icon ? Icons[props.icon] : <></>) as React.ElementType;
+  const Icon = (
+    props.icon != null ? Icons[props.icon] : null
+  ) as React.ElementType | null;
 
   const isString = typeof props.state === "string";
   const isBoolean = typeof props.state === "boolean";
@@ -46,16 +48,19 @@ const Option = <T extends AllowedOptionTypes>(props: OptionProps<T>) => {
   return (
     <div className="relative flex flex-col p-2.5 py-2 gap-0.5 w-[100%] bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid overflow-hidden">
       <span className="flex flex-row items-center gap-1 font-[500] text-neutral-300 text-[1rem] leading-5">
-        <Icon
-          style={{
-            color: props.colour
-              ? `var(--color-${props.colour}-300) !important`
-              : "",
-            fill: props.colour
-              ? `var(--color-${props.colour}-300) !important`
-              : "",
-          }}
-        />
+        {Icon && (
+          <Icon
+            style={{
+              color: props.colour
+                ? `var(--color-${props.colour}-300) !important`
+                : "",
+              fill: props.colour
+                ? `var(--color-${props.colour}-300) !important`
+                : "",
+            }}
+          />
+        )}
+
         {props.title}
       </span>
       <span className="text-sm font-[400] text-neutral-500 leading-4">

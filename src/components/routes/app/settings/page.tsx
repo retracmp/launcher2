@@ -84,8 +84,6 @@ const SettingsPage = () => {
           }
           state={options.simple_edit}
           set={options.set_simple_edit}
-          icon="IoRocketSharp"
-          colour="red"
         />
 
         <BooleanOption
@@ -93,8 +91,6 @@ const SettingsPage = () => {
           description={<>Prevent accidental pre-edits when building.</>}
           state={options.disable_pre_edits}
           set={options.set_disable_pre_edits}
-          icon="IoGridSharp"
-          colour="red"
         />
 
         <BooleanOption
@@ -104,25 +100,10 @@ const SettingsPage = () => {
           }
           state={options.reset_on_release}
           set={options.set_reset_on_release}
-          icon="IoMapSharp"
-          colour="red"
         />
       </OptionGroup>
 
       <OptionGroup title="Client Preferences" _last>
-        <NumberOption
-          title="Leaderboard Page Size"
-          description={
-            <>Changes how many players are shown on the leaderboard per page.</>
-          }
-          state={options.leaderboard_page_size}
-          set={(num) => {
-            options.set_leaderboard_page_size(Math.max(1, Math.min(num, 100)));
-          }}
-          icon="IoList"
-          colour="purple"
-        />
-
         <StringOption
           title="Theme"
           description={
@@ -132,6 +113,24 @@ const SettingsPage = () => {
           set={() => {}}
           icon="IoColorPaletteSharp"
           colour="purple"
+        />
+
+        <BooleanOption
+          title="Wide Sidebar"
+          description={<>Makes the navigation drawer wider, showing labels.</>}
+          state={options.wide_drawer}
+          set={options.set_wide_drawer}
+        />
+
+        <NumberOption
+          title="Leaderboard Page Size"
+          description={
+            <>Changes how many players are shown on the leaderboard per page.</>
+          }
+          state={options.leaderboard_page_size}
+          set={(num) => {
+            options.set_leaderboard_page_size(Math.max(1, Math.min(num, 100)));
+          }}
         />
       </OptionGroup>
 

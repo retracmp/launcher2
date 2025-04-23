@@ -17,6 +17,9 @@ type OptionsState = {
   reset_on_release: boolean;
   set_reset_on_release: (value: boolean) => void;
 
+  wide_drawer: boolean;
+  set_wide_drawer: (value: boolean) => void;
+
   leaderboard_page_size: number;
   set_leaderboard_page_size: (value: number) => void;
 };
@@ -40,6 +43,9 @@ export const useOptions = create<OptionsState>()(
 
       reset_on_release: false,
       set_reset_on_release: (value) => set(() => ({ reset_on_release: value })),
+
+      wide_drawer: false,
+      set_wide_drawer: (value) => set(() => ({ wide_drawer: value })),
 
       leaderboard_page_size: 10,
       set_leaderboard_page_size: (value) =>
