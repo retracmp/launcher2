@@ -5,6 +5,12 @@ type OptionsState = {
   auto_download: boolean;
   set_auto_download: (value: boolean) => void;
 
+  limit_download_speed: boolean;
+  set_limit_download_speed: (value: boolean) => void;
+
+  megabyte_download_limit: number;
+  set_megabyte_download_limit: (value: number) => void;
+
   content_directory: string;
   set_content_directory: (value: string) => void;
 
@@ -32,6 +38,14 @@ export const useOptions = create<OptionsState>()(
     (set) => ({
       auto_download: true,
       set_auto_download: (value) => set(() => ({ auto_download: value })),
+
+      limit_download_speed: false,
+      set_limit_download_speed: (value) =>
+        set(() => ({ limit_download_speed: value })),
+
+      megabyte_download_limit: 512,
+      set_megabyte_download_limit: (value) =>
+        set(() => ({ megabyte_download_limit: value })),
 
       content_directory: "",
       set_content_directory: (value) =>

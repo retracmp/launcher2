@@ -62,6 +62,31 @@ const SettingsPage = () => {
           colour="blue"
         />
 
+        <BooleanOption
+          title="Limit Download Speed"
+          description={
+            <>Limit the download speed to a certain amount of bandwidth.</>
+          }
+          state={options.limit_download_speed}
+          set={options.set_limit_download_speed}
+        />
+
+        {options.limit_download_speed && (
+          <NumberOption
+            title="Download Limit"
+            description={
+              <>
+                The maximum amount of bandwidth that can be used for downloads.
+              </>
+            }
+            state={options.megabyte_download_limit}
+            set={options.set_megabyte_download_limit}
+            _number_extra_text="MB/s"
+            _number_min={0}
+            _number_max={5120}
+          />
+        )}
+
         <FileOption
           title="Content Directory"
           description={
@@ -140,6 +165,8 @@ const SettingsPage = () => {
           set={(num) => {
             options.set_leaderboard_page_size(Math.max(1, Math.min(num, 100)));
           }}
+          _number_max={100}
+          _number_min={1}
         />
       </OptionGroup>
 

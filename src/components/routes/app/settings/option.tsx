@@ -33,6 +33,9 @@ type OptionProps<T extends AllowedOptionTypes> = {
     | "rose";
 
   _is_file_override?: boolean;
+  _number_extra_text?: string;
+  _number_min?: number;
+  _number_max?: number;
 };
 
 const Option = <T extends AllowedOptionTypes>(props: OptionProps<T>) => {
@@ -84,6 +87,9 @@ const Option = <T extends AllowedOptionTypes>(props: OptionProps<T>) => {
           <ControlStateNumber
             state={props.state as number}
             set={props.set as (state: number) => void}
+            _number_extra_text={props._number_extra_text}
+            _number_min={props._number_min}
+            _number_max={props._number_max}
           />
         )}
         {isFile && (
@@ -100,12 +106,15 @@ const Option = <T extends AllowedOptionTypes>(props: OptionProps<T>) => {
 type ControlStateProps<T extends AllowedOptionTypes> = {
   state: T;
   set: (state: T) => void;
+  _number_extra_text?: string;
+  _number_min?: number;
+  _number_max?: number;
 };
 
 const ControlStateBoolean = (props: ControlStateProps<boolean>) => {
   return props.state ? (
     <div
-      className="absolute right-2 top-[50%] bg-green-700/40 w-7 h-7 rounded-sm flex items-center justify-center cursor-pointer border-1 border-solid border-green-500/20 hover:bg-green-800/50 active:scale-[0.97]"
+      className="absolute right-2 top-[50%] bg-green-700/40 w-7 h-7 rounded-sm flex items-center justify-center cursor-pointer border-1 border-solid border-green-500/20 hover:bg-green-800/50 active:scale-[0.97] backdrop-blur-lg"
       style={{
         transform: "translateY(-50%)",
       }}
@@ -115,7 +124,7 @@ const ControlStateBoolean = (props: ControlStateProps<boolean>) => {
     </div>
   ) : (
     <div
-      className="absolute right-2 top-[50%] bg-neutral-800/50 w-7 h-7 rounded-sm flex items-center justify-center cursor-pointer border-1 border-solid border-neutral-500/20 hover:bg-neutral-800/20 active:scale-[0.98]"
+      className="absolute right-2 top-[50%] bg-neutral-800/50 w-7 h-7 rounded-sm flex items-center justify-center cursor-pointer border-1 border-solid border-neutral-500/20 hover:bg-neutral-800/20 active:scale-[0.98] backdrop-blur-lg"
       style={{
         transform: "translateY(-50%)",
       }}
@@ -201,22 +210,22 @@ const ControlStateFile = (props: ControlStateProps<string>) => {
   );
 };
 
-const ControlStateNumber = (_: ControlStateProps<number>) => {
+const ControlStateNumber = (props: ControlStateProps<number>) => {
   const onFocusLost = (e: React.FocusEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value);
     if (isNaN(value)) {
       e.target.value = "0";
       return;
     }
-    if (value < 0) {
-      e.target.value = "0";
+    if (value < (props._number_min ?? 0)) {
+      e.target.value = props._number_min?.toString() ?? "0";
       return;
     }
-    if (value > 100) {
-      e.target.value = "100";
+    if (value > (props._number_max ?? Infinity)) {
+      e.target.value = props._number_max?.toString() ?? "Infinity";
       return;
     }
-    _.set(value);
+    props.set(value);
   };
 
   return (
@@ -224,17 +233,30 @@ const ControlStateNumber = (_: ControlStateProps<number>) => {
       className="absolute right-2 top-[50%] flex flex-row-reverse items-center gap-1.5"
       style={{ transform: "translateY(-50%)" }}
     >
-      <input
-        type="number"
-        className="bg-[#242424] h-7 p-[5px] pr-2 pl-2 rounded-sm border-1 border-solid border-neutral-500/20 hover:bg-[#222222] text-neutral-300 font-code outline-none"
-        value={_.state}
-        onChange={(e) => _.set(parseFloat(e.target.value))}
-        step={1}
-        min={0}
-        max={100}
-        onFocus={(e) => e.target.select()}
-        onBlur={onFocusLost}
-      />
+      <div
+        className="bg-[#242424] h-6 py-4 px-2 rounded-sm border-1 border-solid border-neutral-500/20 hover:bg-[#222222] text-neutral-300 font-code max-w-min"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <input
+          type="number"
+          className="text-neutral-300 outline-none text-sm"
+          value={props.state}
+          onChange={(e) => props.set(parseFloat(e.target.value))}
+          step={1}
+          min={props._number_min ?? 0}
+          max={props._number_max ?? Infinity}
+          onFocus={(e) => e.target.select()}
+          onBlur={onFocusLost}
+        />
+
+        <span className="text-neutral-500 text-xs font-code whitespace-nowrap">
+          {props._number_extra_text}
+        </span>
+      </div>
     </div>
   );
 };

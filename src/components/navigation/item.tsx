@@ -32,7 +32,7 @@ const DrawerItem = (props: DrawerItemProps) => {
       <motion.span
         className="text-sm leading-[15px] min-w-fit"
         initial={{
-          opacity: options.wide_drawer ? 0 : 1,
+          opacity: 0,
         }}
         animate={{
           opacity: options.wide_drawer ? 1 : 0,
