@@ -31,7 +31,7 @@ const LeaderboardItem = (props: LeaderboardItemProps) => {
   const styledPositionClass =
     (() => {
       for (const [key, value] of Object.entries(styledPosition)) {
-        if (props.position <= Number(key)) {
+        if (props.leaderboardItem.position <= Number(key)) {
           return value;
         }
       }

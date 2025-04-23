@@ -260,9 +260,9 @@ type OptionGroupProps = {
 const OptionGroup = (props: OptionGroupProps) => {
   return (
     <div
-      className={`relative flex flex-col gap-2 p-2.5 border-[#2e2e2e] border-b-[1px] border-solid py-4 ${
+      className={`relative flex flex-col gap-2 p-2.5 border-[#2e2e2e] border-b-[1px] border-solid py-3.5 ${
         props._last ? "pb-3" : ""
-      } ${props._first ? "pt-3" : ""}`}
+      } ${props._first ? "pt-2.5" : ""}`}
     >
       {!!props.title && (
         <UI.P className="text-neutral-500 absolute top-[-0.5rem] bg-neutral-900 px-1">
