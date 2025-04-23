@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { useSocket } from "src/socket";
 import { useFriends } from "src/wrapper/friends";
 import { useUserManager } from "src/wrapper/user";
+import { useOptions } from "src/wrapper/options";
 
 import { IoPersonAddSharp, IoPersonSharp } from "react-icons/io5";
 
 const FriendsList = () => {
   const socket = useSocket();
+  const options = useOptions();
 
   const friends = useFriends();
   const user = useUserManager();
@@ -34,6 +36,8 @@ const FriendsList = () => {
       socket.unbind("friend_infos", onSocketRecieveFriendInfo);
     };
   }, [socket._socket, user._user]);
+
+  if (!options.show_friends) return null;
 
   return (
     <div className="no-scroll flex flex-col p-2 gap-2 h-full w-[58px] bg-[#191919] border-l-[#2e2e2e] border-l-1 border-solid overflow-y-auto overflow-x-hidden">

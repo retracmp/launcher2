@@ -1,5 +1,6 @@
 import { useApplicationInformation } from "src/wrapper/tauri";
 import { useUserManager } from "src/wrapper/user";
+import { useOptions } from "src/wrapper/options";
 
 import DrawerItem, { SparklyDrawerItem } from "src/components/navigation/item";
 import { motion } from "motion/react";
@@ -7,11 +8,14 @@ import { motion } from "motion/react";
 const Drawer = () => {
   const application = useApplicationInformation();
   const userManager = useUserManager();
+  const options = useOptions();
 
   return (
     <motion.nav
       className="flex flex-col items-center gap-1 p-1.5 h-full w-12 border-r-[#2e2e2e] border-r-1 border-solid"
-      // className="flex flex-col items-center gap-1 p-1.5 h-full w-42 border-r-[#2e2e2e] border-r-1 border-solid"
+      initial={{ width: 48 }}
+      animate={{ width: options.wide_drawer ? 192 : 48 }}
+      transition={{ type: "spring", stiffness: 200, damping: 25 }}
     >
       {!userManager.access() ? <EmptyRoutes /> : <AuthenticatedRoutes />}
 

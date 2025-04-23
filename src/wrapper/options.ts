@@ -20,6 +20,9 @@ type OptionsState = {
   wide_drawer: boolean;
   set_wide_drawer: (value: boolean) => void;
 
+  show_friends: boolean;
+  set_show_friends: (value: boolean) => void;
+
   leaderboard_page_size: number;
   set_leaderboard_page_size: (value: number) => void;
 };
@@ -27,7 +30,7 @@ type OptionsState = {
 export const useOptions = create<OptionsState>()(
   persist(
     (set) => ({
-      auto_download: false,
+      auto_download: true,
       set_auto_download: (value) => set(() => ({ auto_download: value })),
 
       content_directory: "",
@@ -46,6 +49,9 @@ export const useOptions = create<OptionsState>()(
 
       wide_drawer: false,
       set_wide_drawer: (value) => set(() => ({ wide_drawer: value })),
+
+      show_friends: true,
+      set_show_friends: (value) => set(() => ({ show_friends: value })),
 
       leaderboard_page_size: 10,
       set_leaderboard_page_size: (value) =>

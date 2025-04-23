@@ -122,6 +122,15 @@ const SettingsPage = () => {
           set={options.set_wide_drawer}
         />
 
+        <BooleanOption
+          title="Friends List"
+          description={
+            <>Show your friends and their activity on the right sidebar.</>
+          }
+          state={options.show_friends}
+          set={options.set_show_friends}
+        />
+
         <NumberOption
           title="Leaderboard Page Size"
           description={
