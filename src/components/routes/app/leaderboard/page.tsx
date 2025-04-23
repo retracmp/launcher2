@@ -90,6 +90,10 @@ const LeaderboardPage = () => {
               _me
             />
           )}
+
+          {!currentMe && (
+            <EmptyLeaderboardItem key="empty-me" position={1} _last />
+          )}
         </div>
 
         <span></span>
