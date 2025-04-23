@@ -219,11 +219,11 @@ const ControlStateNumber = (props: ControlStateProps<number>) => {
     }
     if (value < (props._number_min ?? 0)) {
       e.target.value = props._number_min?.toString() ?? "0";
-      return;
+      return props.set(props._number_min ?? 0);
     }
     if (value > (props._number_max ?? Infinity)) {
       e.target.value = props._number_max?.toString() ?? "Infinity";
-      return;
+      return props.set(props._number_max ?? Infinity);
     }
     props.set(value);
   };
