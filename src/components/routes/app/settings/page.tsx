@@ -8,8 +8,8 @@ import {
   FileOption,
   NumberOption,
   StringOption,
+  OptionGroup,
 } from "src/components/routes/app/settings/option";
-import React from "react";
 import { IoLogOutSharp } from "react-icons/io5";
 
 const SettingsPage = () => {
@@ -24,8 +24,19 @@ const SettingsPage = () => {
       <InvisibleItem className="text-purple-300" />
       <InvisibleItem className="text-red-300" />
       <InvisibleItem className="text-pink-300" />
+      <InvisibleItem className="text-teal-300" />
+      <InvisibleItem className="text-green-300" />
+      <InvisibleItem className="text-slate-300" />
+      <InvisibleItem className="text-gray-300" />
+      <InvisibleItem className="text-indigo-300" />
+      <InvisibleItem className="text-neutral-300" />
+      <InvisibleItem className="text-emerald-300" />
+      <InvisibleItem className="text-lime-300" />
+      <InvisibleItem className="text-rose-300" />
+      <InvisibleItem className="text-violet-300" />
 
-      <div className="flex flex-col gap-1.5 p-2.5 border-[#2e2e2e] border-b-[1px] border-solid pb-[0.85rem]">
+      {/* <div className="flex flex-col gap-1.5 p-2.5 border-[#2e2e2e] border-b-[1px] border-solid pb-[0.85rem]"> */}
+      <OptionGroup _first>
         <div className="flex flex-col gap-[0.2rem]">
           <UI.H1 className="font-[300] text-neutral-300">
             Settings & Options
@@ -34,13 +45,9 @@ const SettingsPage = () => {
             Customize your Retrac experience here.
           </UI.P>
         </div>
-      </div>
+      </OptionGroup>
 
-      <div className="relative flex flex-col gap-2 p-2.5 border-[#2e2e2e] border-b-[1px] border-solid py-[0.85rem]">
-        <UI.P className="text-neutral-500 absolute top-[-0.5rem] bg-neutral-900 px-1">
-          Network
-        </UI.P>
-
+      <OptionGroup title="Network">
         <BooleanOption
           title="Auto Download"
           description={
@@ -67,13 +74,9 @@ const SettingsPage = () => {
           icon="IoFolderOpenSharp"
           colour="orange"
         />
-      </div>
+      </OptionGroup>
 
-      <div className="relative flex flex-col gap-2 p-2.5 border-[#2e2e2e] border-b-[1px] border-solid py-[0.85rem]">
-        <UI.P className="text-neutral-500 absolute top-[-0.5rem] bg-neutral-900 px-1">
-          Gameplay Tweaks
-        </UI.P>
-
+      <OptionGroup title="Gameplay Tweaks">
         <BooleanOption
           title="Simple Edit"
           description={
@@ -82,7 +85,7 @@ const SettingsPage = () => {
           state={options.simple_edit}
           set={options.set_simple_edit}
           icon="IoRocketSharp"
-          colour="purple"
+          colour="red"
         />
 
         <BooleanOption
@@ -102,15 +105,11 @@ const SettingsPage = () => {
           state={options.reset_on_release}
           set={options.set_reset_on_release}
           icon="IoMapSharp"
-          colour="pink"
+          colour="red"
         />
-      </div>
+      </OptionGroup>
 
-      <div className="relative flex flex-col gap-2 p-2.5 border-[#2e2e2e] border-b-[1px] border-solid py-[0.85rem]">
-        <UI.P className="text-neutral-500 absolute top-[-0.5rem] bg-neutral-900 px-1">
-          Client Preferences
-        </UI.P>
-
+      <OptionGroup title="Client Preferences" _last>
         <NumberOption
           title="Leaderboard Page Size"
           description={
@@ -132,9 +131,9 @@ const SettingsPage = () => {
           state={""}
           set={() => {}}
           icon="IoColorPaletteSharp"
-          colour="red"
+          colour="purple"
         />
-      </div>
+      </OptionGroup>
 
       <div className="flex flex-col gap-1.5 p-2">
         <div className="relative flex flex-col w-[100%] overflow-hidden">

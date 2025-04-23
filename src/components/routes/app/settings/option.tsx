@@ -14,7 +14,23 @@ type OptionProps<T extends AllowedOptionTypes> = {
   state: T;
   set: (state: T) => void;
   icon?: keyof typeof Icons;
-  colour?: "red" | "blue" | "green" | "yellow" | "pink" | "purple" | "orange";
+  colour?:
+    | "red"
+    | "blue"
+    | "green"
+    | "yellow"
+    | "pink"
+    | "purple"
+    | "orange"
+    | "gray"
+    | "teal"
+    | "indigo"
+    | "slate"
+    | "neutral"
+    | "violet"
+    | "emerald"
+    | "lime"
+    | "rose";
 
   _is_file_override?: boolean;
 };
@@ -28,7 +44,7 @@ const Option = <T extends AllowedOptionTypes>(props: OptionProps<T>) => {
   const isFile = props._is_file_override || props.state instanceof Object;
 
   return (
-    <div className="relative flex flex-col p-2 py-1.5 w-[100%] bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid overflow-hidden">
+    <div className="relative flex flex-col p-2.5 py-2 gap-0.5 w-[100%] bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid overflow-hidden">
       <span className="flex flex-row items-center gap-1 font-[500] text-neutral-300 text-[1rem] leading-5">
         <Icon
           style={{
@@ -234,4 +250,28 @@ const FileOption = (props: OptionProps<string>) => {
   return <Option {...props} _is_file_override />;
 };
 
-export { StringOption, BooleanOption, NumberOption, FileOption };
+type OptionGroupProps = {
+  title?: string;
+  children: React.ReactNode;
+  _first?: boolean;
+  _last?: boolean;
+};
+
+const OptionGroup = (props: OptionGroupProps) => {
+  return (
+    <div
+      className={`relative flex flex-col gap-2 p-2.5 border-[#2e2e2e] border-b-[1px] border-solid py-4 ${
+        props._last ? "pb-3" : ""
+      } ${props._first ? "pt-3" : ""}`}
+    >
+      {!!props.title && (
+        <UI.P className="text-neutral-500 absolute top-[-0.5rem] bg-neutral-900 px-1">
+          {props.title}
+        </UI.P>
+      )}
+      {props.children}
+    </div>
+  );
+};
+
+export { OptionGroup, StringOption, BooleanOption, NumberOption, FileOption };

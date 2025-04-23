@@ -33,23 +33,23 @@ const EmptyRoutes = () => {
 const AuthenticatedRoutes = () => {
   return (
     <>
-      <DrawerItem path="/app/home" icon="IoHomeSharp" label="home" />
-      <DrawerItem path="/app/shop" icon="IoPricetagsSharp" label="shop" />
+      <DrawerItem path="/app/home" icon="IoHomeSharp" label="Home" />
+      <DrawerItem path="/app/shop" icon="IoPricetagsSharp" label="Shop" />
       <DrawerItem
         path="/app/library"
         icon="IoFileTrayFullSharp"
         label="library"
       />
-      <DrawerItem path="/app/servers" icon="IoPulseSharp" label="servers" />
+      <DrawerItem path="/app/status" icon="IoPulseSharp" label="Status" />
       <DrawerItem
         path="/app/leaderboard"
         icon="IoTrophySharp"
-        label="leaderboard"
+        label="Leaderboard"
       />
       <SparklyDrawerItem
-        path="/app/donate"
+        path="/app/store"
         icon="IoSparklesSharp"
-        label="donate"
+        label="Store"
         colour="yellow"
       />
 
@@ -58,7 +58,7 @@ const AuthenticatedRoutes = () => {
       <DrawerItem
         path="/app/settings"
         icon="IoSettingsSharp"
-        label="settings"
+        label="Settings"
       />
     </>
   );

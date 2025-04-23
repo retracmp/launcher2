@@ -9,6 +9,10 @@ import AppContainer from "./routes/app";
 import RecentMatchesPage from "./routes/app/home/matches";
 import SettingsPage from "./routes/app/settings/page";
 import LeaderboardPage from "./routes/app/leaderboard/page";
+import LibraryPage from "./routes/app/library/page";
+import ShopPage from "./routes/app/shop/page";
+import StatusPage from "./routes/app/status/page";
+import StorePage from "./routes/app/store/page";
 
 export const rootRoute = rr.createRootRoute({
   component: () => <Frame />,
@@ -80,6 +84,30 @@ export const leaderboard = rr.createRoute({
   path: "/leaderboard",
 });
 
+export const library = rr.createRoute({
+  getParentRoute: () => appContainer,
+  component: () => <LibraryPage />,
+  path: "/library",
+});
+
+export const shop = rr.createRoute({
+  getParentRoute: () => appContainer,
+  component: () => <ShopPage />,
+  path: "/shop",
+});
+
+export const status = rr.createRoute({
+  getParentRoute: () => appContainer,
+  component: () => <StatusPage />,
+  path: "/status",
+});
+
+export const store = rr.createRoute({
+  getParentRoute: () => appContainer,
+  component: () => <StorePage />,
+  path: "/store",
+});
+
 const router = rr.createRouter({
   routeTree: rootRoute.addChildren([
     login,
@@ -88,6 +116,10 @@ const router = rr.createRouter({
       home.addChildren([recentMatches]),
       settings,
       leaderboard,
+      library,
+      shop,
+      status,
+      store,
     ]),
   ]),
 });
