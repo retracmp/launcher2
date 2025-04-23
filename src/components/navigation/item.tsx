@@ -11,7 +11,7 @@ type DrawerItemProps = {
 };
 
 const DrawerItemBaseClassName =
-  "ditem flex gap-2 items-center justify-start min-w-9 w-full h-9 min-h-9 px-[0.55rem] border-[1px] border-[#1f1f1f00] cursor-pointer transition-colors";
+  "ditem flex gap-2 items-center justify-start min-w-9 w-full h-9 min-h-9 px-[0.55rem] border-[1px] border-[#1f1f1f00] cursor-pointer transition-colors overflow-hidden";
 
 const DrawerItem = (props: DrawerItemProps) => {
   const options = useOptions();

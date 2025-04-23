@@ -5,6 +5,7 @@ import { useUserManager } from "src/wrapper/user";
 import { useOptions } from "src/wrapper/options";
 
 import { IoPersonAddSharp, IoPersonSharp } from "react-icons/io5";
+import { motion } from "motion/react";
 
 const FriendsList = () => {
   const socket = useSocket();
@@ -37,10 +38,25 @@ const FriendsList = () => {
     };
   }, [socket._socket, user._user]);
 
-  if (!options.show_friends) return null;
-
   return (
-    <div className="no-scroll flex flex-col p-2 gap-2 h-full w-[58px] bg-[#191919] border-l-[#2e2e2e] border-l-1 border-solid overflow-y-auto overflow-x-hidden">
+    <motion.div
+      className="no-scroll flex flex-col p-2 gap-2 h-full w-[58px] bg-[#191919] border-l-[#2e2e2e] border-l-1 border-solid overflow-y-auto overflow-x-hidden"
+      initial={{
+        width: options.show_friends ? 58 : 0,
+        paddingLeft: options.show_friends ? 8 : 0,
+        paddingRight: options.show_friends ? 8 : 0,
+        gap: options.show_friends ? 8 : 0,
+        opacity: options.show_friends ? 1 : 0,
+      }}
+      animate={{
+        width: options.show_friends ? 58 : 0,
+        paddingLeft: options.show_friends ? 8 : 0,
+        paddingRight: options.show_friends ? 8 : 0,
+        gap: options.show_friends ? 8 : 0,
+        opacity: options.show_friends ? 1 : 0,
+      }}
+      transition={{ type: "spring", stiffness: 200, damping: 25 }}
+    >
       {Array.from(friends._set).map((friend) => (
         <Friend key={friend[1].accountId} friend={friend[1]} />
       ))}
@@ -50,7 +66,7 @@ const FriendsList = () => {
           <IoPersonAddSharp className="text-[#4a4949] text-xl" />
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 
