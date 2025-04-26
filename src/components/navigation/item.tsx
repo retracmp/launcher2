@@ -1,4 +1,6 @@
+import { useRef } from "react";
 import { useOptions } from "src/wrapper/options";
+import { useHover } from "src/wrapper/hover";
 
 import * as rr from "@tanstack/react-router";
 import * as Icons from "react-icons/io5";
@@ -11,11 +13,33 @@ type DrawerItemProps = {
 };
 
 const DrawerItemBaseClassName =
-  "ditem flex gap-2 items-center justify-start min-w-9 w-full h-9 min-h-9 px-[0.55rem] border-[1px] border-[#1f1f1f00] cursor-pointer transition-colors overflow-hidden";
+  "ditem relative flex gap-2 items-center justify-start min-w-9 w-full h-9 min-h-9 px-[9px] border-[1px] border-[#1f1f1f00] cursor-pointer transition-colors";
 
 const DrawerItem = (props: DrawerItemProps) => {
+  const hover = useHover();
+  const parentRef = useRef<HTMLAnchorElement>(null);
+
   const options = useOptions();
   const Icon = Icons[props.icon];
+
+  const HoverComponent = () => {
+    return (
+      <div className="flex flex-row items-center p-1 px-2 rounded-sm bg-[#181818] border-[#2e2e2e] border-[1px] border-solid backdrop-blur-lg">
+        <span className="text-xs leading-[15px] min-w-fit mb-[1px] text-neutral-300/90">
+          {props.label}
+        </span>
+      </div>
+    );
+  };
+
+  const onHoverEntered = () => {
+    if (options.wide_drawer) return;
+    hover.set(parentRef.current, <HoverComponent />, props.label);
+  };
+  const onHoverExited = () => {
+    if (options.wide_drawer) return;
+    hover.close(props.label);
+  };
 
   return (
     <rr.Link
@@ -26,11 +50,15 @@ const DrawerItem = (props: DrawerItemProps) => {
         className:
           "bg-[#1f1f1f] bg-opacity-50 border-[#2e2e2e] hover:none border-1 text-white",
       }}
+      ref={parentRef}
+      activeOptions={{ exact: true }}
+      onMouseEnter={onHoverEntered}
+      onMouseLeave={onHoverExited}
     >
       <Icon className="min-w-4 min-h-4" />
 
       <motion.span
-        className="text-sm leading-[15px] min-w-fit"
+        className="text-sm leading-[15px] min-w-fit mb-[1px]"
         initial={{
           opacity: 0,
         }}
@@ -98,7 +126,7 @@ const SparklyDrawerItem = (props: SparklyDrawerItemProps) => {
       <Icon className="min-w-4 min-h-4" />
 
       <motion.span
-        className="text-sm leading-[15px] min-w-fit"
+        className="text-sm leading-[15px] min-w-fit mb-[1px]"
         initial={{
           opacity: options.wide_drawer ? 0 : 1,
         }}

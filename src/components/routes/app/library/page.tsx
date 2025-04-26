@@ -1,5 +1,6 @@
 import { OptionGroup } from "src/components/routes/app/settings/option";
 import UI from "src/components/core/default";
+import FortniteBuild from "./build";
 
 const LibraryPage = () => {
   return (
@@ -11,6 +12,10 @@ const LibraryPage = () => {
             Manage installed versions, update content patches and more.
           </UI.P>
         </div>
+      </OptionGroup>
+
+      <OptionGroup title="Installed Builds">
+        <FortniteBuild />
       </OptionGroup>
     </>
   );

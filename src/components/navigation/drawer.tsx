@@ -15,7 +15,7 @@ const Drawer = () => {
       className="flex flex-col items-center gap-1 p-1.5 h-full w-12 border-r-[#2e2e2e] border-r-1 border-solid"
       initial={{ width: 48 }}
       animate={{ width: options.wide_drawer ? 192 : 48 }}
-      transition={{ type: "spring", stiffness: 200, damping: 25 }}
+      transition={{ type: "spring", stiffness: 200, damping: 21 }}
     >
       {!userManager.access() ? <EmptyRoutes /> : <AuthenticatedRoutes />}
 

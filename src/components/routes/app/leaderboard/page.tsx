@@ -12,6 +12,7 @@ import {
 import LeaderboardItem, {
   EmptyLeaderboardItem,
 } from "src/components/routes/app/leaderboard/item";
+import { OptionGroup } from "../settings/option";
 
 const LeaderboardPage = () => {
   const socket = useSocket();
@@ -63,7 +64,7 @@ const LeaderboardPage = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-1.5 p-2.5 border-[#2e2e2e] border-b-[1px] border-solid">
+      <OptionGroup _first>
         <div className="flex flex-col gap-[0.2rem]">
           <UI.H1 className="font-[300] text-neutral-300">Leaderboard</UI.H1>
           <UI.P className="text-neutral-400">
@@ -71,9 +72,7 @@ const LeaderboardPage = () => {
             eliminations, or arena score.
           </UI.P>
         </div>
-
-        <span></span>
-      </div>
+      </OptionGroup>
 
       <div className="relative flex flex-col gap-1.5 p-2.5 pt-4 border-[#2e2e2e] border-b-[1px] border-solid">
         <UI.P className="text-neutral-500 absolute top-[-0.5rem] bg-neutral-900 px-1">

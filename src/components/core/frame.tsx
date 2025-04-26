@@ -10,7 +10,8 @@ import UI from "src/components/core/default";
 
 import Drawer from "src/components/navigation/drawer";
 import BannerRenderer from "src/components/banner/parent";
-import FriendsList from "../navigation/friends";
+import FriendsList from "src/components/navigation/friends";
+import HoverManager from "src/components/core/hover";
 
 const Frame = () => {
   const application = useApplicationInformation();
@@ -49,6 +50,7 @@ const Frame = () => {
       }
     >
       <Drawer />
+      <HoverManager />
 
       <div className="flex flex-1 flex-col max-w-full max-h-full overflow-hidden">
         <nav
