@@ -29,7 +29,7 @@ export const useHover = create<HoverState>((set) => ({
       parent,
       node,
       id: parentNode.id,
-      x: x + parent.offsetWidth + 4,
+      x: x + parent.offsetWidth + 10,
       y: y + parent.offsetHeight / 8,
     };
     set((state) => {

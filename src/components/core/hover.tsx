@@ -20,8 +20,8 @@ const HoverManager = () => {
               initial={{
                 x: node.x,
                 y: node.y,
-                opacity: 0,
-                scale: 0.8,
+                opacity: 0.8,
+                scale: 0.95,
               }}
               animate={{
                 x: node.x,
@@ -33,13 +33,8 @@ const HoverManager = () => {
               exit={{
                 x: node.x,
                 y: node.y,
+                scale: 0.9,
                 opacity: 0,
-              }}
-              transition={{
-                duration: 0.1,
-                type: "spring",
-                stiffness: 500,
-                damping: 24.5,
               }}
             >
               {node.node}

@@ -79,25 +79,25 @@ namespace UI {
 
   export const BUTTON_COLOURS = {
     neutral: [
-      "bg-neutral-500/20 border-neutral-500/20 border-1 border-solid min-w-max p-0.5 py-1 rounded-sm cursor-pointer text-neutral-300 font-inter text-[14px] text-base hover:bg-neutral-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-neutral-500/1s0 disabled:cursor-not-allowed",
+      "bg-neutral-500/20 border-neutral-500/20 border-1 border-solid min-w-max p-0.5 py-1 rounded-sm cursor-pointer text-neutral-300 font-inter text-[14px] text-base hover:bg-neutral-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-neutral-500/1s0 disabled:cursor-not-allowed outline-none",
     ],
     red: [
-      "bg-red-500/20 border-red-500/20 border-1 border-solid min-w-max p-0.5 py-1 rounded-sm cursor-pointer text-red-300 font-plex text-[14px] text-base hover:bg-red-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-red-500/20 disabled:cursor-not-allowed",
+      "bg-red-500/20 border-red-500/20 border-1 border-solid min-w-max p-0.5 py-1 rounded-sm cursor-pointer text-red-300 font-plex text-[14px] text-base hover:bg-red-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-red-500/20 disabled:cursor-not-allowed outline-none",
     ],
     green: [
-      "bg-green-500/20 border-green-500/20 border-1 border-solid min-w-max p-0.5 py-1 rounded-sm cursor-pointer text-green-400 font-plex text-[14px] text-base hover:bg-green-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-green-500/20 disabled:cursor-not-allowed",
+      "bg-green-500/20 border-green-500/20 border-1 border-solid min-w-max p-0.5 py-1 rounded-sm cursor-pointer text-green-400 font-plex text-[14px] text-base hover:bg-green-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-green-500/20 disabled:cursor-not-allowed outline-none",
     ],
     blue: [
-      "bg-blue-500/20 border-blue-500/20 border-1 border-solid min-w-max p-0.5 py-1 rounded-sm cursor-pointer text-blue-300 font-plex text-[14px] text-base hover:bg-blue-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-blue-500/20 disabled:cursor-not-allowed",
+      "bg-blue-500/20 border-blue-500/20 border-1 border-solid min-w-max p-0.5 py-1 rounded-sm cursor-pointer text-blue-300 font-plex text-[14px] text-base hover:bg-blue-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-blue-500/20 disabled:cursor-not-allowed outline-none",
     ],
     discord: [
-      "bg-[#5865f2]/20 border-[#5865f2]/20 border-1 border-solid min-w-max p-0.5 py-1 rounded-sm cursor-pointer text-neutral-300 font-plex text-[14px] text-base hover:bg-[#5865f2]/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-[#5865f2]/20 disabled:cursor-not-allowed",
+      "bg-[#5865f2]/20 border-[#5865f2]/20 border-1 border-solid min-w-max p-0.5 py-1 rounded-sm cursor-pointer text-neutral-300 font-plex text-[14px] text-base hover:bg-[#5865f2]/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-[#5865f2]/20 disabled:cursor-not-allowed outline-none",
     ],
     pink: [
-      "bg-fuchsia-500/20 border-fuchsia-500/20 border-1 border-solid min-w-max p-0.5 py-1 rounded-sm cursor-pointer text-fuchsia-300 font-plex text-[14px] text-base hover:bg-fuchsia-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-fuchsia-500/20 disabled:cursor-not-allowed",
+      "bg-fuchsia-500/20 border-fuchsia-500/20 border-1 border-solid min-w-max p-0.5 py-1 rounded-sm cursor-pointer text-fuchsia-300 font-plex text-[14px] text-base hover:bg-fuchsia-500/30 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-fuchsia-500/20 disabled:cursor-not-allowed outline-none",
     ],
     invisible: [
-      "bg-transparent border-neutral-500/20 border-1 border-solid min-w-max p-0.5 py-1 rounded-sm cursor-pointer text-neutral-300 font-plex text-[14px] text-base hover:bg-neutral-500/10 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-neutral-500/20 disabled:cursor-not-allowed",
+      "bg-transparent border-neutral-500/20 border-1 border-solid min-w-max p-0.5 py-1 rounded-sm cursor-pointer text-neutral-300 font-plex text-[14px] text-base hover:bg-neutral-500/10 flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-neutral-500/20 disabled:cursor-not-allowed outline-none",
     ],
   };
 

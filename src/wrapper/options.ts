@@ -31,6 +31,9 @@ type OptionsState = {
 
   leaderboard_page_size: number;
   set_leaderboard_page_size: (value: number) => void;
+
+  tiled_builds: boolean;
+  set_tiled_builds: (value: boolean) => void;
 };
 
 export const useOptions = create<OptionsState>()(
@@ -70,6 +73,9 @@ export const useOptions = create<OptionsState>()(
       leaderboard_page_size: 10,
       set_leaderboard_page_size: (value) =>
         set(() => ({ leaderboard_page_size: value })),
+
+      tiled_builds: true,
+      set_tiled_builds: (value) => set(() => ({ tiled_builds: value })),
     }),
     {
       name: "options",

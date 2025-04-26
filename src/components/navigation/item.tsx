@@ -24,7 +24,7 @@ const DrawerItem = (props: DrawerItemProps) => {
 
   const HoverComponent = () => {
     return (
-      <div className="flex flex-row items-center p-1 px-2 rounded-sm bg-[#181818] border-[#2e2e2e] border-[1px] border-solid backdrop-blur-lg">
+      <div className="flex flex-row items-center p-1 px-2 rounded-sm bg-[#181818] border-[#2e2e2e] border-[1px] border-solid overflow-hidden">
         <span className="text-xs leading-[15px] min-w-fit mb-[1px] text-neutral-300/90">
           {props.label}
         </span>

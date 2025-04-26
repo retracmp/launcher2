@@ -5,8 +5,14 @@ const get_windows_version = async () => {
   return version;
 };
 
+const get_fortnite_version = async (path: string) => {
+  const version = await i<string>("get_fortnite_version", { path });
+  return version;
+};
+
 const invoke = {
   get_windows_version,
+  get_fortnite_version,
 };
 
 export default invoke;
