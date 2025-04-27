@@ -2,6 +2,10 @@
 
 > The new game launcher for Retrac, an OG Fortnite Experience.
 
+<details>
+<summary>Looking for preview images?</summary>
+<br>
+
 `homepage so far`
 
 ![image](https://github.com/user-attachments/assets/40101c12-3baa-4ae2-a295-8c6c2aa5a634)
@@ -17,6 +21,8 @@
 `settings`
 
 ![image](https://github.com/user-attachments/assets/c57a3f6d-f2ce-4985-b751-bd50f5104e52)
+
+</details>
 
 ## main ideas
 
