@@ -112,7 +112,7 @@ const FortniteBuild = (props: FortniteBuildProps) => {
           </div>
 
           <motion.span
-            className={`ml-auto mt-auto text-xs ${
+            className={`absolute right-1 bottom-5 ml-auto mt-auto text-[11px] ${
               closingBuildIsCurrent ? "text-neutral-400" : "text-green-200/80"
             }`}
             initial={{ opacity: 0 }}

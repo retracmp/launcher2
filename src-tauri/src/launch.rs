@@ -4,7 +4,7 @@ pub struct LaunchOptions {
   pub anticheat_token: String,
   pub root: String,
   pub simple_edit: bool,
-  pub edit_on_release: bool,
+  pub disable_pre_edits: bool,
   pub reset_on_release: bool,
   pub launch_args: String,
 }

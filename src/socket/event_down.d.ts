@@ -25,6 +25,11 @@ type SocketDownEvent_RequestHeartbeat = SocketBasicDownEvent & {
   id: "request_heartbeat";
 };
 
+type SocketDownEvent_Code = SocketBasicDownEvent & {
+  id: "code";
+  code: string;
+};
+
 type SocketDownEvent_PlayerCount = SocketBasicDownEvent & {
   id: "player_count";
   count: number;
@@ -61,7 +66,8 @@ type SocketDownEvent =
   | SocketDownEvent_User
   | SocketDownEvent_FriendInfos
   | SocketDownEvent_Leaderboard
-  | SocketDownEvent_Usernames;
+  | SocketDownEvent_Usernames
+  | SocketDownEvent_Code;
 
 type SocketDownEventType = SocketDownEvent["id"];
 type SocketDownEventDataFromType<T extends SocketDownEventType> = Extract<
@@ -82,3 +88,4 @@ type user_test = SocketDownEventDataFromType<"user">;
 type friend_infos_test = SocketDownEventDataFromType<"friend_infos">;
 type leaderboard_test = SocketDownEventDataFromType<"leaderboard">;
 type usernames_test = SocketDownEventDataFromType<"user_names">;
+type code_test = SocketDownEventDataFromType<"code">;

@@ -13,7 +13,7 @@ type LaunchOptions = {
   anticheat_token: string;
   root: string;
   simple_edit: boolean;
-  edit_on_release: boolean;
+  disable_pre_edits: boolean;
   reset_on_release: boolean;
   launch_args: string;
 };

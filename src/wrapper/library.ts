@@ -1,6 +1,9 @@
 import invoke from "src/invoke";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { useOptions } from "./options";
+import { useUserManager } from "./user";
+import socketExport from "src/socket/export";
 
 const builds: Record<string, string> = {
   "++Fortnite+Release-OT6.5-CL-2870186": "OT6.5",
@@ -105,7 +108,7 @@ type LibraryState = {
   launchedBuild: LibraryEntry | null;
   setLaunchedBuild: (build: LibraryEntry | null) => void;
 
-  launchBuild: (version: string) => void;
+  launchBuild: (version: string) => Promise<void>;
 };
 
 export const useLibrary = create<LibraryState>()(
@@ -158,7 +161,7 @@ export const useLibrary = create<LibraryState>()(
       launchedBuild: null,
       setLaunchedBuild: (build) => set({ launchedBuild: build }),
 
-      launchBuild: (version) => {
+      launchBuild: async (version) => {
         const entry = get().library.find((x) => x.version === version);
         if (!entry) {
           throw new Error("Build not found in library");
@@ -166,13 +169,19 @@ export const useLibrary = create<LibraryState>()(
         get().setLaunchedBuild(entry);
         get().setLaunchState(LAUNCH_STATE.LAUNCHING);
 
+        const code = await socketExport.exchange_code();
+        if (!code) {
+          get().setLaunchState(LAUNCH_STATE.ERROR);
+          throw new Error("Failed to get exchange code");
+        }
+
         invoke.launch_fortnite({
-          anticheat_token: "",
-          edit_on_release: false,
-          exchange_code: "",
           launch_args: "",
-          reset_on_release: false,
-          simple_edit: false,
+          exchange_code: code,
+          anticheat_token: useUserManager.getState()._token || "",
+          disable_pre_edits: useOptions.getState().disable_pre_edits,
+          reset_on_release: useOptions.getState().reset_on_release,
+          simple_edit: useOptions.getState().simple_edit,
           root: entry.rootLocation,
         });
 
