@@ -169,12 +169,12 @@ const SettingsPage = () => {
           _number_min={1}
         />
 
-        <BooleanOption
+        {/* <BooleanOption
           title="Grid Layout for Builds"
           description={<>Display your installed versions in a grid layout.</>}
           state={options.tiled_builds}
           set={options.set_tiled_builds}
-        />
+        /> */}
       </OptionGroup>
 
       <div className="flex flex-col gap-1.5 p-2">
