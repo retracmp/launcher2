@@ -18,6 +18,10 @@
 
 ![image](https://github.com/user-attachments/assets/2c93c6e6-ba64-4356-8d49-d212c5e652c2)
 
+`library`
+
+![image](https://github.com/user-attachments/assets/05ac3dca-365c-4813-affe-cbfa5e035fa8)
+
 `settings`
 
 ![image](https://github.com/user-attachments/assets/c57a3f6d-f2ce-4985-b751-bd50f5104e52)
