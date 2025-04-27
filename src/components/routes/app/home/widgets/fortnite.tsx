@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { LAUNCH_STATE, useLibrary } from "src/wrapper/library";
+
 import UI from "src/components/core/default";
 
 const IMAGES = [
@@ -6,8 +8,19 @@ const IMAGES = [
   "https://fortniteinsider.com/wp-content/uploads/2020/08/Fortnite-Chapter-2-Season-4-Battle-Pass-Skins.jpg",
 ];
 
+// const VER = "++Fortnite+Release-14.40-CL-14550713";
+const VER = "++Fortnite+Release-Live-CL-3724489";
+
 const FortniteWidget = () => {
+  const library = useLibrary();
+
   const imageIndex = new Date().getMinutes() % IMAGES.length;
+
+  const hasSeason14Downloaded =
+    library.library.find((x) => x.version === VER) !== undefined;
+  console.error(library.library, VER, hasSeason14Downloaded);
+  const buildLaunched = library.launchState === LAUNCH_STATE.LAUNCHED;
+  const buildLaunching = library.launchState === LAUNCH_STATE.LAUNCHING;
 
   return (
     <div className="relative flex flex-col p-2 gap-0.5 min-w-[45%] w-[70%] @max-xl:w-[100%] aspect-[5/2.4] bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid overflow-hidden">
@@ -20,19 +33,38 @@ const FortniteWidget = () => {
         December 1st 2020.
       </UI.P>
 
-      {/* <UI.Button
-        colour="blue"
-        className="p-1.5 py-1 mt-auto z-10 backdrop-blur-2xl"
-      >
-        <span className="text-neutral-300">Download Now</span>
-      </UI.Button> */}
+      {!hasSeason14Downloaded && !buildLaunched && !buildLaunching && (
+        <UI.Button
+          colour="blue"
+          className="p-1.5 py-1 mt-auto z-10 backdrop-blur-2xl"
+        >
+          <span className="text-neutral-300">Download Now</span>
+        </UI.Button>
+      )}
 
-      <UI.Button
-        colour="green"
-        className="p-1.5 mt-auto z-10 backdrop-blur-2xl"
-      >
-        <span className="text-neutral-300">Launch Process</span>
-      </UI.Button>
+      {!buildLaunching && !buildLaunched && hasSeason14Downloaded && (
+        <UI.Button
+          colour="green"
+          className="p-1.5 mt-auto z-10 backdrop-blur-2xl cursor-not-allowed"
+          onClick={() => library.launchBuild(VER)}
+        >
+          <span className="text-neutral-300">Launch Game</span>
+        </UI.Button>
+      )}
+
+      {buildLaunching && (
+        <UI.Button
+          colour="green"
+          className="p-1.5 mt-auto z-10 backdrop-blur-2xl cursor-not-allowed"
+          disabled
+          style={{
+            cursor: "not-allowed",
+          }}
+        >
+          {buildLaunching && <UI.LoadingSpinner />}
+          <span className="text-neutral-300/50">Launching Game</span>
+        </UI.Button>
+      )}
 
       <VideoDisplay
         address={"https://cdn.retrac.site/chatper2season4card.mp4"}
@@ -57,16 +89,22 @@ const FortniteWidget = () => {
         }}
       ></div>
 
-      {/* <UI.Button
-        colour="neutral"
-        className="p-1.5 mt-auto bg-neutral-800 backdrop-blur-2xl z-10 hover:bg-neutral-800/50"
-        disabled
-        style={{
-          cursor: "not-allowed",
-        }}
-      >
-        <span className="text-neutral-400">Process already running.</span>
-      </UI.Button> */}
+      <div className="bg-fuchsia-900"></div>
+
+      {buildLaunched && (
+        <UI.Button
+          colour="neutral"
+          className="p-1.5 mt-auto backdrop-blur-2xl z-10"
+          disabled
+          style={{
+            cursor: "not-allowed",
+          }}
+        >
+          <span className="text-neutral-400">
+            Fortnite is Currently Running
+          </span>
+        </UI.Button>
+      )}
     </div>
   );
 };

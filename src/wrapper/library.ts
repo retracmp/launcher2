@@ -85,6 +85,7 @@ export const LAUNCH_STATE = {
   NONE: "none",
   LAUNCHING: "launching",
   LAUNCHED: "launched",
+  CLOSING: "closing",
   ERROR: "error",
 } as const;
 
@@ -103,6 +104,8 @@ type LibraryState = {
 
   launchedBuild: LibraryEntry | null;
   setLaunchedBuild: (build: LibraryEntry | null) => void;
+
+  launchBuild: (version: string) => void;
 };
 
 export const useLibrary = create<LibraryState>()(
@@ -154,6 +157,19 @@ export const useLibrary = create<LibraryState>()(
       setLaunchState: (state) => set({ launchState: state }),
       launchedBuild: null,
       setLaunchedBuild: (build) => set({ launchedBuild: build }),
+
+      launchBuild: (version) => {
+        const entry = get().library.find((x) => x.version === version);
+        if (!entry) {
+          throw new Error("Build not found in library");
+        }
+        get().setLaunchedBuild(entry);
+        get().setLaunchState(LAUNCH_STATE.LAUNCHING);
+
+        setTimeout(() => {
+          get().setLaunchState(LAUNCH_STATE.LAUNCHED);
+        }, 5000);
+      },
     }),
     {
       name: "library",
