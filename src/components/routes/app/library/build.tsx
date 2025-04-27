@@ -66,7 +66,7 @@ const FortniteBuild = (props: FortniteBuildProps) => {
       <img
         className={`absolute w-[110%] h-[110%] rounded-sm object-cover blur-[0.03rem] ${
           library.launchState === LAUNCH_STATE.NONE || launchedBuildIsCurrent
-            ? "opacity-70"
+            ? "opacity-90"
             : "opacity-30"
         } ${
           library.launchState === LAUNCH_STATE.NONE && "group-hover:opacity-100"
@@ -95,7 +95,7 @@ const FortniteBuild = (props: FortniteBuildProps) => {
       )}
 
       <div
-        className="absolute w-full h-full bg-neutral-800/90 flex items-end z-10 pointer-events-none"
+        className="absolute w-full h-[120%] pb-4 bg-neutral-800/90 flex items-end z-10 pointer-events-none group-hover:bg-neutral-600/90 transition-colors duration-200"
         style={{
           maskImage: "linear-gradient(to bottom, transparent, black)",
           maskSize: "100% 100%",
