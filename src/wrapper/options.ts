@@ -64,7 +64,7 @@ export const useOptions = create<OptionsState>()(
       reset_on_release: false,
       set_reset_on_release: (value) => set(() => ({ reset_on_release: value })),
 
-      wide_drawer: false,
+      wide_drawer: true,
       set_wide_drawer: (value) => set(() => ({ wide_drawer: value })),
 
       show_friends: true,

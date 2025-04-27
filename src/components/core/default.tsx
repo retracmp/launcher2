@@ -143,7 +143,7 @@ namespace UI {
 
   export const LoadingSpinner = () => {
     return (
-      <span className="flex flex-row w-min gap-[0.2rem] items-center justify-center">
+      <span className="flex flex-row w-min gap-[0.2rem] items-center justify-center z-2">
         {[...Array(3)].map((_, i) => (
           <LoadingBall key={i} i={i} />
         ))}
@@ -159,6 +159,26 @@ namespace UI {
     return (
       <span
         className="animate-pulse w-1.5 h-1.5 bg-neutral-300/20 rounded-full"
+        style={{
+          animationDelay: `${props.i * 0.2}s`,
+        }}
+      ></span>
+    );
+  };
+  export const LoadingSpinnerOpaque = () => {
+    return (
+      <span className="flex flex-row w-min gap-[0.2rem] items-center justify-center z-2">
+        {[...Array(3)].map((_, i) => (
+          <LoadingBallOpaque key={i} i={i} />
+        ))}
+      </span>
+    );
+  };
+
+  const LoadingBallOpaque = (props: LoadingBallProps) => {
+    return (
+      <span
+        className="animate-pulse w-1.5 h-1.5 bg-neutral-400 rounded-full"
         style={{
           animationDelay: `${props.i * 0.2}s`,
         }}
