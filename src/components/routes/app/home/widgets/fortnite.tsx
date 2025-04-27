@@ -18,7 +18,6 @@ const FortniteWidget = () => {
 
   const hasSeason14Downloaded =
     library.library.find((x) => x.version === VER) !== undefined;
-  console.error(library.library, VER, hasSeason14Downloaded);
   const buildLaunched = library.launchState === LAUNCH_STATE.LAUNCHED;
   const buildLaunching = library.launchState === LAUNCH_STATE.LAUNCHING;
 

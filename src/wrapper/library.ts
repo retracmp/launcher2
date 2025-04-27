@@ -166,6 +166,16 @@ export const useLibrary = create<LibraryState>()(
         get().setLaunchedBuild(entry);
         get().setLaunchState(LAUNCH_STATE.LAUNCHING);
 
+        invoke.launch_fortnite({
+          anticheat_token: "",
+          edit_on_release: false,
+          exchange_code: "",
+          launch_args: "",
+          reset_on_release: false,
+          simple_edit: false,
+          root: entry.rootLocation,
+        });
+
         setTimeout(() => {
           get().setLaunchState(LAUNCH_STATE.LAUNCHED);
         }, 5000);

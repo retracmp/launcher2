@@ -5,6 +5,7 @@ use std::fs::File;
 use std::io::{Read, Seek};
 
 mod util;
+mod launch;
 
 #[tauri::command]
 async fn get_windows_version() -> Result<i32, String> {
@@ -24,7 +25,7 @@ async fn get_fortnite_version(path: &str) -> Result<String, String> {
     0x65, 0x00, 0x6C, 0x00,
     0x65, 0x00, 0x61, 0x00,
     0x73, 0x00, 0x65, 0x00,
-];
+  ];
 
   let offset = util::search_file_for_bytes(path, pattern).await?;
   if offset.is_none() {
@@ -46,6 +47,15 @@ async fn get_fortnite_version(path: &str) -> Result<String, String> {
   Ok(version.unwrap())
 }
 
+#[tauri::command]
+async fn launch_retrac(options: launch::LaunchOptions) -> Result<bool, String> {
+  let result = launch::launch_retrac(options);
+  match result {
+    Ok(_) => Ok(true),
+    Err(e) => Err(e),
+  }
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
   let mut builder = tauri::Builder::default();
@@ -58,6 +68,7 @@ pub fn run() {
     #[cfg(target_os = "windows")]
     get_windows_version,
     get_fortnite_version,
+    launch_retrac
   ]);
 
   builder = builder.setup(|app| {

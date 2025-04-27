@@ -10,9 +10,15 @@ const get_fortnite_version = async (path: string) => {
   return version;
 };
 
+const launch_retrac = async (options: LaunchOptions) => {
+  const result = await i<string>("launch_retrac", { options });
+  return result;
+};
+
 const invoke = {
   get_windows_version,
   get_fortnite_version,
+  launch_fortnite: launch_retrac,
 };
 
 export default invoke;
