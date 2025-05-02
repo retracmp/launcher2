@@ -4,8 +4,7 @@ use winver::WindowsVersion;
 use std::fs::File;
 use std::io::{Read, Seek};
 
-mod util;
-mod launch;
+pub mod modules;
 
 #[tauri::command]
 async fn get_windows_version() -> Result<i32, String> {
@@ -27,7 +26,7 @@ async fn get_fortnite_version(path: &str) -> Result<String, String> {
     0x73, 0x00, 0x65, 0x00,
   ];
 
-  let offset = util::search_file_for_bytes(path, pattern).await?;
+  let offset = modules::util::search_file_for_bytes(path, pattern).await?;
   if offset.is_none() {
     return Err("Pattern not found".to_string());
   }
@@ -39,7 +38,7 @@ async fn get_fortnite_version(path: &str) -> Result<String, String> {
   let mut buffer = vec![0; 256];
   file.read_exact(&mut buffer).map_err(|e| e.to_string())?;
   
-  let version = util::find_fortnite_release(util::vec_u8_as_wide_to_string(buffer).as_str());
+  let version = modules::util::find_fortnite_release(modules::util::vec_u8_as_wide_to_string(buffer).as_str());
   if version.is_none() {
     return Err("Version not found".to_string());
   }
@@ -48,8 +47,8 @@ async fn get_fortnite_version(path: &str) -> Result<String, String> {
 }
 
 #[tauri::command]
-async fn launch_retrac(options: launch::LaunchOptions) -> Result<bool, String> {
-  let result = launch::launch_retrac(options);
+async fn launch_retrac(options: modules::launch::LaunchOptions) -> Result<bool, String> {
+  let result = modules::launch::launch_retrac(options);
   match result {
     Ok(_) => Ok(true),
     Err(e) => Err(e),

@@ -4,6 +4,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import { useOptions } from "./options";
 import { useUserManager } from "./user";
 import socketExport from "src/socket/export";
+import { useApplicationInformation } from "./tauri";
 
 const builds: Record<string, string> = {
   "++Fortnite+Release-OT6.5-CL-2870186": "OT6.5",
@@ -176,7 +177,9 @@ export const useLibrary = create<LibraryState>()(
         }
 
         invoke.launch_fortnite({
-          launch_args: "",
+          launch_args: useApplicationInformation.getState().dev
+            ? useOptions.getState().launch_arguments
+            : "",
           exchange_code: code,
           anticheat_token: useUserManager.getState()._token || "",
           disable_pre_edits: useOptions.getState().disable_pre_edits,

@@ -1,13 +1,16 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useBannerManager } from "src/wrapper/banner";
 import { useUserManager } from "src/wrapper/user";
+import { useOptions } from "src/wrapper/options";
 
 import UI from "src/components/core/default";
+import { OptionGroup, StringOption } from "../app/settings/option";
 
 const DeveloperPage = () => {
   const bannerManager = useBannerManager();
   const userManger = useUserManager();
   const navigate = useNavigate();
+  const options = useOptions();
 
   return (
     <>
@@ -30,6 +33,7 @@ const DeveloperPage = () => {
               })
             }
             colour="invisible"
+            className="p-2"
           >
             add closeable warning banner
           </UI.Button>
@@ -44,6 +48,7 @@ const DeveloperPage = () => {
               })
             }
             colour="invisible"
+            className="p-2"
           >
             add notification banner (would come from websocket to notify user of
             something)
@@ -58,25 +63,35 @@ const DeveloperPage = () => {
                 closable: false,
               })
             }
+            className="p-2"
             colour="invisible"
           >
             websocket failue
           </UI.Button>
         </div>
       </div>
-      <div className="flex flex-col gap-1 p-1.5 border-b-[#2e2e2e] border-b-1 border-solid">
+      <div className="flex flex-col gap-1 p-1.5 border-b-[#2e2e2e] border-b-1 border-solid mb-1">
         <div className="flex flex-row gap-1 flex-wrap">
           <UI.Button
             onClick={() => {
               userManger.logout();
               navigate({ to: "/" });
             }}
+            className="p-2"
             colour="invisible"
           >
             logut
           </UI.Button>
         </div>
       </div>
+      <OptionGroup title="launch args">
+        <StringOption
+          title="launch arguments"
+          description="arguments to pass to the game on launch."
+          state={options.launch_arguments}
+          set={options.set_launch_arguments}
+        />
+      </OptionGroup>
     </>
   );
 };

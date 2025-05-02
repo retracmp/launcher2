@@ -8,8 +8,8 @@ const IMAGES = [
   "https://fortniteinsider.com/wp-content/uploads/2020/08/Fortnite-Chapter-2-Season-4-Battle-Pass-Skins.jpg",
 ];
 
-// const VER = "++Fortnite+Release-14.40-CL-14550713";
-const VER = "++Fortnite+Release-Live-CL-3724489";
+const VER = "++Fortnite+Release-14.40-CL-14550713";
+// const VER = "++Fortnite+Release-Live-CL-3724489";
 
 const FortniteWidget = () => {
   const library = useLibrary();

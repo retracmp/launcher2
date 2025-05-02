@@ -1,5 +1,5 @@
 import { useUserManager } from "src/wrapper/user";
-import { useRouterState } from "@tanstack/react-router";
+import { useNavigate, useRouterState } from "@tanstack/react-router";
 
 import { AnimatePresence } from "motion/react";
 import UI from "src/components/core/default";
@@ -14,7 +14,7 @@ import RecentMatchesPage from "./matches";
 // import RecentMatchesWidget from "src/components/routes/app/home/widgets/matches";
 
 const HomePage = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const router = useRouterState();
 
   const userManager = useUserManager();
@@ -23,7 +23,7 @@ const HomePage = () => {
   return (
     <>
       <AnimatePresence>
-        {router.location.pathname === "/app/matches" && (
+        {router.location.pathname === "/app/home/matches" && (
           <RecentMatchesPage key="recent-matches" />
         )}
       </AnimatePresence>
@@ -41,8 +41,7 @@ const HomePage = () => {
         <FortniteWidget />
         <LootLabsWidget />
       </UI.RowBox>
-
-      {/* <UI.RowBox>
+      <UI.RowBox>
         <div className="flex flex-col gap-1 min-w-50">
           <UI.Button
             colour="invisible"
@@ -50,7 +49,7 @@ const HomePage = () => {
             onClick={() => {
               console.log("navigate to matches");
               navigate({
-                to: "/app/matches",
+                to: "/app/home/matches",
               });
             }}
           >
@@ -60,10 +59,10 @@ const HomePage = () => {
             News & Updates
           </UI.Button>
         </div>
-        <div className="flex flex-col gap-1 flex-1">
+        {/* <div className="flex flex-col gap-1 flex-1">
           <DonateWidget />
-        </div>
-      </UI.RowBox> */}
+        </div> */}
+      </UI.RowBox>
     </>
   );
 };

@@ -13,8 +13,11 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 tauri-build = { version = "2", features = [] }
 
 [dependencies]
+winapi = { version = "0.3", features = ["winbase", "processthreadsapi", "handleapi", "minwindef", "synchapi", "errhandlingapi"] }
+widestring = "1.0"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+sysinfo = "0.30.5"
 winver = "1.0.0"
 regex = "1"
 

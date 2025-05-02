@@ -95,7 +95,7 @@ const FortniteBuild = (props: FortniteBuildProps) => {
       )}
 
       <div
-        className="absolute w-full h-[120%] pb-4 bg-neutral-800/90 flex items-end z-10 pointer-events-none group-hover:bg-neutral-600/90 transition-colors duration-200"
+        className="absolute w-full h-[120%] pb-4 bg-neutral-800/90 flex items-end z-10 pointer-events-none group-hover:bg-neutral-800/100 transition-colors duration-200"
         style={{
           maskImage: "linear-gradient(to bottom, transparent, black)",
           maskSize: "100% 100%",

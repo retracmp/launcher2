@@ -34,6 +34,9 @@ type OptionsState = {
 
   tiled_builds: boolean;
   set_tiled_builds: (value: boolean) => void;
+
+  launch_arguments: string;
+  set_launch_arguments: (value: string) => void;
 };
 
 export const useOptions = create<OptionsState>()(
@@ -76,6 +79,9 @@ export const useOptions = create<OptionsState>()(
 
       tiled_builds: true,
       set_tiled_builds: (value) => set(() => ({ tiled_builds: value })),
+
+      launch_arguments: "",
+      set_launch_arguments: (value) => set(() => ({ launch_arguments: value })),
     }),
     {
       name: "options",
