@@ -43,9 +43,9 @@ pub fn launch_retrac(options: LaunchOptions) -> Result<(), String> {
     (format!("-AUTH_PASSWORD={}", options.exchange_code).as_str()),
     (format!("-actoken={}", options.anticheat_token).as_str()),
     (options.launch_args.as_str()),
-    (if options.simple_edit { "-simpleedit" } else { ""}),
-    (if options.disable_pre_edits { "-disablepreedit" } else { ""}),
-    (if options.reset_on_release { "-instantreset" } else { ""}),
+    (if options.simple_edit { "-simpleedit" } else { "" }),
+    (if options.disable_pre_edits { "-disablepreedit" } else { "" }),
+    (if options.reset_on_release { "-instantreset" } else { "" }),
   ])?;
 
   Ok(())
