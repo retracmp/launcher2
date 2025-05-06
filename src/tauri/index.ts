@@ -15,10 +15,19 @@ const launch_retrac = async (options: LaunchOptions) => {
   return result;
 };
 
+const download_build = async (manifestId: string, downloadPath: string) => {
+  const result = await i<string>("download_build", {
+    manifestId,
+    downloadPath,
+  });
+  return result;
+};
+
 const invoke = {
   get_windows_version,
   get_fortnite_version,
-  launch_fortnite: launch_retrac,
+  launch_retrac,
+  download_build,
 };
 
 export default invoke;

@@ -16,8 +16,12 @@ pub struct LaunchOptions {
 pub fn launch_retrac(options: LaunchOptions) -> Result<(), String> {
   println!("Launching Retrac with options: {:?}", options);
 
-  // todo: check game files
-
+  // todo: 
+  // - check pak files & install if needed
+  // - check if the game is already running
+  // - download custom dll if hash doesnt match
+  // - download eac if has no match
+  
   process::kill_all(&[
     "FortniteClient-Win64-Shipping_BE.exe",
     "FortniteClient-Win64-Shipping_EAC.exe",

@@ -42,7 +42,7 @@ const AuthenticatedRoutes = () => {
   return (
     <>
       <DrawerItem path="/app/home" icon="IoHomeSharp" label="Home" />
-      <DrawerItem path="/app/shop" icon="IoPricetagsSharp" label="Shop" />
+      {/* <DrawerItem path="/app/shop" icon="IoCartSharp" label="Shop" /> */}
       <DrawerItem
         path="/app/leaderboard"
         icon="IoTrophySharp"
@@ -63,6 +63,11 @@ const AuthenticatedRoutes = () => {
 
       <s className="mt-auto" />
 
+      <DrawerItem
+        path="/app/downloads"
+        icon="IoArchiveSharp"
+        label="Downloads"
+      />
       <DrawerItem
         path="/app/settings"
         icon="IoSettingsSharp"

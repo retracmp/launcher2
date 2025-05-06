@@ -15,7 +15,7 @@
         "title": "Retrac",
         "width": 936,
         "height": 600,
-        "minWidth": 500,
+        "minWidth": 530,
         "maxWidth": 1200,
         "maxHeight": 800,
         "theme": "Dark",

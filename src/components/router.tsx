@@ -10,9 +10,9 @@ import RecentMatchesPage from "./routes/app/home/matches";
 import SettingsPage from "./routes/app/settings/page";
 import LeaderboardPage from "./routes/app/leaderboard/page";
 import LibraryPage from "./routes/app/library/page";
-import ShopPage from "./routes/app/shop/page";
 import StatusPage from "./routes/app/status/page";
 import StorePage from "./routes/app/store/page";
+import DownloadsPage from "./routes/app/downloads/page";
 
 export const rootRoute = rr.createRootRoute({
   component: () => <Frame />,
@@ -90,10 +90,10 @@ export const library = rr.createRoute({
   path: "/library",
 });
 
-export const shop = rr.createRoute({
+export const downloads = rr.createRoute({
   getParentRoute: () => appContainer,
-  component: () => <ShopPage />,
-  path: "/shop",
+  component: () => <DownloadsPage />,
+  path: "/downloads",
 });
 
 export const status = rr.createRoute({
@@ -117,7 +117,7 @@ const router = rr.createRouter({
       settings,
       leaderboard,
       library,
-      shop,
+      downloads,
       status,
       store,
     ]),

@@ -1,4 +1,4 @@
-import invoke from "src/invoke";
+import invoke from "src/tauri";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { useOptions } from "./options";
@@ -176,7 +176,7 @@ export const useLibrary = create<LibraryState>()(
           throw new Error("Failed to get exchange code");
         }
 
-        invoke.launch_fortnite({
+        invoke.launch_retrac({
           launch_args: useApplicationInformation.getState().dev
             ? useOptions.getState().launch_arguments
             : "",
