@@ -214,3 +214,11 @@ type LeaderboardPageInfo = {
   totalResults: number;
   sortBy: "eliminations" | "points" | "hype";
 };
+
+type ManifestInformation = {
+  manifestId: string;
+  title: string;
+  imageUrl: string;
+  iconUrl: string;
+  gigabyteSize: number;
+};

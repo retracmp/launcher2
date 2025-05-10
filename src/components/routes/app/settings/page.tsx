@@ -47,7 +47,7 @@ const SettingsPage = () => {
         </div>
       </OptionGroup>
 
-      <OptionGroup title="Network">
+      <OptionGroup title="Network" _animate>
         <BooleanOption
           title="Auto Download"
           description={
@@ -60,9 +60,18 @@ const SettingsPage = () => {
           set={options.set_auto_download}
           icon="IoCodeDownloadSharp"
           colour="blue"
+          _animate
         />
 
         <BooleanOption
+          title="Detailed Downloads"
+          description={<>Show extra information when downloading content.</>}
+          state={options.advanced_download_view}
+          set={options.set_show_advanced_download_view}
+          _animate
+        />
+
+        {/* <BooleanOption
           title="Limit Download Speed"
           description={
             <>Limit the download speed to a certain amount of bandwidth.</>
@@ -85,7 +94,7 @@ const SettingsPage = () => {
             _number_min={0}
             _number_max={5120}
           />
-        )}
+        )} */}
 
         <FileOption
           title="Content Directory"
@@ -98,10 +107,11 @@ const SettingsPage = () => {
           set={options.set_content_directory}
           icon="IoFolderOpenSharp"
           colour="orange"
+          _animate
         />
       </OptionGroup>
 
-      <OptionGroup title="Gameplay Tweaks">
+      <OptionGroup title="Gameplay Tweaks" _animate>
         <BooleanOption
           title="Simple Edit"
           description={
@@ -109,6 +119,7 @@ const SettingsPage = () => {
           }
           state={options.simple_edit}
           set={options.set_simple_edit}
+          _animate
         />
 
         <BooleanOption
@@ -116,6 +127,7 @@ const SettingsPage = () => {
           description={<>Prevent accidental pre-edits when building.</>}
           state={options.disable_pre_edits}
           set={options.set_disable_pre_edits}
+          _animate
         />
 
         <BooleanOption
@@ -125,10 +137,11 @@ const SettingsPage = () => {
           }
           state={options.reset_on_release}
           set={options.set_reset_on_release}
+          _animate
         />
       </OptionGroup>
 
-      <OptionGroup title="Client Preferences" _last>
+      <OptionGroup title="Client Preferences" _last _animate>
         <StringOption
           title="Theme"
           description={
@@ -138,6 +151,7 @@ const SettingsPage = () => {
           set={() => {}}
           icon="IoColorPaletteSharp"
           colour="purple"
+          _animate
         />
 
         <BooleanOption
@@ -145,6 +159,7 @@ const SettingsPage = () => {
           description={<>Makes the navigation drawer wider, showing labels.</>}
           state={options.wide_drawer}
           set={options.set_wide_drawer}
+          _animate
         />
 
         <BooleanOption
@@ -154,6 +169,7 @@ const SettingsPage = () => {
           }
           state={options.show_friends}
           set={options.set_show_friends}
+          _animate
         />
 
         <NumberOption
@@ -167,6 +183,7 @@ const SettingsPage = () => {
           }}
           _number_max={100}
           _number_min={1}
+          _animate
         />
 
         {/* <BooleanOption

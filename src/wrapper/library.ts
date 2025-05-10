@@ -6,16 +6,20 @@ import { useUserManager } from "./user";
 import socketExport from "src/socket/export";
 import { useApplicationInformation } from "./tauri";
 
-const builds: Record<string, string> = {
+export const VERSION_SWAPS: Record<string, string> = {
+  "++Fortnite+Release-Live-CL-3724489": "++Fortnite+Release-1.8-CL-3724489",
+};
+
+export const BUILD_NICE_NAMES: Record<string, string> = {
   "++Fortnite+Release-OT6.5-CL-2870186": "OT6.5",
   "++Fortnite+Release-Cert-CL-3532353": "Cert",
   "++Fortnite+Release-Live-CL-3541083": "Alpha",
   "++Fortnite+Release-Live-CL-3700114": "Season 1",
-  "++Fortnite+Release-Live-CL-3724489": "Season 1",
   "++Fortnite+Release-Live-CL-3729133": "Season 1",
   "++Fortnite+Release-Live-CL-3741772": "Season 1",
   "++Fortnite+Release-Live-CL-3757339": "Season 1",
   "++Fortnite+Release-Live-CL-3775276": "Season 1",
+  "++Fortnite+Release-1.8-CL-3724489": "Season 1",
   "++Fortnite+Release-1.10-CL-3790078": "Season 1",
   "++Fortnite+Release-1.11-CL-3807424": "Season 2",
   "++Fortnite+Release-2.1.0-CL-3825894": "Season 2",
@@ -146,12 +150,12 @@ export const useLibrary = create<LibraryState>()(
         if (!version) {
           throw new Error("Invalid Fortnite installation path");
         }
-        entry.version = version;
+        entry.version = VERSION_SWAPS[version] || version;
 
-        if (!builds[version]) {
+        if (!BUILD_NICE_NAMES[entry.version]) {
           throw new Error("Unsupported Fortnite version");
         }
-        entry.buildName = builds[version];
+        entry.buildName = BUILD_NICE_NAMES[entry.version];
 
         get().addLibraryEntry(entry as LibraryEntry);
         return entry as LibraryEntry;

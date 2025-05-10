@@ -36,6 +36,7 @@ type OptionProps<T extends AllowedOptionTypes> = {
   _number_extra_text?: string;
   _number_min?: number;
   _number_max?: number;
+  _animate?: boolean;
 };
 
 const Option = <T extends AllowedOptionTypes>(props: OptionProps<T>) => {
@@ -49,7 +50,18 @@ const Option = <T extends AllowedOptionTypes>(props: OptionProps<T>) => {
   const isFile = props._is_file_override || props.state instanceof Object;
 
   return (
-    <div className="relative flex flex-col p-2.5 py-2 gap-0.5 w-[100%] bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid overflow-hidden">
+    <motion.div
+      className="relative flex flex-col p-2.5 py-2 gap-0.5 w-[100%] bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid overflow-hidden"
+      variants={
+        props._animate
+          ? {
+              hidden: { opacity: 0, x: 20 },
+              visible: { opacity: 1, x: 0 },
+            }
+          : {}
+      }
+      transition={{ type: "spring", stiffness: 200, damping: 19 }}
+    >
       <span className="flex flex-row items-center gap-1 font-[500] text-neutral-300 text-[1rem] leading-5">
         {Icon && (
           <Icon
@@ -99,7 +111,7 @@ const Option = <T extends AllowedOptionTypes>(props: OptionProps<T>) => {
           />
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 };
 
@@ -283,14 +295,29 @@ type OptionGroupProps = {
   _first?: boolean;
   _last?: boolean;
   _hideBorder?: boolean;
+  _animate?: boolean;
 };
 
 const OptionGroup = (props: OptionGroupProps) => {
   return (
-    <div
+    <motion.div
       className={`relative flex flex-col gap-2 p-2.5 ${
         !props._hideBorder && "border-[#2e2e2e] border-b-[1px] border-solid"
       } py-3.5 ${props._last ? "pb-3" : ""} ${props._first ? "pt-2.5" : ""}`}
+      variants={
+        props._animate
+          ? {
+              hidden: { opacity: 0, scale: 0.95 },
+              visible: { opacity: 1, scale: 1 },
+            }
+          : {}
+      }
+      initial="hidden"
+      animate="visible"
+      exit="hidden"
+      transition={{
+        staggerChildren: 0.05,
+      }}
     >
       {!!props.title && (
         <UI.P className="text-neutral-500 absolute top-[-0.5rem] bg-neutral-900 px-1">
@@ -298,7 +325,7 @@ const OptionGroup = (props: OptionGroupProps) => {
         </UI.P>
       )}
       {props.children}
-    </div>
+    </motion.div>
   );
 };
 

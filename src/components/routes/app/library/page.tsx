@@ -1,4 +1,5 @@
 import { useLibrary } from "src/wrapper/library";
+import { useNavigate } from "@tanstack/react-router";
 import { open } from "@tauri-apps/plugin-dialog";
 
 import { OptionGroup } from "src/components/routes/app/settings/option";
@@ -9,6 +10,7 @@ import FortniteBuild from "src/components/routes/app/library/build";
 
 const LibraryPage = () => {
   const library = useLibrary();
+  const navigate = useNavigate();
 
   const handleFindLocation = async () => {
     const selectedPath = await open({ directory: true, multiple: false });
@@ -47,6 +49,11 @@ const LibraryPage = () => {
           <UI.Button
             colour="invisible"
             className="py-0 px-2 mt-auto z-10 w-min gap-0"
+            onClick={() =>
+              navigate({
+                to: "/app/downloads",
+              })
+            }
           >
             <IoHammer className="text-neutral-400 w-4 h-4" />
             <span className="text-neutral-400">Install a new version</span>

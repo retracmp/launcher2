@@ -52,7 +52,7 @@ const LootLabsWidget = () => {
         className="absolute top-0 left-0 w-full h-full bg-center bg-cover overflow-hidden"
         style={{
           backgroundImage:
-            "radial-gradient(65% 80% at 50% 0%, #ff9b0b25 0%, #00000000 100%)",
+            "radial-gradient(65% 80% at 50% 0%, #f9317125 0%, #00000000 100%)",
         }}
       >
         <RainingVBucks />

@@ -98,7 +98,7 @@ pub struct ManifestProgress {
   speed_mbps: f64,
   eta_seconds: u64,
   manifest_id: String,
-  current_file: Option<String>,
+  current_files: Vec<String>,
   wants_cancel: bool,
 }
 
@@ -278,7 +278,7 @@ async fn download_file(
 ) -> Result<(), Box<dyn std::error::Error>> {
   {
     let mut progress = progress.lock().await;
-    progress.current_file = Some(file.get_filename().clone());
+    progress.current_files.push(file.get_filename().clone());
   }
 
   let mut chunk_info: Vec<(PathBuf, u64)> = vec![];
@@ -323,6 +323,11 @@ async fn download_file(
 
   rebuild_file(chunk_info, &final_save_path).await.unwrap();
 
+  {
+    let mut progress = progress.lock().await;
+    progress.current_files.retain(|f| f != &file.get_filename());
+  }
+
   Ok(())
 }
 
@@ -363,8 +368,8 @@ pub async fn download_build(
         .map(|c| c.Size)
         .sum::<i64>();
 
-      // let thread_amount = num_cpus::get() / 2;
-      let thread_amount = 1; // more accurate when 1 thread
+      let thread_amount = num_cpus::get() / 2;
+      // let thread_amount = 1; // more accurate when 1 thread
 
       let semaphore: Arc<tokio::sync::Semaphore> =
         Arc::new(tokio::sync::Semaphore::new(thread_amount));
@@ -402,8 +407,8 @@ pub async fn download_build(
         speed_mbps: 0.0,
         eta_seconds: 0,
         manifest_id: manifest_id.to_string(),
-        current_file: None,
         wants_cancel: false,
+        current_files: vec![],
       }));
 
       let start_time = Instant::now();

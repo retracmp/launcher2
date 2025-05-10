@@ -58,13 +58,13 @@ const Frame = () => {
           data-tauri-drag-region
         >
           <p
-            className="text-neutral-300 font-plex text-[14px] text-base"
+            className="text-neutral-300 font-plex text-[14px] text-base font-bold"
             data-tauri-drag-region
           >
-            {application.name}
+            {application.name.toUpperCase()}
           </p>
           <p
-            className="ml-1 mt-[2px] min-w-max text-neutral-500 font-plex text-[11px] text-base"
+            className="ml-1 mt-[2.5px] min-w-max text-neutral-500 font-plex text-[11px] text-base "
             data-tauri-drag-region
           >
             build {application.version}

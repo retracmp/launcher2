@@ -36,6 +36,6 @@ type ManifestProgress = {
   speed_mbps: number;
   eta_seconds: number;
   manifest_id: string;
-  current_file?: string;
+  current_files: string[];
   wants_cancel: boolean;
 };

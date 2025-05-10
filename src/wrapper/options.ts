@@ -5,6 +5,9 @@ type OptionsState = {
   auto_download: boolean;
   set_auto_download: (value: boolean) => void;
 
+  advanced_download_view: boolean;
+  set_show_advanced_download_view: (value: boolean) => void;
+
   limit_download_speed: boolean;
   set_limit_download_speed: (value: boolean) => void;
 
@@ -44,6 +47,10 @@ export const useOptions = create<OptionsState>()(
     (set) => ({
       auto_download: true,
       set_auto_download: (value) => set(() => ({ auto_download: value })),
+
+      advanced_download_view: false,
+      set_show_advanced_download_view: (value) =>
+        set(() => ({ advanced_download_view: value })),
 
       limit_download_speed: false,
       set_limit_download_speed: (value) =>

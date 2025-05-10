@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { LAUNCH_STATE, useLibrary } from "src/wrapper/library";
+import { useNavigate } from "@tanstack/react-router";
 
 import UI from "src/components/core/default";
 
@@ -12,6 +13,7 @@ const VER = "++Fortnite+Release-14.40-CL-14550713";
 // const VER = "++Fortnite+Release-Live-CL-3724489";
 
 const FortniteWidget = () => {
+  const navigate = useNavigate();
   const library = useLibrary();
 
   const imageIndex = new Date().getMinutes() % IMAGES.length;
@@ -36,6 +38,7 @@ const FortniteWidget = () => {
         <UI.Button
           colour="blue"
           className="p-1.5 py-1 mt-auto z-10 backdrop-blur-2xl"
+          onClick={() => navigate({ to: "/app/downloads" })}
         >
           <span className="text-neutral-300">Download Now</span>
         </UI.Button>
