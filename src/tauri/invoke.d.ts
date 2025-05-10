@@ -39,3 +39,15 @@ type ManifestProgress = {
   current_files: string[];
   wants_cancel: boolean;
 };
+
+type VerifyingInformation = {
+  manifest_id: string;
+  status: bool;
+};
+
+type MannifestVerifyProgress = {
+  current_file: string;
+  checked_files: number;
+  total_files: number;
+  manifest_id: string;
+};

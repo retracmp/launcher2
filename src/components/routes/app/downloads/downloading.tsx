@@ -91,6 +91,7 @@ const DownloadingBuildUI = (props: DownloadingBuildProps) => {
 
 const DownloadingBuild = (props: DownloadingBuildProps) => {
   const options = useOptions();
+
   const get_timed_metabytes = useDownloadState((s) => s.get_timed_metabytes);
 
   return (
@@ -116,7 +117,9 @@ const DownloadingBuild = (props: DownloadingBuildProps) => {
           }}
         >
           <SparkLineChart
-            data={[...get_timed_metabytes(props.progress.manifest_id)]}
+            data={[...get_timed_metabytes(props.progress.manifest_id)].splice(
+              -80
+            )}
             curve="natural"
             color="#05df7278"
             yAxis={{

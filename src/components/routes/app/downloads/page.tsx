@@ -20,9 +20,9 @@ const DownloadsPage = () => {
         </div>
       </OptionGroup>
 
-      {downloadState.active_progress.size > 0 && (
+      {downloadState.active_download_progress.size > 0 && (
         <OptionGroup title="Active Downloads">
-          {Array.from(downloadState.active_progress.entries()).map(
+          {Array.from(downloadState.active_download_progress.entries()).map(
             ([key, value]) => (
               <DownloadingBuild key={key} progress={value} />
             )

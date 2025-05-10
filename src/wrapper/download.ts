@@ -1,8 +1,19 @@
 import { create } from "zustand";
 
 type DownloadState = {
-  active_progress: Map<string, ManifestProgress>;
-  set_active_progress: (id: string, progress: ManifestProgress) => void;
+  active_download_progress: Map<string, ManifestProgress>;
+  set_active_download_progress: (
+    id: string,
+    progress: ManifestProgress
+  ) => void;
+  remove_active_download_progress: (id: string) => void;
+
+  active_verifying_progress: Map<string, MannifestVerifyProgress>;
+  set_active_verifying_progress: (
+    id: string,
+    progress: MannifestVerifyProgress
+  ) => void;
+  remove_active_verifying_progress: (id: string) => void;
 
   timed_metabytes: Map<string, [date: Date, value: number][]>;
   add_timed_metabytes: (
@@ -14,12 +25,32 @@ type DownloadState = {
 };
 
 export const useDownloadState = create<DownloadState>((set, get) => ({
-  active_progress: new Map<string, ManifestProgress>(),
-  set_active_progress: (id, progress) =>
+  active_download_progress: new Map<string, ManifestProgress>(),
+  set_active_download_progress: (id, progress) =>
     set((state) => {
-      const newProgress = new Map(state.active_progress);
+      const newProgress = new Map(state.active_download_progress);
       newProgress.set(id, progress);
-      return { active_progress: newProgress };
+      return { active_download_progress: newProgress };
+    }),
+  remove_active_download_progress: (id) =>
+    set((state) => {
+      const newProgress = new Map(state.active_download_progress);
+      newProgress.delete(id);
+      return { active_download_progress: newProgress };
+    }),
+
+  active_verifying_progress: new Map<string, MannifestVerifyProgress>(),
+  set_active_verifying_progress: (id, progress) =>
+    set((state) => {
+      const newProgress = new Map(state.active_verifying_progress);
+      newProgress.set(id, progress);
+      return { active_verifying_progress: newProgress };
+    }),
+  remove_active_verifying_progress: (id) =>
+    set((state) => {
+      const newProgress = new Map(state.active_verifying_progress);
+      newProgress.delete(id);
+      return { active_verifying_progress: newProgress };
     }),
 
   timed_metabytes: new Map<string, [date: Date, value: number][]>(),

@@ -120,10 +120,18 @@ export const useLibrary = create<LibraryState>()(
   persist(
     (set, get) => ({
       library: [],
-      addLibraryEntry: (entry) =>
+      addLibraryEntry: (entry) => {
+        const existingEntry = get().library.find(
+          (libEntry) => libEntry.version === entry.version
+        );
+        if (existingEntry) {
+          get().removeLibraryEntry(existingEntry.version);
+        }
+
         set((state) => ({
           library: [...state.library, entry],
-        })),
+        }));
+      },
       removeLibraryEntry: (version) =>
         set((state) => ({
           library: state.library.filter((entry) => entry.version !== version),

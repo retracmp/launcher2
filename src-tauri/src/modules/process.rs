@@ -81,6 +81,9 @@ pub fn start(process_path: PathBuf) -> Result<(), String> {
 }
 
 pub fn start_with_args(process_path: PathBuf, args: Vec<&str>) -> Result<(), String> {
+  let args = args.into_iter().filter(|arg| !arg.is_empty()).collect::<Vec<_>>();
+  if args.is_empty() { return Err("No arguments provided".to_string()); }
+
   let args = args.into_iter().collect::<Vec<_>>().join(" ");
   start_internal(process_path, false, Some(args))
 }
@@ -90,6 +93,9 @@ pub fn start_suspended(process_path: PathBuf) -> Result<(), String> {
 }
 
 pub fn start_suspended_with_args(process_path: PathBuf, args: Vec<&str>) -> Result<(), String> {
+  let args = args.into_iter().filter(|arg| !arg.is_empty()).collect::<Vec<_>>();
+  if args.is_empty() { return Err("No arguments provided".to_string()); }
+  
   let args = args.into_iter().collect::<Vec<_>>().join(" ");
   start_internal(process_path, true, Some(args))
 }

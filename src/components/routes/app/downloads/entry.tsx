@@ -20,7 +20,7 @@ const DownloadEntry = (props: DownloadEntryProps) => {
   );
 
   const downloadState = useDownloadState();
-  const alreadyDownloading = downloadState.active_progress.has(
+  const alreadyDownloading = downloadState.active_download_progress.has(
     props.manifestInfo.manifestId
   );
 
@@ -30,7 +30,15 @@ const DownloadEntry = (props: DownloadEntryProps) => {
       `${options.content_directory}/${props.manifestInfo.manifestId}`
     );
 
-    console.log(result);
+    const entry = await library.createLibraryEntry(
+      `${options.content_directory}/${props.manifestInfo.manifestId}`
+    );
+
+    downloadState.remove_active_download_progress(
+      props.manifestInfo.manifestId
+    );
+
+    console.log(result, entry);
   };
 
   return (
