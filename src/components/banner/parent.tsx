@@ -18,11 +18,13 @@ const BannerRenderer = () => {
               scale: 0.95,
               marginTop: 0,
               height: 0,
+              minHeight: 0,
             }}
             animate={{
               opacity: 1,
               scale: 1,
-              height: "2.125rem",
+              minHeight: "2.125rem",
+              height: "auto",
               marginTop: index > 0 ? "0.25rem" : "0",
             }}
             exit={{ opacity: 0, scale: 0.95, height: 0, marginTop: 0 }}

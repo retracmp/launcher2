@@ -188,7 +188,7 @@ export const useLibrary = create<LibraryState>()(
           throw new Error("Failed to get exchange code");
         }
 
-        invoke.launch_retrac({
+        const result = await invoke.launch_retrac({
           launch_args: useApplicationInformation.getState().dev
             ? useOptions.getState().launch_arguments
             : "",
@@ -200,9 +200,16 @@ export const useLibrary = create<LibraryState>()(
           root: entry.rootLocation,
         });
 
-        setTimeout(() => {
-          get().setLaunchState(LAUNCH_STATE.LAUNCHED);
-        }, 5000);
+        if (result != null) {
+          setTimeout(() => {
+            get().setLaunchState(LAUNCH_STATE.LAUNCHED);
+          }, 5000);
+
+          console.log(result);
+        } else {
+          get().setLaunchState(LAUNCH_STATE.NONE);
+          throw new Error("Failed to launch Retrac");
+        }
       },
     }),
     {
