@@ -28,11 +28,22 @@
 
 </details>
 
-## main ideas
+## todo
 
-- no framer motion
-- as low dependencies as possible
-- design is boxy, modern and made for purpose
+- implement pak downloading from chunker & auto check pak hash and redownload missing
+- eac and ac client download from chunker too
+- server status (ez)
+- donate store
+- auto download
+- active status
+
+## nice features
+
+- smooth anims
+- nice cohesive design
+- easy to use
+- very good ux
+- codebase is tidy & modular
 
 ## contribute
 
