@@ -62,12 +62,6 @@ const DownloadListener = () => {
         progress.payload.status
       );
 
-      if (!progress.payload.status) {
-        downloadState.remove_active_verifying_progress(
-          progress.payload.manifest_id
-        );
-      }
-
       console.log(
         `[verify] ${progress.payload.manifest_id} with status: ${progress.payload.status}`
       );

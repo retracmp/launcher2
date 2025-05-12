@@ -26,7 +26,9 @@ const DownloadEntry = (props: DownloadEntryProps) => {
   const verifyingState = downloadState.active_verifying_progress.get(
     props.manifestInfo.manifestId
   );
-  const currentlyVerifying = verifyingState != undefined;
+  const currentlyVerifying = downloadState.allowed_to_verify(
+    props.manifestInfo.manifestId
+  );
 
   const handleDownload = async () => {
     const result = await invoke.download_build(
@@ -94,7 +96,10 @@ const DownloadEntry = (props: DownloadEntryProps) => {
             </div>
           )}
 
-          {currentlyVerifying && (
+          <UI.MinDuration
+            visible={currentlyVerifying && verifyingState != undefined}
+            minDuration={1000}
+          >
             <motion.div
               className={`bg-neutral-700/40 backdrop-blur-lg border-neutral-700 border-[1px] border-solid transition-opacity duration-50 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1`}
               initial={{ opacity: 0 }}
@@ -104,11 +109,11 @@ const DownloadEntry = (props: DownloadEntryProps) => {
               transition={{ type: "spring", stiffness: 200, damping: 19 }}
             >
               <UI.P className="text-[12px] flex flex-row items-center gap-0.5">
-                Verifying Content {verifyingState.checked_files} /{" "}
-                {verifyingState.total_files}
+                Verifying Content {verifyingState?.checked_files} /{" "}
+                {verifyingState?.total_files}
               </UI.P>
             </motion.div>
-          )}
+          </UI.MinDuration>
 
           {alreadyDownloaded && !currentlyDownloading && (
             <motion.div

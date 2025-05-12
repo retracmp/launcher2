@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { AnimatePresence } from "motion/react";
+import React, { useState, useEffect } from "react";
 
 namespace UI {
   export const Box = (
@@ -183,6 +184,44 @@ namespace UI {
           animationDelay: `${props.i * 0.2}s`,
         }}
       ></span>
+    );
+  };
+
+  interface MinDurationProps {
+    visible: boolean;
+    minDuration: number;
+    children: React.ReactNode;
+  }
+
+  export const MinDuration = ({
+    visible,
+    minDuration,
+    children,
+  }: MinDurationProps) => {
+    const [shouldRender, setShouldRender] = useState(visible);
+    const [minTimeElapsed, setMinTimeElapsed] = useState(false);
+
+    useEffect(() => {
+      let timer: number;
+
+      if (visible) {
+        setShouldRender(true);
+        setMinTimeElapsed(false);
+        timer = setTimeout(() => setMinTimeElapsed(true), minDuration);
+      } else if (!minTimeElapsed) {
+        timer = setTimeout(() => setShouldRender(false), minDuration);
+      } else {
+        setShouldRender(false);
+      }
+
+      return () => clearTimeout(timer);
+    }, [visible]);
+
+    return (
+      <AnimatePresence>
+        {" "}
+        {shouldRender ? <>{children}</> : null}
+      </AnimatePresence>
     );
   };
 }
