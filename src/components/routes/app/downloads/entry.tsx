@@ -80,41 +80,41 @@ const DownloadEntry = (props: DownloadEntryProps) => {
       </div>
 
       <div className="absolute top-2 right-2 flex flex-row gap-1">
-        <AnimatePresence>
-          {!currentlyDownloading && (
-            <div className="bg-neutral-700/00 opacity-0 group-hover:opacity-100 group-hover:bg-neutral-700/70 border-[#2e2e2e00] border-[1px] group-hover:border-[#52525279] border-solid transition-opacity duration-50 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1">
-              <UI.P className="text-[12px] flex flex-row items-center gap-0.5">
-                {alreadyDownloaded ? (
-                  <>
-                    <IoBuildSharp />
-                    Verify Files
-                  </>
-                ) : (
-                  "Download Build"
-                )}
-              </UI.P>
-            </div>
-          )}
+        {!currentlyDownloading && (
+          <div className="bg-neutral-700/00 opacity-0 group-hover:opacity-100 group-hover:bg-neutral-700/70 border-[#2e2e2e00] border-[1px] group-hover:border-[#52525279] border-solid transition-opacity duration-50 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1">
+            <UI.P className="text-[12px] flex flex-row items-center gap-0.5">
+              {alreadyDownloaded ? (
+                <>
+                  <IoBuildSharp />
+                  Verify Files
+                </>
+              ) : (
+                "Download Build"
+              )}
+            </UI.P>
+          </div>
+        )}
 
-          <UI.MinDuration
-            visible={currentlyVerifying && verifyingState != undefined}
-            minDuration={1000}
+        <UI.MinDuration
+          visible={currentlyVerifying && verifyingState != undefined}
+          minDuration={1000}
+        >
+          <motion.div
+            className={`bg-neutral-700/40 backdrop-blur-lg border-neutral-700 border-[1px] border-solid transition-opacity duration-50 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.8 }}
+            exit={{ opacity: 0, transition: { delay: 2 } }}
+            key="verifying-state"
+            transition={{ type: "spring", stiffness: 200, damping: 19 }}
           >
-            <motion.div
-              className={`bg-neutral-700/40 backdrop-blur-lg border-neutral-700 border-[1px] border-solid transition-opacity duration-50 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.8 }}
-              exit={{ opacity: 0, transition: { delay: 2 } }}
-              key="verifying-state"
-              transition={{ type: "spring", stiffness: 200, damping: 19 }}
-            >
-              <UI.P className="text-[12px] flex flex-row items-center gap-0.5">
-                Verifying Content {verifyingState?.checked_files} /{" "}
-                {verifyingState?.total_files}
-              </UI.P>
-            </motion.div>
-          </UI.MinDuration>
+            <UI.P className="text-[12px] flex flex-row items-center gap-0.5">
+              Verifying Content {verifyingState?.checked_files} /{" "}
+              {verifyingState?.total_files}
+            </UI.P>
+          </motion.div>
+        </UI.MinDuration>
 
+        <AnimatePresence>
           {alreadyDownloaded && !currentlyDownloading && (
             <motion.div
               className={`bg-green-700/40 backdrop-blur-lg border-green-900 border-[1px] border-solid transition-opacity duration-50 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1`}
