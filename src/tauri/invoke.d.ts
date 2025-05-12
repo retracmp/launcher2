@@ -45,9 +45,14 @@ type VerifyingInformation = {
   status: bool;
 };
 
-type MannifestVerifyProgress = {
+type ManifestVerifyProgress = {
   current_file: string;
   checked_files: number;
   total_files: number;
   manifest_id: string;
+};
+
+type VERIFYING_STATUS = {
+  manifest_id: string;
+  status: boolean;
 };

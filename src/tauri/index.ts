@@ -16,6 +16,9 @@ const launch_retrac = async (options: LaunchOptions) => {
 };
 
 const download_build = async (manifestId: string, downloadPath: string) => {
+  const stack = new Error().stack;
+  console.log("download_build", stack);
+
   const result = await i<string>("download_build", {
     manifestId,
     downloadPath,

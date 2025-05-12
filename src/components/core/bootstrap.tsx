@@ -104,6 +104,7 @@ const Boostrap = () => {
         };
       })
     );
+    retrac.set_manifests(data.manifest_information);
   };
 
   const onSocketRequestHeartbeat = (data: SocketDownEvent_RequestHeartbeat) => {

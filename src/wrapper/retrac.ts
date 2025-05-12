@@ -9,6 +9,10 @@ type RetracState = {
 
   events: LauncherEventItem[];
   set_events: (events: LauncherEventItem[]) => void;
+
+  manifests: ManifestInformation[];
+  set_manifests: (manifests: ManifestInformation[]) => void;
+
   // servers: Server[];
   // add_server: (server: Server) => void;
   // remove_server: (server: Server) => void;
@@ -23,4 +27,6 @@ export const useRetrac = create<RetracState>((set) => ({
   set_launcher_news: (launcher_news) => set({ launcher_news }),
   events: [],
   set_events: (events) => set({ events }),
+  manifests: [],
+  set_manifests: (manifests) => set({ manifests }),
 }));

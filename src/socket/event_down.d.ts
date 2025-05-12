@@ -19,6 +19,8 @@ type SocketDownEvent_Welcome = SocketBasicDownEvent & {
     events: EventItem[];
     style: EventStyle[];
   };
+  manifest_information: ManifestInformation[];
+  extra_content_manifests: string[];
 };
 
 type SocketDownEvent_RequestHeartbeat = SocketBasicDownEvent & {

@@ -3,7 +3,7 @@ import { useOptions } from "src/wrapper/options";
 import { useDownloadState } from "src/wrapper/download";
 import invoke from "src/tauri";
 
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { IoBuildSharp } from "react-icons/io5";
 import UI from "src/components/core/default";
 
@@ -20,9 +20,13 @@ const DownloadEntry = (props: DownloadEntryProps) => {
   );
 
   const downloadState = useDownloadState();
-  const alreadyDownloading = downloadState.active_download_progress.has(
+  const currentlyDownloading = downloadState.active_download_progress.has(
     props.manifestInfo.manifestId
   );
+  const verifyingState = downloadState.active_verifying_progress.get(
+    props.manifestInfo.manifestId
+  );
+  const currentlyVerifying = verifyingState != undefined;
 
   const handleDownload = async () => {
     const result = await invoke.download_build(
@@ -45,7 +49,7 @@ const DownloadEntry = (props: DownloadEntryProps) => {
     <motion.div
       onClick={handleDownload}
       className={`group relative min-h-32 border-[#2e2e2e] border-[1px] border-solid rounded-sm overflow-hidden p-2.5 gap-0.5 ${
-        alreadyDownloading ? "cursor-not-allowed" : "cursor-pointer"
+        currentlyDownloading ? "cursor-not-allowed" : "cursor-pointer"
       } `}
       variants={{
         hidden: { opacity: 0, y: 20 },
@@ -55,52 +59,83 @@ const DownloadEntry = (props: DownloadEntryProps) => {
     >
       <div
         className={`absolute w-full h-full flex flex-row top-0 left-0 blur-[0.03rem] ${
-          alreadyDownloading ? "bg-blue-400/[5%]" : "bg-blue-400/[0%]"
+          currentlyDownloading ? "bg-blue-400/[5%]" : "bg-blue-400/[0%]"
         } transition-all duration-100`}
       >
-        <img
-          src={props.manifestInfo.imageUrl}
-          className="ml-auto cover w-96 object-cover"
-          style={{
-            maskImage: "linear-gradient(to right, transparent 0%, black 400%)",
-          }}
-        />
+        {
+          <img
+            src={props.manifestInfo.imageUrl}
+            className="ml-auto cover w-96 object-cover"
+            style={{
+              maskImage:
+                "linear-gradient(to right, transparent 0%, black 400%)",
+              willChange: "transform",
+              transform: "translateZ(0)",
+            }}
+            loading="lazy"
+          />
+        }
       </div>
 
-      {!alreadyDownloading && (
-        <div className="absolute right-2 bottom-2 bg-neutral-700/00 opacity-0 group-hover:opacity-100 group-hover:bg-neutral-700/70 border-[#2e2e2e00] border-[1px] group-hover:border-[#52525279] border-solid transition-opacity duration-50 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1">
-          <UI.P className="text-[12px] flex flex-row items-center gap-0.5">
-            {alreadyDownloaded ? (
-              <>
-                <IoBuildSharp />
-                Verify Files
-              </>
-            ) : (
-              "Download Build"
-            )}
-          </UI.P>
-        </div>
-      )}
+      <AnimatePresence>
+        <div className="absolute top-2 right-2 flex flex-row gap-1">
+          {!currentlyDownloading && (
+            <div className="bg-neutral-700/00 opacity-0 group-hover:opacity-100 group-hover:bg-neutral-700/70 border-[#2e2e2e00] border-[1px] group-hover:border-[#52525279] border-solid transition-opacity duration-50 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1">
+              <UI.P className="text-[12px] flex flex-row items-center gap-0.5">
+                {alreadyDownloaded ? (
+                  <>
+                    <IoBuildSharp />
+                    Verify Files
+                  </>
+                ) : (
+                  "Download Build"
+                )}
+              </UI.P>
+            </div>
+          )}
 
-      {alreadyDownloaded && (
-        <div className="absolute right-2 top-2 opacity-80 bg-green-700/40 backdrop-blur-lg border-green-900 border-[1px] border-solid transition-opacity duration-50 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1">
-          <UI.P className="text-[12px] flex flex-row items-center gap-0.5">
-            Installed
-          </UI.P>
-        </div>
-      )}
+          {currentlyVerifying && (
+            <motion.div
+              className={`bg-neutral-700/40 backdrop-blur-lg border-neutral-700 border-[1px] border-solid transition-opacity duration-50 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.8 }}
+              exit={{ opacity: 0 }}
+              key="verifying-state"
+            >
+              <UI.P className="text-[12px] flex flex-row items-center gap-0.5">
+                Verifying Content {verifyingState.checked_files} /{" "}
+                {verifyingState.total_files}
+              </UI.P>
+            </motion.div>
+          )}
 
-      {alreadyDownloading && (
-        <div className="absolute right-2 top-2 opacity-80 bg-neutral-800/50 backdrop-blur-lg border-neutral-700 border-[1px] border-solid transition-opacity duration-50 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1">
-          <UI.P className="text-[12px] flex flex-row items-center gap-0.5">
-            Currently Downloading
-          </UI.P>
+          {alreadyDownloaded && !currentlyDownloading && (
+            <motion.div
+              className={`bg-green-700/40 backdrop-blur-lg border-green-900 border-[1px] border-solid transition-opacity duration-50 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.8 }}
+              exit={{ opacity: 0 }}
+              key="installed-state"
+            >
+              <UI.P className="text-[12px] flex flex-row items-center gap-0.5">
+                Installed
+              </UI.P>
+            </motion.div>
+          )}
+
+          {currentlyDownloading && (
+            <div className="opacity-80 bg-neutral-800/50 backdrop-blur-lg border-neutral-700 border-[1px] border-solid transition-opacity duration-50 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1">
+              <UI.P className="text-[12px] flex flex-row items-center gap-0.5">
+                Currently Downloading
+              </UI.P>
+            </div>
+          )}
         </div>
-      )}
+      </AnimatePresence>
 
       <div
         className={`w-full h-full top-0 left-0 gap-0.5 flex flex-col z-20 opacity-80 ${
-          alreadyDownloading ? "opacity-100" : "group-hover:opacity-100"
+          currentlyDownloading ? "opacity-100" : "group-hover:opacity-100"
         } transition-opacity duration-100`}
       >
         <div

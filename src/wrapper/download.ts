@@ -8,10 +8,10 @@ type DownloadState = {
   ) => void;
   remove_active_download_progress: (id: string) => void;
 
-  active_verifying_progress: Map<string, MannifestVerifyProgress>;
+  active_verifying_progress: Map<string, ManifestVerifyProgress>;
   set_active_verifying_progress: (
     id: string,
-    progress: MannifestVerifyProgress
+    progress: ManifestVerifyProgress
   ) => void;
   remove_active_verifying_progress: (id: string) => void;
 
@@ -39,7 +39,7 @@ export const useDownloadState = create<DownloadState>((set, get) => ({
       return { active_download_progress: newProgress };
     }),
 
-  active_verifying_progress: new Map<string, MannifestVerifyProgress>(),
+  active_verifying_progress: new Map<string, ManifestVerifyProgress>(),
   set_active_verifying_progress: (id, progress) =>
     set((state) => {
       const newProgress = new Map(state.active_verifying_progress);

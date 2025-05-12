@@ -142,7 +142,7 @@ fn filter_missing_files_with_progress(
         current_file: file_name,
         checked_files: checked,
         total_files: total,
-        manifest_id: manifest.ID.clone(),
+        manifest_id: manifest.UploadName.clone(),
       },
     );
 
@@ -358,7 +358,7 @@ pub async fn download_build(
       );
 
       if manifest.Files.len() == 0 {
-        let _ = handle.emit("BUILD_ALREADY_INSTALLED", json!({ "manifest_id": manifest_id, "message": "Build is already fully installed" }),);
+        let _ = handle.emit("BUILD_ALREADY_INSTALLED", json!({ "manifest_id": manifest_id, "message": "Build is already fully installed" }));
       }
 
       let total_ungziped_size = manifest
