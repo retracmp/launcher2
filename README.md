@@ -10,6 +10,10 @@
 
 ![image](https://github.com/user-attachments/assets/40101c12-3baa-4ae2-a295-8c6c2aa5a634)
 
+`finally a downloader`
+
+![image](https://github.com/user-attachments/assets/198dddfd-2388-40ec-9e15-d9f98129bd5c)
+
 `nice error messages so users can report easily`
 
 ![image](https://github.com/user-attachments/assets/66cffdba-c9f9-4740-8510-85d40d861aac)
