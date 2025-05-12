@@ -37,7 +37,7 @@ const DownloadListener = () => {
 
       if (
         progress.payload.checked_files !== progress.payload.total_files &&
-        progress.payload.checked_files % 1 !== 0
+        progress.payload.checked_files % 5 !== 0
       ) {
         return;
       }
