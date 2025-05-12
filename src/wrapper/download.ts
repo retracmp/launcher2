@@ -15,6 +15,11 @@ type DownloadState = {
   ) => void;
   remove_active_verifying_progress: (id: string) => void;
 
+  allowed_to_verify_map: Map<string, boolean>;
+  set_allowed_to_verify: (id: string, allowed: boolean) => void;
+  remove_allowed_to_verify: (id: string) => void;
+  allowed_to_verify: (id: string) => boolean;
+
   timed_metabytes: Map<string, [date: Date, value: number][]>;
   add_timed_metabytes: (
     manifest_id: string,
@@ -52,6 +57,28 @@ export const useDownloadState = create<DownloadState>((set, get) => ({
       newProgress.delete(id);
       return { active_verifying_progress: newProgress };
     }),
+
+  allowed_to_verify_map: new Map<string, boolean>(),
+  set_allowed_to_verify: (id, allowed) =>
+    set((state) => {
+      const newAllowed = new Map(state.allowed_to_verify_map);
+      newAllowed.set(id, allowed);
+      return { allowed_to_verify_map: newAllowed };
+    }),
+  remove_allowed_to_verify: (id) =>
+    set((state) => {
+      const newAllowed = new Map(state.allowed_to_verify_map);
+      newAllowed.delete(id);
+      return { allowed_to_verify_map: newAllowed };
+    }),
+  allowed_to_verify: (id) => {
+    const allowed_to_verify_map = get().allowed_to_verify_map;
+    const allowed = allowed_to_verify_map.get(id);
+    if (allowed === undefined) {
+      return false;
+    }
+    return allowed;
+  },
 
   timed_metabytes: new Map<string, [date: Date, value: number][]>(),
   add_timed_metabytes: (manifest_id, time, metabytes) => {

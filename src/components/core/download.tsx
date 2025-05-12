@@ -31,6 +31,17 @@ const DownloadListener = () => {
 
   const onVerifyEvent = useCallback(
     (progress: event.Event<ManifestVerifyProgress>) => {
+      if (!downloadState.allowed_to_verify(progress.payload.manifest_id)) {
+        return;
+      }
+
+      if (
+        progress.payload.checked_files !== progress.payload.total_files &&
+        progress.payload.checked_files % 1 !== 0
+      ) {
+        return;
+      }
+
       downloadState.set_active_verifying_progress(
         progress.payload.manifest_id,
         progress.payload
@@ -46,6 +57,11 @@ const DownloadListener = () => {
 
   const onVerifyComplete = useCallback(
     (progress: event.Event<VERIFYING_STATUS>) => {
+      downloadState.set_allowed_to_verify(
+        progress.payload.manifest_id,
+        progress.payload.status
+      );
+
       if (!progress.payload.status) {
         downloadState.remove_active_verifying_progress(
           progress.payload.manifest_id

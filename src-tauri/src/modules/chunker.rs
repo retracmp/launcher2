@@ -359,6 +359,7 @@ pub async fn download_build(
 
       if manifest.Files.len() == 0 {
         let _ = handle.emit("BUILD_ALREADY_INSTALLED", json!({ "manifest_id": manifest_id, "message": "Build is already fully installed" }));
+        return Ok(true);
       }
 
       let total_ungziped_size = manifest

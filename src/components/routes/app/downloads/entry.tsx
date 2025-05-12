@@ -77,8 +77,8 @@ const DownloadEntry = (props: DownloadEntryProps) => {
         }
       </div>
 
-      <AnimatePresence>
-        <div className="absolute top-2 right-2 flex flex-row gap-1">
+      <div className="absolute top-2 right-2 flex flex-row gap-1">
+        <AnimatePresence>
           {!currentlyDownloading && (
             <div className="bg-neutral-700/00 opacity-0 group-hover:opacity-100 group-hover:bg-neutral-700/70 border-[#2e2e2e00] border-[1px] group-hover:border-[#52525279] border-solid transition-opacity duration-50 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1">
               <UI.P className="text-[12px] flex flex-row items-center gap-0.5">
@@ -99,8 +99,9 @@ const DownloadEntry = (props: DownloadEntryProps) => {
               className={`bg-neutral-700/40 backdrop-blur-lg border-neutral-700 border-[1px] border-solid transition-opacity duration-50 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.8 }}
-              exit={{ opacity: 0 }}
+              exit={{ opacity: 0, transition: { delay: 2 } }}
               key="verifying-state"
+              transition={{ type: "spring", stiffness: 200, damping: 19 }}
             >
               <UI.P className="text-[12px] flex flex-row items-center gap-0.5">
                 Verifying Content {verifyingState.checked_files} /{" "}
@@ -114,8 +115,9 @@ const DownloadEntry = (props: DownloadEntryProps) => {
               className={`bg-green-700/40 backdrop-blur-lg border-green-900 border-[1px] border-solid transition-opacity duration-50 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.8 }}
-              exit={{ opacity: 0 }}
+              exit={{ opacity: 0, transition: { delay: 2 } }}
               key="installed-state"
+              transition={{ type: "spring", stiffness: 200, damping: 19 }}
             >
               <UI.P className="text-[12px] flex flex-row items-center gap-0.5">
                 Installed
@@ -130,8 +132,8 @@ const DownloadEntry = (props: DownloadEntryProps) => {
               </UI.P>
             </div>
           )}
-        </div>
-      </AnimatePresence>
+        </AnimatePresence>
+      </div>
 
       <div
         className={`w-full h-full top-0 left-0 gap-0.5 flex flex-col z-20 opacity-80 ${
