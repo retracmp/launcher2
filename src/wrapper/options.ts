@@ -29,6 +29,9 @@ type OptionsState = {
   wide_drawer: boolean;
   set_wide_drawer: (value: boolean) => void;
 
+  disable_drawer: boolean;
+  set_disable_drawer: (value: boolean) => void;
+
   show_friends: boolean;
   set_show_friends: (value: boolean) => void;
 
@@ -76,6 +79,9 @@ export const useOptions = create<OptionsState>()(
 
       wide_drawer: true,
       set_wide_drawer: (value) => set(() => ({ wide_drawer: value })),
+
+      disable_drawer: false,
+      set_disable_drawer: (value) => set(() => ({ disable_drawer: value })),
 
       show_friends: true,
       set_show_friends: (value) => set(() => ({ show_friends: value })),

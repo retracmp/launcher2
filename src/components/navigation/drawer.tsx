@@ -12,10 +12,33 @@ const Drawer = () => {
 
   return (
     <motion.nav
-      className="flex flex-col items-center gap-1 p-1.5 h-full w-12 border-r-[#2e2e2e] border-r-1 border-solid"
-      initial={{ width: 48 }}
-      animate={{ width: options.wide_drawer ? 192 : 48 }}
-      transition={{ type: "spring", stiffness: 200, damping: 21 }}
+      className="flex flex-col items-center gap-1 h-full w-12 border-r-[#2e2e2e] border-r-1 border-solid overflow-hidden pt-1.5 pb-1.5"
+      initial={{
+        width: options.disable_drawer ? 0 : 48,
+        padding: options.disable_drawer ? 0 : "0.375rem",
+      }}
+      animate={{
+        width: options.disable_drawer ? 0 : options.wide_drawer ? 192 : 48,
+        padding: options.disable_drawer ? 0 : "0.375rem",
+      }}
+      transition={
+        options.disable_drawer
+          ? {
+              duration: 0.2,
+            }
+          : {
+              type: "spring",
+              stiffness: 200,
+              damping: 21,
+            }
+      }
+      style={
+        options.disable_drawer
+          ? {
+              borderRightWidth: 0,
+            }
+          : {}
+      }
     >
       {!userManager.access() ? <EmptyRoutes /> : <AuthenticatedRoutes />}
 

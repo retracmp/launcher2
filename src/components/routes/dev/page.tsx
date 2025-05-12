@@ -4,7 +4,11 @@ import { useUserManager } from "src/wrapper/user";
 import { useOptions } from "src/wrapper/options";
 
 import UI from "src/components/core/default";
-import { OptionGroup, StringOption } from "../app/settings/option";
+import {
+  BooleanOption,
+  OptionGroup,
+  StringOption,
+} from "../app/settings/option";
 
 const DeveloperPage = () => {
   const bannerManager = useBannerManager();
@@ -84,12 +88,20 @@ const DeveloperPage = () => {
           </UI.Button>
         </div>
       </div>
-      <OptionGroup title="launch args">
+      <OptionGroup title="opts" _first>
         <StringOption
           title="launch arguments"
           description="arguments to pass to the game on launch."
           state={options.launch_arguments}
           set={options.set_launch_arguments}
+        />
+
+        <BooleanOption
+          title="No Sidebar"
+          description={<>Remove for debugging purposes</>}
+          state={options.disable_drawer}
+          set={options.set_disable_drawer}
+          _animate
         />
       </OptionGroup>
     </>
