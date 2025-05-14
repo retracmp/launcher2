@@ -1,6 +1,5 @@
 use std::path::PathBuf;
-
-use crate::modules::{process, chunker};
+use crate::modules::{chunker, process};
 
 #[derive(Debug, Clone, serde::Deserialize)]
 pub struct LaunchOptions {
@@ -20,11 +19,13 @@ pub async fn launch_retrac(options: LaunchOptions) -> Result<(), String> {
   if options.manifest_id.is_some() {
     let manifest_id = options.manifest_id.unwrap();
     chunker::download_build(&manifest_id, options.root.to_str().unwrap()).await?;
-  }
 
-  chunker::download_build("Custom_Content", options.root.to_str().unwrap()).await?;
-  chunker::download_build("Anticheat_Client", options.root.to_str().unwrap()).await?;
-  chunker::download_build("EAC_Client", options.root.to_str().unwrap()).await?;
+    if manifest_id == "++Fortnite+Release-14.40-CL-14550713-Windows" { 
+      chunker::download_build("Custom_Content", options.root.to_str().unwrap()).await?;
+      chunker::download_build("Anticheat_Client", options.root.to_str().unwrap()).await?;
+      chunker::download_build("EAC_Client", options.root.to_str().unwrap()).await?;
+    }
+  }
   
   process::kill_all(&[
     "FortniteClient-Win64-Shipping_BE.exe",
