@@ -108,7 +108,8 @@ const DownloadListener = () => {
   }, [onDownloadEvent, onVerifyEvent, onVerifyComplete]);
 
   const downloadExtraContent = useCallback(async () => {
-    if (!options.auto_download) return;
+    if (downloadState.active_download_progress.size > 0) return;
+    if (!options.auto_download) return console.log("Auto download is disabled");
 
     const retracBuild = library.library.find(
       (x) => x.version === "++Fortnite+Release-14.40-CL-14550713"
