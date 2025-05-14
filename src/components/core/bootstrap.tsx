@@ -29,7 +29,7 @@ const Boostrap = () => {
       await app.getName(),
       await app.getVersion(),
       import.meta.env.MODE === "development",
-      await invoke.get_windows_version()
+      (await invoke.get_windows_version()) || 0
     );
   };
 
@@ -105,6 +105,11 @@ const Boostrap = () => {
       })
     );
     retrac.set_manifests(data.manifest_information);
+    retrac.set_auto_download_manifests(
+      data.extra_content_manifests.map((m) =>
+        m.split("/").pop()!.replace(".acidmanifest", "")
+      )
+    );
   };
 
   const onSocketRequestHeartbeat = (data: SocketDownEvent_RequestHeartbeat) => {

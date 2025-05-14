@@ -13,6 +13,9 @@ type RetracState = {
   manifests: ManifestInformation[];
   set_manifests: (manifests: ManifestInformation[]) => void;
 
+  auto_download_manifests: string[];
+  set_auto_download_manifests: (manifests: string[]) => void;
+
   // servers: Server[];
   // add_server: (server: Server) => void;
   // remove_server: (server: Server) => void;
@@ -29,4 +32,7 @@ export const useRetrac = create<RetracState>((set) => ({
   set_events: (events) => set({ events }),
   manifests: [],
   set_manifests: (manifests) => set({ manifests }),
+  auto_download_manifests: [],
+  set_auto_download_manifests: (manifests) =>
+    set({ auto_download_manifests: manifests }),
 }));

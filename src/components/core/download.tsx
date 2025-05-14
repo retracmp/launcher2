@@ -1,9 +1,16 @@
+import { useOptions } from "src/wrapper/options";
 import { useCallback, useEffect } from "react";
 import { useDownloadState } from "src/wrapper/download";
+import { useRetrac } from "src/wrapper/retrac";
 import { event } from "@tauri-apps/api";
+import invoke from "src/tauri";
+import { useLibrary } from "src/wrapper/library";
 
 const DownloadListener = () => {
   const downloadState = useDownloadState();
+  const options = useOptions();
+  const library = useLibrary();
+  const retrac = useRetrac();
 
   const onDownloadEvent = useCallback(
     (progress: event.Event<ManifestProgress>) => {
@@ -99,6 +106,35 @@ const DownloadListener = () => {
       unlistenVerifyComplete.then((fn: event.UnlistenFn) => fn());
     };
   }, [onDownloadEvent, onVerifyEvent, onVerifyComplete]);
+
+  const downloadExtraContent = useCallback(async () => {
+    if (!options.auto_download) return;
+
+    const retracBuild = library.library.find(
+      (x) => x.version === "++Fortnite+Release-14.40-CL-14550713"
+    );
+    if (!retracBuild) return console.error("Retrac build not found in library");
+
+    for (const manifest of retrac.auto_download_manifests) {
+      const result = await invoke.download_build(
+        manifest,
+        retracBuild.rootLocation
+      );
+      if (result === null)
+        return console.error("Failed to download extra content");
+    }
+  }, [options.auto_download]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (options.auto_download) {
+        downloadExtraContent();
+      }
+    }, 2000);
+
+    const interval = setInterval(() => downloadExtraContent(), 1000 * 60 * 5);
+    return () => clearInterval(interval);
+  }, [options.auto_download]);
 
   return null;
 };
