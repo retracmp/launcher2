@@ -135,7 +135,7 @@ const DownloadListener = () => {
   useEffect(() => {
     setTimeout(() => options.auto_download && autoDownload(), 2000);
 
-    const interval = setInterval(() => autoDownload(), 1000);
+    const interval = setInterval(() => autoDownload(), 1000 * 60 * 5);
     return () => clearInterval(interval);
   }, [options.auto_download, autoDownload]);
 
