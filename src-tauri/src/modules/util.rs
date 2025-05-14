@@ -4,6 +4,19 @@ use std::fs::File;
 use std::io::Read;
 use std::convert::TryInto;
 
+use std::sync::OnceLock;
+use tauri::AppHandle;
+
+static APP_HANDLE: OnceLock<AppHandle> = OnceLock::new();
+
+pub fn set_app_handle(handle: AppHandle) {
+  APP_HANDLE.set(handle).unwrap();
+}
+
+pub fn get_app_handle() -> AppHandle {
+  APP_HANDLE.get().unwrap().clone()
+}
+
 pub async fn search_file_for_bytes(path: &str, pattern: &[u8]) -> Result<Option<usize>, String> {
   let file = File::open(path);
   if file.is_err() {

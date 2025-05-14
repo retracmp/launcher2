@@ -18,10 +18,16 @@ const DownloadListener = () => {
         progress.payload.speed_mbps
       );
 
+      if (progress.payload.percent === 100) {
+        downloadState.remove_active_download_progress(
+          progress.payload.manifest_id
+        );
+      }
+
       console.log(`[download] ${progress.payload.manifest_id}
         downloaded_bytes: ${progress.payload.downloaded_bytes}
         total_bytes: ${progress.payload.total_bytes}
-        percent: ${progress.payload.percent * 100}%
+        percent: ${progress.payload.percent}%
         files: [${progress.payload.current_files.join(", ")}]
         speed_mbps: ${progress.payload.speed_mbps}
         eta_seconds: ${progress.payload.eta_seconds}`);

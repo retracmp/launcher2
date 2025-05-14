@@ -4,7 +4,7 @@ use tauri::Manager;
 use tauri_plugin_deep_link::DeepLinkExt;
 
 pub mod modules;
-use modules::{chunker, commands};
+use modules::{chunker, commands, util};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -18,8 +18,10 @@ pub fn run() {
   builder = builder.plugin(tauri_plugin_dialog::init());
 
   builder = builder.setup(|app| {
-    let main_window = app.get_webview_window("main").expect("no main window");
+    let handle = app.handle();
+    util::set_app_handle(handle.to_owned());
 
+    let main_window = app.get_webview_window("main").expect("no main window");
     if main_window.set_shadow(true).is_err() {
       eprintln!("Failed to set window shadow");
     }
@@ -35,7 +37,7 @@ pub fn run() {
     commands::get_windows_version,
     commands::get_fortnite_version,
     commands::launch_retrac,
-    chunker::download_build,
+    commands::download_build,
   ]);
 
   builder.run(tauri::generate_context!()).expect("error while running tauri application");

@@ -16,6 +16,7 @@ type LaunchOptions = {
   disable_pre_edits: boolean;
   reset_on_release: boolean;
   launch_args: string;
+  manifest_id?: string;
 };
 
 // pub struct ManifestProgress {

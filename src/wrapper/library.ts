@@ -89,6 +89,12 @@ export const BUILD_NICE_NAMES: Record<string, string> = {
   "++Fortnite+Release-14.60-CL-14786821": "Chapter 2 Season 4",
 };
 
+export const DOWNLOAD_FILE_NICE_NAMES: Record<string, string> = {
+  Custom_Content: "Retrac Custom Content",
+  Anticheat_Client: "Secure Anti-cheat Client",
+  EAC_Client: "Easy Anti-cheat",
+};
+
 export const LAUNCH_STATE = {
   NONE: "none",
   LAUNCHING: "launching",
@@ -104,6 +110,10 @@ type LibraryState = {
   updateLibraryEntry: (version: string, entry: Partial<LibraryEntry>) => void;
   clearLibrary: () => void;
   createLibraryEntry: (rootPath: string) => Promise<LibraryEntry>;
+  createLibraryEntryWithManifestID: (
+    rootPath: string,
+    m: string
+  ) => Promise<LibraryEntry>;
 
   launchState: (typeof LAUNCH_STATE)[keyof typeof LAUNCH_STATE];
   setLaunchState: (
@@ -159,6 +169,7 @@ export const useLibrary = create<LibraryState>()(
           throw new Error("Invalid Fortnite installation path");
         }
         entry.version = VERSION_SWAPS[version] || version;
+        entry.manifestId = `${entry.version.replace("-Windows", "")}-Windows`;
 
         if (!BUILD_NICE_NAMES[entry.version]) {
           throw new Error("Unsupported Fortnite version");
@@ -168,7 +179,12 @@ export const useLibrary = create<LibraryState>()(
         get().addLibraryEntry(entry as LibraryEntry);
         return entry as LibraryEntry;
       },
-
+      createLibraryEntryWithManifestID: async (rootPath, m) => {
+        const normalResult = await get().createLibraryEntry(rootPath);
+        normalResult.manifestId = m;
+        get().addLibraryEntry(normalResult as LibraryEntry);
+        return normalResult;
+      },
       launchState: LAUNCH_STATE.NONE,
       setLaunchState: (state) => set({ launchState: state }),
       launchedBuild: null,
@@ -198,18 +214,17 @@ export const useLibrary = create<LibraryState>()(
           reset_on_release: useOptions.getState().reset_on_release,
           simple_edit: useOptions.getState().simple_edit,
           root: entry.rootLocation,
+          manifest_id: entry.manifestId,
         });
 
-        if (result != null) {
-          setTimeout(() => {
-            get().setLaunchState(LAUNCH_STATE.LAUNCHED);
-          }, 5000);
-
-          console.log(result);
-        } else {
-          get().setLaunchState(LAUNCH_STATE.NONE);
+        if (result === null || !!!result) {
+          get().setLaunchState(LAUNCH_STATE.ERROR);
           throw new Error("Failed to launch Retrac");
         }
+
+        setTimeout(() => {
+          get().setLaunchState(LAUNCH_STATE.LAUNCHED);
+        }, 5000);
       },
     }),
     {

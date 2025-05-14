@@ -35,13 +35,10 @@ const DownloadEntry = (props: DownloadEntryProps) => {
       props.manifestInfo.manifestId,
       `${options.content_directory}/${props.manifestInfo.manifestId}`
     );
+    if (result === null) return;
 
     const entry = await library.createLibraryEntry(
       `${options.content_directory}/${props.manifestInfo.manifestId}`
-    );
-
-    downloadState.remove_active_download_progress(
-      props.manifestInfo.manifestId
     );
 
     console.log(result, entry);

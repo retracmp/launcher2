@@ -6,4 +6,5 @@ type LibraryEntry = {
   processLocation: string;
   splashLocation: string;
   buildName: string;
+  manifestId: string;
 };

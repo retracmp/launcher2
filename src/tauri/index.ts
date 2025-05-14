@@ -33,8 +33,8 @@ const get_fortnite_version = async (path: string): Promise<string | null> => {
 
 const launch_retrac = async (
   options: LaunchOptions
-): Promise<string | null> => {
-  const result = await i<string>("launch_retrac", { options }).catch(
+): Promise<boolean | null> => {
+  const result = await i<boolean>("launch_retrac", { options }).catch(
     (e: string) => {
       useBannerManager.getState().push({
         closable: true,

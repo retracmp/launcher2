@@ -7,8 +7,10 @@ use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 
-use tauri::{AppHandle, Emitter, Manager};
+use tauri::{AppHandle, Emitter};
 use tokio::{fs::File, io::{AsyncReadExt, AsyncSeekExt, AsyncWriteExt}, sync::Mutex, task::JoinHandle};
+
+use crate::modules::util;
 
 // thank you to scarand for helping with most of this <3
 // this is just a port of the chunker made in golang
@@ -331,8 +333,7 @@ async fn download_file(
   Ok(())
 }
 
-#[tauri::command]
-pub async fn download_build(
+pub async fn download_build_internal(
   manifest_id: &str,
   download_path: &str,
   handle: AppHandle,
@@ -496,17 +497,9 @@ pub async fn download_build(
   }
 }
 
-#[tauri::command]
-pub async fn cancel_download(
+pub async fn download_build(
   manifest_id: &str,
-  app_handle: AppHandle,
+  download_path: &str,
 ) -> Result<bool, String> {
-  let downloading_state = app_handle.state::<Mutex<DownloadingState>>();
-
-  if let Some(progress) = downloading_state.lock().await.get_progress(manifest_id).await {
-    let mut progress = progress.lock().await;
-    progress.wants_cancel = true;
-  }
-
-  Ok(true)
+  download_build_internal(manifest_id, download_path, util::get_app_handle()).await
 }

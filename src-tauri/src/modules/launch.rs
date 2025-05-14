@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use crate::modules::process;
+use crate::modules::{process, chunker};
 
 #[derive(Debug, Clone, serde::Deserialize)]
 pub struct LaunchOptions {
@@ -11,16 +11,20 @@ pub struct LaunchOptions {
   pub disable_pre_edits: bool,
   pub reset_on_release: bool,
   pub launch_args: String,
+  pub manifest_id: Option<String>,
 }
 
-pub fn launch_retrac(options: LaunchOptions) -> Result<(), String> {
+pub async fn launch_retrac(options: LaunchOptions) -> Result<(), String> {
   println!("Launching Retrac with options: {:?}", options);
 
-  // todo: 
-  // - check pak files & install if needed
-  // - check if the game is already running
-  // - download custom dll if hash doesnt match
-  // - download eac if has no match
+  if options.manifest_id.is_some() {
+    let manifest_id = options.manifest_id.unwrap();
+    chunker::download_build(&manifest_id, options.root.to_str().unwrap()).await?;
+  }
+
+  chunker::download_build("Custom_Content", options.root.to_str().unwrap()).await?;
+  chunker::download_build("Anticheat_Client", options.root.to_str().unwrap()).await?;
+  chunker::download_build("EAC_Client", options.root.to_str().unwrap()).await?;
   
   process::kill_all(&[
     "FortniteClient-Win64-Shipping_BE.exe",

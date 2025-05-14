@@ -1,7 +1,10 @@
 import { useDownloadState } from "src/wrapper/download";
 import { useOptions } from "src/wrapper/options";
 import { formatTime } from "src/helpers/time";
-import { BUILD_NICE_NAMES } from "src/wrapper/library";
+import {
+  BUILD_NICE_NAMES,
+  DOWNLOAD_FILE_NICE_NAMES,
+} from "src/wrapper/library";
 
 import UI from "src/components/core/default";
 import { SparkLineChart } from "@mui/x-charts";
@@ -44,6 +47,8 @@ const DownloadingBuildUI = (props: DownloadingBuildProps) => {
                 .join(" ")}
             </span>
           </div>
+        ) : DOWNLOAD_FILE_NICE_NAMES[props.progress.manifest_id] ? (
+          DOWNLOAD_FILE_NICE_NAMES[props.progress.manifest_id]
         ) : (
           props.progress.manifest_id.replace("-Windows", "")
         )}
@@ -52,7 +57,14 @@ const DownloadingBuildUI = (props: DownloadingBuildProps) => {
       <div className="flex flex-col justify-center mr-[15.5rem] gap-0 leading-0">
         <s className="ml-auto" />
         <UI.P className="text-neutral-500 text-xs">
-          {formatTime(props.progress.eta_seconds * 1000, 3, false, false)}{" "}
+          {props.progress.eta_seconds < 30
+            ? "Less than a minute"
+            : formatTime(
+                props.progress.eta_seconds * 1000,
+                3,
+                false,
+                false
+              )}{" "}
           remaining
           {" • "}
           {props.progress.current_files.length} file
@@ -67,10 +79,7 @@ const DownloadingBuildUI = (props: DownloadingBuildProps) => {
                 2
               )}{" "}
               GB of{" "}
-              {Math.round(
-                props.progress.total_bytes / 1024 / 1024 / 1024
-              ).toFixed(2)}{" "}
-              GB
+              {(props.progress.total_bytes / 1024 / 1024 / 1024).toFixed(2)} GB
             </UI.P>
             <s className="ml-auto" />
           </div>

@@ -1,8 +1,9 @@
+use tauri::AppHandle;
 use winver::WindowsVersion;
 use std::fs::File;
 use std::io::{Read, Seek};
 
-use crate::modules::{util, launch};
+use crate::modules::{util, launch, chunker};
 
 #[tauri::command]
 pub async fn get_windows_version() -> Result<i32, String> {
@@ -46,9 +47,14 @@ pub async fn get_fortnite_version(path: &str) -> Result<String, String> {
 
 #[tauri::command]
 pub async fn launch_retrac(options: launch::LaunchOptions) -> Result<bool, String> {
-  let result = launch::launch_retrac(options);
+  let result = launch::launch_retrac(options).await;
   match result {
     Ok(_) => Ok(true),
     Err(e) => Err(e),
   }
+}
+
+#[tauri::command]
+pub async fn download_build(manifest_id: &str, download_path: &str, handle: AppHandle) -> Result<bool, String> {
+  chunker::download_build_internal(manifest_id, download_path, handle).await
 }
