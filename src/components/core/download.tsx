@@ -107,7 +107,7 @@ const DownloadListener = () => {
     };
   }, [onDownloadEvent, onVerifyEvent, onVerifyComplete]);
 
-  const downloadExtraContent = useCallback(async () => {
+  const autoDownload = useCallback(async () => {
     if (downloadState.active_download_progress.size > 0) return;
     if (!options.auto_download) return console.log("Auto download is disabled");
 
@@ -115,6 +115,8 @@ const DownloadListener = () => {
       (x) => x.version === "++Fortnite+Release-14.40-CL-14550713"
     );
     if (!retracBuild) return console.error("Retrac build not found in library");
+
+    console.log("[download] auto downloading extra content");
 
     for (const manifest of retrac.auto_download_manifests) {
       const result = await invoke.download_build(
@@ -124,18 +126,18 @@ const DownloadListener = () => {
       if (result === null)
         return console.error("Failed to download extra content");
     }
-  }, [options.auto_download]);
+  }, [
+    options.auto_download,
+    retrac.auto_download_manifests,
+    downloadState.active_download_progress,
+  ]);
 
   useEffect(() => {
-    setTimeout(() => {
-      if (options.auto_download) {
-        downloadExtraContent();
-      }
-    }, 2000);
+    setTimeout(() => options.auto_download && autoDownload(), 2000);
 
-    const interval = setInterval(() => downloadExtraContent(), 1000 * 60 * 5);
+    const interval = setInterval(() => autoDownload(), 1000);
     return () => clearInterval(interval);
-  }, [options.auto_download]);
+  }, [options.auto_download, autoDownload]);
 
   return null;
 };

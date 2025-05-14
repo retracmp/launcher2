@@ -12,6 +12,31 @@ use tokio::{fs::File, io::{AsyncReadExt, AsyncSeekExt, AsyncWriteExt}, sync::Mut
 
 use crate::modules::util;
 
+#[derive(Default, Serialize, Debug, Deserialize, Clone)]
+pub struct DownloadingStateTauri {
+  pub active_downloads: std::collections::HashMap<String, bool>,
+}
+
+impl DownloadingStateTauri {
+  pub fn new() -> Self {
+    Self {
+      active_downloads: std::collections::HashMap::new(),
+    }
+  }
+
+  pub fn add_download(&mut self, manifest_id: String) {
+    self.active_downloads.insert(manifest_id, true);
+  }
+
+  pub fn remove_download(&mut self, manifest_id: String) {
+    self.active_downloads.remove(&manifest_id);
+  }
+
+  pub fn is_downloading(&self, manifest_id: &str) -> bool {
+    self.active_downloads.contains_key(manifest_id)
+  }
+}
+
 // thank you to scarand for helping with most of this <3
 // this is just a port of the chunker made in golang
 
@@ -102,25 +127,6 @@ pub struct ManifestProgress {
   manifest_id: String,
   current_files: Vec<String>,
   wants_cancel: bool,
-}
-
-#[derive(Default, Serialize, Deserialize, Clone)]
-pub struct DownloadingState {
-  progress: std::collections::HashMap<String, ManifestProgress>,
-}
-
-impl DownloadingState {
-  pub async fn set_progress(&mut self, manifest_id: String, progress: Arc<Mutex<ManifestProgress>>) {
-    let progress = progress.lock().await;
-    self.progress.insert(manifest_id, (*progress).clone());
-  }
-
-  pub async fn get_progress(&self, manifest_id: &str) -> Option<Arc<Mutex<ManifestProgress>>> {
-    if let Some(progress) = self.progress.get(manifest_id) {
-      return Some(Arc::new(Mutex::new(progress.clone())));
-    }
-    None
-  }
 }
 
 const BASE_URL: &str = "https://cdn.retrac.site/manifest";
@@ -338,12 +344,6 @@ pub async fn download_build_internal(
   download_path: &str,
   handle: AppHandle,
 ) -> Result<bool, String> {
-  // let downloading_state_tried = handle.try_state::<Mutex<DownloadingState>>();
-  // if downloading_state_tried.is_none() {
-  //   return Err("Failed to get downloading state".to_string());
-  // }
-  // let downloading_state = downloading_state_tried.unwrap();
-
   let client = Client::new();
 
   match download_manifest(manifest_id, &client).await {
@@ -363,6 +363,13 @@ pub async fn download_build_internal(
         return Ok(true);
       }
 
+      {
+        let state = util::get_downloading_state().await;
+        if state.is_downloading(manifest_id) {
+          return Err("Another download is already in progress".to_string());
+        }
+      }
+
       let total_ungziped_size = manifest
         .Files
         .iter()
@@ -377,30 +384,6 @@ pub async fn download_build_internal(
         Arc::new(tokio::sync::Semaphore::new(thread_amount));
       let mut handles: Vec<JoinHandle<Result<(), String>>> = vec![];
       let download_path_arc = Arc::new(download_path.to_string());
-
-      // let downloading_state_guard = downloading_state.lock().await;
-      // let existing_progress = downloading_state_guard.progress.get(manifest_id).cloned();
-      // drop(downloading_state_guard);
-
-      // let progress = match existing_progress {
-      //   Some(progress) => Arc::new(Mutex::new(progress.clone())),
-      //   None => Arc::new(Mutex::new(ManifestProgress {
-      //     downloaded_bytes: 0,
-      //     total_bytes: total_ungziped_size as u64,
-      //     percent: 0.0,
-      //     speed_mbps: 0.0,
-      //     eta_seconds: 0,
-      //     manifest_id: manifest_id.to_string(),
-      //     current_file: None,
-      //     wants_cancel: false,
-      //   })),
-      // };
-
-      // downloading_state
-      //   .lock()
-      //   .await
-      //   .set_progress(manifest_id.to_string(), progress.clone())
-      //   .await;
 
       let progress = Arc::new(Mutex::new(ManifestProgress {
         downloaded_bytes: 0,
@@ -420,6 +403,17 @@ pub async fn download_build_internal(
 
       if manifest.Files.len() > 0 {
         println!("Starting download progress timer");
+
+        {
+          // let state = handle.state::<Mutex<DownloadingStateTauri>>();
+          // let mut state = state.lock().await;
+          // state.active_downloads.insert(manifest_id.to_string(), true);
+
+          let mut state = util::get_downloading_state().await;
+          state.add_download(manifest_id.to_string());
+          util::set_downloading_state(state).await;
+        }
+          
         tokio::spawn(async move {
           let mut interval = tokio::time::interval(std::time::Duration::from_millis(100));
           loop {
@@ -447,11 +441,7 @@ pub async fn download_build_internal(
         
         let progress = progress.clone();
         let thread_handle = tokio::spawn(async move {
-          // {
-          //   let mut progress = progress.lock().await;
-          //   progress.current_file = Some(file_name.clone());
-          // }
-          
+
           let _ = download_file(
             &client,
             &file,
@@ -478,12 +468,21 @@ pub async fn download_build_internal(
         }
       }
 
+      {
+        // let state = handle.state::<Mutex<DownloadingStateTauri>>();
+        // let mut state = state.lock().await;
+        // state.active_downloads.remove(manifest_id); 
+
+        let mut state = util::get_downloading_state().await;
+        state.remove_download(manifest_id.to_string());
+        util::set_downloading_state(state).await;
+      }
+
       if download_failed {
         return Err("Download aborted due to error.".to_string());
       }
 
       let tmp_path = Path::new(download_path).join(TMP_FOLDER);
-
       if let Err(e) = tokio::fs::remove_dir_all(tmp_path).await {
         eprintln!("Warning: Failed to delete tmp folder {}", e)
       };

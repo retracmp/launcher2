@@ -53,13 +53,12 @@ const download_build = async (
   manifestId: string,
   downloadPath: string
 ): Promise<string | null> => {
-  const stack = new Error().stack;
-  console.log("download_build", stack);
-
   const result = await i<string>("download_build", {
     manifestId,
     downloadPath,
   }).catch((e: string) => {
+    if (e === "Another download is already in progress") return null;
+
     useBannerManager.getState().push({
       closable: true,
       colour: "red",

@@ -1,11 +1,14 @@
+use futures_util::lock::Mutex;
 use regex::Regex;
 
 use std::fs::File;
 use std::io::Read;
 use std::convert::TryInto;
 
-use std::sync::OnceLock;
+use std::sync::{OnceLock, LazyLock};
 use tauri::AppHandle;
+
+use super::chunker;
 
 static APP_HANDLE: OnceLock<AppHandle> = OnceLock::new();
 
@@ -17,8 +20,22 @@ pub fn get_app_handle() -> AppHandle {
   APP_HANDLE.get().unwrap().clone()
 }
 
+static DOWNLOADING_STATE: LazyLock<Mutex<chunker::DownloadingStateTauri>> = LazyLock::new(|| {
+  Mutex::new(chunker::DownloadingStateTauri::default())
+});
+
+pub async fn get_downloading_state() -> chunker::DownloadingStateTauri {
+  let state = DOWNLOADING_STATE.lock().await;
+  state.clone()
+}
+
+pub async fn set_downloading_state(state: chunker::DownloadingStateTauri) {
+  let mut state_lock = DOWNLOADING_STATE.lock().await;
+  *state_lock = state;
+}
+
 pub async fn search_file_for_bytes(path: &str, pattern: &[u8]) -> Result<Option<usize>, String> {
-  let file = File::open(path);
+  let file: Result<File, std::io::Error> = File::open(path);
   if file.is_err() {
     return Err(format!("Failed to open file: {}", path));
   }

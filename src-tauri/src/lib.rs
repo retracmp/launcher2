@@ -1,16 +1,12 @@
-use std::sync::Mutex;
-
 use tauri::Manager;
 use tauri_plugin_deep_link::DeepLinkExt;
 
 pub mod modules;
-use modules::{chunker, commands, util};
+use modules::{commands, util};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
   let mut builder = tauri::Builder::default();
-
-  builder = builder.manage(Mutex::new(chunker::DownloadingState::default()));
 
   builder = builder.plugin(tauri_plugin_single_instance::init(|_app, _argv, _cwd| {}));
   builder = builder.plugin(tauri_plugin_deep_link::init());
