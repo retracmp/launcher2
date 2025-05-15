@@ -35,7 +35,6 @@
 ## todo
 
 - server status
-- donate store
 
 RELEASE
 
