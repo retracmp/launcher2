@@ -18,6 +18,10 @@
 
 ![image](https://github.com/user-attachments/assets/66cffdba-c9f9-4740-8510-85d40d861aac)
 
+`donate tab`
+
+![image](https://github.com/user-attachments/assets/58ff282b-e0e0-4410-9f38-a021ff7dc68d)
+
 `leaderboard`
 
 ![image](https://github.com/user-attachments/assets/2c93c6e6-ba64-4356-8d49-d212c5e652c2)
