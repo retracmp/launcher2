@@ -81,27 +81,27 @@ const DrawerItem = (props: DrawerItemProps) => {
 const colours = {
   red: [
     "hover:not-data-[status=active]:bg-red-500/5 rounded-sm text-red-200",
-    "bg-red-500/20 rounded-sm border-red-500/20 hover:none border-1 border-solid text-white",
+    "bg-red-500/20 rounded-sm border-red-500/20 hover:none border-1 border-solid",
   ],
   green: [
     "hover:not-data-[status=active]:bg-emerald-500/5 rounded-sm text-emerald-200",
-    "bg-emerald-500/20 rounded-sm border-emerald-500/20 hover:none border-1 border-solid text-white",
+    "bg-emerald-500/20 rounded-sm border-emerald-500/20 hover:none border-1 border-solid",
   ],
   blue: [
     "hover:not-data-[status=active]:bg-blue-500/5 rounded-sm text-blue-200",
-    "bg-blue-500/20 rounded-sm border-blue-500/20 hover:none border-1 border-solid text-white",
+    "bg-blue-500/20 rounded-sm border-blue-500/20 hover:none border-1 border-solid",
   ],
   yellow: [
     "hover:not-data-[status=active]:bg-yellow-500/5 rounded-sm text-yellow-200",
-    "bg-yellow-500/20 rounded-sm border-yellow-500/20 hover:none border-1 border-solid text-white",
+    "bg-yellow-500/20 rounded-sm border-yellow-500/20 hover:none border-1 border-solid",
   ],
   pink: [
     "hover:not-data-[status=active]:bg-fuchsia-500/5 rounded-sm text-fuchsia-200",
-    "bg-fuchsia-500/20 rounded-sm border-fuchsia-500/20 hover:none border-1 border-solid text-white",
+    "bg-fuchsia-500/20 rounded-sm border-fuchsia-500/20 hover:none border-1 border-solid",
   ],
   purple: [
     "hover:not-data-[status=active]:bg-purple-500/5 rounded-sm text-purple-200",
-    "bg-purple-500/20 rounded-sm border-purple-500/20 hover:none border-1 border-solid text-white",
+    "bg-purple-500/20 rounded-sm border-purple-500/20 hover:none border-1 border-solid",
   ],
 } as const;
 
@@ -110,8 +110,30 @@ type SparklyDrawerItemProps = DrawerItemProps & {
 };
 
 const SparklyDrawerItem = (props: SparklyDrawerItemProps) => {
+  const hover = useHover();
+  const parentRef = useRef<HTMLAnchorElement>(null);
+
   const Icon = Icons[props.icon];
   const options = useOptions();
+
+  const HoverComponent = () => {
+    return (
+      <div className="flex flex-row items-center p-1 px-2 rounded-[0.35rem] bg-[#181818] border-[#2e2e2e] border-[1px] border-solid overflow-hidden">
+        <span className="text-sm leading-[15px] min-w-fit mb-[1px] text-neutral-300/90">
+          {props.label}
+        </span>
+      </div>
+    );
+  };
+
+  const onHoverEntered = () => {
+    if (options.wide_drawer) return;
+    hover.set(parentRef.current, <HoverComponent />, props.label);
+  };
+  const onHoverExited = () => {
+    if (options.wide_drawer) return;
+    hover.close(props.label);
+  };
 
   return (
     <rr.Link
@@ -121,7 +143,10 @@ const SparklyDrawerItem = (props: SparklyDrawerItemProps) => {
       activeProps={{
         className: colours[props.colour][1],
       }}
+      ref={parentRef}
       activeOptions={{ exact: true }}
+      onMouseEnter={onHoverEntered}
+      onMouseLeave={onHoverExited}
     >
       <Icon className="min-w-4 min-h-4" />
 

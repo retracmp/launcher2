@@ -344,6 +344,7 @@ pub async fn download_build_internal(
   download_path: &str,
   handle: AppHandle,
 ) -> Result<bool, String> {
+  println!("downloading build {}", manifest_id);
   let client = Client::new();
 
   match download_manifest(manifest_id, &client).await {
@@ -360,12 +361,14 @@ pub async fn download_build_internal(
 
       if manifest.Files.len() == 0 {
         let _ = handle.emit("BUILD_ALREADY_INSTALLED", json!({ "manifest_id": manifest_id, "message": "Build is already fully installed" }));
+        println!("Build is already fully installed");
         return Ok(true);
       }
 
       {
         let state = util::get_downloading_state().await;
         if state.is_downloading(manifest_id) {
+          println!("Another download is already in progress");
           return Err("Another download is already in progress".to_string());
         }
       }

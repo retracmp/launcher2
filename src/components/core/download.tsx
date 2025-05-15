@@ -5,10 +5,12 @@ import { useRetrac } from "src/wrapper/retrac";
 import { event } from "@tauri-apps/api";
 import invoke from "src/tauri";
 import { useLibrary } from "src/wrapper/library";
+import { useUserManager } from "src/wrapper/user";
 
 const DownloadListener = () => {
   const downloadState = useDownloadState();
   const options = useOptions();
+  const user = useUserManager();
   const library = useLibrary();
   const retrac = useRetrac();
 
@@ -108,6 +110,7 @@ const DownloadListener = () => {
   }, [onDownloadEvent, onVerifyEvent, onVerifyComplete]);
 
   const autoDownload = useCallback(async () => {
+    if (!user.access()) return;
     if (downloadState.active_download_progress.size > 0) return;
     if (!options.auto_download) return console.log("Auto download is disabled");
 

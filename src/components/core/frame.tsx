@@ -13,6 +13,19 @@ import BannerRenderer from "src/components/banner/parent";
 import FriendsList from "src/components/navigation/friends";
 import HoverManager from "src/components/core/hover";
 
+const ENSURE_IMAGES_ARE_CACHED = [
+  "/donate/carti.webp",
+  "/donate/gamer.webp",
+  "/donate/crystal.webp",
+  "/donate/fncs.webp",
+  "/donate/og.webp",
+  "/donate/carti_big.jpg",
+  "/donate/gamer_big.jpg",
+  "/donate/crystal_big.jpg",
+  "/donate/fncs_big.jpg",
+  "/donate/og_big.jpg",
+];
+
 const Frame = () => {
   const application = useApplicationInformation();
   const userManager = useUserManager();
@@ -46,15 +59,32 @@ const Frame = () => {
           ? {}
           : {
               borderTop: "1px solid #303030",
+              // backgroundImage: "url(/2596180.jpg)",
+              // backgroundSize: "cover",
+              // backgroundPosition: "center",
             }
       }
     >
       <Drawer />
       <HoverManager />
 
+      {ENSURE_IMAGES_ARE_CACHED.map((image) => (
+        <img
+          key={image}
+          src={image}
+          className="w-0 min-w-0 max-w-0 h-0 min-h-0 max-h-0 overflow-hidden opacity-0"
+          loading="lazy"
+          style={{
+            filter: "blur(1px)",
+            willChange: "transform",
+            transform: "translateZ(0)",
+          }}
+        />
+      ))}
+
       <div className="flex flex-1 flex-col max-w-full max-h-full overflow-hidden">
         <nav
-          className="flex items-center pl-1.5 w-full bg-[#191919] h-7 border-b-[#2e2e2e] border-b-1 border-solid"
+          className="flex items-center pl-1.5 w-full bg-neutral-700/10 h-7 border-b-[#2e2e2e] border-b-1 border-solid"
           data-tauri-drag-region
         >
           <p

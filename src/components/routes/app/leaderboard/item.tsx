@@ -58,7 +58,13 @@ const LeaderboardItem = (props: LeaderboardItemProps) => {
       >
         {props.leaderboardItem.position}
       </UI.P>
-      <UI.P className="flex items-center justify-center py-2 p-2">
+      <UI.P
+        className={`flex items-center justify-center py-2 p-2 ${
+          props.leaderboardItem.accountId === me._user?.ID
+            ? "font-semibold"
+            : ""
+        }`}
+      >
         {renderedName}
       </UI.P>
       <span className="ml-auto"></span>

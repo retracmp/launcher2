@@ -12,7 +12,7 @@ const Drawer = () => {
 
   return (
     <motion.nav
-      className="flex flex-col items-center gap-1 h-full w-12 border-r-[#2e2e2e] border-r-1 border-solid overflow-hidden pt-1.5 pb-1.5"
+      className="flex flex-col items-center gap-1 h-full w-12 border-r-[#2e2e2e] border-r-1 border-solid overflow-hidden pt-1.5 pb-1.5 backdrop-blur-[2px]"
       initial={{
         width: options.disable_drawer ? 0 : 48,
         padding: options.disable_drawer ? 0 : "0.375rem",
@@ -56,7 +56,7 @@ const Drawer = () => {
 const EmptyRoutes = () => {
   return (
     <>
-      <DrawerItem path="/" icon="IoLockClosedSharp" label="Login" />
+      <DrawerItem path="/" icon="IoLockClosedSharp" label="Welcome" />
     </>
   );
 };
@@ -80,12 +80,18 @@ const AuthenticatedRoutes = () => {
       <SparklyDrawerItem
         path="/app/store"
         icon="IoSparklesSharp"
-        label="Store"
+        label="Donate"
         colour="yellow"
       />
 
       <s className="mt-auto" />
 
+      {/* <SparklyDrawerItem
+        path="/app/store"
+        icon="IoBulbSharp"
+        label="Update"
+        colour="blue"
+      /> */}
       <DrawerItem
         path="/app/downloads"
         icon="IoArchiveSharp"

@@ -34,20 +34,21 @@
 
 ## todo
 
-- implement pak downloading from chunker & auto check pak hash and redownload missing
-- eac and ac client download from chunker too
-- server status (ez)
+- server status
 - donate store
-- auto download
-- active status
+
+RELEASE
+
+then
+
+- xmpp status
+- cancel downloads
 
 ## nice features
 
-- smooth anims
-- nice cohesive design
-- easy to use
-- very good ux
-- codebase is tidy & modular
+- very good chunk downloader that optimises download speed + storage
+- only websocket's are used for communication
+- sexy ui + ux
 
 ## contribute
 

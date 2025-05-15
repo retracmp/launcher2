@@ -17,8 +17,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  /* font-family: "Geist", sans-serif; */
-  font-family: "Inter", sans-serif;
+  font-family: "Inter", "Geist", "BinancePlex", sans-serif;
   color: #ffffff;
   user-select: none;
   -moz-user-select: none;
@@ -44,17 +43,15 @@ body {
 }
 
 .font-plex {
-  /* font-family: "BinancePlex", sans-serif; */
-  font-family: "Inter", sans-serif;
+  font-family: "Inter", "BinancePlex", sans-serif;
 }
 
 .font-geist {
-  /* font-family: "Geist", sans-serif; */
-  font-family: "Inter", sans-serif;
+  font-family: "Inter", "Geist", sans-serif;
 }
 
 .font-inter {
-  font-family: "Inter", sans-serif;
+  font-family: "Inter", "Geist", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
 }

@@ -104,6 +104,78 @@ const DeveloperPage = () => {
           _animate
         />
       </OptionGroup>
+
+      <div className="relative m-2 w-96 min-h-20 bg-neutral-800 overflow-hidden">
+        <div className="w-full h-full blur-[5r0em]">
+          <div
+            className="absolute w-24 h-24 top-0 left-0 bg-red-500 rounded-full"
+            style={{
+              transform: "translate(-50%, -50%)",
+            }}
+          ></div>
+
+          <div
+            className="absolute w-28 h-24 bottom-0 right-0 bg-fuchsia-500 rounded-full"
+            style={{
+              transform: "translate(-50%, 50%)",
+            }}
+          ></div>
+        </div>
+      </div>
+
+      <div className="relative m-2 w-96 min-h-20 bg-neutral-800 overflow-hidden">
+        <div className="w-full h-full blur-[5r0em]">
+          <div
+            className="absolute w-[29%] h-[120%] top-0 left-0 bg-red-500 rounded-full"
+            style={{
+              transform: "translate(-50%, -50%)",
+            }}
+          ></div>
+
+          <div
+            className="absolute w-[29%] h-[120%] bottom-0 right-0 bg-fuchsia-500 rounded-full"
+            style={{
+              transform: "translate(-50%, 50%)",
+            }}
+          ></div>
+        </div>
+      </div>
+
+      <div className="relative m-2 w-20 min-h-20 bg-neutral-800 overflow-hidden">
+        <div className="w-full h-full blur-[5r0em]">
+          <div
+            className="absolute w-24 h-24 top-0 left-0 bg-red-500 rounded-full"
+            style={{
+              transform: "translate(-50%, -50%)",
+            }}
+          ></div>
+
+          <div
+            className="absolute w-28 h-24 bottom-0 right-0 bg-fuchsia-500 rounded-full"
+            style={{
+              transform: "translate(-50%, 50%)",
+            }}
+          ></div>
+        </div>
+      </div>
+
+      <div className="relative m-2 w-20 min-h-20 bg-neutral-800 overflow-hidden">
+        <div className="w-full h-full blur-[2rem]">
+          <div
+            className="absolute w-[29%] h-[120%] top-0 left-0 bg-red-500 rounded-full"
+            style={{
+              transform: "translate(-50%, -50%)",
+            }}
+          ></div>
+
+          <div
+            className="absolute w-[29%] h-[120%] bottom-0 right-0 bg-fuchsia-500 rounded-full"
+            style={{
+              transform: "translate(-50%, 50%)",
+            }}
+          ></div>
+        </div>
+      </div>
     </>
   );
 };

@@ -40,7 +40,7 @@ const FriendsList = () => {
 
   return (
     <motion.div
-      className="no-scroll flex flex-col p-2 gap-2 h-full w-[58px] bg-[#191919] border-l-[#2e2e2e] border-l-1 border-solid overflow-y-auto overflow-x-hidden"
+      className="no-scroll flex flex-col p-2 gap-2 h-full w-[58px] bg-neutral-700/10 border-l-[#2e2e2e] border-l-1 border-solid overflow-y-auto overflow-x-hidden"
       initial={{
         width: options.show_friends ? 58 : 0,
         paddingLeft: options.show_friends ? 8 : 0,
