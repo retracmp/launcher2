@@ -30,7 +30,6 @@ const StorePage = () => {
           image="/donate/carti_big.jpg"
           _iconColour1="bg-orange-500"
           _iconColour2="bg-pink-500"
-          _doNotAllowPurchaseIfOwnedThese={["ultimate"]}
         />
         <Package
           donatePackageTag="gamer"
