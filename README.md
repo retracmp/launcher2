@@ -39,6 +39,7 @@
 ## todo
 
 - server status
+- client themes
 
 RELEASE
 

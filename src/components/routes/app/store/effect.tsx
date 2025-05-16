@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 const Effect = () => {
   return (
     <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
-      {Array.from({ length: 100 }).map((_, idx) => (
+      {Array.from({ length: 50 }).map((_, idx) => (
         <FaillingItem key={idx} />
       ))}
     </div>
