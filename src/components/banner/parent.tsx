@@ -5,12 +5,12 @@ import { AnimatePresence, motion } from "motion/react";
 
 const BannerRenderer = () => {
   const banners = useBannerManager((s) => s._banners);
-  if (!banners || Object.keys(banners).length === 0) return null;
+  const bannerValues = Object.values(banners);
 
   return (
-    <div className="flex flex-col p-1.5 pb-0">
+    <div className="flex flex-col px-1.5 pb-0">
       <AnimatePresence>
-        {Object.values(banners).map((banner, index) => (
+        {bannerValues.map((banner, index) => (
           <motion.div
             key={banner.id}
             initial={{
@@ -25,9 +25,15 @@ const BannerRenderer = () => {
               scale: 1,
               minHeight: "2.125rem",
               height: "auto",
-              marginTop: index > 0 ? "0.25rem" : "0",
+              marginTop: "0.25rem",
             }}
-            exit={{ opacity: 0, scale: 0.95, height: 0, marginTop: 0 }}
+            exit={{
+              opacity: 0,
+              scale: 0.95,
+              height: 0,
+              marginTop: 0,
+              minHeight: 0,
+            }}
             transition={{ type: "spring", stiffness: 200, damping: 21 }}
             className="overflow-hidden"
           >
