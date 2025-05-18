@@ -3,8 +3,10 @@
 > The new game launcher for Retrac, an OG Fortnite Experience.
 
 <details>
+  
+  <br>
+
 <summary>Looking for preview images?</summary>
-<br>
 
 `homepage so far`
 
@@ -40,52 +42,13 @@
 
 </details>
 
-## todo
+## Features
 
-- client themes
+- Speedy Downloader that optimises storage using chunked files.
+- WebSocket communication between backend and the launcher, which makes updates live & instant.
 
-RELEASE
+## Upcoming Features
 
-then
-
-- xmpp status
-- cancel downloads
-
-## nice features
-
-- very good chunk downloader that optimises download speed + storage
-- only websocket's are used for communication
-- sexy ui + ux
-
-## contribute
-
-feel free to contribute, just please make sure you follow these simple guidelines:
-
-- end lines with a semicolon
-- never use `let` or `var`, instead use `const` and a functional approach
-- use arrow functions instead of `function` where possible
-- use `"` instead of `'` for strings
-
-- abosolute imports
-  - `import button from "../../../button" ❌`
-  - `import button from "src/components/button" ✅`
-- order imports by priority
-
-  - ```ts
-    import "./styles.css";
-    import { Button } from "src/components";
-    import React from "react";
-    import { useStore } from "src/store";
-
-    ❌
-    ```
-
-  - ```ts
-    import React from "react";
-    import { useStore } from "src/store";
-
-    import "./styles.css";
-    import { Button } from "src/components";
-
-    ✅
-    ```
+- Client Themes
+- Friend Status's
+- Cancel Downloads
