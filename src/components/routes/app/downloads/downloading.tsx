@@ -110,6 +110,7 @@ const DownloadingBuild = (props: DownloadingBuildProps) => {
       </div>
 
       <div className="absolute top-0 left-0 w-full h-full border-[#2e2e2e80] border-[1px] border-solid rounded-sm"></div>
+
       <motion.div
         className="absolute top-0 left-0 h-full z-10 border-blue-400/10 rounded-md bg-gradient-to-r from-30% to-transparent from-indigo-500/10"
         initial={{ width: 0 }}

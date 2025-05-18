@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 
-// export const dev = false;
-export const dev = import.meta.env.MODE === "development";
+export const dev = false;
+// export const dev = import.meta.env.MODE === "development";
 export const protocol = dev ? "http" : "https";
 export const hostname = dev ? "localhost:3000" : "retrac.site";
 

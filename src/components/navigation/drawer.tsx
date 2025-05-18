@@ -76,7 +76,7 @@ const AuthenticatedRoutes = () => {
         icon="IoFileTrayFullSharp"
         label="Library"
       />
-      <DrawerItem path="/app/status" icon="IoPulseSharp" label="Status" />
+      <DrawerItem path="/app/status" icon="IoPulseSharp" label="Matches" />
       <SparklyDrawerItem
         path="/app/store"
         icon="IoSparklesSharp"

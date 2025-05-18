@@ -29,17 +29,21 @@ type SocketUpEvent_RequestFriendInfo = SocketBasicUpEvent & {
   friendIds: string[];
 };
 
+type SocketUpEvent_RequestServers = SocketBasicUpEvent & {
+  id: "request_servers";
+};
+
 type SocketUpEvent =
   | SocketUpEvent_Heartbeat
   | SocketUpEvent_RequestUser
   | SocketUpEvent_RequestCode
   | SocketUpEvent_RequestLeaderboard
-  | SocketUpEvent_RequestFriendInfo;
+  | SocketUpEvent_RequestFriendInfo
+  | SocketUpEvent_RequestServers;
 
 type SocketUpEventType = SocketUpEvent["id"];
-type SocketUpEventDataFromType<T extends SocketUpEventType> = Extract<
-  SocketUpEvent,
-  { id: T }
+type SocketUpEventDataFromType<T extends SocketUpEventType> = Prettify<
+  Extract<SocketUpEvent, { id: T }>
 >;
 
 //
@@ -49,3 +53,4 @@ type user_test = SocketUpEventDataFromType<"request_user">;
 type code_test = SocketUpEventDataFromType<"request_code">;
 type leaderboard_test = SocketUpEventDataFromType<"request_leaderboard">;
 type friend_info_test = SocketUpEventDataFromType<"request_friend_info">;
+type servers_test = SocketUpEventDataFromType<"request_servers">;

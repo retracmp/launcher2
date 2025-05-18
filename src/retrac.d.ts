@@ -222,3 +222,32 @@ type ManifestInformation = {
   iconUrl: string;
   gigabyteSize: number;
 };
+
+type LibraryEntry = {
+  version: string;
+  rootLocation: string;
+  processLocation: string;
+  splashLocation: string;
+  buildName: string;
+  manifestId: string;
+};
+
+type Server = {
+  alivecount: number;
+  bucket_id: string;
+  id: string;
+  ip: string;
+  maxplayercount: number;
+  name: string;
+  playercount: number;
+  port: number;
+  region: string;
+  status: number;
+  string_status:
+    | "Initialised"
+    | "AssignedParties_WaitingForGameserverSocket"
+    | "GameserverConfirmedParties_CanBackfill_WaitingToMatchmake"
+    | "PlayersMatchmaked_WaitingForBus"
+    | "BusStarted_WaitingToEnd";
+  version: string;
+};

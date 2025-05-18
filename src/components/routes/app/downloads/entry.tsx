@@ -31,6 +31,17 @@ const DownloadEntry = (props: DownloadEntryProps) => {
   );
 
   const handleDownload = async () => {
+    const existingEntry = library.library.find(
+      (x) => x.version === props.manifestInfo.manifestId.replace("-Windows", "")
+    );
+    if (existingEntry) {
+      await invoke.download_build(
+        props.manifestInfo.manifestId,
+        existingEntry.rootLocation
+      );
+      return;
+    }
+
     const result = await invoke.download_build(
       props.manifestInfo.manifestId,
       `${options.content_directory}/${props.manifestInfo.manifestId}`

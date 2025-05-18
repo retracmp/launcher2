@@ -59,6 +59,26 @@ type SocketDownEvent_Usernames = SocketBasicUpEvent & {
   friendInformation: Record<string, string>;
 };
 
+type SocketDownEvent_ServerCreated = SocketBasicUpEvent & {
+  id: "server_created";
+  server: BackendServer;
+};
+
+type SocketDownEvent_ServerUpdated = SocketBasicUpEvent & {
+  id: "server_updated";
+  server: BackendServer;
+};
+
+type SocketDownEvent_ServerDeleted = SocketBasicUpEvent & {
+  id: "server_deleted";
+  server_id: string;
+};
+
+type SocketDownEvent_Servers = SocketBasicUpEvent & {
+  id: "servers";
+  servers: BackendServer[];
+};
+
 type SocketDownEvent =
   | SocketDownEvent_Close
   | SocketDownEvent_Error
@@ -69,12 +89,15 @@ type SocketDownEvent =
   | SocketDownEvent_FriendInfos
   | SocketDownEvent_Leaderboard
   | SocketDownEvent_Usernames
-  | SocketDownEvent_Code;
+  | SocketDownEvent_Code
+  | SocketDownEvent_ServerCreated
+  | SocketDownEvent_ServerUpdated
+  | SocketDownEvent_ServerDeleted
+  | SocketDownEvent_Servers;
 
 type SocketDownEventType = SocketDownEvent["id"];
-type SocketDownEventDataFromType<T extends SocketDownEventType> = Extract<
-  SocketDownEvent,
-  { id: T }
+type SocketDownEventDataFromType<T extends SocketDownEventType> = Prettify<
+  Extract<SocketDownEvent, { id: T }>
 >;
 type SocketDownEventFn<T extends SocketDownEventType> = (
   event: SocketDownEventDataFromType<T>
@@ -91,3 +114,7 @@ type friend_infos_test = SocketDownEventDataFromType<"friend_infos">;
 type leaderboard_test = SocketDownEventDataFromType<"leaderboard">;
 type usernames_test = SocketDownEventDataFromType<"user_names">;
 type code_test = SocketDownEventDataFromType<"code">;
+type server_created_test = SocketDownEventDataFromType<"server_created">;
+type server_updated_test = SocketDownEventDataFromType<"server_updated">;
+type server_deleted_test = SocketDownEventDataFromType<"server_deleted">;
+type servers_test = SocketDownEventDataFromType<"servers">;

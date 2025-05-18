@@ -9,6 +9,7 @@ import { LauncherStage, useUserManager } from "src/wrapper/user";
 import { hostname, dev } from "src/axios/client";
 import { useRetrac } from "src/wrapper/retrac";
 import { useSocket } from "src/socket";
+import { useServerManager } from "src/wrapper/server";
 import * as app from "@tauri-apps/api/app";
 import invoke from "src/tauri";
 
@@ -21,6 +22,7 @@ const Boostrap = () => {
   const userManager = useUserManager();
   const retrac = useRetrac();
   const socket = useSocket();
+  const servers = useServerManager();
 
   const boostrap = async () => {
     console.log("[boostrap] bootstrapping application");
@@ -93,6 +95,7 @@ const Boostrap = () => {
   const onSocketWelcome = (data: SocketDownEvent_Welcome) => {
     console.log("[socket] welcome", data);
     socket.send({ id: "request_user" });
+    socket.send({ id: "request_servers" });
     retrac.set_launcher_news(data.news);
     retrac.set_events(
       data.event_information.events.map((e) => {
@@ -130,6 +133,32 @@ const Boostrap = () => {
     retrac.set_players_online(data.count);
   };
 
+  const onSocketServers = (data: SocketDownEventDataFromType<"servers">) => {
+    console.log("[socket] servers", data.servers);
+    servers.set_servers(data.servers);
+  };
+
+  const onSocketServerCreated = (
+    data: SocketDownEventDataFromType<"server_created">
+  ) => {
+    console.log("[socket] server created", data.server);
+    servers.set_server(data.server);
+  };
+
+  const onSocketServerUpdated = (
+    data: SocketDownEventDataFromType<"server_updated">
+  ) => {
+    console.log("[socket] server updated", data);
+    servers.set_server(data.server);
+  };
+
+  const onSocketServerDeleted = (
+    data: SocketDownEventDataFromType<"server_deleted">
+  ) => {
+    console.log("[socket] server deleted", data);
+    servers.delete_server(data.server_id);
+  };
+
   const syncUserStages = () => {
     if (
       userManager._token != null &&
@@ -165,6 +194,10 @@ const Boostrap = () => {
     socket.bind("request_heartbeat", onSocketRequestHeartbeat);
     socket.bind("user", onSocketUser);
     socket.bind("player_count", onSocketPlayerCount);
+    socket.bind("servers", onSocketServers);
+    socket.bind("server_created", onSocketServerCreated);
+    socket.bind("server_updated", onSocketServerUpdated);
+    socket.bind("server_deleted", onSocketServerDeleted);
 
     return () => {
       socket.unbind("close", onSocketClose);
@@ -173,6 +206,10 @@ const Boostrap = () => {
       socket.unbind("request_heartbeat", onSocketRequestHeartbeat);
       socket.unbind("user", onSocketUser);
       socket.unbind("player_count", onSocketPlayerCount);
+      socket.unbind("servers", onSocketServers);
+      socket.unbind("server_created", onSocketServerCreated);
+      socket.unbind("server_updated", onSocketServerUpdated);
+      socket.unbind("server_deleted", onSocketServerDeleted);
     };
   }, []);
 

@@ -15,12 +15,6 @@ type RetracState = {
 
   auto_download_manifests: string[];
   set_auto_download_manifests: (manifests: string[]) => void;
-
-  // servers: Server[];
-  // add_server: (server: Server) => void;
-  // remove_server: (server: Server) => void;
-  // add_player_to_server: (server: Server, player: Player) => void;
-  // remove_player_from_server: (server: Server, player: Player) => void;
 };
 
 export const useRetrac = create<RetracState>((set) => ({
