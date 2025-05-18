@@ -68,7 +68,7 @@ const FiltersParent = () => {
         widgetContainerClicked
       );
     };
-  }, [widgetContainerReference, widgetReference]);
+  }, [retrac.show_filters, widgetContainerReference, widgetReference]);
 
   return (
     <AnimatePresence key="filters-parent">

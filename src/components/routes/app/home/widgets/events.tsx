@@ -27,6 +27,9 @@ const EventsWidget = (props: EventsWidgetProps) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setSelected((prev) => (prev + 1) % filtered.length);
+      console.log(
+        `EventsWidget: changing event to ${filtered[selected].event.ID}`
+      );
     }, 7000);
 
     return () => clearInterval(interval);

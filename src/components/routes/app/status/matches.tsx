@@ -127,7 +127,7 @@ const RecentMatchesParent = () => {
         widgetContainerClicked
       );
     };
-  }, [widgetContainerReference, widgetReference]);
+  }, [retrac.show_recent_matches, widgetContainerReference, widgetReference]);
 
   return (
     <AnimatePresence key="recent-matches-parent">
