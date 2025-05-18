@@ -43,7 +43,6 @@ export const useServerManager = create<ServerManagerState>((set, get) => ({
     }),
 
   servers_by_status: (...statuses: string[]) => {
-    console.log(statuses);
     return Object.values(get()._servers)
       .filter((server) => statuses.includes(server.string_status))
       .sort((a, b) => {

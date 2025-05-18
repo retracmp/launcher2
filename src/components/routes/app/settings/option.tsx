@@ -296,9 +296,12 @@ type OptionGroupProps = {
   _last?: boolean;
   _hideBorder?: boolean;
   _animate?: boolean;
+  _hideable?: boolean;
 };
 
 const OptionGroup = (props: OptionGroupProps) => {
+  const [open, set] = useState(true);
+
   return (
     <motion.div
       className={`relative flex flex-col gap-2 p-2.5 ${
@@ -320,11 +323,43 @@ const OptionGroup = (props: OptionGroupProps) => {
       }}
     >
       {!!props.title && (
-        <UI.P className="text-neutral-500 absolute top-[-0.5rem] bg-neutral-900 px-1">
+        <UI.P
+          onClick={() => set((prev) => (props._hideable ? !prev : true))}
+          className={`flex flex-row items-center gap-0.5 text-neutral-500 absolute top-[-0.5rem] bg-neutral-900 px-1 ${
+            props._hideable &&
+            "cursor-pointer hover:text-neutral-400 transition-colors duration-[70ms]"
+          }`}
+        >
+          {props._hideable && (
+            <motion.span
+              initial={{ rotate: 0 }}
+              animate={{ rotate: open ? 0 : -90 }}
+            >
+              <Icons.IoChevronDownSharp />
+            </motion.span>
+          )}
+
           {props.title}
         </UI.P>
       )}
-      {props.children}
+      {props._hideable ? (
+        <motion.div
+          className="relative flex flex-col gap-2"
+          initial={{ opacity: 0, height: 0 }}
+          animate={{
+            opacity: open ? 1 : 0,
+            height: open ? "auto" : 0,
+          }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{
+            staggerChildren: 0.05,
+          }}
+        >
+          {props.children}
+        </motion.div>
+      ) : (
+        props.children
+      )}
     </motion.div>
   );
 };

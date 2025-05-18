@@ -15,6 +15,7 @@
     "@mui/material": "^7.0.2",
     "@mui/styled-engine": "^7.0.2",
     "@mui/x-charts": "^8.2.0",
+    "@number-flow/react": "^0.5.9",
     "@tailwindcss/vite": "^4.0.9",
     "@tanstack/react-router": "^1.111.7",
     "@tauri-apps/api": "^2",

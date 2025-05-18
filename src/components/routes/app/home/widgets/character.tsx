@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useRetrac } from "src/wrapper/retrac";
+import { useUserManager } from "src/wrapper/user";
 
 import UI from "src/components/core/default";
-import { useUserManager } from "src/wrapper/user";
+import NumberFlow from "@number-flow/react";
 
 type CharacterWidgetProps = {
   user: User;
@@ -54,7 +55,7 @@ const CharacterWidget = (props: CharacterWidgetProps) => {
             currently
             <span className="font-bold font-geist text-neutral-400">
               {" "}
-              {online === 0 ? "no" : online}{" "}
+              {online === 0 ? "no" : <NumberFlow value={online} />}{" "}
             </span>
             {online === 1 ? " player " : " players "}
             online.

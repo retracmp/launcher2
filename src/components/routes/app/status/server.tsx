@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import UI from "src/components/core/default";
+import NumberFlow from "@number-flow/react";
 
 const PLAYLIST_LOOKUP = {
   playlist_showdownalt_solo_enablelategame: "Solo Lategame Arena",
@@ -113,10 +114,13 @@ const ServerRendered = (props: ServerRenderedProps) => {
         <div className="bg-[#292929] backdrop-blur-lg transition-opacity duration-50 rounded-xl p-1.5 py-0.5 flex flex-row items-center gap-1">
           <UI.P className="text-[12px] flex flex-row items-center gap-1 text-neutral-400">
             <span className="font-semibold text-neutral-300">
-              {Math.min(
-                props.server.alivecount || 0,
-                props.server.maxplayercount
-              )}
+              <NumberFlow
+                className="max-h-[15px]"
+                value={Math.min(
+                  props.server.alivecount || 0,
+                  props.server.maxplayercount
+                )}
+              />
             </span>
             <span className="">players left</span>
           </UI.P>
@@ -125,10 +129,13 @@ const ServerRendered = (props: ServerRenderedProps) => {
         <div className="bg-[#292929] backdrop-blur-lg transition-opacity duration-50 rounded-xl p-1.5 py-0.5 flex flex-row items-center gap-1">
           <UI.P className="text-[12px] flex flex-row items-center gap-0.5 text-neutral-400">
             <span className="font-semibold text-neutral-300">
-              {Math.min(
-                props.server.playercount || 0,
-                props.server.maxplayercount
-              )}
+              <NumberFlow
+                className="max-h-[15px]"
+                value={Math.min(
+                  props.server.playercount || 0,
+                  props.server.maxplayercount
+                )}
+              />
             </span>
             /<span className="">{props.server.maxplayercount}</span>
           </UI.P>
@@ -138,4 +145,23 @@ const ServerRendered = (props: ServerRenderedProps) => {
   );
 };
 
+const NoServers = () => {
+  return (
+    <motion.div
+      key={"no-servers"}
+      className="group relative min-h-max border-[#2e2e2e] bg-neutral-800/10 backdrop-blur-2xl border-[1px] border-solid rounded-sm overflow-hidden p-2 gap-[0.125rem] flex flex-col"
+      variants={{
+        hidden: { opacity: 0, x: -20 },
+        visible: { opacity: 1, x: 0 },
+      }}
+      transition={{ type: "spring", stiffness: 200, damping: 19 }}
+    >
+      <UI.P className="text-neutral-500">
+        There are currently no servers in this state.
+      </UI.P>
+    </motion.div>
+  );
+};
+
+export { NoServers };
 export default ServerRendered;
