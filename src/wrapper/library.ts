@@ -237,6 +237,7 @@ export const useLibrary = create<LibraryState>()(
           splashLocation: entry.splashLocation,
           version: entry.version,
           buildName: entry.buildName,
+          manifestId: entry.manifestId,
         })),
       }),
     }
