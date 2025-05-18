@@ -14,6 +14,10 @@
 
 ![image](https://github.com/user-attachments/assets/198dddfd-2388-40ec-9e15-d9f98129bd5c)
 
+`server status`
+
+![image](https://github.com/user-attachments/assets/e7d79743-eefb-4118-a8fe-868a1a430682)
+
 `nice error messages so users can report easily`
 
 ![image](https://github.com/user-attachments/assets/66cffdba-c9f9-4740-8510-85d40d861aac)
@@ -38,7 +42,6 @@
 
 ## todo
 
-- server status
 - client themes
 
 RELEASE
