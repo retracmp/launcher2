@@ -2,6 +2,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useBannerManager } from "src/wrapper/banner";
 import { useUserManager } from "src/wrapper/user";
 import { useOptions } from "src/wrapper/options";
+import { useRetrac } from "src/wrapper/retrac";
 
 import UI from "src/components/core/default";
 import {
@@ -15,6 +16,7 @@ const DeveloperPage = () => {
   const userManger = useUserManager();
   const navigate = useNavigate();
   const options = useOptions();
+  const retrac = useRetrac();
 
   return (
     <>
@@ -101,6 +103,14 @@ const DeveloperPage = () => {
           description={<>Remove for debugging purposes</>}
           state={options.disable_drawer}
           set={options.set_disable_drawer}
+          _animate
+        />
+
+        <BooleanOption
+          title="All wdigets on home page"
+          description={<>test</>}
+          state={retrac.show_all_widgets}
+          set={retrac.set_show_all_widgets}
           _animate
         />
       </OptionGroup>

@@ -21,7 +21,7 @@ type DonatedMessageProps = {
 const DonatedMessage = (type: DonatedMessageProps) => {
   return (
     <div
-      className="flex flex-row gap-1 w-full min-h-min h-full p-2 bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid text-center items-center justify-center"
+      className="flex flex-row gap-1 w-full min-h-min h-full p-2 bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid text-center items-center justify-center"
       style={{
         backgroundColor: `${type.entry.colour}10`,
         borderColor: `${type.entry.colour}20`,
@@ -61,7 +61,7 @@ const NotDonatedMessage = () => {
 
   return (
     <div
-      className="flex flex-row flex-wrap gap-1 w-full min-h-min h-full p-2 bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid hover:underline cursor-pointer text-neutral-300/60 text-center items-center justify-center"
+      className="flex flex-row flex-wrap gap-1 w-full min-h-min h-full p-2 bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid hover:underline cursor-pointer text-neutral-300/60 text-center items-center justify-center"
       style={{
         backgroundImage:
           "linear-gradient(to right, #43e97b30 0%, #38f9d730 100%)",
