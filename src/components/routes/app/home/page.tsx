@@ -10,7 +10,7 @@ import FortniteWidget from "src/components/routes/app/home/widgets/fortnite";
 // import EventsWidget from "src/components/routes/app/home/widgets/events";
 import LootLabsWidget from "src/components/routes/app/home/widgets/lootlabs";
 // import DonateWidget from "src/components/routes/app/home/widgets/donate";
-import RecentMatchesPage from "./matches";
+import RecentMatchesParent from "../status/matches";
 // import RecentMatchesWidget from "src/components/routes/app/home/widgets/matches";
 
 const HomePage = () => {
@@ -24,7 +24,7 @@ const HomePage = () => {
     <>
       <AnimatePresence>
         {router.location.pathname === "/app/home/matches" && (
-          <RecentMatchesPage key="recent-matches" />
+          <RecentMatchesParent key="recent-matches" />
         )}
       </AnimatePresence>
       <div className="flex flex-row gap-1 p-1.5 pb-0 @max-xl:flex-col">

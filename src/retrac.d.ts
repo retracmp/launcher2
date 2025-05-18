@@ -232,7 +232,7 @@ type LibraryEntry = {
   manifestId: string;
 };
 
-type Server = {
+type BackendServer = {
   alivecount: number;
   bucket_id: string;
   id: string;

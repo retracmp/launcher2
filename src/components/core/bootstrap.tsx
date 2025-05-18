@@ -141,21 +141,18 @@ const Boostrap = () => {
   const onSocketServerCreated = (
     data: SocketDownEventDataFromType<"server_created">
   ) => {
-    console.log("[socket] server created", data.server);
     servers.set_server(data.server);
   };
 
   const onSocketServerUpdated = (
     data: SocketDownEventDataFromType<"server_updated">
   ) => {
-    console.log("[socket] server updated", data);
     servers.set_server(data.server);
   };
 
   const onSocketServerDeleted = (
     data: SocketDownEventDataFromType<"server_deleted">
   ) => {
-    console.log("[socket] server deleted", data);
     servers.delete_server(data.server_id);
   };
 

@@ -1,13 +1,18 @@
+import { useRetrac } from "src/wrapper/retrac";
 import { useServerManager } from "src/wrapper/server";
 
 import { OptionGroup } from "src/components/routes/app/settings/option";
 import ServerRendered, {
   NoServers,
 } from "src/components/routes/app/status/server";
+import { AnimatePresence } from "motion/react";
 import UI from "src/components/core/default";
+import RecentMatchesParent from "./matches";
+import { IoListSharp } from "react-icons/io5";
 
 const StatusPage = () => {
   const serverManager = useServerManager();
+  const retrac = useRetrac();
 
   const loading = serverManager.servers_by_status(
     "Initialised",
@@ -23,12 +28,36 @@ const StatusPage = () => {
 
   return (
     <>
+      <AnimatePresence>
+        <RecentMatchesParent />
+      </AnimatePresence>
+
       <OptionGroup _first>
         <div className="flex flex-col gap-[0.2rem]">
           <UI.H1 className="font-[300] text-neutral-300">Matches</UI.H1>
           <UI.P className="text-neutral-400">
             Currently active game sessions, recent matches and more.
           </UI.P>
+        </div>
+      </OptionGroup>
+
+      <OptionGroup title="Actions">
+        <div className="flex flex-row gap-1">
+          <UI.Button
+            colour="invisible"
+            className="py-0 px-2 mt-auto z-10 w-min gap-0"
+            onClick={() => retrac.set_show_recent_matches(true)}
+          >
+            <span className="text-neutral-400">Recent Matches</span>
+          </UI.Button>
+          <UI.Button
+            colour="invisible"
+            className="py-0 px-2 mt-auto z-10 w-min gap-0"
+            onClick={() => retrac.set_show_recent_matches(true)}
+          >
+            <IoListSharp className="text-neutral-400 w-4 h-4" />
+            <span className="text-neutral-400">Filters</span>
+          </UI.Button>
         </div>
       </OptionGroup>
 

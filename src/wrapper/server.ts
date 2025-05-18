@@ -1,21 +1,21 @@
 import { create } from "zustand";
 
 type ServerManagerState = {
-  _servers: Record<string, Server>;
+  _servers: Record<string, BackendServer>;
 
-  set_servers: (servers: Server[]) => void;
-  set_server: (server: Server) => void;
+  set_servers: (servers: BackendServer[]) => void;
+  set_server: (server: BackendServer) => void;
   delete_server: (server_id: string) => void;
 
-  servers: () => Server[];
-  servers_by_status: (...statuses: string[]) => Server[];
+  servers: () => BackendServer[];
+  servers_by_status: (...statuses: string[]) => BackendServer[];
 };
 
 export const useServerManager = create<ServerManagerState>((set, get) => ({
   _servers: {},
 
   set_servers: (servers) => {
-    const server_map: Record<string, Server> = {};
+    const server_map: Record<string, BackendServer> = {};
     servers.forEach((server) => {
       server_map[server.id] = server;
     });

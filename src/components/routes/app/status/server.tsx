@@ -36,14 +36,14 @@ const STATUS_LOOKUP = {
   4: "INGAME",
 };
 
-const calculate_name = (server: Server) => {
+const calculate_name = (server: BackendServer) => {
   const bucketIdParts = server.bucket_id.split(":");
   const playlist = bucketIdParts[bucketIdParts.length - 1].toLowerCase();
   return PLAYLIST_LOOKUP[playlist as keyof typeof PLAYLIST_LOOKUP] ?? playlist;
 };
 
 type ServerRenderedProps = {
-  server: Server;
+  server: BackendServer;
 };
 
 const ServerRendered = (props: ServerRenderedProps) => {

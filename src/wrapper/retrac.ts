@@ -15,6 +15,9 @@ type RetracState = {
 
   auto_download_manifests: string[];
   set_auto_download_manifests: (manifests: string[]) => void;
+
+  show_recent_matches: boolean;
+  set_show_recent_matches: (show_recent_matches: boolean) => void;
 };
 
 export const useRetrac = create<RetracState>((set) => ({
@@ -29,4 +32,7 @@ export const useRetrac = create<RetracState>((set) => ({
   auto_download_manifests: [],
   set_auto_download_manifests: (manifests) =>
     set({ auto_download_manifests: manifests }),
+  show_recent_matches: false,
+  set_show_recent_matches: (show_recent_matches) =>
+    set({ show_recent_matches }),
 }));

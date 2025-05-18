@@ -344,15 +344,22 @@ const OptionGroup = (props: OptionGroupProps) => {
       )}
       {props._hideable ? (
         <motion.div
-          className="relative flex flex-col gap-2"
-          initial={{ opacity: 0, height: 0 }}
+          className="relative flex flex-col gap-2 overflow-hidden"
           animate={{
             opacity: open ? 1 : 0,
             height: open ? "auto" : 0,
           }}
           exit={{ opacity: 0, height: 0 }}
           transition={{
-            staggerChildren: 0.05,
+            height: {
+              type: "spring",
+              stiffness: 170,
+              damping: 18,
+            },
+            opacity: {
+              duration: 0.4,
+            },
+            staggerChildren: 1,
           }}
         >
           {props.children}

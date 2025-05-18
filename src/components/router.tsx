@@ -6,7 +6,7 @@ import DeveloperPage from "src/components/routes/dev/page";
 import HomePage from "src/components/routes/app/home/page";
 import LoginPage from "src/components/routes/login/page";
 import AppContainer from "./routes/app";
-import RecentMatchesPage from "./routes/app/home/matches";
+import RecentMatchesParent from "./routes/app/status/matches";
 import SettingsPage from "./routes/app/settings/page";
 import LeaderboardPage from "./routes/app/leaderboard/page";
 import LibraryPage from "./routes/app/library/page";
@@ -68,7 +68,7 @@ export const home = rr.createRoute({
 
 const recentMatches = rr.createRoute({
   getParentRoute: () => home,
-  component: () => <RecentMatchesPage />,
+  component: () => <RecentMatchesParent />,
   path: "/matches",
 });
 
