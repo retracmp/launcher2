@@ -9,6 +9,12 @@ type ServerManagerState = {
 
   servers: () => BackendServer[];
   servers_by_status: (...statuses: string[]) => BackendServer[];
+
+  show_eu_servers: boolean;
+  set_show_eu_servers: (show_eu_servers: boolean) => void;
+
+  show_na_servers: boolean;
+  set_show_na_servers: (show_na_servers: boolean) => void;
 };
 
 export const useServerManager = create<ServerManagerState>((set, get) => ({
@@ -45,10 +51,21 @@ export const useServerManager = create<ServerManagerState>((set, get) => ({
   servers_by_status: (...statuses: string[]) => {
     return Object.values(get()._servers)
       .filter((server) => statuses.includes(server.string_status))
+      .filter((server) => {
+        if (server.region === "EU") return get().show_eu_servers;
+        if (server.region === "NA") return get().show_na_servers;
+        return true;
+      })
       .sort((a, b) => {
         if (a.name < b.name) return -1;
         if (a.name > b.name) return 1;
         return 0;
       });
   },
+
+  show_eu_servers: true,
+  set_show_eu_servers: (show_eu_servers) => set({ show_eu_servers }),
+
+  show_na_servers: true,
+  set_show_na_servers: (show_na_servers) => set({ show_na_servers }),
 }));

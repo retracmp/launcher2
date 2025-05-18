@@ -5,10 +5,11 @@ import { OptionGroup } from "src/components/routes/app/settings/option";
 import ServerRendered, {
   NoServers,
 } from "src/components/routes/app/status/server";
-import { AnimatePresence } from "motion/react";
-import UI from "src/components/core/default";
-import RecentMatchesParent from "./matches";
 import { IoListSharp } from "react-icons/io5";
+import UI from "src/components/core/default";
+
+import RecentMatchesParent from "./matches";
+import FiltersParent from "./filters";
 
 const StatusPage = () => {
   const serverManager = useServerManager();
@@ -26,11 +27,13 @@ const StatusPage = () => {
 
   const active = serverManager.servers_by_status("BusStarted_WaitingToEnd");
 
+  const hasEnabledSomeFilters =
+    !serverManager.show_eu_servers || !serverManager.show_na_servers;
+
   return (
     <>
-      <AnimatePresence>
-        <RecentMatchesParent />
-      </AnimatePresence>
+      <RecentMatchesParent />
+      <FiltersParent />
 
       <OptionGroup _first>
         <div className="flex flex-col gap-[0.2rem]">
@@ -53,10 +56,13 @@ const StatusPage = () => {
           <UI.Button
             colour="invisible"
             className="py-0 px-2 mt-auto z-10 w-min gap-0"
-            onClick={() => retrac.set_show_recent_matches(true)}
+            onClick={() => retrac.set_show_filters(true)}
           >
             <IoListSharp className="text-neutral-400 w-4 h-4" />
             <span className="text-neutral-400">Filters</span>
+            {hasEnabledSomeFilters && (
+              <span className="bg-neutral-400 rounded-full w-1 h-1" />
+            )}
           </UI.Button>
         </div>
       </OptionGroup>

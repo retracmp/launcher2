@@ -18,6 +18,9 @@ type RetracState = {
 
   show_recent_matches: boolean;
   set_show_recent_matches: (show_recent_matches: boolean) => void;
+
+  show_filters: boolean;
+  set_show_filters: (show_filters: boolean) => void;
 };
 
 export const useRetrac = create<RetracState>((set) => ({
@@ -35,4 +38,6 @@ export const useRetrac = create<RetracState>((set) => ({
   show_recent_matches: false,
   set_show_recent_matches: (show_recent_matches) =>
     set({ show_recent_matches }),
+  show_filters: false,
+  set_show_filters: (show_filters) => set({ show_filters }),
 }));

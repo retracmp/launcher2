@@ -130,7 +130,7 @@ const RecentMatchesParent = () => {
   }, [widgetContainerReference, widgetReference]);
 
   return (
-    <AnimatePresence>
+    <AnimatePresence key="recent-matches-parent">
       {retrac.show_recent_matches && (
         <motion.div
           ref={widgetContainerReference}
