@@ -177,6 +177,7 @@ const LeaderboardPage = () => {
             colour="invisible"
             className="py-2 px-2 z-10 w-min gap-0"
             onClick={leaderboard.prevPage}
+            disabled={leaderboard._page <= 1 ? true : false}
           >
             <span className="text-neutral-400">
               <IoChevronBackSharp className="w-4 h-4" />
@@ -186,6 +187,11 @@ const LeaderboardPage = () => {
             colour="invisible"
             className="py-2 px-2 z-10 w-min gap-0"
             onClick={leaderboard.nextPage}
+            disabled={
+              leaderboard._page >= leaderboard._pageInfo.totalPages
+                ? true
+                : false
+            }
           >
             <span className="text-neutral-400">
               <IoChevronForwardSharp className="w-4 h-4" />

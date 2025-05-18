@@ -106,7 +106,7 @@ const Boostrap = () => {
     );
     retrac.set_manifests(data.manifest_information);
     retrac.set_auto_download_manifests(
-      data.extra_content_manifests.map((m) =>
+      (data.extra_content_manifests || []).map((m) =>
         m.split("/").pop()!.replace(".acidmanifest", "")
       )
     );
