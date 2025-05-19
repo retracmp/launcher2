@@ -263,6 +263,7 @@ const Boostrap = () => {
     };
 
     const interval = setInterval(check, 3000);
+    check();
 
     return () => {
       clearInterval(interval);
