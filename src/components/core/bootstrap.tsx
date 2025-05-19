@@ -258,7 +258,7 @@ const Boostrap = () => {
           if (!result) library.setLaunchState(LAUNCH_STATE.NONE);
           break;
         case LAUNCH_STATE.LAUNCHING:
-          if (result) library.setLaunchState(LAUNCH_STATE.NONE);
+          if (result) library.setLaunchState(LAUNCH_STATE.LAUNCHED);
       }
     };
 
