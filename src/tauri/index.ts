@@ -52,8 +52,8 @@ const launch_retrac = async (
 const download_build = async (
   manifestId: string,
   downloadPath: string
-): Promise<string | null> => {
-  const result = await i<string>("download_build", {
+): Promise<boolean | null> => {
+  const result = await i<boolean>("download_build", {
     manifestId,
     downloadPath,
   }).catch((e: string) => {
@@ -72,11 +72,23 @@ const download_build = async (
   return result;
 };
 
+const is_fortnite_running = async (): Promise<boolean | null> => {
+  const result = await i<boolean>("is_fortnite_running", {}).catch(
+    (e: string) => {
+      console.error("is_fortnite_running error:", e);
+      return null;
+    }
+  );
+
+  return result;
+};
+
 const invoke = {
   get_windows_version,
   get_fortnite_version,
   launch_retrac,
   download_build,
+  is_fortnite_running,
 };
 
 export default invoke;

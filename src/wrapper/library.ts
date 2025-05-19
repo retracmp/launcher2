@@ -221,10 +221,6 @@ export const useLibrary = create<LibraryState>()(
           get().setLaunchState(LAUNCH_STATE.ERROR);
           throw new Error("Failed to launch Retrac");
         }
-
-        setTimeout(() => {
-          get().setLaunchState(LAUNCH_STATE.LAUNCHED);
-        }, 5000);
       },
     }),
     {

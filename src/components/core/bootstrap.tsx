@@ -10,6 +10,7 @@ import { hostname, dev } from "src/axios/client";
 import { useRetrac } from "src/wrapper/retrac";
 import { useSocket } from "src/socket";
 import { useServerManager } from "src/wrapper/server";
+import { LAUNCH_STATE, useLibrary } from "src/wrapper/library";
 import * as app from "@tauri-apps/api/app";
 import invoke from "src/tauri";
 
@@ -22,6 +23,7 @@ const Boostrap = () => {
   const userManager = useUserManager();
   const retrac = useRetrac();
   const socket = useSocket();
+  const library = useLibrary();
   const servers = useServerManager();
 
   const boostrap = async () => {
@@ -237,6 +239,35 @@ const Boostrap = () => {
       clearInterval(interval);
     };
   }, [socket._socket]);
+
+  useEffect(() => {
+    const check = async () => {
+      const result = await invoke.is_fortnite_running();
+      console.log(
+        "[invoke.is_fortnite_running()] =",
+        result,
+        "[library.launchState] =",
+        library.launchState
+      );
+
+      switch (library.launchState) {
+        case LAUNCH_STATE.NONE:
+          if (result) library.setLaunchState(LAUNCH_STATE.LAUNCHED);
+          break;
+        case LAUNCH_STATE.LAUNCHED:
+          if (!result) library.setLaunchState(LAUNCH_STATE.NONE);
+          break;
+        case LAUNCH_STATE.LAUNCHING:
+          if (result) library.setLaunchState(LAUNCH_STATE.NONE);
+      }
+    };
+
+    const interval = setInterval(check, 3000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [library.launchState]);
 
   useLayoutEffect(() => {
     boostrap();

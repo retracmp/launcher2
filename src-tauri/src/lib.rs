@@ -34,6 +34,7 @@ pub fn run() {
     commands::get_fortnite_version,
     commands::launch_retrac,
     commands::download_build,
+    commands::is_fortnite_running,
   ]);
 
   builder.run(tauri::generate_context!()).expect("error while running tauri application");

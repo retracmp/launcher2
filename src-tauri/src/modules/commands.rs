@@ -3,7 +3,7 @@ use winver::WindowsVersion;
 use std::fs::File;
 use std::io::{Read, Seek};
 
-use crate::modules::{util, launch, chunker};
+use crate::modules::{util, launch, chunker, process};
 
 #[tauri::command]
 pub async fn get_windows_version() -> Result<i32, String> {
@@ -57,4 +57,9 @@ pub async fn launch_retrac(options: launch::LaunchOptions) -> Result<bool, Strin
 #[tauri::command]
 pub async fn download_build(manifest_id: &str, download_path: &str, handle: AppHandle) -> Result<bool, String> {
   chunker::download_build_internal(manifest_id, download_path, handle).await
+}
+
+#[tauri::command]
+pub async fn is_fortnite_running() -> Result<bool, String> {
+  Ok(process::is_process_running("FortniteClient-Win64-Shipping.exe"))
 }

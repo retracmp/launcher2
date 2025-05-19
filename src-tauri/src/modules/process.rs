@@ -19,6 +19,18 @@ pub fn kill_all(process_names: &[&str]) -> Result<(), String> {
   Ok(())
 }
 
+pub fn is_process_running(exe_name: &str) -> bool {
+  let mut system = System::new_all();
+  system.refresh_processes();
+
+  system.processes()
+    .values()
+    .any(|process| {
+      let name = process.name().to_lowercase();
+      name == exe_name.to_lowercase()
+    })
+}
+
 use std::path::PathBuf;
 use std::ptr::null_mut;
 use widestring::U16CString;

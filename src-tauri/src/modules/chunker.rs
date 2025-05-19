@@ -10,6 +10,9 @@ use serde_json::json;
 use tauri::{AppHandle, Emitter};
 use tokio::{fs::File, io::{AsyncReadExt, AsyncSeekExt, AsyncWriteExt}, sync::Mutex, task::JoinHandle};
 
+use md5::{Md5};
+use digest::Digest;
+
 use crate::modules::util;
 
 #[derive(Default, Serialize, Debug, Deserialize, Clone)]
@@ -56,6 +59,20 @@ struct Chunk {
   Hash: String,
 }
 
+pub async fn md5_hash_file(path: &str) -> io::Result<String> {
+  let mut file = File::open(path).await?;
+  let mut hasher = Md5::new();
+  let mut buf = [0u8; 8192];
+
+  loop {
+    let n = file.read(&mut buf).await?;
+    if n == 0 { break; }
+    hasher.update(&buf[..n]);
+  }
+
+  Ok(format!("{:X}", hasher.finalize()))
+}
+
 #[derive(Debug, Deserialize, Serialize, Clone)]
 #[allow(non_snake_case)]
 struct FileEntry {
@@ -63,6 +80,7 @@ struct FileEntry {
   pub DisplayPath: String,
   Size: i64,
   Chunks: Option<Vec<Chunk>>,
+  Hash: Option<String>,
 }
 
 impl FileEntry {
@@ -76,12 +94,27 @@ impl FileEntry {
     }
   }
 
-  fn created(&self, download_path: &str) -> bool {
+  async fn created(&self, download_path: &str) -> bool {
     let sanitized_path = FileEntry::beautify_display_path(self.DisplayPath.clone());
 
     let file_path = PathBuf::from(sanitized_path);
     let full_path = Path::new(download_path).join(&file_path);
 
+    if !self.Hash.is_none() {
+      let disk_hash = md5_hash_file(full_path.to_str().unwrap()).await;
+      match disk_hash {
+        Ok(hash) => {
+          if hash.to_lowercase() != self.Hash.as_ref().unwrap().to_lowercase() {
+            return false;
+          }
+        }
+        Err(err) => {
+          dbg!(println!("Error calculating hash: {}", err));
+          return false;
+        }
+      }
+    }
+    
     match fs::metadata(&full_path) {
       Ok(m) => {
         let file_length = m.len();
@@ -132,15 +165,16 @@ pub struct ManifestProgress {
 const BASE_URL: &str = "https://cdn.retrac.site/manifest";
 const TMP_FOLDER: &str = "TemporaryChunks";
 
-fn filter_missing_files_with_progress(
+async fn filter_missing_files_with_progress(
   manifest: &mut Manifest,
   download_path: &str,
   app_handle: &AppHandle,
 ) {
   let total = manifest.Files.len();
   let mut checked = 0;
+  let mut filtered_files = Vec::new();
 
-  manifest.Files.retain(|file| {
+  for file in &manifest.Files {
     checked += 1;
 
     let file_name = file.get_filename();
@@ -154,8 +188,12 @@ fn filter_missing_files_with_progress(
       },
     );
 
-    !file.created(download_path)
-  });
+    if !file.created(download_path).await {
+      filtered_files.push(file.clone());
+    }
+  }
+
+  manifest.Files = filtered_files;
 }
 
 async fn rebuild_file(
@@ -179,11 +217,11 @@ async fn rebuild_file(
     output_file.write_all(&chunk_data).await?;
 
     if let Err(e) = tokio::fs::remove_file(&chunk_path).await {
-      eprintln!(
+      dbg!(eprintln!(
         "Warning: Failed to delete chunk {}: {}",
         chunk_path.display(),
         e
-      );
+      ));
     }
   }
 
@@ -200,7 +238,7 @@ async fn download_manifest(manifest_name: &str, client: &Client) -> Result<Manif
 
   let response = client.get(&manifest_url).send().await.unwrap();
   if !response.status().is_success() {
-    println!("Failed to download manifest: {}", manifest_url);
+    dbg!(println!("Failed to download manifest: {}", manifest_url));
     return Err(false);
   }
 
@@ -210,7 +248,7 @@ async fn download_manifest(manifest_name: &str, client: &Client) -> Result<Manif
   match manifest_json {
     Ok(json) => Ok(json),
     Err(err) => {
-      println!("Failed to parse manifest: {}", err);
+      dbg!(println!("Failed to parse manifest: {}", err));
       Err(false)
     }
   }
@@ -292,12 +330,19 @@ async fn download_file(
   let mut chunk_info: Vec<(PathBuf, u64)> = vec![];
   let sanitized_path = FileEntry::beautify_display_path(file.DisplayPath.clone());
 
-  println!(
+  let file_path = Path::new(&download_path.to_string()).join(&sanitized_path);
+  if file_path.exists() {
+    if let Err(e) = tokio::fs::remove_file(&file_path).await {
+      dbg!(eprintln!("Warning: Failed to delete file {}: {}", file_path.display(), e));
+    }
+  }
+
+  dbg!(println!(
     "Downloading: {}",
     Path::new(&download_path.to_string())
       .join(&sanitized_path)
       .display()
-  );
+  ));
 
   for chunk in file.Chunks.clone().unwrap_or(vec![]) {
     if progress.lock().await.wants_cancel {
@@ -352,7 +397,7 @@ pub async fn download_build_internal(
         "VERIFYING",
         json!({ "manifest_id": manifest_id, "status": true }),
       );
-      filter_missing_files_with_progress(&mut manifest, download_path, &handle);
+      filter_missing_files_with_progress(&mut manifest, download_path, &handle).await;
       let _ = handle.emit(
         "VERIFYING",
         json!({ "manifest_id": manifest_id, "status": false }),
@@ -366,7 +411,7 @@ pub async fn download_build_internal(
       {
         let state = util::get_downloading_state().await;
         if state.is_downloading(manifest_id) {
-          println!("Another download is already in progress");
+          dbg!(println!("Another download is already in progress"));
           return Err("Another download is already in progress".to_string());
         }
       }
@@ -403,7 +448,7 @@ pub async fn download_build_internal(
       let handle_clone = handle.clone();
 
       if manifest.Files.len() > 0 {
-        println!("Starting download progress timer");
+        dbg!(println!("Starting download progress timer"));
 
         {
           // let state = handle.state::<Mutex<DownloadingStateTauri>>();
@@ -422,7 +467,7 @@ pub async fn download_build_internal(
 
             let progress = progress_clone.lock().await;
             if let Err(e) = handle_clone.emit("DOWNLOAD_PROGRESS", &*progress) {
-              eprintln!("Failed to emit progress: {}", e);
+              dbg!(eprintln!("Failed to emit progress: {}", e));
             }
 
             if progress.percent >= 100.0 || progress.wants_cancel {
@@ -464,7 +509,7 @@ pub async fn download_build_internal(
 
       for thread_handle in handles {
         if let Err(e) = thread_handle.await.unwrap() {
-          println!("Error in download handle: {}", e);
+          dbg!(println!("Error in download handle: {}", e));
           download_failed = true;
         }
       }
@@ -485,13 +530,13 @@ pub async fn download_build_internal(
 
       let tmp_path = Path::new(download_path).join(TMP_FOLDER);
       if let Err(e) = tokio::fs::remove_dir_all(tmp_path).await {
-        eprintln!("Warning: Failed to delete tmp folder {}", e)
+        dbg!(eprintln!("Warning: Failed to delete tmp folder {}", e));
       };
 
       return Ok(true);
     }
     Err(_) => {
-      println!("Failed to download the manifest");
+      dbg!(println!("Failed to download the manifest"));
       return Err("Failed to download manifest".to_string());
     }
   }
