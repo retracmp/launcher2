@@ -45,13 +45,13 @@ export const appContainer = rr.createRoute({
   notFoundComponent: () => <rr.Navigate to="/app/home" />,
   errorComponent: (props) => (
     <div className="flex flex-col p-2 gap-2">
-      <div className="flex flex-col p-2 border-1 border-solid border-[#2e2e2e] rounded-xs w-full max-w-full overflow-auto">
+      <div className="flex flex-col p-2 border-1 border-solid border-neutral-700/40 rounded-xs w-full max-w-full overflow-auto">
         <UI.P className="text-red-300">
           <pre>{props.error.message}</pre>
         </UI.P>
       </div>
 
-      <div className="flex flex-col p-2 border-1 border-solid border-[#2e2e2e] rounded-xs w-full max-w-full overflow-auto">
+      <div className="flex flex-col p-2 border-1 border-solid border-neutral-700/40 rounded-xs w-full max-w-full overflow-auto">
         <UI.P className="text-fuchsia-300">
           <pre>{props.error.stack}</pre>
         </UI.P>

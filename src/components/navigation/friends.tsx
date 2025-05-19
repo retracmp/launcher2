@@ -41,7 +41,7 @@ const FriendsList = () => {
 
   return (
     <motion.div
-      className="no-scroll flex flex-col p-2 gap-2 h-full w-[58px] bg-neutral-700/10 border-l-[#2e2e2e] border-l-1 border-solid overflow-y-auto overflow-x-hidden"
+      className="no-scroll flex flex-col p-2 gap-2 h-full w-[58px] bg-neutral-700/10 border-l-neutral-700/40 border-l-1 border-solid overflow-y-auto overflow-x-hidden"
       initial={{
         width: options.show_friends ? 58 : 0,
         paddingLeft: options.show_friends ? 8 : 0,
@@ -82,7 +82,7 @@ const Friend = (props: FriendProps) => {
 
   const HoverComponent = () => {
     return (
-      <div className="flex flex-row items-center p-1 px-2 rounded-[0.35rem] bg-[#181818] border-[#2e2e2e] border-[1px] border-solid overflow-hidden">
+      <div className="flex flex-row items-center p-1 px-2 rounded-[0.35rem] bg-[#181818] border-neutral-700/40 border-[1px] border-solid overflow-hidden">
         <span className="text-sm leading-[15px] min-w-fit mb-[1px] text-neutral-300/90">
           {props.friend.displayName}
         </span>

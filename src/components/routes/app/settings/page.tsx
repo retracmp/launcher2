@@ -35,7 +35,7 @@ const SettingsPage = () => {
       <InvisibleItem className="text-rose-300" />
       <InvisibleItem className="text-violet-300" />
 
-      {/* <div className="flex flex-col gap-1.5 p-2.5 border-[#2e2e2e] border-b-[1px] border-solid pb-[0.85rem]"> */}
+      {/* <div className="flex flex-col gap-1.5 p-2.5 border-neutral-700/40 border-b-[1px] border-solid pb-[0.85rem]"> */}
       <OptionGroup _first>
         <div className="flex flex-col gap-[0.2rem]">
           <UI.H1 className="font-[300] text-neutral-300">

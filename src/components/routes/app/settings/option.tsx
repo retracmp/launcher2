@@ -51,7 +51,7 @@ const Option = <T extends AllowedOptionTypes>(props: OptionProps<T>) => {
 
   return (
     <motion.div
-      className="relative flex flex-col p-2.5 py-2 gap-0.5 w-[100%] bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid overflow-hidden"
+      className="relative flex flex-col p-2.5 py-2 gap-0.5 w-[100%] bg-neutral-800/10 rounded-sm border-neutral-700/40 border-1 border-solid overflow-hidden"
       variants={
         props._animate
           ? {
@@ -196,7 +196,7 @@ const ControlStateFile = (props: ControlStateProps<string>) => {
       </span>
 
       <motion.div
-        className="bg-[#242424] h-7 p-[5px] pr-2 pl-2 gap-1.5 rounded-sm flex items-center justify-center cursor-pointer border-1 border-solid border-neutral-500/20 hover:bg-[#222222] active:scale-[0.97] overflow-hidden"
+        className="bg-neutral-700/20 h-7 p-[5px] pr-2 pl-2 gap-1.5 rounded-sm flex items-center justify-center cursor-pointer border-1 border-solid border-neutral-600/20 hover:bg-neutral-700/30 active:scale-[0.97] overflow-hidden"
         onClick={handleFindLocation}
         onMouseEnter={() => setButtonHovered(true)}
         onMouseLeave={() => setButtonHovered(false)}
@@ -246,7 +246,7 @@ const ControlStateNumber = (props: ControlStateProps<number>) => {
       style={{ transform: "translateY(-50%)" }}
     >
       <div
-        className="bg-[#242424] h-6 py-4 px-2 rounded-sm border-1 border-solid border-neutral-500/20 hover:bg-[#222222] text-neutral-300 font-code max-w-min"
+        className="bg-neutral-700/20 h-6 py-4 px-2 rounded-sm border-1 border-solid border-neutral-600/20 hover:bg-neutral-700/30 text-neutral-300 font-code max-w-min"
         style={{
           display: "flex",
           alignItems: "center",
@@ -305,7 +305,8 @@ const OptionGroup = (props: OptionGroupProps) => {
   return (
     <motion.div
       className={`relative flex flex-col gap-2 p-2.5 ${
-        !props._hideBorder && "border-[#2e2e2e] border-b-[1px] border-solid"
+        !props._hideBorder &&
+        "border-neutral-700/40 border-b-[1px] border-solid"
       } py-3.5 ${props._last ? "pb-3" : ""} ${props._first ? "pt-2.5" : ""}`}
       variants={
         props._animate

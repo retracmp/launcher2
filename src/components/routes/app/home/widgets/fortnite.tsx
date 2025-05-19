@@ -24,7 +24,7 @@ const FortniteWidget = () => {
   const buildLaunching = library.launchState === LAUNCH_STATE.LAUNCHING;
 
   return (
-    <div className="relative flex flex-col p-2 gap-0.5 min-w-[45%] w-[70%] @max-xl:w-[100%] aspect-[5/2.4] bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid overflow-hidden">
+    <div className="relative flex flex-col p-2 gap-0.5 min-w-[45%] w-[70%] @max-xl:w-[100%] aspect-[5/2.4] bg-neutral-800/10 rounded-sm border-neutral-700/40 border-1 border-solid overflow-hidden">
       <UI.H1 className="z-20">Chapter 2 Season 4</UI.H1>
 
       <UI.P className="text-neutral-400 max-w-0 mb-2 z-10">

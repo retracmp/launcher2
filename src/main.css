@@ -66,7 +66,11 @@ body {
 }
 *::-webkit-scrollbar-thumb {
   border-radius: 0px;
-  background-color: #2e2e2e;
+  background-color: color-mix(
+    in oklab,
+    var(--color-neutral-700) /* oklch(37.1% 0 0) = #404040 */ 40%,
+    transparent
+  );
   border: 5px solid transparent;
 }
 
@@ -101,4 +105,11 @@ input[type="number"]::-webkit-outer-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
   appearance: textfield;
+}
+
+@theme {
+  --color-neutral-900: #310808;
+  --color-neutral-800: #5c0d0d;
+  --color-neutral-700: #8a1616;
+  --color-neutral-600: #d11d1d;
 }

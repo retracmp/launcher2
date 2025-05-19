@@ -24,7 +24,10 @@ const DrawerItem = (props: DrawerItemProps) => {
 
   const HoverComponent = () => {
     return (
-      <div className="flex flex-row items-center p-1 px-2 rounded-[0.35rem] bg-[#181818] border-[#2e2e2e] border-[1px] border-solid overflow-hidden">
+      <div
+        className="flex flex-row items-center p-1 px-2 rounded-[0.35rem] bg-[#181818] border-neutral-700/40 border-[1px] border-solid overflow-hidden"
+        key={"a"}
+      >
         <span className="text-sm leading-[15px] min-w-fit mb-[1px] text-neutral-300/90">
           {props.label}
         </span>
@@ -34,7 +37,7 @@ const DrawerItem = (props: DrawerItemProps) => {
 
   const onHoverEntered = () => {
     if (options.wide_drawer) return;
-    hover.set(parentRef.current, <HoverComponent />, props.label);
+    hover.set(parentRef.current, <HoverComponent />, props.label, "LEFT");
   };
   const onHoverExited = () => {
     if (options.wide_drawer) return;
@@ -45,10 +48,10 @@ const DrawerItem = (props: DrawerItemProps) => {
     <rr.Link
       to={props.path as any}
       draggable={false}
-      className={`${DrawerItemBaseClassName} hover:not-data-[status=active]:bg-[#1f1f1fa4] hover:not-data-[status=active]:border-1 hover:not-data-[status=active]:border-[#1f1f1fa4] rounded-sm text-neutral-400 border-solid overflow-hidden`}
+      className={`${DrawerItemBaseClassName} hover:not-data-[status=active]:bg-neutral-700/10 hover:not-data-[status=active]:border-1 hover:not-data-[status=active]:border-neutral-700/[15%] rounded-sm text-neutral-400 border-solid overflow-hidden`}
       activeProps={{
         className:
-          "bg-[#1f1f1f] bg-opacity-50 border-[#2e2e2e] hover:none border-1 text-white",
+          "bg-neutral-700/20 bg-opacity-50 border-neutral-700/40 hover:none border-1 text-white",
       }}
       ref={parentRef}
       activeOptions={{ exact: true }}
@@ -118,7 +121,7 @@ const SparklyDrawerItem = (props: SparklyDrawerItemProps) => {
 
   const HoverComponent = () => {
     return (
-      <div className="flex flex-row items-center p-1 px-2 rounded-[0.35rem] bg-[#181818] border-[#2e2e2e] border-[1px] border-solid overflow-hidden">
+      <div className="flex flex-row items-center p-1 px-2 rounded-[0.35rem] bg-[#181818] border-neutral-700/40 border-[1px] border-solid overflow-hidden">
         <span className="text-sm leading-[15px] min-w-fit mb-[1px] text-neutral-300/90">
           {props.label}
         </span>
@@ -128,7 +131,7 @@ const SparklyDrawerItem = (props: SparklyDrawerItemProps) => {
 
   const onHoverEntered = () => {
     if (options.wide_drawer) return;
-    hover.set(parentRef.current, <HoverComponent />, props.label);
+    hover.set(parentRef.current, <HoverComponent />, props.label, "LEFT");
   };
   const onHoverExited = () => {
     if (options.wide_drawer) return;

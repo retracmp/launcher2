@@ -20,14 +20,14 @@ const DeveloperPage = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-1 p-1.5 border-b-[#2e2e2e] border-b-1 border-solid">
+      <div className="flex flex-col gap-1 p-1.5 border-b-neutral-700/40 border-b-1 border-solid">
         <p className="text-neutral-300 font-plex text-[14px] text-base ">
           on this page, everything is either client sided or protected by the
           server. this does not show on production builds unless the account
           logged in is a developer.
         </p>
       </div>
-      <div className="flex flex-col gap-1 p-1.5 border-b-[#2e2e2e] border-b-1 border-solid">
+      <div className="flex flex-col gap-1 p-1.5 border-b-neutral-700/40 border-b-1 border-solid">
         <div className="flex flex-row gap-1 flex-wrap">
           <UI.Button
             onClick={() =>
@@ -76,7 +76,7 @@ const DeveloperPage = () => {
           </UI.Button>
         </div>
       </div>
-      <div className="flex flex-col gap-1 p-1.5 border-b-[#2e2e2e] border-b-1 border-solid mb-1">
+      <div className="flex flex-col gap-1 p-1.5 border-b-neutral-700/40 border-b-1 border-solid mb-1">
         <div className="flex flex-row gap-1 flex-wrap">
           <UI.Button
             onClick={() => {

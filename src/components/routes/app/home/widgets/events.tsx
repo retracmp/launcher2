@@ -37,7 +37,7 @@ const EventsWidget = (props: EventsWidgetProps) => {
 
   return (
     <>
-      <div className="group flex flex-col gap-2 relative max-h-50 w-[60%] min-w-[50%] @max-xl:w-full aspect-[16/8.5] bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid cursor-pointer overflow-hidden">
+      <div className="group flex flex-col gap-2 relative max-h-50 w-[60%] min-w-[50%] @max-xl:w-full aspect-[16/8.5] bg-neutral-800/10 rounded-sm border-neutral-700/40 border-1 border-solid cursor-pointer overflow-hidden">
         <EventDisplay event={filtered[selected]} />
       </div>
 
@@ -155,7 +155,7 @@ type ScoringRulesProps = {
 const ScoringRules = (props: ScoringRulesProps) => {
   return (
     <div className="flex flex-col gap-2 flex-1 p-1">
-      {/* p-2 bg-neutral-800/10 rounded-xs border-[#2e2e2e] border-1 border-solid">
+      {/* p-2 bg-neutral-800/10 rounded-xs border-neutral-700/40 border-1 border-solid">
       {/* <div className="flex flex-col gap-[1px]"> */}
       {/* <UI.P className="font-geist font-[600] text-neutral-400">
           Scoring Rules
@@ -185,9 +185,9 @@ type ScoringRuleProps = {
 
 const ScoringRule = (props: ScoringRuleProps) => {
   return (
-    <div className="relative flex flex-row flex-wrap flex-1 gap-0.5 p-1.5 border-[#2e2e2e] border-1 border-solid pt-2.5">
+    <div className="relative flex flex-row flex-wrap flex-1 gap-0.5 p-1.5 border-neutral-700/40 border-1 border-solid pt-2.5">
       <UI.P
-        className="text-neutral-500 bg-[#191919] absolute top-[-0.5rem] left-1 p-[0.1rem] pb-0"
+        className="text-neutral-500 bg-neutral-800/20 absolute top-[-0.5rem] left-1 p-[0.1rem] pb-0"
         style={{
           fontSize: "12px",
         }}

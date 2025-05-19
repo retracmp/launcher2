@@ -36,7 +36,7 @@ const Package = (props: PackageProps) => {
 
   return (
     <motion.div
-      className={`group relative min-h-max border-[#2e2e2e] backdrop-blur-2xl border-[1px] border-solid rounded-sm overflow-hidden p-2.5 gap-0.5 ${
+      className={`group relative min-h-max border-neutral-700/40 backdrop-blur-2xl border-[1px] border-solid rounded-sm overflow-hidden p-2.5 gap-0.5 ${
         allowPurchase ? "cursor-pointer" : "cursor-not-allowed"
       }`}
       variants={{

@@ -28,7 +28,7 @@ const StatisticsWidget = (props: StatisticsWidgetProps) => {
   }, 0);
 
   return (
-    <div className="flex flex-col p-2 w-[40%] @max-xl:w-full min-w-max bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid">
+    <div className="flex flex-col p-2 w-[40%] @max-xl:w-full min-w-max bg-neutral-800/10 rounded-sm border-neutral-700/40 border-1 border-solid">
       <UI.P>
         <span className="font-[500] font-geist">Your Statistics</span>
       </UI.P>

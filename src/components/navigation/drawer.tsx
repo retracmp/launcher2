@@ -12,7 +12,7 @@ const Drawer = () => {
 
   return (
     <motion.nav
-      className="flex flex-col items-center gap-1 h-full w-12 border-r-[#2e2e2e] border-r-1 border-solid overflow-hidden pt-1.5 pb-1.5 backdrop-blur-[2px]"
+      className="flex flex-col items-center gap-1 h-full w-12 border-r-neutral-700/40 border-r-1 border-solid overflow-hidden pt-1.5 pb-1.5 backdrop-blur-[2px]"
       initial={{
         width: options.disable_drawer ? 0 : 48,
         padding: options.disable_drawer ? 0 : "0.375rem",

@@ -84,7 +84,7 @@ const Frame = () => {
 
       <div className="flex flex-1 flex-col max-w-full max-h-full overflow-hidden">
         <nav
-          className="flex items-center pl-1.5 w-full bg-neutral-700/10 h-7 border-b-[#2e2e2e] border-b-1 border-solid"
+          className="flex items-center pl-1.5 w-full bg-neutral-700/10 h-7 border-neutral-700/40 border-b-1 border-solid"
           data-tauri-drag-region
         >
           <p
@@ -102,13 +102,13 @@ const Frame = () => {
           <s className="ml-auto" />
 
           <button
-            className="flex items-center justify-center w-9 h-full cursor-pointer hover:bg-[#2e2e2e] hover:bg-opacity-50"
+            className="flex items-center justify-center w-9 h-full cursor-pointer border-neutral-700/40 hover:bg-opacity-50"
             onClick={() => getCurrentWindow().minimize()}
           >
             <HiMinus className="text-neutral-400 w-[14px] h-[14px]" />
           </button>
           <button
-            className="flex items-center justify-center w-9 h-full cursor-pointer hover:bg-[#2e2e2e] hover:bg-opacity-50"
+            className="flex items-center justify-center w-9 h-full cursor-pointer border-neutral-700/40 hover:bg-opacity-50"
             onClick={() => getCurrentWindow().close()}
           >
             <IoCloseSharp className="text-neutral-400" />
@@ -131,10 +131,10 @@ const Frame = () => {
 const LoadingIndicator = () => {
   return (
     <UI.RowBox>
-      <div className="flex p-1.5 border-1 border-solid border-[#2e2e2e] rounded-xs">
+      <div className="flex p-1.5 border-1 border-solid border-neutral-700/40 rounded-xs">
         <UI.LoadingSpinner />
       </div>
-      <div className="flex p-1.5 border-1 border-solid border-[#2e2e2e] rounded-xs w-full">
+      <div className="flex p-1.5 border-1 border-solid border-neutral-700/40 rounded-xs w-full">
         <UI.P className="text-neutral-500">
           Please wait while we connect you to our services.
         </UI.P>

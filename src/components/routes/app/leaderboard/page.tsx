@@ -74,12 +74,12 @@ const LeaderboardPage = () => {
         </div>
       </OptionGroup>
 
-      <div className="relative flex flex-col gap-1.5 p-2.5 pt-4 border-[#2e2e2e] border-b-[1px] border-solid">
+      <div className="relative flex flex-col gap-1.5 p-2.5 pt-4 border-neutral-700/40 border-b-[1px] border-solid">
         <UI.P className="text-neutral-500 absolute top-[-0.5rem] bg-neutral-900 px-1">
           Your Position
         </UI.P>
 
-        <div className="border-[#2e2e2e] border-[1px] border-solid rounded-sm overflow-hidden">
+        <div className="border-neutral-700/40 border-[1px] border-solid rounded-sm overflow-hidden">
           {currentMe && (
             <LeaderboardItem
               key={currentMe.sortedBy + currentMe.accountId}
@@ -98,16 +98,16 @@ const LeaderboardPage = () => {
         <span></span>
       </div>
 
-      <div className="relative flex flex-col gap-1.5 p-2.5 pt-4 border-[#2e2e2e] border-b-[1px] border-solid">
+      <div className="relative flex flex-col gap-1.5 p-2.5 pt-4 border-neutral-700/40 border-b-[1px] border-solid">
         <UI.P className="text-neutral-500 absolute top-[-0.5rem] bg-neutral-900 px-1">
           Global
         </UI.P>
 
-        <div className="border-[#2e2e2e] border-[1px] border-solid rounded-sm overflow-hidden">
+        <div className="border-neutral-700/40 border-[1px] border-solid rounded-sm overflow-hidden">
           <div
-            className={`relative flex flex-row border-[#2e2e2e] border-b-[1px] border-solid bg-[#191919]`}
+            className={`relative flex flex-row border-neutral-700/40 border-b-[1px] border-solid bg-neutral-800/20`}
           >
-            <UI.P className="flex items-center justify-center min-w-4 w-8 max-w-8 px-2 text-center font-[600] border-[#2e2e2e] border-r-[1px] border-solid text-neutral-500">
+            <UI.P className="flex items-center justify-center min-w-4 w-8 max-w-8 px-2 text-center font-[600] border-neutral-700/40 border-r-[1px] border-solid text-neutral-500">
               #
             </UI.P>
             <UI.P className="flex items-center justify-center py-1.5 p-2 text-neutral-500">
@@ -115,7 +115,7 @@ const LeaderboardPage = () => {
             </UI.P>
             <span className="ml-auto"></span>
             <UI.P
-              className={`flex items-center justify-center py-1.5 min-w-16 w-16 border-[#2e2e2e] border-l-[1px] border-solid cursor-pointer ${
+              className={`flex items-center justify-center py-1.5 min-w-16 w-16 border-neutral-700/40 border-l-[1px] border-solid cursor-pointer ${
                 leaderboard.activeSortedBy === "eliminations"
                   ? "font-[600]"
                   : "text-neutral-500"
@@ -125,7 +125,7 @@ const LeaderboardPage = () => {
               Kills
             </UI.P>
             <UI.P
-              className={`flex items-center justify-center py-1.5 min-w-16 w-16 border-[#2e2e2e] border-l-[1px] border-solid cursor-pointer ${
+              className={`flex items-center justify-center py-1.5 min-w-16 w-16 border-neutral-700/40 border-l-[1px] border-solid cursor-pointer ${
                 leaderboard.activeSortedBy === "points"
                   ? "font-[600]"
                   : "text-neutral-500"

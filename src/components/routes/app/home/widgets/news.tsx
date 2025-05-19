@@ -6,7 +6,7 @@ const NewsWidget = () => {
   const retrac = useRetrac();
 
   return (
-    <div className="flex flex-col p-2 gap-1 w-full  @max-xl:w-full max-w-full @max-xl:max-w-full bg-neutral-800/10 rounded-sm border-[#2e2e2e] border-1 border-solid overflow-hidden">
+    <div className="flex flex-col p-2 gap-1 w-full  @max-xl:w-full max-w-full @max-xl:max-w-full bg-neutral-800/10 rounded-sm border-neutral-700/40 border-1 border-solid overflow-hidden">
       <UI.P>
         <span className="font-[500] font-geist">Updates & News</span>
       </UI.P>

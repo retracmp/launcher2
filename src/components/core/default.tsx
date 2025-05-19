@@ -8,7 +8,7 @@ namespace UI {
     if (props.children === null) return null;
     return (
       <div
-        className={`border-b-[#2e2e2e] border-b-1 border-solid ${props.className}`}
+        className={`border-neutral-700/40 border-b-1 border-solid ${props.className}`}
       >
         {props.children}
       </div>

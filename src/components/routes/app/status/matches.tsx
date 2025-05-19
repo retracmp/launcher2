@@ -72,7 +72,7 @@ const RecentMatch = (props: RecentMatchProps) => {
   );
 
   return (
-    <div className="overflow-hidden whitespace-nowrap overflow-ellipsis flex flex-row items-center p-2 gap-1 w-full bg-neutral-800/30 rounded-sm border-[#2e2e2e]/50 border-1 border-solid text-neutral-700 min-h-[2.125rem]">
+    <div className="overflow-hidden whitespace-nowrap overflow-ellipsis flex flex-row items-center p-2 gap-1 w-full bg-neutral-800/30 rounded-sm border-neutral-700/40/50 border-1 border-solid text-neutral-700 min-h-[2.125rem]">
       <UI.P className="font-mono text-neutral-400">{niceTeamType} •</UI.P>
       <p className="font-plex text-[14px] text-base leading-[16px] text-neutral-400 whitespace-nowrap overflow-ellipsis overflow-hidden">
         <span className="text-neutral-300 font-geist font-[600]">
