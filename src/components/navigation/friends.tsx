@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSocket } from "src/socket";
 import { useFriends } from "src/wrapper/friends";
 import { useUserManager } from "src/wrapper/user";
@@ -6,6 +6,7 @@ import { useOptions } from "src/wrapper/options";
 
 import { IoPersonAddSharp, IoPersonSharp } from "react-icons/io5";
 import { motion } from "motion/react";
+import { useHover } from "src/wrapper/hover";
 
 const FriendsList = () => {
   const socket = useSocket();
@@ -76,9 +77,38 @@ type FriendProps = {
 
 const Friend = (props: FriendProps) => {
   const [imageRendered, setImageRendered] = useState(false);
+  const parentRef = useRef<HTMLDivElement>(null);
+  const hover = useHover();
+
+  const HoverComponent = () => {
+    return (
+      <div className="flex flex-row items-center p-1 px-2 rounded-[0.35rem] bg-[#181818] border-[#2e2e2e] border-[1px] border-solid overflow-hidden">
+        <span className="text-sm leading-[15px] min-w-fit mb-[1px] text-neutral-300/90">
+          {props.friend.displayName}
+        </span>
+      </div>
+    );
+  };
+
+  const onHoverEntered = () => {
+    hover.set(
+      parentRef.current,
+      <HoverComponent />,
+      props.friend.accountId,
+      "LEFT"
+    );
+  };
+  const onHoverExited = () => {
+    hover.close(props.friend.accountId);
+  };
 
   return (
-    <div className="flex items-center justify-center aspect-square w-full bg-neutral-800/30 rounded-sm border-[#292929] border-1 border-solid overflow-hidden min-h-[40px] min-w-[40px]">
+    <div
+      ref={parentRef}
+      onMouseEnter={onHoverEntered}
+      onMouseLeave={onHoverExited}
+      className="flex items-center justify-center aspect-square w-full bg-neutral-800/30 rounded-sm border-[#292929] border-1 border-solid overflow-hidden min-h-[40px] min-w-[40px]"
+    >
       <img
         src={props.friend.discordAvatarUrl}
         alt="Friend Avatar"

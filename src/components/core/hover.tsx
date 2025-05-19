@@ -14,7 +14,8 @@ const HoverManager = () => {
               key={node.id}
               className="absolute z-50 pointer-events-none min-w-max min-h-max"
               style={{
-                transformOrigin: "center left",
+                transformOrigin:
+                  node.direction === "RIGHT" ? "center left" : "center right",
               }}
               initial={{
                 x: node.x,
