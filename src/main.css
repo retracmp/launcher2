@@ -14,6 +14,8 @@
 
 html,
 body {
+  --RETRAC: #4f4f4f;
+
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -108,8 +110,8 @@ input[type="number"] {
 }
 
 @theme {
-  --color-neutral-900: #310808;
-  --color-neutral-800: #5c0d0d;
-  --color-neutral-700: #8a1616;
-  --color-neutral-600: #d11d1d;
+  --color-neutral-900: color-mix(in srgb, var(--RETRAC) 40%, #000000 100%);
+  --color-neutral-800: color-mix(in srgb, var(--RETRAC) 50%, #000000 30%);
+  --color-neutral-700: color-mix(in srgb, var(--RETRAC) 100%, #000000 20%);
+  --color-neutral-600: var(--RETRAC);
 }

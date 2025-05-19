@@ -51,80 +51,94 @@ const Frame = () => {
   }, [userManager._stage]);
 
   return (
-    <main
-      className="flex flex-row w-full h-full bg-neutral-900 max-w-[100dvw] max-h-[100dvh] overflow-hidden"
-      data-tauri-drag-region
-      style={
-        application.windowsVersion >= 22000
-          ? {}
-          : {
-              borderTop: "1px solid #303030",
-              // backgroundImage: "url(/2596180.jpg)",
-              // backgroundSize: "cover",
-              // backgroundPosition: "center",
-            }
-      }
-    >
-      <Drawer />
-      <HoverManager />
+    <>
+      {/* <div
+        className="absolute w-[110%] h-[110%] opacity-20 pointer-events-none"
+        style={{
+          backgroundImage: "url(/bg2.jpg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "blur(3px)",
+          left: "50%",
+          top: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+      ></div> */}
+      <main
+        className="flex flex-row w-full h-full bg-neutral-900 max-w-[100dvw] max-h-[100dvh] overflow-hidden"
+        data-tauri-drag-region
+        style={
+          application.windowsVersion >= 22000
+            ? {}
+            : {
+                borderTop: "1px solid #303030",
+                // backgroundImage: "url(/c2s4_keyart.jpg)",
+                // backgroundSize: "cover",
+                // backgroundPosition: "center",
+              }
+        }
+      >
+        <Drawer />
+        <HoverManager />
 
-      {ENSURE_IMAGES_ARE_CACHED.map((image) => (
-        <img
-          key={image}
-          src={image}
-          className="w-0 min-w-0 max-w-0 h-0 min-h-0 max-h-0 overflow-hidden opacity-0"
-          loading="lazy"
-          style={{
-            filter: "blur(1px)",
-            willChange: "transform",
-            transform: "translateZ(0)",
-          }}
-        />
-      ))}
+        {ENSURE_IMAGES_ARE_CACHED.map((image) => (
+          <img
+            key={image}
+            src={image}
+            className="w-0 min-w-0 max-w-0 h-0 min-h-0 max-h-0 overflow-hidden opacity-0"
+            loading="lazy"
+            style={{
+              filter: "blur(1px)",
+              willChange: "transform",
+              transform: "translateZ(0)",
+            }}
+          />
+        ))}
 
-      <div className="flex flex-1 flex-col max-w-full max-h-full overflow-hidden">
-        <nav
-          className="flex items-center pl-1.5 w-full bg-neutral-700/10 h-7 border-neutral-700/40 border-b-1 border-solid"
-          data-tauri-drag-region
-        >
-          <p
-            className="text-neutral-300 font-plex text-[14px] text-base font-bold"
+        <div className="flex flex-1 flex-col max-w-full max-h-full overflow-hidden">
+          <nav
+            className="flex items-center pl-1.5 w-full bg-neutral-700/10 h-7 border-neutral-700/40 border-b-1 border-solid"
             data-tauri-drag-region
           >
-            {application.name.toUpperCase()}
-          </p>
-          <p
-            className="ml-1 mt-[2.5px] min-w-max text-neutral-500 font-plex text-[11px] text-base "
-            data-tauri-drag-region
-          >
-            build {application.version}
-          </p>
-          <s className="ml-auto" />
+            <p
+              className="text-neutral-300 font-plex text-[14px] text-base font-bold"
+              data-tauri-drag-region
+            >
+              {application.name.toUpperCase()}
+            </p>
+            <p
+              className="ml-1 mt-[2.5px] min-w-max text-neutral-500 font-plex text-[11px] text-base "
+              data-tauri-drag-region
+            >
+              build {application.version}
+            </p>
+            <s className="ml-auto" />
 
-          <button
-            className="flex items-center justify-center w-9 h-full cursor-pointer border-neutral-700/40 hover:bg-opacity-50"
-            onClick={() => getCurrentWindow().minimize()}
-          >
-            <HiMinus className="text-neutral-400 w-[14px] h-[14px]" />
-          </button>
-          <button
-            className="flex items-center justify-center w-9 h-full cursor-pointer border-neutral-700/40 hover:bg-opacity-50"
-            onClick={() => getCurrentWindow().close()}
-          >
-            <IoCloseSharp className="text-neutral-400" />
-          </button>
-        </nav>
+            <button
+              className="flex items-center justify-center w-9 h-full cursor-pointer border-neutral-700/40 hover:bg-opacity-50"
+              onClick={() => getCurrentWindow().minimize()}
+            >
+              <HiMinus className="text-neutral-400 w-[14px] h-[14px]" />
+            </button>
+            <button
+              className="flex items-center justify-center w-9 h-full cursor-pointer border-neutral-700/40 hover:bg-opacity-50"
+              onClick={() => getCurrentWindow().close()}
+            >
+              <IoCloseSharp className="text-neutral-400" />
+            </button>
+          </nav>
 
-        <BannerRenderer />
-        <div className="flex flex-row flex-1 max-w-full max-h-full overflow-hidden">
-          <div className="relative flex flex-col flex-1 max-w-full max-h-full overflow-hidden overflow-y-auto @container">
-            {show ? <rr.Outlet /> : <LoadingIndicator />}
+          <BannerRenderer />
+          <div className="flex flex-row flex-1 max-w-full max-h-full overflow-hidden">
+            <div className="relative flex flex-col flex-1 max-w-full max-h-full overflow-hidden overflow-y-auto @container">
+              {show ? <rr.Outlet /> : <LoadingIndicator />}
+            </div>
+
+            {userManager.access() && <FriendsList />}
           </div>
-
-          {userManager.access() && <FriendsList />}
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 };
 

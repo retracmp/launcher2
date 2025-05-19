@@ -326,7 +326,7 @@ const OptionGroup = (props: OptionGroupProps) => {
       {!!props.title && (
         <UI.P
           onClick={() => set((prev) => (props._hideable ? !prev : true))}
-          className={`flex flex-row items-center gap-0.5 text-neutral-500 absolute top-[-0.5rem] bg-neutral-900 px-1 ${
+          className={`flex flex-row items-center gap-0.5 text-neutral-300/70 absolute top-[-0.6rem] bg-neutral-900/20 backdrop-blur-3xl pb-[0.15rem] pt-[0.1rem] rounded-sm px-1 ${
             props._hideable &&
             "cursor-pointer hover:text-neutral-400 transition-colors duration-[70ms]"
           }`}
