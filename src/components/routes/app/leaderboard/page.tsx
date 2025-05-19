@@ -74,11 +74,7 @@ const LeaderboardPage = () => {
         </div>
       </OptionGroup>
 
-      <div className="relative flex flex-col gap-1.5 p-2.5 pt-4 border-neutral-700/40 border-b-[1px] border-solid">
-        <UI.P className="text-neutral-500 absolute top-[-0.5rem] bg-neutral-900 px-1">
-          Your Position
-        </UI.P>
-
+      <OptionGroup title="Your Position">
         <div className="border-neutral-700/40 border-[1px] border-solid rounded-sm overflow-hidden">
           {currentMe && (
             <LeaderboardItem
@@ -96,13 +92,9 @@ const LeaderboardPage = () => {
         </div>
 
         <span></span>
-      </div>
+      </OptionGroup>
 
-      <div className="relative flex flex-col gap-1.5 p-2.5 pt-4 border-neutral-700/40 border-b-[1px] border-solid">
-        <UI.P className="text-neutral-500 absolute top-[-0.5rem] bg-neutral-900 px-1">
-          Global
-        </UI.P>
-
+      <OptionGroup title="Global Rankings" _last>
         <div className="border-neutral-700/40 border-[1px] border-solid rounded-sm overflow-hidden">
           <div
             className={`relative flex flex-row border-neutral-700/40 border-b-[1px] border-solid bg-neutral-800/20`}
@@ -158,7 +150,7 @@ const LeaderboardPage = () => {
         </div>
 
         <div className="flex flex-row gap-1 pt-[0.2rem]">
-          <div className="bg-transparent border-neutral-500/20 border-1 border-solid min-w-max p-0.5 px-2 rounded-sm text-neutral-300 font-plex text-[14px] text-base flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-neutral-500/20 disabled:cursor-not-allowed">
+          <div className="backdrop-blur-md bg-transparent border-neutral-500/20 border-1 border-solid min-w-max p-0.5 px-2 rounded-sm text-neutral-300 font-plex text-[14px] text-base flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-neutral-500/20 disabled:cursor-not-allowed">
             <span className="text-neutral-400 text-sm">
               Page {leaderboard._page} of {leaderboard._pageInfo.totalPages}
             </span>
@@ -166,7 +158,7 @@ const LeaderboardPage = () => {
           <span className="ml-auto"></span>
           <UI.Button
             colour="invisible"
-            className="py-2 px-2 z-10 w-min gap-0"
+            className="py-2 px-2 z-10 w-min gap-0 backdrop-blur-md"
             onClick={leaderboard.resetPage}
           >
             <span className="text-neutral-400">
@@ -175,7 +167,7 @@ const LeaderboardPage = () => {
           </UI.Button>
           <UI.Button
             colour="invisible"
-            className="py-2 px-2 z-10 w-min gap-0"
+            className="py-2 px-2 z-10 w-min gap-0 backdrop-blur-md"
             onClick={leaderboard.prevPage}
             disabled={leaderboard._page <= 1 ? true : false}
           >
@@ -185,7 +177,7 @@ const LeaderboardPage = () => {
           </UI.Button>
           <UI.Button
             colour="invisible"
-            className="py-2 px-2 z-10 w-min gap-0"
+            className="py-2 px-2 z-10 w-min gap-0 backdrop-blur-md"
             onClick={leaderboard.nextPage}
             disabled={
               leaderboard._page >= leaderboard._pageInfo.totalPages
@@ -198,7 +190,7 @@ const LeaderboardPage = () => {
             </span>
           </UI.Button>
         </div>
-      </div>
+      </OptionGroup>
     </>
   );
 };

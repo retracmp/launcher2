@@ -43,6 +43,15 @@ type OptionsState = {
 
   launch_arguments: string;
   set_launch_arguments: (value: string) => void;
+
+  custom_theme_colour: string;
+  set_custom_theme_colour: (value: string) => void;
+
+  enable_background_image: boolean;
+  set_enable_background_image: (value: boolean) => void;
+
+  background_image: string;
+  set_background_image: (value: string) => void;
 };
 
 export const useOptions = create<OptionsState>()(
@@ -95,6 +104,17 @@ export const useOptions = create<OptionsState>()(
 
       launch_arguments: "",
       set_launch_arguments: (value) => set(() => ({ launch_arguments: value })),
+
+      custom_theme_colour: "#4f4f4f",
+      set_custom_theme_colour: (value) =>
+        set(() => ({ custom_theme_colour: value })),
+
+      enable_background_image: false,
+      set_enable_background_image: (value) =>
+        set(() => ({ enable_background_image: value })),
+
+      background_image: "/bg2.jpg",
+      set_background_image: (value) => set(() => ({ background_image: value })),
     }),
     {
       name: "options",

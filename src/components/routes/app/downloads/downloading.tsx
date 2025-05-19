@@ -104,12 +104,12 @@ const DownloadingBuild = (props: DownloadingBuildProps) => {
   const get_timed_metabytes = useDownloadState((s) => s.get_timed_metabytes);
 
   return (
-    <div className="relative rounded-sm overflow-hidden">
+    <div className="backdrop-blur-md relative rounded-sm overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-max flex flex-col gap-0.5 p-2.5 z-50">
         <DownloadingBuildUI progress={props.progress} />
       </div>
 
-      <div className="absolute top-0 left-0 w-full h-full border-[#2e2e2e80] border-[1px] border-solid rounded-sm"></div>
+      <div className="absolute top-0 left-0 w-full h-full border-neutral-700/20 border-[1px] border-solid rounded-sm"></div>
 
       <motion.div
         className="absolute top-0 left-0 h-full z-10 border-blue-400/10 rounded-md bg-gradient-to-r from-30% to-transparent from-indigo-500/10"

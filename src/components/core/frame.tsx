@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useApplicationInformation } from "src/wrapper/tauri";
 import { LauncherStage, useUserManager } from "src/wrapper/user";
+import { useOptions } from "src/wrapper/options";
 import * as rr from "@tanstack/react-router";
 
 import { HiMinus } from "react-icons/hi";
@@ -30,6 +31,7 @@ const Frame = () => {
   const application = useApplicationInformation();
   const userManager = useUserManager();
   const navigate = rr.useNavigate();
+  const options = useOptions();
 
   const show = userManager.access() || !userManager.loading();
 
@@ -52,20 +54,26 @@ const Frame = () => {
 
   return (
     <>
-      {/* <div
-        className="absolute w-[110%] h-[110%] opacity-20 pointer-events-none"
-        style={{
-          backgroundImage: "url(/bg2.jpg)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          filter: "blur(3px)",
-          left: "50%",
-          top: "50%",
-          transform: "translate(-50%, -50%)",
-        }}
-      ></div> */}
+      {options.enable_background_image && (
+        <div
+          className="absolute w-[110%] h-[110%] opacity-20 pointer-events-none"
+          style={{
+            backgroundImage: `url(${options.background_image || "/bg2.jpg"})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "blur(3px)",
+            left: "50%",
+            top: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        ></div>
+      )}
       <main
-        className="flex flex-row w-full h-full bg-neutral-900 max-w-[100dvw] max-h-[100dvh] overflow-hidden"
+        className={`flex flex-row w-full h-full ${
+          options.enable_background_image
+            ? "bg-neutral-900/20"
+            : "bg-neutral-900"
+        } max-w-[100dvw] max-h-[100dvh] overflow-hidden`}
         data-tauri-drag-region
         style={
           application.windowsVersion >= 22000

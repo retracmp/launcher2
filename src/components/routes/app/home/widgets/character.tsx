@@ -36,7 +36,7 @@ const CharacterWidget = (props: CharacterWidgetProps) => {
   if (!seasonStat) return console.error("failed to get account stats") ?? null;
 
   return (
-    <div className="flex flex-row p-2 gap-2 min-w-max w-[60%] @max-xl:w-full bg-neutral-800/10 rounded-sm border-neutral-700/40 border-1 border-solid">
+    <div className="flex flex-row p-2 gap-2 min-w-max w-[60%] @max-xl:w-full bg-neutral-800/10 rounded-sm border-neutral-700/40 border-1 border-solid backdrop-blur-sm">
       <div className="flex flex-col w-full gap-1">
         <div className="flex flex-col w-full gap-0.5">
           <UI.P>

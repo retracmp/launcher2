@@ -58,7 +58,7 @@ const DownloadEntry = (props: DownloadEntryProps) => {
   return (
     <motion.div
       onClick={handleDownload}
-      className={`group relative min-h-32 border-neutral-700/40 border-[1px] border-solid rounded-sm overflow-hidden p-2.5 gap-0.5 ${
+      className={`group backdrop-blur-md relative min-h-32 border-neutral-700/40 border-[1px] border-solid rounded-sm overflow-hidden p-2.5 gap-0.5 ${
         currentlyDownloading ? "cursor-not-allowed" : "cursor-pointer"
       } `}
       variants={{

@@ -45,7 +45,9 @@ const LeaderboardItem = (props: LeaderboardItemProps) => {
     <div
       className={`relative flex flex-row border-neutral-700/40 ${
         !props._last ? "border-b-[1px]" : ""
-      } border-solid ${props.position % 2 === 0 ? "bg-neutral-800/20" : ""}`}
+      } border-solid backdrop-blur-md ${
+        props.position % 2 === 0 ? "bg-neutral-800/20" : ""
+      }`}
     >
       <UI.P
         className={`flex items-center justify-center min-w-4 w-8 max-w-8 px-2 text-center font-[600] border-neutral-700/40 border-r-[1px] border-solid text-neutral-400 ${styledPositionClass} ${
@@ -86,7 +88,7 @@ type EmptyLeaderboardItemProps = {
 const EmptyLeaderboardItem = (props: EmptyLeaderboardItemProps) => {
   return (
     <div
-      className={`relative flex flex-row border-neutral-700/40 ${
+      className={`relative flex flex-row border-neutral-700/40 backdrop-blur-md ${
         !props._last ? "border-b-[1px]" : ""
       } border-solid ${props.position % 2 === 0 ? "bg-neutral-800/20" : ""}`}
     >

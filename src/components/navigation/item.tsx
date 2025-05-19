@@ -51,7 +51,7 @@ const DrawerItem = (props: DrawerItemProps) => {
       className={`${DrawerItemBaseClassName} hover:not-data-[status=active]:bg-neutral-700/10 hover:not-data-[status=active]:border-1 hover:not-data-[status=active]:border-neutral-700/[15%] rounded-sm text-neutral-400 border-solid overflow-hidden`}
       activeProps={{
         className:
-          "bg-neutral-700/20 bg-opacity-50 border-neutral-700/40 hover:none border-1 text-white",
+          "bg-neutral-700/20 bg-opacity-50 border-neutral-700/40 hover:none border-1 text-white backdrop-blur-3xl",
       }}
       ref={parentRef}
       activeOptions={{ exact: true }}

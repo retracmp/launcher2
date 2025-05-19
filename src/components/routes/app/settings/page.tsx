@@ -155,6 +155,18 @@ const SettingsPage = () => {
         />
 
         <BooleanOption
+          title="Show Background Image"
+          description={
+            <>Customise your look with a frosted glass background image.</>
+          }
+          state={options.enable_background_image}
+          set={options.set_enable_background_image}
+          icon="IoImage"
+          colour="blue"
+          _animate
+        />
+
+        <BooleanOption
           title="Wide Sidebar"
           description={<>Makes the navigation drawer wider, showing labels.</>}
           state={options.wide_drawer}

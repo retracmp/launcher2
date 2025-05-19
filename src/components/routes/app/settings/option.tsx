@@ -51,7 +51,7 @@ const Option = <T extends AllowedOptionTypes>(props: OptionProps<T>) => {
 
   return (
     <motion.div
-      className="relative flex flex-col p-2.5 py-2 gap-0.5 w-[100%] bg-neutral-800/10 rounded-sm border-neutral-700/40 border-1 border-solid overflow-hidden"
+      className="relative flex flex-col p-2.5 py-2 gap-0.5 w-[100%] bg-neutral-800/10 rounded-sm border-neutral-700/40 border-1 border-solid overflow-hidden backdrop-blur-md"
       variants={
         props._animate
           ? {
@@ -326,7 +326,7 @@ const OptionGroup = (props: OptionGroupProps) => {
       {!!props.title && (
         <UI.P
           onClick={() => set((prev) => (props._hideable ? !prev : true))}
-          className={`flex flex-row items-center gap-0.5 text-neutral-300/70 absolute top-[-0.6rem] bg-neutral-900/20 backdrop-blur-3xl pb-[0.15rem] pt-[0.1rem] rounded-sm px-1 ${
+          className={`flex flex-row items-center gap-0.5 text-neutral-300/70 absolute top-[-0.6rem] bg-neutral-900/20 backdrop-blur-2xl pb-[0.15rem] pt-[0.1rem] rounded-sm px-1 ${
             props._hideable &&
             "cursor-pointer hover:text-neutral-400 transition-colors duration-[70ms]"
           }`}
