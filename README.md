@@ -12,7 +12,6 @@
 
 ![image](https://github.com/user-attachments/assets/65262606-f9c2-4fd6-a709-8ea205d0f669)
 
-
 `homepage so far`
 
 ![image](https://github.com/user-attachments/assets/40101c12-3baa-4ae2-a295-8c6c2aa5a634)
@@ -51,6 +50,7 @@
 
 - Speedy Downloader that optimises storage using chunked files.
 - WebSocket communication between backend and the launcher, which makes updates live & instant.
+- Very customisable UI, with themes and lots of layout options.
 
 ## Upcoming Features
 
