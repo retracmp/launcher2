@@ -44,6 +44,9 @@ type OptionProps<T extends AllowedOptionTypes> = {
   _number_min?: number;
   _number_max?: number;
   _animate?: boolean;
+  _attachImage?: boolean;
+  _attachedImagePath?: string;
+  _setAttachedImagePath?: (path: string) => void;
 };
 
 const Option = <T extends AllowedOptionTypes>(props: OptionProps<T>) => {
@@ -101,6 +104,9 @@ const Option = <T extends AllowedOptionTypes>(props: OptionProps<T>) => {
           <ControlStateBoolean
             state={props.state as boolean}
             set={props.set as (state: boolean) => void}
+            _attachImage={props._attachImage}
+            _attachedImagePath={props._attachedImagePath}
+            _setAttachedImagePath={props._setAttachedImagePath}
           />
         )}
         {isNumber && !isFile && !isString && !isColour && (
@@ -137,28 +143,105 @@ type ControlStateProps<T extends AllowedOptionTypes> = {
   _number_min?: number;
   _number_max?: number;
   _colour_options?: string[];
+
+  _attachImage?: boolean;
+  _attachedImagePath?: string;
+  _setAttachedImagePath?: (path: string) => void;
 };
 
 const ControlStateBoolean = (props: ControlStateProps<boolean>) => {
-  return props.state ? (
+  const [buttonHovered, setButtonHovered] = useState(false);
+  const [textWidth, setTextWidth] = useState(0);
+  const textMeasureRef = useRef<HTMLSpanElement>(null);
+
+  const niceFileName = (props._attachedImagePath ?? "")
+    .replace(/\\/g, "/")
+    .split("/")
+    .pop();
+
+  useEffect(() => {
+    if (!textMeasureRef.current) return;
+    setTextWidth(textMeasureRef.current.offsetWidth);
+  }, [niceFileName]);
+
+  const handleSetFile = async (location: string) => {
+    if (location === props._attachedImagePath) return;
+    props._setAttachedImagePath?.(location);
+  };
+
+  const handleFindLocation = async () => {
+    const selectedPath = await open({
+      directory: false,
+      multiple: false,
+      filters: [{ name: "Images", extensions: ["jpg", "jpeg", "png"] }],
+    });
+    if (!selectedPath) return;
+
+    console.log(selectedPath);
+
+    if (Array.isArray(selectedPath)) {
+      return handleSetFile(selectedPath[0]);
+    }
+
+    return handleSetFile(selectedPath);
+  };
+
+  return (
     <div
-      className="absolute right-2 top-[50%] bg-green-700/40 w-7 h-7 rounded-sm flex items-center justify-center cursor-pointer border-1 border-solid border-green-500/20 hover:bg-green-800/50 active:scale-[0.97] backdrop-blur-lg"
+      className="absolute right-2 top-[50%] min-w-7 h-7 rounded-sm flex flex-row items-center justify-center gap-1"
       style={{
         transform: "translateY(-50%)",
       }}
-      onClick={() => props.set(!props.state)}
     >
-      <Icons.IoCheckmarkSharp className="text-neutral-300" />
-    </div>
-  ) : (
-    <div
-      className="absolute right-2 top-[50%] bg-neutral-800/50 w-7 h-7 rounded-sm flex items-center justify-center cursor-pointer border-1 border-solid border-neutral-500/20 hover:bg-neutral-800/20 active:scale-[0.98] backdrop-blur-lg"
-      style={{
-        transform: "translateY(-50%)",
-      }}
-      onClick={() => props.set(!props.state)}
-    >
-      <Icons.IoCloseSharp className="text-neutral-700" />
+      {props._attachImage && (
+        <div className="flex flex-row-reverse items-center gap-1.5">
+          <span
+            ref={textMeasureRef}
+            className="absolute invisible whitespace-nowrap text-xs font-code"
+          >
+            {props.state ? niceFileName : "Empty"}
+          </span>
+
+          <motion.div
+            className="bg-neutral-700/20 h-7 p-[5px] pr-2 pl-2 gap-1.5 rounded-sm flex items-center justify-center cursor-pointer border-1 border-solid border-neutral-600/20 hover:bg-neutral-700/30 active:scale-[0.97] overflow-hidden"
+            onClick={handleFindLocation}
+            onMouseEnter={() => setButtonHovered(true)}
+            onMouseLeave={() => setButtonHovered(false)}
+            animate={{
+              width: buttonHovered ? textWidth + 36 : 28,
+            }}
+            transition={{ type: "spring", stiffness: 200, damping: 22.5 }}
+          >
+            {buttonHovered && (
+              <UI.P
+                className="text-neutral-500 text-xs font-code whitespace-nowrap"
+                style={{
+                  direction: "rtl",
+                  textAlign: "left",
+                }}
+              >
+                {props.state ? niceFileName : "Empty"}
+              </UI.P>
+            )}
+            <Icons.IoDocument className="text-neutral-400 min-w-4" />
+          </motion.div>
+        </div>
+      )}
+
+      <div
+        className={`flex items-center justify-center w-7 h-7 rounded-sm cursor-pointer border-1 border-solid active:scale-[0.98] backdrop-blur-lg ${
+          props.state
+            ? "bg-green-700/40 border-green-500/20 hover:bg-green-800/50"
+            : "bg-neutral-800/50 border-neutral-500/20 hover:bg-neutral-800/20"
+        }`}
+        onClick={() => props.set(!props.state)}
+      >
+        {props.state ? (
+          <Icons.IoCheckmarkSharp className="text-neutral-300" />
+        ) : (
+          <Icons.IoCloseSharp className="text-neutral-700" />
+        )}
+      </div>
     </div>
   );
 };
@@ -189,7 +272,7 @@ const ControlStateColours = (props: ControlStateProps<string>) => {
                     props.state === colour ? "50%" : "10%"
                   }, transparent 1%)`,
             borderColor:
-              colour === "#4f4f4f" || colour === "#0f0f0f"
+              colour === "#4f4f4f" || colour === "#1f1f1f"
                 ? props.state === colour
                   ? "#ffffff20"
                   : "#ffffff10"

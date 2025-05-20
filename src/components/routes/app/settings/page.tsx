@@ -34,6 +34,7 @@ const SettingsPage = () => {
       <InvisibleItem className="text-lime-300" />
       <InvisibleItem className="text-rose-300" />
       <InvisibleItem className="text-violet-300" />
+      <InvisibleItem className="bg-green-800/50" />
 
       {/* <div className="flex flex-col gap-1.5 p-2.5 border-neutral-700/40 border-b-[1px] border-solid pb-[0.85rem]"> */}
       <OptionGroup _first>
@@ -156,7 +157,7 @@ const SettingsPage = () => {
             "#8ec5ff80",
             "#ffb86a90",
             "#fda5d590",
-            "#0f0f0f",
+            "#1f1f1f",
             "#bbf45140",
           ]}
           _animate
@@ -172,6 +173,9 @@ const SettingsPage = () => {
           icon="IoImage"
           colour="blue"
           _animate
+          _attachImage
+          _attachedImagePath={options.background_image}
+          _setAttachedImagePath={options.set_background_image}
         />
 
         <BooleanOption

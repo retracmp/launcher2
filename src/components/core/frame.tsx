@@ -1,3 +1,4 @@
+import { convertFileSrc } from "@tauri-apps/api/core";
 import { useEffect } from "react";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useApplicationInformation } from "src/wrapper/tauri";
@@ -58,7 +59,9 @@ const Frame = () => {
         <div
           className="absolute w-[110%] h-[110%] opacity-20 pointer-events-none z-[-10000]"
           style={{
-            backgroundImage: `url(${options.background_image || "/bg2.jpg"})`,
+            backgroundImage: `url(${
+              convertFileSrc(options.background_image) || "/bg2.jpg"
+            })`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             filter: "blur(3px)",
