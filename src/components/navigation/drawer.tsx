@@ -1,5 +1,7 @@
 import { useApplicationInformation } from "src/wrapper/tauri";
 import { useUserManager } from "src/wrapper/user";
+import { useServerManager } from "src/wrapper/server";
+import { useDownloadState } from "src/wrapper/download";
 import { useOptions } from "src/wrapper/options";
 
 import DrawerItem, { SparklyDrawerItem } from "src/components/navigation/item";
@@ -62,6 +64,12 @@ const EmptyRoutes = () => {
 };
 
 const AuthenticatedRoutes = () => {
+  const servers = useServerManager((s) => s._servers);
+  const serverCount = Object.values(servers).length;
+
+  const builds = useDownloadState((s) => s.active_download_progress);
+  const buildCount = Object.values(Object.fromEntries(builds.entries())).length;
+
   return (
     <>
       <DrawerItem path="/app/home" icon="IoHomeSharp" label="Home" />
@@ -76,7 +84,12 @@ const AuthenticatedRoutes = () => {
         icon="IoFileTrayFullSharp"
         label="Library"
       />
-      <DrawerItem path="/app/status" icon="IoPulseSharp" label="Matches" />
+      <DrawerItem
+        path="/app/status"
+        icon="IoPulseSharp"
+        label="Matches"
+        opt_number={serverCount > 0 ? serverCount : undefined}
+      />
       <SparklyDrawerItem
         path="/app/store"
         icon="IoSparklesSharp"
@@ -86,16 +99,11 @@ const AuthenticatedRoutes = () => {
 
       <s className="mt-auto" />
 
-      {/* <SparklyDrawerItem
-        path="/app/store"
-        icon="IoBulbSharp"
-        label="Update"
-        colour="blue"
-      /> */}
       <DrawerItem
         path="/app/downloads"
         icon="IoArchiveSharp"
         label="Downloads"
+        opt_number={buildCount > 0 ? buildCount : undefined}
       />
       <DrawerItem
         path="/app/settings"

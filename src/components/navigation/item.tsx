@@ -5,11 +5,15 @@ import { useHover } from "src/wrapper/hover";
 import * as rr from "@tanstack/react-router";
 import * as Icons from "react-icons/io5";
 import { motion } from "motion/react";
+import NumberFlow from "@number-flow/react";
 
 type DrawerItemProps = {
   icon: keyof typeof Icons;
   label: string;
   path: string;
+
+  opt_string?: string;
+  opt_number?: number;
 };
 
 const DrawerItemBaseClassName =
@@ -77,6 +81,18 @@ const DrawerItem = (props: DrawerItemProps) => {
       >
         {props.label}
       </motion.span>
+
+      {options.wide_drawer && props.opt_string && (
+        <span className="absolute p-1.5 py-2 bg-neutral-800 right-1 h-5 text-sm flex flex-row items-center justify-center rounded-[0.6rem]">
+          {props.opt_string}
+        </span>
+      )}
+
+      {options.wide_drawer && props.opt_number && props.opt_number > 0 && (
+        <span className="absolute font-semibold p-1.5 pl-[0.35rem] py-2 bg-neutral-800 right-1 h-5 text-sm flex flex-row items-center justify-center rounded-[0.6rem]">
+          <NumberFlow value={props.opt_number} />
+        </span>
+      )}
     </rr.Link>
   );
 };
