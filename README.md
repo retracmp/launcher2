@@ -8,6 +8,11 @@
 
 <summary>Looking for preview images?</summary>
 
+`themes`
+
+![image](https://github.com/user-attachments/assets/65262606-f9c2-4fd6-a709-8ea205d0f669)
+
+
 `homepage so far`
 
 ![image](https://github.com/user-attachments/assets/40101c12-3baa-4ae2-a295-8c6c2aa5a634)
@@ -49,6 +54,5 @@
 
 ## Upcoming Features
 
-- Client Themes
 - Friend Status's
 - Cancel Downloads
