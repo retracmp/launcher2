@@ -78,6 +78,7 @@ const LoginPage = () => {
           loadAfterClickText="Waiting for callback"
           colour="discord"
           onClick={handleAuthenticate}
+          className="backdrop-blue-2xl"
         >
           Authenticate with Discord
         </UI.Button>

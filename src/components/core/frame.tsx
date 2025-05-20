@@ -56,7 +56,7 @@ const Frame = () => {
     <>
       {options.enable_background_image && (
         <div
-          className="absolute w-[110%] h-[110%] opacity-20 pointer-events-none"
+          className="absolute w-[110%] h-[110%] opacity-20 pointer-events-none z-[-10000]"
           style={{
             backgroundImage: `url(${options.background_image || "/bg2.jpg"})`,
             backgroundSize: "cover",
@@ -73,7 +73,7 @@ const Frame = () => {
           options.enable_background_image
             ? "bg-neutral-900/20"
             : "bg-neutral-900"
-        } max-w-[100dvw] max-h-[100dvh] overflow-hidden`}
+        } max-w-[100dvw] max-h-[100dvh] overflow-hidden z-20`}
         data-tauri-drag-region
         style={
           application.windowsVersion >= 22000

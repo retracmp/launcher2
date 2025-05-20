@@ -7,8 +7,8 @@ import {
   BooleanOption,
   FileOption,
   NumberOption,
-  StringOption,
   OptionGroup,
+  ColourOption,
 } from "src/components/routes/app/settings/option";
 import { IoLogOutSharp } from "react-icons/io5";
 
@@ -142,15 +142,23 @@ const SettingsPage = () => {
       </OptionGroup>
 
       <OptionGroup title="Client Preferences" _last _animate>
-        <StringOption
+        <ColourOption
           title="Theme"
           description={
             <>Show off style with colourful redesigns of the launcher!</>
           }
-          state={""}
-          set={() => {}}
+          state={options.custom_theme_colour}
+          set={options.set_custom_theme_colour}
           icon="IoColorPaletteSharp"
           colour="purple"
+          _colour_options={[
+            "#4f4f4f",
+            "#8ec5ff80",
+            "#ffb86a90",
+            "#fda5d590",
+            "#0f0f0f",
+            "#bbf45140",
+          ]}
           _animate
         />
 

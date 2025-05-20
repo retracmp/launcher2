@@ -10,6 +10,7 @@ import { hostname, dev } from "src/axios/client";
 import { useRetrac } from "src/wrapper/retrac";
 import { useSocket } from "src/socket";
 import { useServerManager } from "src/wrapper/server";
+import { useOptions } from "src/wrapper/options";
 import { LAUNCH_STATE, useLibrary } from "src/wrapper/library";
 import * as app from "@tauri-apps/api/app";
 import invoke from "src/tauri";
@@ -25,6 +26,7 @@ const Boostrap = () => {
   const socket = useSocket();
   const library = useLibrary();
   const servers = useServerManager();
+  const options = useOptions();
 
   const boostrap = async () => {
     console.log("[boostrap] bootstrapping application");
@@ -269,6 +271,13 @@ const Boostrap = () => {
       clearInterval(interval);
     };
   }, [library.launchState]);
+
+  useEffect(() => {
+    document.documentElement.style.setProperty(
+      "--RETRAC",
+      options.custom_theme_colour
+    );
+  }, [options.custom_theme_colour]);
 
   useLayoutEffect(() => {
     boostrap();

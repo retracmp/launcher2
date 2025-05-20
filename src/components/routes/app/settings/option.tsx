@@ -5,8 +5,14 @@ import * as Icons from "react-icons/io5";
 import UI from "src/components/core/default";
 import { AnimatePresence, motion } from "motion/react";
 
-export type OptionTypeFile = {};
-type AllowedOptionTypes = string | boolean | number | OptionTypeFile;
+export type OptionTypeFile = { _a: "file" };
+export type OptionTypeColour = { _a: "colour" };
+type AllowedOptionTypes =
+  | string
+  | boolean
+  | number
+  | OptionTypeFile
+  | OptionTypeColour;
 
 type OptionProps<T extends AllowedOptionTypes> = {
   title: React.ReactNode;
@@ -33,6 +39,7 @@ type OptionProps<T extends AllowedOptionTypes> = {
     | "rose";
 
   _is_file_override?: boolean;
+  _colour_options?: string[];
   _number_extra_text?: string;
   _number_min?: number;
   _number_max?: number;
@@ -48,6 +55,7 @@ const Option = <T extends AllowedOptionTypes>(props: OptionProps<T>) => {
   const isBoolean = typeof props.state === "boolean";
   const isNumber = typeof props.state === "number";
   const isFile = props._is_file_override || props.state instanceof Object;
+  const isColour = props._colour_options && props._colour_options.length >= 0;
 
   return (
     <motion.div
@@ -83,19 +91,19 @@ const Option = <T extends AllowedOptionTypes>(props: OptionProps<T>) => {
       </span>
 
       <AnimatePresence>
-        {isString && !isFile && !isBoolean && (
+        {isString && !isFile && !isBoolean && !isColour && (
           <ControlStateString
             state={props.state as string}
             set={props.set as (state: string) => void}
           />
         )}
-        {isBoolean && !isFile && !isString && (
+        {isBoolean && !isFile && !isString && !isColour && (
           <ControlStateBoolean
             state={props.state as boolean}
             set={props.set as (state: boolean) => void}
           />
         )}
-        {isNumber && !isFile && !isString && (
+        {isNumber && !isFile && !isString && !isColour && (
           <ControlStateNumber
             state={props.state as number}
             set={props.set as (state: number) => void}
@@ -104,8 +112,15 @@ const Option = <T extends AllowedOptionTypes>(props: OptionProps<T>) => {
             _number_max={props._number_max}
           />
         )}
-        {isFile && (
+        {isFile && !isColour && (
           <ControlStateFile
+            state={props.state as string}
+            set={props.set as (state: string) => void}
+          />
+        )}
+        {isColour && (
+          <ControlStateColours
+            _colour_options={props._colour_options ?? []}
             state={props.state as string}
             set={props.set as (state: string) => void}
           />
@@ -121,6 +136,7 @@ type ControlStateProps<T extends AllowedOptionTypes> = {
   _number_extra_text?: string;
   _number_min?: number;
   _number_max?: number;
+  _colour_options?: string[];
 };
 
 const ControlStateBoolean = (props: ControlStateProps<boolean>) => {
@@ -149,6 +165,43 @@ const ControlStateBoolean = (props: ControlStateProps<boolean>) => {
 
 const ControlStateString = (_: ControlStateProps<string>) => {
   return <></>;
+};
+
+const ControlStateColours = (props: ControlStateProps<string>) => {
+  return (
+    <div
+      className="absolute right-2 top-[50%] min-w-7 h-7 rounded-sm flex flex-row items-center justify-center gap-1"
+      style={{
+        transform: "translateY(-50%)",
+      }}
+    >
+      {props._colour_options?.map((colour) => (
+        <div
+          key={colour}
+          className={`w-7 h-7 rounded-sm cursor-pointer border-1 border-solid hover:bg-neutral-800/20 active:scale-[0.98] backdrop-blur-lg`}
+          style={{
+            backgroundColor:
+              colour === "#4f4f4f"
+                ? props.state === colour
+                  ? "#ffffff40"
+                  : "#ffffff20"
+                : `color-mix(in srgb, ${colour} ${
+                    props.state === colour ? "50%" : "10%"
+                  }, transparent 1%)`,
+            borderColor:
+              colour === "#4f4f4f" || colour === "#0f0f0f"
+                ? props.state === colour
+                  ? "#ffffff20"
+                  : "#ffffff10"
+                : `color-mix(in srgb, ${colour} ${
+                    props.state === colour ? "50%" : "15%"
+                  }, transparent 100%)`,
+          }}
+          onClick={() => props.set(colour)}
+        ></div>
+      ))}
+    </div>
+  );
 };
 
 const ControlStateFile = (props: ControlStateProps<string>) => {
@@ -289,6 +342,10 @@ const FileOption = (props: OptionProps<string>) => {
   return <Option {...props} _is_file_override />;
 };
 
+const ColourOption = (props: OptionProps<string>) => {
+  return <Option {...props} />;
+};
+
 type OptionGroupProps = {
   title?: string;
   children: React.ReactNode;
@@ -372,4 +429,11 @@ const OptionGroup = (props: OptionGroupProps) => {
   );
 };
 
-export { OptionGroup, StringOption, BooleanOption, NumberOption, FileOption };
+export {
+  OptionGroup,
+  StringOption,
+  BooleanOption,
+  NumberOption,
+  FileOption,
+  ColourOption,
+};

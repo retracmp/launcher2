@@ -28,6 +28,7 @@ body {
   -webkit-user-drag: none;
   outline: none;
   overflow: hidden;
+  z-index: -100002;
 }
 
 * {
@@ -42,6 +43,7 @@ body {
   height: 100%;
   background-color: #222222;
   overflow: hidden;
+  z-index: -100001;
 }
 
 .font-plex {
