@@ -4,6 +4,7 @@ import { LAUNCH_STATE, useLibrary } from "src/wrapper/library";
 import { motion } from "motion/react";
 import UI from "src/components/core/default";
 import { IoBanSharp, IoPlay } from "react-icons/io5";
+import invoke from "src/tauri";
 
 type FortniteBuildProps = {
   entry: LibraryEntry;
@@ -14,10 +15,10 @@ const FortniteBuild = (props: FortniteBuildProps) => {
 
   const handleClose = async () => {
     library.setLaunchState(LAUNCH_STATE.CLOSING);
+    await invoke.close_fortnite();
 
     setTimeout(() => {
       library.setLaunchedBuild(null);
-      library.setLaunchState(LAUNCH_STATE.NONE);
     }, 5000);
   };
 

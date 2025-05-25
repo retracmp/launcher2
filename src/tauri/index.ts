@@ -83,12 +83,22 @@ const is_fortnite_running = async (): Promise<boolean | null> => {
   return result;
 };
 
+const close_fortnite = async (): Promise<boolean | null> => {
+  const result = await i<boolean>("close_fortnite", {}).catch((e: string) => {
+    console.error("Error closing Fortnite:", e);
+    return null;
+  });
+
+  return result;
+};
+
 const invoke = {
   get_windows_version,
   get_fortnite_version,
   launch_retrac,
   download_build,
   is_fortnite_running,
+  close_fortnite,
 };
 
 export default invoke;

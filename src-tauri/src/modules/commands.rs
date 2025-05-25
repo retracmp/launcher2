@@ -1,7 +1,6 @@
 use std::fs::File;
 use std::io::{Read, Seek};
 use tauri::AppHandle;
-// use tauri_plugin_updater::{UpdaterExt, Update};
 use winver::WindowsVersion;
 
 use crate::modules::{chunker, launch, process, util};
@@ -66,28 +65,17 @@ pub async fn is_fortnite_running() -> Result<bool, String> {
   ))
 }
 
-// #[tauri::command]
-// pub async fn check_for_updates(handle: AppHandle) -> Result<Update, String> {
-//   let updater_builder = handle
-//     .updater_builder()
-//     .version_comparator(|current, update| {
-//         update.version != current
-//     })
-//     .build();
-//   if updater_builder.is_err() {
-//     return Err("Failed to create updater".to_string());
-//   }
-//   let updater = updater_builder.unwrap();
-
-//   let update = updater.check().await;
-//   if update.is_err() {
-//     return Err("Failed to check for updates".to_string());
-//   }
-//   let update = update.unwrap();
-//   if update.is_none() {
-//     return Err("No updates available".to_string());
-//   }
-
-//   let update = update.unwrap();
-//   Ok(update)
-// }
+#[tauri::command]
+pub async fn close_fortnite() -> Result<bool, String> {
+  let result = process::kill_all(&[
+    "FortniteClient-Win64-Shipping_BE.exe",
+    "FortniteClient-Win64-Shipping_EAC.exe",
+    "FortniteClient-Win64-Shipping.exe",
+    "EpicGamesLauncher.exe",
+    "FortniteLauncher.exe",
+  ]);
+  match result {
+    Ok(_) => Ok(true),
+    Err(e) => Err(e),
+  }
+}
