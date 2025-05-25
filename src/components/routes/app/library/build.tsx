@@ -19,6 +19,7 @@ const FortniteBuild = (props: FortniteBuildProps) => {
 
     setTimeout(() => {
       library.setLaunchedBuild(null);
+      library.setLaunchState(LAUNCH_STATE.NONE);
     }, 5000);
   };
 
