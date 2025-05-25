@@ -24,6 +24,9 @@ type RetracState = {
 
   show_all_widgets: boolean;
   set_show_all_widgets: (show_all_widgets: boolean) => void;
+
+  donation_message_popped: boolean;
+  set_donation_message_popped: (donation_message_popped: boolean) => void;
 };
 
 export const useRetrac = create<RetracState>((set) => ({
@@ -45,4 +48,8 @@ export const useRetrac = create<RetracState>((set) => ({
   set_show_filters: (show_filters) => set({ show_filters }),
   show_all_widgets: false,
   set_show_all_widgets: (show_all_widgets) => set({ show_all_widgets }),
+
+  donation_message_popped: false,
+  set_donation_message_popped: (donation_message_popped) =>
+    set({ donation_message_popped }),
 }));

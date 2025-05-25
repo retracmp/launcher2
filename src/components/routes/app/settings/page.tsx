@@ -1,6 +1,9 @@
+import { useEffect } from "react";
+import { useRetrac } from "src/wrapper/retrac";
 import { useApplicationInformation } from "src/wrapper/tauri";
 import { useUserManager } from "src/wrapper/user";
 import { useOptions } from "src/wrapper/options";
+import { useBannerManager } from "src/wrapper/banner";
 
 import UI from "src/components/core/default";
 import {
@@ -16,6 +19,23 @@ const SettingsPage = () => {
   const application = useApplicationInformation();
   const user = useUserManager();
   const options = useOptions();
+  const retrac = useRetrac();
+
+  const bannerManager = useBannerManager();
+
+  useEffect(() => {
+    if (user.has_any_donation_tier()) return;
+    if (retrac.donation_message_popped) return;
+
+    bannerManager.push({
+      closable: true,
+      colour: "pink",
+      id: "settings-donation",
+      text: `Looking for themes & customisation options? Consider supporting Retrac with a donation!`,
+    });
+
+    retrac.set_donation_message_popped(true);
+  }, [user._user, retrac.donation_message_popped]);
 
   return (
     <>
@@ -143,40 +163,44 @@ const SettingsPage = () => {
       </OptionGroup>
 
       <OptionGroup title="Client Preferences" _last _animate>
-        <ColourOption
-          title="Theme"
-          description={
-            <>Show off style with colourful redesigns of the launcher!</>
-          }
-          state={options.custom_theme_colour}
-          set={options.set_custom_theme_colour}
-          icon="IoColorPaletteSharp"
-          colour="purple"
-          _colour_options={[
-            "#4f4f4f",
-            "#8ec5ff80",
-            "#ffb86a90",
-            "#fda5d590",
-            "#1f1f1f",
-            "#bbf45140",
-          ]}
-          _animate
-        />
+        {user.has_any_donation_tier() && (
+          <>
+            <ColourOption
+              title="Theme"
+              description={
+                <>Show off style with colourful redesigns of the launcher!</>
+              }
+              state={options.custom_theme_colour}
+              set={options.set_custom_theme_colour}
+              icon="IoColorPaletteSharp"
+              colour="purple"
+              _colour_options={[
+                "#4f4f4f",
+                "#8ec5ff80",
+                "#ffb86a90",
+                "#fda5d590",
+                "#1f1f1f",
+                "#bbf45140",
+              ]}
+              _animate
+            />
 
-        <BooleanOption
-          title="Show Background Image"
-          description={
-            <>Customise your look with a frosted glass background image.</>
-          }
-          state={options.enable_background_image}
-          set={options.set_enable_background_image}
-          icon="IoImage"
-          colour="blue"
-          _animate
-          _attachImage
-          _attachedImagePath={options.background_image}
-          _setAttachedImagePath={options.set_background_image}
-        />
+            <BooleanOption
+              title="Show Background Image"
+              description={
+                <>Customise your look with a frosted glass background image.</>
+              }
+              state={options.enable_background_image}
+              set={options.set_enable_background_image}
+              icon="IoImage"
+              colour="blue"
+              _animate
+              _attachImage
+              _attachedImagePath={options.background_image}
+              _setAttachedImagePath={options.set_background_image}
+            />
+          </>
+        )}
 
         <BooleanOption
           title="Wide Sidebar"
@@ -196,19 +220,28 @@ const SettingsPage = () => {
           _animate
         />
 
-        <NumberOption
-          title="Leaderboard Page Size"
-          description={
-            <>Changes how many players are shown on the leaderboard per page.</>
-          }
-          state={options.leaderboard_page_size}
-          set={(num) => {
-            options.set_leaderboard_page_size(Math.max(1, Math.min(num, 100)));
-          }}
-          _number_max={100}
-          _number_min={1}
-          _animate
-        />
+        {user.has_any_donation_tier() && (
+          <>
+            <NumberOption
+              title="Leaderboard Page Size"
+              description={
+                <>
+                  Changes how many players are shown on the leaderboard per
+                  page.
+                </>
+              }
+              state={options.leaderboard_page_size}
+              set={(num) => {
+                options.set_leaderboard_page_size(
+                  Math.max(1, Math.min(num, 100))
+                );
+              }}
+              _number_max={100}
+              _number_min={1}
+              _animate
+            />
+          </>
+        )}
 
         {/* <BooleanOption
           title="Grid Layout for Builds"

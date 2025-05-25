@@ -62,6 +62,7 @@ type UserManager = {
   user_best_donation_tier: () =>
     | (typeof DONATION_TIERS)[keyof typeof DONATION_TIERS]
     | null;
+  has_any_donation_tier: () => boolean;
 
   _stage: LauncherStage;
   set_stage: (stage: LauncherStage) => void;
@@ -108,6 +109,14 @@ export const useUserManager = create<UserManager>()(
         const donationTier =
           DONATION_TIERS[highestDonationPackage as keyof typeof DONATION_TIERS];
         return donationTier;
+      },
+
+      has_any_donation_tier: () => {
+        const user = get()._user;
+        if (user === null) return false;
+
+        const donationPackages = user.Account.State.Packages;
+        return donationPackages.some((pkg) => pkg in DONATION_TIERS);
       },
 
       _stage: LauncherStage.NoToken,
