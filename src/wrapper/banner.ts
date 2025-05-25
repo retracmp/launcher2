@@ -33,6 +33,7 @@ export type BannerT = {
   text: string;
   closable: boolean;
   colour: keyof typeof bannerColours;
+  link?: string;
 };
 
 type BannerManager = {

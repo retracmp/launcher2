@@ -56,14 +56,27 @@ const Drawer = () => {
 };
 
 const EmptyRoutes = () => {
+  const application = useApplicationInformation();
+
   return (
     <>
       <DrawerItem path="/" icon="IoLockClosedSharp" label="Welcome" />
+
+      {application.updateNeeded != null && (
+        <SparklyDrawerItem
+          path="/update"
+          icon="IoBuildSharp"
+          label="Update"
+          colour="blue"
+        />
+      )}
     </>
   );
 };
 
 const AuthenticatedRoutes = () => {
+  const application = useApplicationInformation();
+
   const servers = useServerManager((s) => s._servers);
   const serverCount = Object.values(servers).length;
 
@@ -98,6 +111,15 @@ const AuthenticatedRoutes = () => {
       />
 
       <s className="mt-auto" />
+
+      {application.updateNeeded != null && (
+        <SparklyDrawerItem
+          path="/update"
+          icon="IoBuildSharp"
+          label="Update"
+          colour="blue"
+        />
+      )}
 
       <DrawerItem
         path="/app/downloads"

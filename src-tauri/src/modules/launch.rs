@@ -1,43 +1,51 @@
-use std::path::PathBuf;
 use crate::modules::{chunker, process};
+use std::path::PathBuf;
 
 #[derive(Debug, Clone, serde::Deserialize)]
 pub struct LaunchOptions {
-  pub exchange_code: String,
-  pub anticheat_token: String,
-  pub root: PathBuf,
-  pub simple_edit: bool,
-  pub disable_pre_edits: bool,
-  pub reset_on_release: bool,
-  pub launch_args: String,
-  pub manifest_id: Option<String>,
+    pub exchange_code: String,
+    pub anticheat_token: String,
+    pub root: PathBuf,
+    pub simple_edit: bool,
+    pub disable_pre_edits: bool,
+    pub reset_on_release: bool,
+    pub launch_args: String,
+    pub manifest_id: Option<String>,
 }
 
 pub async fn launch_retrac(options: LaunchOptions) -> Result<(), String> {
-  println!("Launching Retrac with options: {:?}", options);
+    println!("Launching Retrac with options: {:?}", options);
 
-  if options.manifest_id.is_some() {
-    let manifest_id = options.manifest_id.unwrap();
-    chunker::download_build(&manifest_id, options.root.to_str().unwrap()).await?;
+    if options.manifest_id.is_some() {
+        let manifest_id = options.manifest_id.unwrap();
+        chunker::download_build(&manifest_id, options.root.to_str().unwrap()).await?;
 
-    if manifest_id == "++Fortnite+Release-14.40-CL-14550713-Windows" { 
-      chunker::download_build("Custom_Content", options.root.to_str().unwrap()).await?;
-      chunker::download_build("EAC_Client", options.root.to_str().unwrap()).await?;
-      chunker::download_build("Anticheat_Client", options.root.to_str().unwrap()).await?;
+        if manifest_id == "++Fortnite+Release-14.40-CL-14550713-Windows" {
+            chunker::download_build("Custom_Content", options.root.to_str().unwrap()).await?;
+            chunker::download_build("EAC_Client", options.root.to_str().unwrap()).await?;
+            chunker::download_build("Anticheat_Client", options.root.to_str().unwrap()).await?;
+        }
     }
-  }
-  
-  process::kill_all(&[
-    "FortniteClient-Win64-Shipping_BE.exe",
-    "FortniteClient-Win64-Shipping_EAC.exe",
-    "FortniteClient-Win64-Shipping.exe",
-    "EpicGamesLauncher.exe",
-    "FortniteLauncher.exe",
-  ])?;
-  process::start_suspended(options.root.join("FortniteGame\\Binaries\\Win64\\FortniteLauncher.exe"))?;
-  process::start_suspended(options.root.join("FortniteGame\\Binaries\\Win64\\FortniteClient-Win64-Shipping_EAC.exe"))?;
 
-  process::start_with_args(options.root.join("Retrac_EAC.exe"), vec![
+    process::kill_all(&[
+        "FortniteClient-Win64-Shipping_BE.exe",
+        "FortniteClient-Win64-Shipping_EAC.exe",
+        "FortniteClient-Win64-Shipping.exe",
+        "EpicGamesLauncher.exe",
+        "FortniteLauncher.exe",
+    ])?;
+    process::start_suspended(
+        options
+            .root
+            .join("FortniteGame\\Binaries\\Win64\\FortniteLauncher.exe"),
+    )?;
+    process::start_suspended(
+        options
+            .root
+            .join("FortniteGame\\Binaries\\Win64\\FortniteClient-Win64-Shipping_EAC.exe"),
+    )?;
+
+    process::start_with_args(options.root.join("Retrac_EAC.exe"), vec![
     "-epicapp=Fortnite",
     "-epiclocale=en-us",
     "-epicportal",
@@ -57,5 +65,5 @@ pub async fn launch_retrac(options: LaunchOptions) -> Result<(), String> {
     (if options.reset_on_release { "-instantreset" } else { "" }),
   ])?;
 
-  Ok(())
+    Ok(())
 }

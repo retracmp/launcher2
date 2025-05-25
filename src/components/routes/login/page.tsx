@@ -10,6 +10,7 @@ import * as deeplink from "@tauri-apps/plugin-deep-link";
 import client from "src/axios/client";
 
 import UI from "src/components/core/default";
+import { OptionGroup } from "../app/settings/option";
 
 const LoginPage = () => {
   const userManager = useUserManager();
@@ -66,23 +67,27 @@ const LoginPage = () => {
 
   return (
     <>
-      <UI.Box className="flex flex-col p-1.5 gap-0.5">
-        <UI.P>
-          Welcome to Retrac, please connect your Discord account to use our
-          services.
-        </UI.P>
-      </UI.Box>
-      <UI.ColBox>
+      <OptionGroup _first>
+        <div className="flex flex-col gap-[0.2rem]">
+          <div
+            className="w-full h-36 rounded-md bg-cover bg-center bg-no-repeat mb-1 brightness-[0.8]"
+            style={{
+              backgroundImage: `url(/retrac_banner.png)`,
+            }}
+          ></div>
+          <UI.P className="text-neutral-400">
+            Welcome to Retrac, please connect your Discord account to use our
+            services.
+          </UI.P>
+        </div>
         <UI.Button
-          loadAfterClick={true}
-          loadAfterClickText="Waiting for callback"
           colour="discord"
           onClick={handleAuthenticate}
           className="backdrop-blue-2xl"
         >
           Authenticate with Discord
         </UI.Button>
-      </UI.ColBox>
+      </OptionGroup>
     </>
   );
 };

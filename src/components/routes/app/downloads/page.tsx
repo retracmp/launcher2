@@ -1,5 +1,3 @@
-let _;
-
 import { useDownloadState } from "src/wrapper/download";
 import { useRetrac } from "src/wrapper/retrac";
 
@@ -7,25 +5,6 @@ import { OptionGroup } from "src/components/routes/app/settings/option";
 import UI from "src/components/core/default";
 import DownloadingBuild from "./downloading";
 import DownloadEntry from "./entry";
-
-const _A = [
-  {
-    title: "Chapter 2 Season 4",
-    manifestId: "++Fortnite+Release-14.40-CL-14550713-Windows",
-    imageUrl: "/c2s4_keyart.jpg",
-    iconUrl: "/c2s4_icon.jpg",
-    gigabyteSize: 32.0,
-  },
-  {
-    title: "Season 1",
-    manifestId: "++Fortnite+Release-1.8-CL-3724489-Windows",
-    imageUrl: "/c1s1_keyart.jpg",
-    iconUrl: "/c1s1_icon.jpg",
-    gigabyteSize: 32.0,
-  },
-];
-
-_ = _A;
 
 const DownloadsPage = () => {
   const downloadState = useDownloadState();

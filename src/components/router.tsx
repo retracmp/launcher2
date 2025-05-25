@@ -13,6 +13,7 @@ import LibraryPage from "./routes/app/library/page";
 import StatusPage from "./routes/app/status/page";
 import StorePage from "./routes/app/store/page";
 import DownloadsPage from "./routes/app/downloads/page";
+import UpdatePage from "./routes/update/page";
 
 export const rootRoute = rr.createRootRoute({
   component: () => <Frame />,
@@ -36,6 +37,12 @@ export const dev = rr.createRoute({
   getParentRoute: () => rootRoute,
   component: () => <DeveloperPage />,
   path: "/developer",
+});
+
+export const update = rr.createRoute({
+  getParentRoute: () => rootRoute,
+  component: () => <UpdatePage />,
+  path: "/update",
 });
 
 export const appContainer = rr.createRoute({
@@ -112,6 +119,7 @@ const router = rr.createRouter({
   routeTree: rootRoute.addChildren([
     login,
     dev,
+    update,
     appContainer.addChildren([
       home.addChildren([recentMatches]),
       settings,
