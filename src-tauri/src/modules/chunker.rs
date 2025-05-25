@@ -370,7 +370,7 @@ async fn download_file(
         let tmp_chunk_path = Path::new(&download_path.to_string())
             .join(TMP_FOLDER)
             .join(sanitized_path.clone())
-            .join(format!("chunk_{}", chunk.Hash));
+            .join(format!("{}", chunk.Hash));
 
         let chunk_url = format!("{}/{}/{}", BASE_URL, manifest_id, chunk.Hash);
 
