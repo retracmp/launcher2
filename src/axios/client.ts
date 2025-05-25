@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 
-export const dev = false;
-// export const dev = import.meta.env.MODE === "development";
+// export const dev = false;
+export const dev = import.meta.env.MODE === "development";
 export const protocol = dev ? "http" : "https";
 export const hostname = dev ? "localhost:3000" : "retrac.site";
 
@@ -11,7 +11,7 @@ export const axiosClient = axios.create({
 
 const get_discord_login_url = async (): Promise<RResponse<string>> => {
   const response = await axiosClient
-    .get<string>("/retrac/discord")
+    .get<string>("/retrac/discord?v=2")
     .catch((e: AxiosError<any>) => {
       return e;
     });

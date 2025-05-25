@@ -20,7 +20,7 @@ type ApplicationInformation = {
 export const useApplicationInformation = create<ApplicationInformation>()(
   (set) => ({
     name: "Retrac",
-    version: "2.0.0",
+    version: "2.0.1",
     dev: false,
     windowsVersion: 0,
     load: (name, version, dev, windowsVersion) =>
