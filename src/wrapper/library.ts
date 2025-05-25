@@ -124,6 +124,8 @@ type LibraryState = {
   setLaunchedBuild: (build: LibraryEntry | null) => void;
 
   launchBuild: (version: string) => Promise<void>;
+
+  setEacInitialisedForBuild: (version: string, value: boolean) => void;
 };
 
 export const useLibrary = create<LibraryState>()(
@@ -205,6 +207,7 @@ export const useLibrary = create<LibraryState>()(
         }
 
         const result = await invoke.launch_retrac({
+          version: entry.version,
           launch_args: useApplicationInformation.getState().dev
             ? useOptions.getState().launch_arguments
             : "",
@@ -215,12 +218,20 @@ export const useLibrary = create<LibraryState>()(
           simple_edit: useOptions.getState().simple_edit,
           root: entry.rootLocation,
           manifest_id: entry.manifestId,
+          anti_cheat_already_intialised:
+            entry.hasIntialisedEasyAnticheat || false,
         });
 
         if (result === null || !!!result) {
           get().setLaunchState(LAUNCH_STATE.ERROR);
           throw new Error("Failed to launch Retrac");
         }
+      },
+      setEacInitialisedForBuild: (version) => {
+        const entry = get().library.find((x) => x.version === version);
+        if (!entry) return;
+        entry.hasIntialisedEasyAnticheat = true;
+        get().updateLibraryEntry(version, { hasIntialisedEasyAnticheat: true });
       },
     }),
     {
@@ -234,6 +245,7 @@ export const useLibrary = create<LibraryState>()(
           version: entry.version,
           buildName: entry.buildName,
           manifestId: entry.manifestId,
+          hasIntialisedEasyAnticheat: entry.hasIntialisedEasyAnticheat || false,
         })),
       }),
     }

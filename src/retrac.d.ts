@@ -230,6 +230,7 @@ type LibraryEntry = {
   splashLocation: string;
   buildName: string;
   manifestId: string;
+  hasIntialisedEasyAnticheat: boolean;
 };
 
 type BackendServer = {

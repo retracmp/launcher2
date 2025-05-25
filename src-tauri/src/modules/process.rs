@@ -132,3 +132,77 @@ pub fn start_suspended_with_args(process_path: PathBuf, args: Vec<&str>) -> Resu
     let args = args.into_iter().collect::<Vec<_>>().join(" ");
     start_internal(process_path, true, Some(args))
 }
+
+/*
+  eac_setup_args are [
+    "install",
+    "b2504259773b40e3a818f820e31979ca"
+  ];
+   */
+
+pub fn launch_eac_setup(
+    path: &PathBuf,
+    arg: &str,
+) -> Result<(), String> {
+    if !path.exists() {
+        eprintln!("EAC setup path does not exist: {:?}", path);
+        return Err(format!("EAC setup path does not exist: {:?}", path));
+    }
+
+    let eac_setup_path = path.join("EasyAntiCheat\\EasyAntiCheat_EOS_Setup.exe");
+    if !eac_setup_path.exists() {
+        eprintln!("EAC setup executable does not exist: {:?}", eac_setup_path);
+        return Err(format!("EAC setup path does not exist: {:?}", path));
+    }
+
+    let eac_folder = eac_setup_path.parent().unwrap_or(&path);
+    let eac_folder_wide = U16CString::from_str(eac_folder.to_str().unwrap_or(""))
+        .map_err(|e| format!("Failed to convert path to wide string: {}", e))
+        .unwrap();
+    let eac_setup_path_str = eac_setup_path
+        .to_str()
+        .ok_or_else(|| format!("Failed to convert path to string: {:?}", eac_setup_path))
+        .unwrap();
+    let application_name = U16CString::from_str(eac_setup_path_str)
+        .map_err(|e| format!("Failed to convert path to wide string: {}", e))
+        .unwrap();
+    let cmd_line_wide = U16CString::from_str(&format!(
+        "\"{}\" install {}",
+        eac_setup_path_str,
+        arg
+    ))
+    .map_err(|e| format!("Failed to convert command line to wide string: {}", e))
+        .unwrap();
+
+    let mut startup_info: STARTUPINFOW = unsafe { std::mem::zeroed() };
+    startup_info.cb = std::mem::size_of::<STARTUPINFOW>() as u32;
+    let mut process_info: PROCESS_INFORMATION = unsafe { std::mem::zeroed() };
+
+    let success = unsafe {
+        CreateProcessW(
+            application_name.into_raw() as *mut u16,
+            cmd_line_wide.into_raw() as *mut u16,
+            null_mut() as LPSECURITY_ATTRIBUTES,
+            null_mut() as LPSECURITY_ATTRIBUTES,
+            0,
+            DETACHED_PROCESS,
+            null_mut(),
+            eac_folder_wide.into_raw() as *const u16,
+            &mut startup_info,
+            &mut process_info,
+        )
+    };
+    if success == 0 {
+        let error_code = unsafe { winapi::um::errhandlingapi::GetLastError() };
+        let error_message = format!("Failed to create EAC setup process: {}", error_code);
+        eprintln!("{}", error_message);
+        return Err(format!("EAC setup path does not exist: {:?}", path));
+    }
+    unsafe {
+        CloseHandle(process_info.hProcess);
+        CloseHandle(process_info.hThread);
+    }
+    println!("EAC setup launched successfully with argument: {}", arg);
+    
+    Ok(())
+}

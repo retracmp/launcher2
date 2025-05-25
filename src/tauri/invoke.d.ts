@@ -9,6 +9,7 @@
 // }
 
 type LaunchOptions = {
+  version: string;
   exchange_code: string;
   anticheat_token: string;
   root: string;
@@ -17,6 +18,7 @@ type LaunchOptions = {
   reset_on_release: boolean;
   launch_args: string;
   manifest_id?: string;
+  anti_cheat_already_intialised: boolean;
 };
 
 // pub struct ManifestProgress {
@@ -54,6 +56,12 @@ type ManifestVerifyProgress = {
 };
 
 type VERIFYING_STATUS = {
+  manifest_id: string;
+  status: boolean;
+};
+
+type EAC_INITIALISED = {
+  version: string;
   manifest_id: string;
   status: boolean;
 };

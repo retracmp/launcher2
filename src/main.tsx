@@ -6,14 +6,14 @@ import router from "src/components/router";
 
 import "src/main.css";
 import Boostrap from "./components/core/bootstrap";
-import DownloadListener from "./components/core/download";
+import TauriListeners from "./components/core/listeners";
 import UpdateChecker from "./components/core/update";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <Boostrap />
     <UpdateChecker />
-    <DownloadListener />
+    <TauriListeners />
     <rr.RouterProvider router={router} />
   </React.StrictMode>
 );

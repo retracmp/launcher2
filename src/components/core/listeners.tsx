@@ -3,11 +3,11 @@ import { useCallback, useEffect } from "react";
 import { useDownloadState } from "src/wrapper/download";
 import { useRetrac } from "src/wrapper/retrac";
 import { event } from "@tauri-apps/api";
-import invoke from "src/tauri";
 import { useLibrary } from "src/wrapper/library";
 import { useUserManager } from "src/wrapper/user";
+import invoke from "src/tauri";
 
-const DownloadListener = () => {
+const TauriListeners = () => {
   const downloadState = useDownloadState();
   const options = useOptions();
   const user = useUserManager();
@@ -84,6 +84,14 @@ const DownloadListener = () => {
     []
   );
 
+  const onEasyAnticheatInitialised = useCallback(
+    (progress: event.Event<EAC_INITIALISED>) => {
+      console.log("[EAC_INITIALISED] initialised", progress.payload);
+      library.setEacInitialisedForBuild(progress.payload.version, true);
+    },
+    []
+  );
+
   useEffect(() => {
     console.log("[download] listening for download events");
 
@@ -102,10 +110,16 @@ const DownloadListener = () => {
       onVerifyComplete
     );
 
+    const unlistenEACInitialised = event.listen<EAC_INITIALISED>(
+      "EAC_INITIALISED",
+      onEasyAnticheatInitialised
+    );
+
     return () => {
       unlistenDownload.then((fn: event.UnlistenFn) => fn());
       unlistenVerify.then((fn: event.UnlistenFn) => fn());
       unlistenVerifyComplete.then((fn: event.UnlistenFn) => fn());
+      unlistenEACInitialised.then((fn: event.UnlistenFn) => fn());
     };
   }, [onDownloadEvent, onVerifyEvent, onVerifyComplete]);
 
@@ -145,4 +159,4 @@ const DownloadListener = () => {
   return null;
 };
 
-export default DownloadListener;
+export default TauriListeners;

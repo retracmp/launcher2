@@ -69,11 +69,13 @@ const FortniteWidget = () => {
       )}
 
       <VideoDisplay
-        address={"https://cdn.retrac.site/chatper2season4card.mp4"}
+        address={
+          "https://cdn.retrac.site/public/01J7B2FNTZ4SGMKWGPCKSEXWF3/RetracSeason14Card.mp4"
+        }
         backup={
           <img
             src={IMAGES[imageIndex]}
-            className="absolute top-0 left-0 w-full h-full object-cover object-center z-50"
+            className="absolute top-0 left-0 w-full h-full object-cover object-center z-50 pointer-events-none"
             draggable={false}
             style={{
               maskImage:
