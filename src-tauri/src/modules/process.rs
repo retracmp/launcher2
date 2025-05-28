@@ -133,13 +133,6 @@ pub fn start_suspended_with_args(process_path: PathBuf, args: Vec<&str>) -> Resu
     start_internal(process_path, true, Some(args))
 }
 
-/*
-  eac_setup_args are [
-    "install",
-    "b2504259773b40e3a818f820e31979ca"
-  ];
-   */
-
 pub fn launch_eac_setup(
     path: &PathBuf,
     arg: &str,
@@ -204,5 +197,25 @@ pub fn launch_eac_setup(
     }
     println!("EAC setup launched successfully with argument: {}", arg);
     
+    Ok(())
+}
+
+use winapi::um::winuser::{MessageBoxW, MB_OK};
+
+pub fn message_box(title: &str, body: &str) -> Result<(), String> {
+    let title_wide = U16CString::from_str(title)
+        .map_err(|e| format!("Failed to convert title to wide string: {}", e))?;
+    let body_wide = U16CString::from_str(body)
+        .map_err(|e| format!("Failed to convert body to wide string: {}", e))?;
+
+    unsafe {
+        MessageBoxW(
+            null_mut(),
+            body_wide.as_ptr(),
+            title_wide.as_ptr(),
+            MB_OK,
+        );
+    }
+
     Ok(())
 }

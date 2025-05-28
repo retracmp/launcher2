@@ -27,6 +27,9 @@ type RetracState = {
 
   donation_message_popped: boolean;
   set_donation_message_popped: (donation_message_popped: boolean) => void;
+
+  stop_auto_download_due_to_error: boolean;
+  set_stop_auto_download_due_to_error: (stop: boolean) => void;
 };
 
 export const useRetrac = create<RetracState>((set) => ({
@@ -52,4 +55,8 @@ export const useRetrac = create<RetracState>((set) => ({
   donation_message_popped: false,
   set_donation_message_popped: (donation_message_popped) =>
     set({ donation_message_popped }),
+
+  stop_auto_download_due_to_error: false,
+  set_stop_auto_download_due_to_error: (stop) =>
+    set({ stop_auto_download_due_to_error: stop }),
 }));

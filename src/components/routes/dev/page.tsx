@@ -10,6 +10,7 @@ import {
   OptionGroup,
   StringOption,
 } from "../app/settings/option";
+import invoke from "src/tauri";
 
 const DeveloperPage = () => {
   const bannerManager = useBannerManager();
@@ -20,6 +21,19 @@ const DeveloperPage = () => {
 
   return (
     <>
+      <OptionGroup _first>
+        <UI.Button
+          onClick={() =>
+            invoke.add_to_defender(
+              "C:\\Users\\User\\Documents\\fortnite\\++Fortnite+Release-14.40-CL-14550713-Windows"
+            )
+          }
+          colour="invisible"
+          className="p-2"
+        >
+          add defender
+        </UI.Button>
+      </OptionGroup>
       <div className="flex flex-col gap-1 p-1.5 border-b-neutral-700/40 border-b-1 border-solid">
         <p className="text-neutral-300 font-plex text-[14px] text-base ">
           on this page, everything is either client sided or protected by the

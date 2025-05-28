@@ -125,6 +125,8 @@ const TauriListeners = () => {
 
   const autoDownload = useCallback(async () => {
     if (!user.access()) return;
+    if (retrac.stop_auto_download_due_to_error)
+      return console.error("Auto download stopped due to previous error");
     if (downloadState.active_download_progress.size > 0) return;
     if (!options.auto_download) return console.log("Auto download is disabled");
 
@@ -140,13 +142,17 @@ const TauriListeners = () => {
         manifest,
         retracBuild.rootLocation
       );
-      if (result === null)
-        return console.error("Failed to download extra content");
+      if (result === null) {
+        console.error(`[download] auto download failed for ${manifest}`);
+        retrac.set_stop_auto_download_due_to_error(true);
+        return;
+      }
     }
   }, [
     options.auto_download,
     retrac.auto_download_manifests,
     downloadState.active_download_progress,
+    retrac.stop_auto_download_due_to_error,
   ]);
 
   useEffect(() => {

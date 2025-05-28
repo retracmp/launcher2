@@ -3,7 +3,7 @@ use std::io::{Read, Seek};
 use tauri::AppHandle;
 use winver::WindowsVersion;
 
-use crate::modules::{chunker, launch, process, util};
+use crate::modules::{chunker, launch, process, util, admin};
 
 #[tauri::command]
 pub async fn get_windows_version() -> Result<i32, String> {
@@ -78,4 +78,24 @@ pub async fn close_fortnite() -> Result<bool, String> {
     Ok(_) => Ok(true),
     Err(e) => Err(e),
   }
+}
+
+#[tauri::command]
+pub async fn add_to_defender(
+  path: &str,
+) -> Result<bool, String> {
+  if !admin::is_running_as_admin()? {
+    let relaunch_arg = format!("-defender_add=\"{}\"", path);
+    admin::restart_as_admin(relaunch_arg.as_str())?;
+    return Ok(false);
+  }
+
+  let path_buf = std::path::PathBuf::from(path);
+  if !path_buf.exists() {
+    return Err(format!("Path does not exist: {}", path));
+  }
+
+  admin::add_to_defender_exclusion(&path_buf)?;
+  
+  Ok(true)
 }

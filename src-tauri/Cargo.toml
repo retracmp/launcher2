@@ -13,7 +13,7 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 tauri-build = { version = "2", features = [] }
 
 [dependencies]
-winapi = { version = "0.3", features = ["winbase", "processthreadsapi", "handleapi", "minwindef", "synchapi", "errhandlingapi"] }
+winapi = { version = "0.3", features = ["winbase", "processthreadsapi", "handleapi", "minwindef", "synchapi", "errhandlingapi", "shellapi", "securitybaseapi"] }
 widestring = "1.0"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
@@ -27,7 +27,7 @@ tauri = { version = "2.5.0", features = ["protocol-asset"] }
 tauri-plugin-deep-link = "2"
 tauri-plugin-opener = "2"
 tauri-plugin-dialog = "2"
-tokio = "1.44.2"
+tokio = { version = "1.44.2", features = ["rt-multi-thread", "macros", "fs", "time", "net", "io-util"] } 
 reqwest = { version = "0.12.15", features = ["stream"] }
 async-compression =  { version = "0.4.23", features = ["tokio", "gzip"] }
 futures-util = "0.3.31"

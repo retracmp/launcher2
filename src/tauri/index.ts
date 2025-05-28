@@ -92,6 +92,22 @@ const close_fortnite = async (): Promise<boolean | null> => {
   return result;
 };
 
+const add_to_defender = async (path: string): Promise<boolean | null> => {
+  const result = await i<boolean>("add_to_defender", { path }).catch(
+    (e: string) => {
+      useBannerManager.getState().push({
+        closable: true,
+        colour: "red",
+        id: "defender_error",
+        text: `Adding to Windows Defender failed with reason: ${e}`,
+      });
+      console.error("Error adding to Windows Defender:", e);
+      return null;
+    }
+  );
+  return result;
+};
+
 const invoke = {
   get_windows_version,
   get_fortnite_version,
@@ -99,6 +115,7 @@ const invoke = {
   download_build,
   is_fortnite_running,
   close_fortnite,
+  add_to_defender,
 };
 
 export default invoke;

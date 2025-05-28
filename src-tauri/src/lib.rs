@@ -37,7 +37,8 @@ pub fn run() {
     commands::launch_retrac,
     commands::download_build,
     commands::is_fortnite_running,
-    commands::close_fortnite
+    commands::close_fortnite,
+    commands::add_to_defender,
   ]);
 
   builder
