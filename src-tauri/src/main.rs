@@ -1,10 +1,10 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::env;
+// use std::env;
 
-pub mod modules;
-use modules::{commands, process};
+// pub mod modules;
+// use modules::{commands, process};
 
 /**
  * [src\main.rs:12:5] args.clone() = [
@@ -18,30 +18,32 @@ use modules::{commands, process};
 
 #[tokio::main]
 async fn main() {
-    let args: Vec<String> = env::args().collect();
-    dbg!(args.clone());
+    // let args: Vec<String> = env::args().collect();
+    // dbg!(args.clone());
 
-    let args: Vec<String> = args.into_iter().skip(1).collect();
+    // let args: Vec<String> = args.into_iter().skip(1).collect();
 
-    for arg in args.iter() {
-        if arg.starts_with("-defender_add=") {
-            let path = arg.replace("-defender_add=", "").trim_matches('"').to_string();
-            let result = commands::add_to_defender(path.as_str()).await;
-            match result {
-                Ok(_) => {
-                    println!("Successfully added to Defender: {}", path);
-                }
-                Err(e) => {
-                    eprintln!("Failed to add to Defender: {}", e);
-                    process::message_box(
-                        "Failed to add to Defender",
-                        &format!("Failed to add {} to Defender: {}", path, e),
-                    ).unwrap();
-                    return;
-                }
-            }
-        }
-    }
+    // for arg in args.iter() {
+    //     if arg.starts_with("-defender_add=") {
+    //         let path = arg.replace("-defender_add=", "").trim_matches('"').to_string();
+    //         let result = commands::add_to_defender(path.as_str()).await;
+    //         match result {
+    //             Ok(_) => {
+    //                 println!("Successfully added to Defender: {}", path);
+    //             }
+    //             Err(e) => {
+    //                 eprintln!("Failed to add to Defender: {}", e);
+    //                 process::message_box(
+    //                     "Failed to add to Defender",
+    //                     &format!("Failed to add {} to Defender: {}", path, e),
+    //                 ).unwrap();
+    //                 return;
+    //             }
+    //         }
+    //     }
+    // }
 
-    retrac_launcher_lib::run(args.clone())
+    // retrac_launcher_lib::run(args.clone())
+
+    retrac_launcher_lib::run(vec![]);
 }

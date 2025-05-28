@@ -3,7 +3,9 @@ use std::io::{Read, Seek};
 use tauri::AppHandle;
 use winver::WindowsVersion;
 
-use crate::modules::{chunker, launch, process, util, admin};
+use crate::modules::{chunker, launch, process, util, 
+  // admin
+};
 
 #[tauri::command]
 pub async fn get_windows_version() -> Result<i32, String> {
@@ -82,41 +84,41 @@ pub async fn close_fortnite() -> Result<bool, String> {
 
 #[tauri::command]
 pub async fn add_to_defender(
-  path: &str,
+  // path: &str,
 ) -> Result<bool, String> {
-  if !admin::is_running_as_admin()? {
-    let relaunch_arg = format!("-defender_add=\"{}\"", path);
-    admin::restart_as_admin(relaunch_arg.as_str())?;
-    return Ok(false);
-  }
+  // if !admin::is_running_as_admin()? {
+  //   let relaunch_arg = format!("-defender_add=\"{}\"", path);
+  //   admin::restart_as_admin(relaunch_arg.as_str())?;
+  //   return Ok(false);
+  // }
 
-  let path_buf = std::path::PathBuf::from(path);
-  admin::add_to_defender_exclusion(&path_buf)?;
+  // let path_buf = std::path::PathBuf::from(path);
+  // admin::add_to_defender_exclusion(&path_buf)?;
   
   Ok(true)
 }
 
 #[tauri::command]
 pub async fn add_to_defender_multi(
-  paths: Vec<String>,
-  action_to_perform_after: String,
+  // paths: Vec<String>,
+  // action_to_perform_after: String,
 ) -> Result<bool, String> {
-  if !admin::is_running_as_admin()? {
-    let mut relaunch_arg = paths.clone()
-      .iter()
-      .map(|path| format!("-defender_add=\"{}\"", path))
-      .collect::<Vec<_>>();
-    relaunch_arg.push(format!("-action_after=\"{}\"", action_to_perform_after));
-    let relaunch_arg = relaunch_arg.join(" ");
+  // if !admin::is_running_as_admin()? {
+  //   let mut relaunch_arg = paths.clone()
+  //     .iter()
+  //     .map(|path| format!("-defender_add=\"{}\"", path))
+  //     .collect::<Vec<_>>();
+  //   relaunch_arg.push(format!("-action_after=\"{}\"", action_to_perform_after));
+  //   let relaunch_arg = relaunch_arg.join(" ");
 
-    admin::restart_as_admin(relaunch_arg.as_str())?;
-    return Ok(false);
-  }
+  //   admin::restart_as_admin(relaunch_arg.as_str())?;
+  //   return Ok(false);
+  // }
 
-  for path in paths {
-    let path_buf = std::path::PathBuf::from(&path);
-    admin::add_to_defender_exclusion(&path_buf)?;
-  }
+  // for path in paths {
+  //   let path_buf = std::path::PathBuf::from(&path);
+  //   admin::add_to_defender_exclusion(&path_buf)?;
+  // }
 
   Ok(true)
 }
