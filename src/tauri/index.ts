@@ -108,6 +108,40 @@ const add_to_defender = async (path: string): Promise<boolean | null> => {
   return result;
 };
 
+const add_to_defender_multi = async (
+  paths: string[],
+  actionToPerformAfter: string = ""
+): Promise<boolean | null> => {
+  const result = await i<boolean>("add_to_defender_multi", {
+    paths,
+    actionToPerformAfter,
+  }).catch((e: string) => {
+    useBannerManager.getState().push({
+      closable: true,
+      colour: "red",
+      id: "defender_error",
+      text: `Adding to Windows Defender failed with reason: ${e}`,
+    });
+    console.error("Error adding to Windows Defender:", e);
+    return null;
+  });
+  return result;
+};
+
+const get_app_action = async (): Promise<string | null> => {
+  const action = await i<string>("get_app_action").catch((e: string) => {
+    useBannerManager.getState().push({
+      closable: true,
+      colour: "red",
+      id: "action_error",
+      text: `Retrieving app action failed with reason: ${e}`,
+    });
+    console.error("Error retrieving app action:", e);
+    return null;
+  });
+  return action;
+};
+
 const invoke = {
   get_windows_version,
   get_fortnite_version,
@@ -116,6 +150,8 @@ const invoke = {
   is_fortnite_running,
   close_fortnite,
   add_to_defender,
+  add_to_defender_multi,
+  get_app_action,
 };
 
 export default invoke;

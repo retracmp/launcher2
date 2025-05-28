@@ -41,7 +41,7 @@ const DrawerItem = (props: DrawerItemProps) => {
 
   const onHoverEntered = () => {
     if (options.wide_drawer) return;
-    hover.set(parentRef.current, <HoverComponent />, props.label, "LEFT");
+    hover.set(parentRef.current, <HoverComponent />, props.label, "RIGHT");
   };
   const onHoverExited = () => {
     if (options.wide_drawer) return;
@@ -147,7 +147,7 @@ const SparklyDrawerItem = (props: SparklyDrawerItemProps) => {
 
   const onHoverEntered = () => {
     if (options.wide_drawer) return;
-    hover.set(parentRef.current, <HoverComponent />, props.label, "LEFT");
+    hover.set(parentRef.current, <HoverComponent />, props.label, "RIGHT");
   };
   const onHoverExited = () => {
     if (options.wide_drawer) return;

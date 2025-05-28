@@ -9,7 +9,9 @@ pub fn kill_all(process_names: &[&str]) -> Result<(), String> {
             if process.name().eq_ignore_ascii_case(target_name) {
                 let result = process.kill_with(Signal::Kill);
                 if result.is_none() || !result.unwrap() {
-                    return Err(format!("Failed to kill process {}: {}", target_name, pid));
+                    // return Err(format!("Failed to kill process {}: {}", target_name, pid));
+                    dbg!(format!("Failed to kill process {}: {}", target_name, pid));
+                    continue;
                 }
                 break;
             }

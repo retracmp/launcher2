@@ -92,6 +92,13 @@ const TauriListeners = () => {
     []
   );
 
+  const onActionAfterLaunch = useCallback(
+    (progress: event.Event<ManifestProgress>) => {
+      console.log("[download] action after launch", progress.payload);
+    },
+    []
+  );
+
   useEffect(() => {
     console.log("[download] listening for download events");
 
@@ -121,13 +128,18 @@ const TauriListeners = () => {
       unlistenVerifyComplete.then((fn: event.UnlistenFn) => fn());
       unlistenEACInitialised.then((fn: event.UnlistenFn) => fn());
     };
-  }, [onDownloadEvent, onVerifyEvent, onVerifyComplete]);
+  }, [
+    onDownloadEvent,
+    onVerifyEvent,
+    onVerifyComplete,
+    onEasyAnticheatInitialised,
+    onActionAfterLaunch,
+  ]);
 
   const autoDownload = useCallback(async () => {
     if (!user.access()) return;
     if (retrac.stop_auto_download_due_to_error)
       return console.error("Auto download stopped due to previous error");
-    if (downloadState.active_download_progress.size > 0) return;
     if (!options.auto_download) return console.log("Auto download is disabled");
 
     const retracBuild = library.library.find(
@@ -144,16 +156,10 @@ const TauriListeners = () => {
       );
       if (result === null) {
         console.error(`[download] auto download failed for ${manifest}`);
-        retrac.set_stop_auto_download_due_to_error(true);
         return;
       }
     }
-  }, [
-    options.auto_download,
-    retrac.auto_download_manifests,
-    downloadState.active_download_progress,
-    retrac.stop_auto_download_due_to_error,
-  ]);
+  }, [options.auto_download, retrac.auto_download_manifests]);
 
   useEffect(() => {
     setTimeout(() => options.auto_download && autoDownload(), 2000);
@@ -161,6 +167,37 @@ const TauriListeners = () => {
     const interval = setInterval(() => autoDownload(), 1000 * 60 * 5);
     return () => clearInterval(interval);
   }, [options.auto_download, autoDownload]);
+
+  const onLaunch = useCallback(async () => {
+    const action = await invoke.get_app_action();
+    if (action === null || action === "")
+      return console.log("[launch] no action to perform");
+
+    const [type, param] = action.split(":");
+    console.log(`[launch] performing action: ${type} with param: ${param}`);
+
+    switch (type) {
+      case "launch_build":
+        if (!param)
+          return console.error("[launch] no param provided for launch");
+
+        const result = await library.launchBuild(param);
+        if (result === null) {
+          console.error("[launch] failed to launch build");
+          return;
+        }
+
+        console.log(`[launch] launched build: ${param}`);
+
+        break;
+      default:
+        console.error(`[launch] unknown action type: ${type}`);
+    }
+  }, []);
+
+  useEffect(() => {
+    onLaunch();
+  }, [onLaunch]);
 
   return null;
 };

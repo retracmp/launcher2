@@ -5,7 +5,9 @@ pub mod modules;
 use modules::{commands, util};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
-pub fn run() {
+pub fn run(
+  args: Vec<String>,
+) {
   let mut builder = tauri::Builder::default()
     .plugin(tauri_plugin_process::init())
     .plugin(tauri_plugin_updater::Builder::new().build());
@@ -14,6 +16,13 @@ pub fn run() {
   builder = builder.plugin(tauri_plugin_deep_link::init());
   builder = builder.plugin(tauri_plugin_opener::init());
   builder = builder.plugin(tauri_plugin_dialog::init());
+
+  if let Some(arg) = args.clone().iter().find(|a| a.starts_with("-action_after=")) {
+    if let Some(action_value) = arg.splitn(2, '=').nth(1) {
+      println!("Found action_after: {}", action_value);
+      util::set_app_action(action_value.to_string());
+    }
+  }
 
   builder = builder.setup(|app| {
     let handle = app.handle();
@@ -39,6 +48,8 @@ pub fn run() {
     commands::is_fortnite_running,
     commands::close_fortnite,
     commands::add_to_defender,
+    commands::add_to_defender_multi,
+    commands::get_app_action,
   ]);
 
   builder

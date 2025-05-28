@@ -392,10 +392,12 @@ async fn download_file(
 
     let final_save_path = Path::new(&download_path.to_string()).join(sanitized_path);
 
-    if let Err(e) = rebuild_file(chunk_info, &final_save_path).await {
-        dbg!(println!("Error rebuilding file: {}", e));
-        return Err(e);
-    }
+    // if let Err(e) = rebuild_file(chunk_info, &final_save_path).await {
+    //     dbg!(println!("Error rebuilding file: {}", e));
+    //     return Err(e);
+    // }
+
+    rebuild_file(chunk_info, &final_save_path).await.unwrap();
 
     {
         let mut progress = progress.lock().await;

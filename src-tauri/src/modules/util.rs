@@ -20,6 +20,16 @@ pub fn get_app_handle() -> AppHandle {
     APP_HANDLE.get().unwrap().clone()
 }
 
+static APP_ACTION: OnceLock<String> = OnceLock::new();
+
+pub fn set_app_action(args: String) {
+    APP_ACTION.set(args).unwrap();
+}
+
+pub fn get_app_action() -> String {
+    APP_ACTION.get().cloned().unwrap_or_default()
+}
+
 static DOWNLOADING_STATE: LazyLock<Mutex<chunker::DownloadingStateTauri>> =
     LazyLock::new(|| Mutex::new(chunker::DownloadingStateTauri::default()));
 
