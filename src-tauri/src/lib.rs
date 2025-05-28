@@ -24,8 +24,6 @@ pub fn run(
     }
   }
 
-  util::set_app_action("launch_build:++Fortnite+Release-14.40-CL-14550713".to_string());
-
   builder = builder.setup(|app| {
     let handle = app.handle();
     util::set_app_handle(handle.to_owned());
