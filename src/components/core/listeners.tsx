@@ -5,6 +5,7 @@ import { useRetrac } from "src/wrapper/retrac";
 import { event } from "@tauri-apps/api";
 import { useLibrary } from "src/wrapper/library";
 import { useUserManager } from "src/wrapper/user";
+import { useSocket } from "src/socket";
 import invoke from "src/tauri";
 
 const TauriListeners = () => {
@@ -12,6 +13,7 @@ const TauriListeners = () => {
   const options = useOptions();
   const user = useUserManager();
   const library = useLibrary();
+  const socket = useSocket();
   const retrac = useRetrac();
 
   const onDownloadEvent = useCallback(
@@ -168,7 +170,9 @@ const TauriListeners = () => {
     return () => clearInterval(interval);
   }, [options.auto_download, autoDownload]);
 
-  const onLaunch = useCallback(async () => {
+  const onSocketWelcome = async (e: SocketDownEventDataFromType<"welcome">) => {
+    console.log("[launch] received welcome event from socket", e);
+
     const action = await invoke.get_app_action();
     if (action === null || action === "")
       return console.log("[launch] no action to perform");
@@ -193,11 +197,15 @@ const TauriListeners = () => {
       default:
         console.error(`[launch] unknown action type: ${type}`);
     }
-  }, []);
+  };
 
   useEffect(() => {
-    onLaunch();
-  }, [onLaunch]);
+    socket.bind("welcome", onSocketWelcome);
+
+    return () => {
+      socket.unbind("welcome", onSocketWelcome);
+    };
+  }, [socket._socket]);
 
   return null;
 };

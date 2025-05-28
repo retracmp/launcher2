@@ -193,6 +193,10 @@ export const useLibrary = create<LibraryState>()(
       setLaunchedBuild: (build) => set({ launchedBuild: build }),
 
       launchBuild: async (version) => {
+        if (get().launchState !== LAUNCH_STATE.NONE) {
+          throw new Error("Cannot launch while another build is launching");
+        }
+
         const entry = get().library.find((x) => x.version === version);
         if (!entry) {
           throw new Error("Build not found in library");
