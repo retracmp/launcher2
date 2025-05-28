@@ -63,8 +63,8 @@ const FriendsList = () => {
       ))}
 
       {friends._set.size === 0 && (
-        <div className="flex items-center justify-center aspect-square w-full bg-neutral-800/30 rounded-sm border-[#292929] border-1 border-solid overflow-hidden min-h-[40px] min-w-[40px] cursor-pointer hover:bg-neutral-800/50">
-          <IoPersonAddSharp className="text-[#4a4949] text-xl" />
+        <div className="flex items-center justify-center aspect-square w-full bg-neutral-800/30 rounded-sm border-neutral-700/20 border-1 border-solid overflow-hidden min-h-[40px] min-w-[40px] cursor-pointer hover:bg-neutral-800/50">
+          <IoPersonAddSharp className="text-neutral-700 text-xl" />
         </div>
       )}
     </motion.div>
@@ -107,7 +107,7 @@ const Friend = (props: FriendProps) => {
       ref={parentRef}
       onMouseEnter={onHoverEntered}
       onMouseLeave={onHoverExited}
-      className="flex items-center justify-center aspect-square w-full bg-neutral-800/30 rounded-sm border-[#292929] border-1 border-solid overflow-hidden min-h-[40px] min-w-[40px]"
+      className="flex items-center justify-center aspect-square w-full bg-neutral-800/30 rounded-sm border-neutral-700/20 border-1 border-solid overflow-hidden min-h-[40px] min-w-[40px]"
     >
       <img
         src={props.friend.discordAvatarUrl}
@@ -119,7 +119,7 @@ const Friend = (props: FriendProps) => {
         draggable={false}
       />
 
-      <IoPersonSharp className="text-[#2f2f2f] text-2xl" />
+      <IoPersonSharp className="text-neutral-700 text-2xl" />
     </div>
   );
 };
