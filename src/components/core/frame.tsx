@@ -126,13 +126,13 @@ const Frame = () => {
             <s className="ml-auto" />
 
             <button
-              className="flex items-center justify-center w-9 h-full bg-neutral-900/00 cursor-pointer border-neutral-700/40 hover:bg-neutral-900/30"
+              className="flex items-center justify-center w-9 h-full bg-neutral-900/00 cursor-pointer border-neutral-700/40 hover:bg-neutral-700/10 duration-75"
               onClick={() => getCurrentWindow().minimize()}
             >
               <HiMinus className="text-neutral-400 w-[14px] h-[14px]" />
             </button>
             <button
-              className="flex items-center justify-center w-9 h-full bg-neutral-900/00 cursor-pointer border-neutral-700/40 hover:bg-neutral-900/30"
+              className="flex items-center justify-center w-9 h-full bg-neutral-900/00 cursor-pointer border-neutral-700/40 hover:bg-neutral-700/10 duration-75"
               onClick={() => getCurrentWindow().close()}
             >
               <IoCloseSharp className="text-neutral-400" />

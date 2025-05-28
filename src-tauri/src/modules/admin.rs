@@ -4,6 +4,7 @@ use std::ptr::null_mut;
 use widestring::U16CString;
 use winapi::um::errhandlingapi::GetLastError;
 use winapi::um::shellapi::ShellExecuteW;
+use winapi::um::winbase::CREATE_NO_WINDOW;
 use winapi::um::winuser::SW_SHOWNORMAL;
 
 use winapi::um::winnt::{HANDLE, TOKEN_QUERY};
@@ -113,7 +114,7 @@ pub fn add_to_defender_exclusion(path: &PathBuf) -> Result<(), String> {
             null_mut(),
             null_mut(),
             0,
-            0,
+            CREATE_NO_WINDOW | winapi::um::winbase::DETACHED_PROCESS,
             null_mut(),
             null_mut(),
             &mut startup_info,
