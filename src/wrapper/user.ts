@@ -58,6 +58,8 @@ export enum LauncherStage {
 type UserManager = {
   _token: string | null;
   _user: User | null;
+  otp: string | null;
+  set_otp: (otp: string | null) => void;
 
   user_best_donation_tier: () =>
     | (typeof DONATION_TIERS)[keyof typeof DONATION_TIERS]
@@ -145,6 +147,11 @@ export const useUserManager = create<UserManager>()(
       _season: 14,
       set_season: (season) => {
         set({ _season: season });
+      },
+
+      otp: null,
+      set_otp: (otp) => {
+        set({ otp });
       },
     }),
     {

@@ -3,7 +3,12 @@ import { useNavigate } from "@tanstack/react-router";
 import { open } from "@tauri-apps/plugin-dialog";
 
 import { OptionGroup } from "src/components/routes/app/settings/option";
-import { IoBanSharp, IoFolderOpenSharp, IoHammer } from "react-icons/io5";
+import {
+  IoBanSharp,
+  IoFolderOpenSharp,
+  IoHammer,
+  IoLogIn,
+} from "react-icons/io5";
 import { AnimatePresence, motion } from "motion/react";
 import UI from "src/components/core/default";
 import FortniteBuild from "src/components/routes/app/library/build";
@@ -57,6 +62,19 @@ const LibraryPage = () => {
           >
             <IoHammer className="text-neutral-400 w-4 h-4" />
             <span className="text-neutral-400">Install a new version</span>
+          </UI.Button>
+
+          <UI.Button
+            colour="invisible"
+            className="py-0 px-2 mt-auto z-10 w-min gap-0"
+            onClick={() =>
+              navigate({
+                to: "/app/external",
+              })
+            }
+          >
+            <IoLogIn className="text-neutral-400 w-4 h-4" />
+            <span className="text-neutral-400">Using an external device?</span>
           </UI.Button>
         </div>
       </OptionGroup>

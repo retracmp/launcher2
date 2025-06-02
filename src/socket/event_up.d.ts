@@ -33,13 +33,23 @@ type SocketUpEvent_RequestServers = SocketBasicUpEvent & {
   id: "request_servers";
 };
 
+type SocketUpEvent_SubscribeOTP = SocketBasicUpEvent & {
+  id: "otp_subscribe";
+};
+
+type SocketUpEvent_UnsubscribeOTP = SocketBasicUpEvent & {
+  id: "otp_unsubscribe";
+};
+
 type SocketUpEvent =
   | SocketUpEvent_Heartbeat
   | SocketUpEvent_RequestUser
   | SocketUpEvent_RequestCode
   | SocketUpEvent_RequestLeaderboard
   | SocketUpEvent_RequestFriendInfo
-  | SocketUpEvent_RequestServers;
+  | SocketUpEvent_RequestServers
+  | SocketUpEvent_SubscribeOTP
+  | SocketUpEvent_UnsubscribeOTP;
 
 type SocketUpEventType = SocketUpEvent["id"];
 type SocketUpEventDataFromType<T extends SocketUpEventType> = Prettify<
@@ -54,3 +64,4 @@ type code_test = SocketUpEventDataFromType<"request_code">;
 type leaderboard_test = SocketUpEventDataFromType<"request_leaderboard">;
 type friend_info_test = SocketUpEventDataFromType<"request_friend_info">;
 type servers_test = SocketUpEventDataFromType<"request_servers">;
+type otp_subscribe_test = SocketUpEventDataFromType<"otp_subscribe">;

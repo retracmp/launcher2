@@ -79,6 +79,11 @@ type SocketDownEvent_Servers = SocketBasicUpEvent & {
   servers: BackendServer[];
 };
 
+type SocketDownEvent_OTP = SocketBasicUpEvent & {
+  id: "otp";
+  otp: string;
+};
+
 type SocketDownEvent =
   | SocketDownEvent_Close
   | SocketDownEvent_Error
@@ -93,7 +98,8 @@ type SocketDownEvent =
   | SocketDownEvent_ServerCreated
   | SocketDownEvent_ServerUpdated
   | SocketDownEvent_ServerDeleted
-  | SocketDownEvent_Servers;
+  | SocketDownEvent_Servers
+  | SocketDownEvent_OTP;
 
 type SocketDownEventType = SocketDownEvent["id"];
 type SocketDownEventDataFromType<T extends SocketDownEventType> = Prettify<
@@ -118,3 +124,4 @@ type server_created_test = SocketDownEventDataFromType<"server_created">;
 type server_updated_test = SocketDownEventDataFromType<"server_updated">;
 type server_deleted_test = SocketDownEventDataFromType<"server_deleted">;
 type servers_test = SocketDownEventDataFromType<"servers">;
+type otp_test = SocketDownEventDataFromType<"otp">;

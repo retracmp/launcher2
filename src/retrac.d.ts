@@ -65,6 +65,8 @@ type User = {
   Account: {
     DisplayName: string;
     Discord: {
+      ID: string;
+      Avatar: string;
       Username: string;
     };
     Stats: Record<int, Stat>;

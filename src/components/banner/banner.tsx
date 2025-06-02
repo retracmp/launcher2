@@ -1,10 +1,21 @@
 import { BannerT, bannerColours, useBannerManager } from "src/wrapper/banner";
 import { IoCloseSharp } from "react-icons/io5";
 import { useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 const Banner = (banner: BannerT) => {
   const close = useBannerManager((s) => s.remove);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (banner.expireAfter) {
+      const timer = setTimeout(() => {
+        close(banner.id);
+      }, banner.expireAfter * 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   return (
     <section

@@ -14,6 +14,7 @@ import StatusPage from "./routes/app/status/page";
 import StorePage from "./routes/app/store/page";
 import DownloadsPage from "./routes/app/downloads/page";
 import UpdatePage from "./routes/update/page";
+import ExternalLoginPage from "./routes/app/external/page";
 
 export const rootRoute = rr.createRootRoute({
   component: () => <Frame />,
@@ -115,6 +116,12 @@ export const store = rr.createRoute({
   path: "/store",
 });
 
+export const external = rr.createRoute({
+  getParentRoute: () => appContainer,
+  component: () => <ExternalLoginPage />,
+  path: "/external",
+});
+
 const router = rr.createRouter({
   routeTree: rootRoute.addChildren([
     login,
@@ -128,6 +135,7 @@ const router = rr.createRouter({
       downloads,
       status,
       store,
+      external,
     ]),
   ]),
 });

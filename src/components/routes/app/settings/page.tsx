@@ -5,7 +5,6 @@ import { useUserManager } from "src/wrapper/user";
 import { useOptions } from "src/wrapper/options";
 import { useBannerManager } from "src/wrapper/banner";
 
-import UI from "src/components/core/default";
 import {
   BooleanOption,
   FileOption,
@@ -14,6 +13,8 @@ import {
   ColourOption,
 } from "src/components/routes/app/settings/option";
 import { IoLogOutSharp } from "react-icons/io5";
+import UI from "src/components/core/default";
+import Account from "src/components/core/account";
 
 const SettingsPage = () => {
   const application = useApplicationInformation();
@@ -161,7 +162,7 @@ const SettingsPage = () => {
         />
       </OptionGroup>
 
-      <OptionGroup title="Client Preferences" _last _animate>
+      <OptionGroup title="Client Preferences" _animate>
         {user.has_any_donation_tier() && (
           <>
             <ColourOption
@@ -248,6 +249,10 @@ const SettingsPage = () => {
           state={options.tiled_builds}
           set={options.set_tiled_builds}
         /> */}
+      </OptionGroup>
+
+      <OptionGroup title="Your Account" _last>
+        <Account />
       </OptionGroup>
 
       <div className="flex flex-col gap-1.5 p-2">

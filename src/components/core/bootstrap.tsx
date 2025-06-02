@@ -11,6 +11,7 @@ import { useRetrac } from "src/wrapper/retrac";
 import { useSocket } from "src/socket";
 import { useServerManager } from "src/wrapper/server";
 import { useOptions } from "src/wrapper/options";
+import { useLeaderboard } from "src/wrapper/leaderboard";
 import { LAUNCH_STATE, useLibrary } from "src/wrapper/library";
 import * as app from "@tauri-apps/api/app";
 import invoke from "src/tauri";
@@ -27,6 +28,7 @@ const Boostrap = () => {
   const library = useLibrary();
   const servers = useServerManager();
   const options = useOptions();
+  const leaderboard = useLeaderboard();
 
   const boostrap = async () => {
     console.log("[boostrap] bootstrapping application");
@@ -117,6 +119,15 @@ const Boostrap = () => {
         m.split("/").pop()!.replace(".acidmanifest", "")
       )
     );
+
+    socket.send({
+      id: "request_leaderboard",
+      pagination: {
+        page: leaderboard._page,
+        pageSize: options.leaderboard_page_size,
+        sortBy: leaderboard.activeSortedBy,
+      },
+    } as Omit<SocketUpEventDataFromType<"request_leaderboard">, "version">);
   };
 
   const onSocketRequestHeartbeat = (data: SocketDownEvent_RequestHeartbeat) => {

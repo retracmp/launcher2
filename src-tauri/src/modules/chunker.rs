@@ -392,12 +392,12 @@ async fn download_file(
 
     let final_save_path = Path::new(&download_path.to_string()).join(sanitized_path);
 
-    // if let Err(e) = rebuild_file(chunk_info, &final_save_path).await {
-    //     dbg!(println!("Error rebuilding file: {}", e));
-    //     return Err(e);
-    // }
+    if let Err(e) = rebuild_file(chunk_info, &final_save_path).await {
+        dbg!(println!("Error rebuilding file: {}", e));
+        return Err(e);
+    }
 
-    rebuild_file(chunk_info, &final_save_path).await.unwrap();
+    // rebuild_file(chunk_info, &final_save_path).await.unwrap();
 
     {
         let mut progress = progress.lock().await;
@@ -532,10 +532,6 @@ pub async fn download_build_internal(
                     dbg!(println!("Error in download handle: {}", e));
 
                     {
-                        // let state = handle.state::<Mutex<DownloadingStateTauri>>();
-                        // let mut state = state.lock().await;
-                        // state.active_downloads.remove(manifest_id);
-        
                         let mut state = util::get_downloading_state().await;
                         state.remove_download(manifest_id.to_string());
                         util::set_downloading_state(state).await;
@@ -550,18 +546,10 @@ pub async fn download_build_internal(
             }
 
             {
-                // let state = handle.state::<Mutex<DownloadingStateTauri>>();
-                // let mut state = state.lock().await;
-                // state.active_downloads.remove(manifest_id);
-
                 let mut state = util::get_downloading_state().await;
                 state.remove_download(manifest_id.to_string());
                 util::set_downloading_state(state).await;
             }
-
-            // if download_failed {
-            //     return Err("Download aborted due to error.".to_string());
-            // }
 
             let tmp_path = Path::new(download_path).join(TMP_FOLDER);
             if let Err(e) = tokio::fs::remove_dir_all(tmp_path).await {

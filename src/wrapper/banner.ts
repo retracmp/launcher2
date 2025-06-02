@@ -34,6 +34,7 @@ export type BannerT = {
   closable: boolean;
   colour: keyof typeof bannerColours;
   link?: string;
+  expireAfter?: number; // in seconds, if set, the banner will be removed after this time
 };
 
 type BannerManager = {
