@@ -335,6 +335,7 @@ async fn download_file(
     download_path: &Arc<String>,
     progress: Arc<Mutex<ManifestProgress>>,
     start_time: Instant,
+    // handle: &AppHandle,
 ) -> Result<(), Box<dyn std::error::Error>> {
     {
         let mut progress = progress.lock().await;
@@ -394,6 +395,12 @@ async fn download_file(
 
     if let Err(e) = rebuild_file(chunk_info, &final_save_path).await {
         dbg!(println!("Error rebuilding file: {}", e));
+
+        // let _ = handle.emit(
+        //     "DOWNLOAD_ERROR",
+        //     e.to_string(),
+        // );
+
         return Err(e);
     }
 
@@ -507,20 +514,28 @@ pub async fn download_build_internal(
                 let manifest_id = manifest.ID.clone();
                 let progress = progress.clone();
                 let start_time = start_time.clone();
+                // let handle = handle.clone();
 
                 let progress = progress.clone();
                 let thread_handle = tokio::spawn(async move {
-                    let _ = download_file(
+                    let result = download_file(
                         &client,
                         &file,
                         &manifest_id,
                         &download_path_arc,
                         progress.clone(),
                         start_time,
+                        // &handle,
                     )
                     .await;
 
                     drop(permit);
+
+                    if let Err(e) = result {
+                        dbg!(println!("Error downloading file: {}", e));
+                        return Err(e.to_string());
+                    }
+
                     Ok(())
                 });
 
@@ -538,7 +553,7 @@ pub async fn download_build_internal(
                     }
 
                     return Err(format!(
-                        "Failed to download file: {}",
+                        "{} Please contact the support team.",
                         e.to_string()
                     ));
 

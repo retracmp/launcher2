@@ -23,6 +23,7 @@ const get_fortnite_version = async (path: string): Promise<string | null> => {
         colour: "red",
         id: "launch_error",
         text: `Retrieving Fortnite version failed with reason: ${e}`,
+        expireAfter: 5,
       });
       console.error("Error retrieving Fortnite version:", e);
       return null;
@@ -41,6 +42,7 @@ const launch_retrac = async (
         colour: "red",
         id: "launch_error",
         text: `Launching failed with reason: ${e}`,
+        expireAfter: 5,
       });
       console.error("Error launching Retrac:", e);
       return null;
@@ -64,6 +66,7 @@ const download_build = async (
       colour: "red",
       id: "download_error",
       text: `Downloading build failed with reason: ${e}`,
+      expireAfter: 5,
     });
     console.error("Error downloading build:", e);
     return null;
@@ -100,6 +103,7 @@ const add_to_defender = async (path: string): Promise<boolean | null> => {
         colour: "red",
         id: "defender_error",
         text: `Adding to Windows Defender failed with reason: ${e}`,
+        expireAfter: 5,
       });
       console.error("Error adding to Windows Defender:", e);
       return null;
@@ -121,6 +125,7 @@ const add_to_defender_multi = async (
       colour: "red",
       id: "defender_error",
       text: `Adding to Windows Defender failed with reason: ${e}`,
+      expireAfter: 5,
     });
     console.error("Error adding to Windows Defender:", e);
     return null;
@@ -135,6 +140,7 @@ const get_app_action = async (): Promise<string | null> => {
       colour: "red",
       id: "action_error",
       text: `Retrieving app action failed with reason: ${e}`,
+      expireAfter: 5,
     });
     console.error("Error retrieving app action:", e);
     return null;

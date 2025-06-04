@@ -6,6 +6,7 @@ import { event } from "@tauri-apps/api";
 import { useLibrary } from "src/wrapper/library";
 import { useUserManager } from "src/wrapper/user";
 import { useSocket } from "src/socket";
+import { useBannerManager } from "src/wrapper/banner";
 import invoke from "src/tauri";
 
 const TauriListeners = () => {
@@ -15,6 +16,7 @@ const TauriListeners = () => {
   const library = useLibrary();
   const socket = useSocket();
   const retrac = useRetrac();
+  const banners = useBannerManager();
 
   const onDownloadEvent = useCallback(
     (progress: event.Event<ManifestProgress>) => {
@@ -45,6 +47,16 @@ const TauriListeners = () => {
     },
     []
   );
+
+  const onDownloadErrorEvent = useCallback((progress: event.Event<string>) => {
+    banners.push({
+      closable: true,
+      colour: "red",
+      id: "download_error",
+      text: `${progress.payload}`,
+      expireAfter: 5,
+    });
+  }, []);
 
   const onVerifyEvent = useCallback(
     (progress: event.Event<ManifestVerifyProgress>) => {
@@ -109,6 +121,11 @@ const TauriListeners = () => {
       onDownloadEvent
     );
 
+    const unlistenDownloadError = event.listen<string>(
+      "DOWNLOAD_ERROR",
+      onDownloadErrorEvent
+    );
+
     const unlistenVerify = event.listen<ManifestVerifyProgress>(
       "VERIFY_PROGRESS",
       onVerifyEvent
@@ -126,6 +143,7 @@ const TauriListeners = () => {
 
     return () => {
       unlistenDownload.then((fn: event.UnlistenFn) => fn());
+      unlistenDownloadError.then((fn: event.UnlistenFn) => fn());
       unlistenVerify.then((fn: event.UnlistenFn) => fn());
       unlistenVerifyComplete.then((fn: event.UnlistenFn) => fn());
       unlistenEACInitialised.then((fn: event.UnlistenFn) => fn());

@@ -100,7 +100,6 @@ export const LAUNCH_STATE = {
   LAUNCHING: "launching",
   LAUNCHED: "launched",
   CLOSING: "closing",
-  ERROR: "error",
 } as const;
 
 type LibraryState = {
@@ -214,7 +213,7 @@ export const useLibrary = create<LibraryState>()(
             `launch_build:${entry.version}`
           );
           if (result === null) {
-            get().setLaunchState(LAUNCH_STATE.ERROR);
+            get().setLaunchState(LAUNCH_STATE.NONE);
             throw new Error("Failed to add to Windows Defender");
           }
 
@@ -225,7 +224,7 @@ export const useLibrary = create<LibraryState>()(
 
         const code = await socketExport.exchange_code();
         if (!code) {
-          get().setLaunchState(LAUNCH_STATE.ERROR);
+          get().setLaunchState(LAUNCH_STATE.NONE);
           throw new Error("Failed to get exchange code");
         }
 
@@ -246,7 +245,7 @@ export const useLibrary = create<LibraryState>()(
         });
 
         if (result === null || !!!result) {
-          get().setLaunchState(LAUNCH_STATE.ERROR);
+          get().setLaunchState(LAUNCH_STATE.NONE);
           throw new Error("Failed to launch Retrac");
         }
       },

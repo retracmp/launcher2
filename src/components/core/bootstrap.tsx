@@ -95,6 +95,7 @@ const Boostrap = () => {
       id: "websocket_error",
       text: data.error,
       closable: true,
+      expireAfter: 5,
     });
   };
 
