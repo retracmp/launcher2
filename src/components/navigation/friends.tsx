@@ -94,7 +94,7 @@ const Friend = (props: FriendProps) => {
   return (
     <>
       <motion.p
-        className="absolute"
+        className="absolute  pointer-events-none"
         style={{
           left:
             (parentRef.current?.getBoundingClientRect().left ?? 0) -
