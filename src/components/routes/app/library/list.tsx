@@ -1,17 +1,12 @@
+import { useState } from "react";
 import { LAUNCH_STATE, useLibrary } from "src/wrapper/library";
 import { convertFileSrc } from "@tauri-apps/api/core";
 import invoke from "src/tauri";
 
-import {
-  IoBuild,
-  IoClose,
-  IoCopy,
-  IoPlay,
-  IoShield,
-  IoTrashBin,
-} from "react-icons/io5";
+import { IoClose, IoPlay, IoShield, IoTrashBin } from "react-icons/io5";
 import { motion } from "motion/react";
 import { useBannerManager } from "src/wrapper/banner";
+import UI from "src/components/core/default";
 
 type FortniteBuildProps = {
   entry: LibraryEntry;
@@ -45,10 +40,6 @@ const FortniteBuildList = (props: FortniteBuildProps) => {
   };
 
   const deleteBuild = async () => {
-    if (library.launchState === LAUNCH_STATE.LAUNCHED) {
-      library.setLaunchState(LAUNCH_STATE.CLOSING);
-      await invoke.close_fortnite();
-    }
     await library.removeLibraryEntry(props.entry.version);
   };
 
@@ -94,7 +85,7 @@ const FortniteBuildList = (props: FortniteBuildProps) => {
 
   return (
     <motion.div
-      className={`group relative flex flex-row items-center w-full p-2.5 px-2 gap-2 rounded-sm border-neutral-700/40 border-[1px] border-solid overflow-hidden hover:bg-neutral-700/5 transition-colors duration-75 ${""}`}
+      className={`group flex flex-row items-center w-full p-2.5 px-2 gap-2 rounded-sm border-neutral-700/40 border-[1px] border-solid overflow-hidden hover:bg-neutral-700/5 transition-colors duration-75 ${""}`}
       variants={{
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0 },
@@ -110,51 +101,134 @@ const FortniteBuildList = (props: FortniteBuildProps) => {
       </div>
 
       <div className="flex flex-col w-full h-full justify-center gap-[0.05rem]">
-        <p className="font-semibold text-md text-neutral-300 leading-4">
+        <p
+          className={`flex flex-row items-center gap-1 font-semibold text-md ${
+            library.launchState === LAUNCH_STATE.LAUNCHED &&
+            !launchedBuildIsCurrent
+              ? "text-neutral-500"
+              : "text-neutral-300"
+          } leading-4 transition-colors duration-75`}
+        >
           {props.entry.buildName}
 
           {launchedBuildIsCurrent && (
             <span className="text-green-400/80 text-xs"> Launched</span>
           )}
+
+          {launchingBuildIsCurrent && (
+            <span className="flex flex-row items-center gap-1 text-neutral-400/80 text-xs">
+              Launching <UI.LoadingSpinner />
+            </span>
+          )}
+
+          {closingBuildIsCurrent && (
+            <span className="flex flex-row items-center gap-1 text-neutral-400/80 text-xs">
+              Closing <UI.LoadingSpinner />
+            </span>
+          )}
         </p>
-        <p className="flex flex-row gap-1 items-center text-sm leading-4 text-neutral-400">
+        <p
+          className={`flex flex-row gap-1 items-center text-sm leading-4 ${
+            library.launchState === LAUNCH_STATE.LAUNCHED &&
+            !launchedBuildIsCurrent
+              ? "text-neutral-500"
+              : "text-neutral-400"
+          } transition-colors duration-75`}
+        >
           {props.entry.version}
         </p>
       </div>
 
       <div className="flex flex-row items-center gap-2 ml-auto px-1">
         {!props.entry.addedToWindowsDefender && (
-          <button
-            className="aspect-square min-w-max h-8 flex items-center justify-center p-1.5 bg-neutral-700/20 rounded-md cursor-pointer hover:bg-blue-400/30 transition-all text-neutral-500 hover:text-blue-200"
-            onClick={addToDefender}
+          <Button
+            colour="blue"
+            on_click={addToDefender}
+            tooltip="Add to Windows Defender"
           >
             <IoShield className="w-full h-full" />
-          </button>
+          </Button>
         )}
 
         {launchedBuildIsCurrent ? (
-          <button
-            className="aspect-square min-w-max h-8 flex items-center justify-center p-1.5 bg-neutral-700/20 rounded-md cursor-pointer hover:bg-red-400/30 transition-all text-neutral-500 hover:text-red-200"
-            onClick={closeBuild}
-          >
+          <Button colour="red" on_click={closeBuild} tooltip="Close Fortnite">
             <IoClose className="w-full h-full" />
-          </button>
+          </Button>
         ) : (
-          <button
-            className="aspect-square min-w-max h-8 flex items-center justify-center p-1.5 bg-neutral-700/20 rounded-md cursor-pointer hover:bg-green-400/30 transition-all text-neutral-500 hover:text-green-200"
-            onClick={primaryhandler}
+          <Button
+            colour="green"
+            on_click={primaryhandler}
+            tooltip="Launch Fortnite"
+            disabled={
+              (library.launchState === LAUNCH_STATE.LAUNCHING &&
+                !launchingBuildIsCurrent) ||
+              (library.launchState === LAUNCH_STATE.LAUNCHED &&
+                !launchedBuildIsCurrent)
+            }
           >
             <IoPlay className="w-full h-full" />
-          </button>
+          </Button>
         )}
-        <button
-          className="aspect-square min-w-max h-8 flex items-center justify-center p-1.5 bg-neutral-700/20 rounded-md cursor-pointer hover:bg-red-400/30 transition-all text-neutral-500 hover:text-red-200"
-          onClick={deleteBuild}
+
+        <Button
+          colour="red"
+          on_click={deleteBuild}
+          tooltip="Remove Build"
+          _last
         >
           <IoTrashBin className="w-full h-full" />
-        </button>
+        </Button>
       </div>
     </motion.div>
+  );
+};
+
+type ButtonProps = {
+  children: React.ReactNode;
+  on_click: () => void;
+  colour: "green" | "red" | "blue" | "invisible";
+  tooltip?: string;
+  _last?: boolean;
+  disabled?: boolean;
+};
+
+const Button = (props: ButtonProps) => {
+  const colour = (
+    {
+      blue: "hover:bg-blue-400/30 text-neutral-500 hover:text-blue-200",
+      green: "hover:bg-green-400/30 text-neutral-500 hover:text-green-200",
+      red: "hover:bg-red-400/30 text-neutral-500 hover:text-red-200",
+      invisible: "hover:bg-neutral-700/10 text-neutral-400",
+    } as const
+  )[props.colour];
+
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  return (
+    <>
+      <button
+        className={`aspect-square min-w-max h-8 flex items-center justify-center p-1.5 bg-neutral-700/20 rounded-md ${
+          props.disabled ? "cursor-not-allowed" : "cursor-pointer"
+        } transition-all ${colour}`}
+        onClick={props.on_click}
+        onMouseEnter={() => setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
+        disabled={props.disabled}
+      >
+        <motion.div
+          className="absolute text-xs text-center pointer-events-none bg-neutral-800 p-0.5 px-1.5 min-w-max rounded-md backdrop-blur-md"
+          initial={{ opacity: 0, y: -10, x: !props._last ? 0 : -10 }}
+          animate={{
+            opacity: showTooltip ? 1 : 0,
+            y: showTooltip ? -30 : -20,
+            x: !props._last ? 0 : -10,
+          }}
+        >
+          {props.tooltip}
+        </motion.div>
+        {props.children}
+      </button>
+    </>
   );
 };
 
