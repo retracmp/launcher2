@@ -88,9 +88,6 @@ const Friend = (props: FriendProps) => {
     setShowHover(false);
   };
 
-  const hoverComponentWidth = ref.current?.getBoundingClientRect().width;
-  console.log("Hover Component Width:", hoverComponentWidth);
-
   return (
     <>
       <motion.p

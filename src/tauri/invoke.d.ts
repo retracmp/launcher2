@@ -19,6 +19,7 @@ type LaunchOptions = {
   launch_args: string;
   manifest_id?: string;
   anti_cheat_already_intialised: boolean;
+  do_not_update_paks: boolean;
 };
 
 // pub struct ManifestProgress {

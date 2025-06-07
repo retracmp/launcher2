@@ -44,7 +44,7 @@ const Drawer = () => {
     >
       {!userManager.access() ? <EmptyRoutes /> : <AuthenticatedRoutes />}
 
-      {application.dev && (
+      {(application.dev || userManager.is_dev()) && (
         <DrawerItem
           path="/developer"
           icon="IoConstructSharp"

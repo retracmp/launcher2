@@ -36,7 +36,8 @@ const Boostrap = () => {
     application.load(
       await app.getName(),
       await app.getVersion(),
-      import.meta.env.MODE === "development",
+      // import.meta.env.MODE === "development",
+      false,
       (await invoke.get_windows_version()) || 0
     );
   };

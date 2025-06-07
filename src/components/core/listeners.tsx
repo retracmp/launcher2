@@ -160,6 +160,7 @@ const TauriListeners = () => {
     if (!user.access()) return;
     if (retrac.stop_auto_download_due_to_error)
       return console.error("Auto download stopped due to previous error");
+    if (retrac.do_not_download_paks) return;
     if (!options.auto_download) return console.log("Auto download is disabled");
 
     const retracBuild = library.library.find(

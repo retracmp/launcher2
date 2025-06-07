@@ -30,6 +30,9 @@ type RetracState = {
 
   stop_auto_download_due_to_error: boolean;
   set_stop_auto_download_due_to_error: (stop: boolean) => void;
+
+  do_not_download_paks: boolean;
+  set_do_not_download_paks: (do_not_download_paks: boolean) => void;
 };
 
 export const useRetrac = create<RetracState>((set) => ({
@@ -59,4 +62,8 @@ export const useRetrac = create<RetracState>((set) => ({
   stop_auto_download_due_to_error: false,
   set_stop_auto_download_due_to_error: (stop) =>
     set({ stop_auto_download_due_to_error: stop }),
+
+  do_not_download_paks: false,
+  set_do_not_download_paks: (do_not_download_paks) =>
+    set({ do_not_download_paks }),
 }));

@@ -108,7 +108,7 @@ const Frame = () => {
 
         <div className="flex flex-1 flex-col max-w-full max-h-full overflow-hidden">
           <nav
-            className="flex items-center pl-1.5 w-full bg-neutral-700/10 h-7 border-neutral-700/40 border-b-1 border-solid"
+            className="flex items-center pl-2 w-full bg-neutral-700/10 h-8 border-neutral-700/40 border-b-1 border-solid"
             data-tauri-drag-region
           >
             <p

@@ -80,34 +80,34 @@ const LibraryPage = () => {
       </OptionGroup>
 
       <OptionGroup title="Installed Builds" _last>
-        <AnimatePresence>
-          <motion.div
-            className="flex flex-row flex-wrap gap-2"
-            variants={{
-              hidden: { opacity: 0, scale: 0.95 },
-              visible: { opacity: 1, scale: 1 },
-            }}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            transition={{
-              staggerChildren: 0.05,
-            }}
-          >
+        <motion.div
+          className="flex flex-row flex-wrap gap-2"
+          variants={{
+            hidden: { opacity: 0, scale: 0.95 },
+            visible: { opacity: 1, scale: 1 },
+          }}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+          transition={{
+            staggerChildren: 0.05,
+          }}
+        >
+          <AnimatePresence>
             {library.library.map((entry) => (
               <FortniteBuild entry={entry} key={entry.version} />
             ))}
+          </AnimatePresence>
 
-            {library.library.length === 0 && (
-              <div className="group flex items-center justify-center gap-1 rounded-sm">
-                <IoBanSharp className="text-neutral-500 w-4 h-4" />
-                <span className="text-neutral-500 text-sm">
-                  No builds installed
-                </span>
-              </div>
-            )}
-          </motion.div>
-        </AnimatePresence>
+          {library.library.length === 0 && (
+            <div className="group flex items-center justify-center gap-1 rounded-sm">
+              <IoBanSharp className="text-neutral-500 w-4 h-4" />
+              <span className="text-neutral-500 text-sm">
+                No builds installed
+              </span>
+            </div>
+          )}
+        </motion.div>
       </OptionGroup>
     </>
   );

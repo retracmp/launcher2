@@ -65,6 +65,7 @@ type UserManager = {
     | (typeof DONATION_TIERS)[keyof typeof DONATION_TIERS]
     | null;
   has_any_donation_tier: () => boolean;
+  is_dev: () => boolean;
 
   _stage: LauncherStage;
   set_stage: (stage: LauncherStage) => void;
@@ -119,6 +120,13 @@ export const useUserManager = create<UserManager>()(
 
         const donationPackages = user.Account.State.Packages;
         return donationPackages.some((pkg) => pkg in DONATION_TIERS);
+      },
+
+      is_dev: () => {
+        const user = get()._user;
+        if (user === null) return false;
+
+        return user.Account.State.Packages.includes("dev_bundle");
       },
 
       _stage: LauncherStage.NoToken,

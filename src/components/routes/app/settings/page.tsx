@@ -243,12 +243,12 @@ const SettingsPage = () => {
           </>
         )}
 
-        {/* <BooleanOption
+        <BooleanOption
           title="Grid Layout for Builds"
           description={<>Display your installed versions in a grid layout.</>}
           state={options.tiled_builds}
           set={options.set_tiled_builds}
-        /> */}
+        />
       </OptionGroup>
 
       <OptionGroup title="Your Account" _last>

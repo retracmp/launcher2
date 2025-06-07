@@ -5,6 +5,7 @@ import { useOptions } from "./options";
 import { useUserManager } from "./user";
 import socketExport from "src/socket/export";
 import { useApplicationInformation } from "./tauri";
+import { useRetrac } from "./retrac";
 
 export const VERSION_SWAPS: Record<string, string> = {
   "++Fortnite+Release-Live-CL-3724489": "++Fortnite+Release-1.8-CL-3724489",
@@ -235,6 +236,7 @@ export const useLibrary = create<LibraryState>()(
           manifest_id: entry.manifestId,
           anti_cheat_already_intialised:
             entry.hasIntialisedEasyAnticheat || false,
+          do_not_update_paks: useRetrac.getState().do_not_download_paks,
         });
 
         if (result === null || !!!result) {
