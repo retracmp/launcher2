@@ -13,10 +13,12 @@ const HoverManager = () => {
             <motion.div
               key={node.id}
               className="absolute z-50 pointer-events-none min-w-max min-h-max"
-              style={{
-                transformOrigin:
-                  node.direction === "RIGHT" ? "center left" : "center right",
-              }}
+              style={
+                {
+                  // transformOrigin:
+                  //   node.direction === "RIGHT" ? "center left" : "center right",
+                }
+              }
               initial={{
                 x: node.x,
                 y: node.y,

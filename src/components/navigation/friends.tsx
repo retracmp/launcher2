@@ -6,7 +6,6 @@ import { useOptions } from "src/wrapper/options";
 
 import { IoPersonAddSharp, IoPersonSharp } from "react-icons/io5";
 import { motion } from "motion/react";
-import { useHover } from "src/wrapper/hover";
 
 const FriendsList = () => {
   const socket = useSocket();
@@ -78,49 +77,70 @@ type FriendProps = {
 const Friend = (props: FriendProps) => {
   const [imageRendered, setImageRendered] = useState(false);
   const parentRef = useRef<HTMLDivElement>(null);
-  const hover = useHover();
-
-  const HoverComponent = () => {
-    return (
-      <div className="flex flex-row items-center p-1 px-2 rounded-[0.35rem] bg-[#181818] border-neutral-700/40 border-[1px] border-solid overflow-hidden">
-        <span className="text-sm leading-[15px] min-w-fit mb-[1px] text-neutral-300/90">
-          {props.friend.displayName}
-        </span>
-      </div>
-    );
-  };
+  const [showHover, setShowHover] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
 
   const onHoverEntered = () => {
-    hover.set(
-      parentRef.current,
-      <HoverComponent />,
-      props.friend.accountId,
-      "LEFT"
-    );
+    setShowHover(true);
   };
+
   const onHoverExited = () => {
-    hover.close(props.friend.accountId);
+    setShowHover(false);
   };
+
+  const hoverComponentWidth = ref.current?.getBoundingClientRect().width;
+  console.log("Hover Component Width:", hoverComponentWidth);
 
   return (
-    <div
-      ref={parentRef}
-      onMouseEnter={onHoverEntered}
-      onMouseLeave={onHoverExited}
-      className="flex items-center justify-center aspect-square w-full bg-neutral-800/30 rounded-sm border-neutral-700/20 border-1 border-solid overflow-hidden min-h-[40px] min-w-[40px]"
-    >
-      <img
-        src={props.friend.discordAvatarUrl}
-        alt="Friend Avatar"
-        className="w-full h-full object-cover object-center pointer-events-none"
-        style={{ display: imageRendered ? "block" : "none" }}
-        onLoad={() => setImageRendered(true)}
-        onError={(e) => e.preventDefault()}
-        draggable={false}
-      />
+    <>
+      <motion.p
+        className="absolute"
+        style={{
+          left:
+            (parentRef.current?.getBoundingClientRect().left ?? 0) -
+            (ref.current?.getBoundingClientRect().width ?? 0) -
+            10,
+          top:
+            (parentRef.current?.getBoundingClientRect().top ?? 0) +
+            (parentRef.current?.getBoundingClientRect().height ?? 0) / 7,
+          zIndex: 1000,
+        }}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{
+          opacity: showHover ? 1 : 0,
+          scale: showHover ? 1 : 0.95,
+        }}
+        exit={{ opacity: 0, scale: 0.7 }}
+        transition={{ duration: 0.1 }}
+      >
+        <div
+          className="flex flex-row items-center p-1 px-2 rounded-[0.35rem] bg-[#181818] border-neutral-700/40 border-[1px] border-solid overflow-hidden"
+          ref={ref}
+        >
+          <span className="text-sm leading-[15px] min-w-fit mb-[1px] text-neutral-300/90">
+            {props.friend.displayName || props.friend.accountId}
+          </span>
+        </div>
+      </motion.p>
+      <div
+        ref={parentRef}
+        onMouseEnter={onHoverEntered}
+        onMouseLeave={onHoverExited}
+        className="flex items-center justify-center aspect-square w-full bg-neutral-800/30 rounded-sm border-neutral-700/20 border-1 border-solid overflow-hidden min-h-[40px] min-w-[40px]"
+      >
+        <img
+          src={props.friend.discordAvatarUrl}
+          alt="Friend Avatar"
+          className="w-full h-full object-cover object-center pointer-events-none"
+          style={{ display: imageRendered ? "block" : "none" }}
+          onLoad={() => setImageRendered(true)}
+          onError={(e) => e.preventDefault()}
+          draggable={false}
+        />
 
-      <IoPersonSharp className="text-neutral-700 text-2xl" />
-    </div>
+        <IoPersonSharp className="text-neutral-700 text-2xl" />
+      </div>
+    </>
   );
 };
 
