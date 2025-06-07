@@ -99,7 +99,7 @@ export const useOptions = create<OptionsState>()(
       set_leaderboard_page_size: (value) =>
         set(() => ({ leaderboard_page_size: value })),
 
-      tiled_builds: true,
+      tiled_builds: false,
       set_tiled_builds: (value) => set(() => ({ tiled_builds: value })),
 
       launch_arguments: "",
