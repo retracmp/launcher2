@@ -204,14 +204,7 @@ export const useLibrary = create<LibraryState>()(
         get().setLaunchState(LAUNCH_STATE.LAUNCHING);
 
         if (!entry.addedToWindowsDefender) {
-          const result = await invoke.add_to_defender_multi(
-            [
-              entry.rootLocation,
-              `${entry.rootLocation}/TemporaryChunks/Engine/Binaries/ThirdParty/NVIDIA/NVaftermath/Win64/GFSDK_Aftermath_Lib.x64.dll`,
-              `${entry.rootLocation}/Engine/Binaries/ThirdParty/NVIDIA/NVaftermath/Win64`,
-            ],
-            `launch_build:${entry.version}`
-          );
+          const result = await invoke.add_to_defender(entry.rootLocation);
           if (result === null) {
             get().setLaunchState(LAUNCH_STATE.NONE);
             throw new Error("Failed to add to Windows Defender");
