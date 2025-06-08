@@ -126,6 +126,7 @@ type LibraryState = {
   launchBuild: (version: string) => Promise<void>;
 
   setEacInitialisedForBuild: (version: string, value: boolean) => void;
+  setLibraryOrder: (order: string[]) => void;
 };
 
 export const useLibrary = create<LibraryState>()(
@@ -249,6 +250,13 @@ export const useLibrary = create<LibraryState>()(
         if (!entry) return;
         entry.hasIntialisedEasyAnticheat = true;
         get().updateLibraryEntry(version, { hasIntialisedEasyAnticheat: true });
+      },
+      setLibraryOrder: (order) => {
+        const updatedLibrary = get().library.map((entry) => {
+          const index = order.indexOf(entry.version);
+          return { ...entry, order: index };
+        });
+        set({ library: updatedLibrary });
       },
     }),
     {

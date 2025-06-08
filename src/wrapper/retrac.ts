@@ -33,6 +33,9 @@ type RetracState = {
 
   do_not_download_paks: boolean;
   set_do_not_download_paks: (do_not_download_paks: boolean) => void;
+
+  editing_order_of_library: boolean;
+  set_editing_order_of_library: (editing: boolean) => void;
 };
 
 export const useRetrac = create<RetracState>((set) => ({
@@ -66,4 +69,8 @@ export const useRetrac = create<RetracState>((set) => ({
   do_not_download_paks: false,
   set_do_not_download_paks: (do_not_download_paks) =>
     set({ do_not_download_paks }),
+
+  editing_order_of_library: false,
+  set_editing_order_of_library: (editing) =>
+    set({ editing_order_of_library: editing }),
 }));

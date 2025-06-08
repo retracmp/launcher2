@@ -1,20 +1,25 @@
 import { useLibrary } from "src/wrapper/library";
 import { useNavigate } from "@tanstack/react-router";
+import { useRetrac } from "src/wrapper/retrac";
+import { useOptions } from "src/wrapper/options";
 import { open } from "@tauri-apps/plugin-dialog";
 
 import { OptionGroup } from "src/components/routes/app/settings/option";
 import {
+  IoApps,
   IoBanSharp,
   IoFolderOpenSharp,
   IoHammer,
   IoLogIn,
 } from "react-icons/io5";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, Reorder } from "motion/react";
 import UI from "src/components/core/default";
 import FortniteBuild from "src/components/routes/app/library/build";
 
 const LibraryPage = () => {
   const library = useLibrary();
+  const retrac = useRetrac();
+  const options = useOptions();
   const navigate = useNavigate();
 
   const handleFindLocation = async () => {
@@ -27,6 +32,10 @@ const LibraryPage = () => {
 
     return library.createLibraryEntry(selectedPath);
   };
+
+  const sortedLibrary = library.library.sort((a, b) => {
+    return a.order - b.order;
+  });
 
   return (
     <>
@@ -41,10 +50,10 @@ const LibraryPage = () => {
       </OptionGroup>
 
       <OptionGroup title="Actions">
-        <div className="flex flex-row gap-1">
+        <div className="flex flex-row gap-1 flex-wrap">
           <UI.Button
             colour="invisible"
-            className="py-0 px-2 mt-auto z-10 w-min gap-0"
+            className="py-0 px-2 mt-auto z-10 gap-0 min-w-full w-max"
             onClick={handleFindLocation}
           >
             <IoFolderOpenSharp className="text-neutral-400 w-4 h-4" />
@@ -53,7 +62,7 @@ const LibraryPage = () => {
 
           <UI.Button
             colour="invisible"
-            className="py-0 px-2 mt-auto z-10 w-min gap-0"
+            className="py-0 px-2 mt-auto z-10 gap-0 min-w-full w-max"
             onClick={() =>
               navigate({
                 to: "/app/downloads",
@@ -66,7 +75,7 @@ const LibraryPage = () => {
 
           <UI.Button
             colour="invisible"
-            className="py-0 px-2 mt-auto z-10 w-min gap-0"
+            className="py-0 px-2 mt-auto z-10 gap-0 min-w-full w-max"
             onClick={() =>
               navigate({
                 to: "/app/external",
@@ -76,6 +85,25 @@ const LibraryPage = () => {
             <IoLogIn className="text-neutral-400 w-4 h-4" />
             <span className="text-neutral-400">Using an external device?</span>
           </UI.Button>
+
+          {!options.tiled_builds && (
+            <UI.Button
+              colour="invisible"
+              className="py-0 px-2 mt-auto z-10 gap-0 min-w-full w-max"
+              onClick={() =>
+                retrac.set_editing_order_of_library(
+                  !retrac.editing_order_of_library
+                )
+              }
+            >
+              <IoApps className="text-neutral-400 w-4 h-4" />
+              <span className="text-neutral-400">
+                {!retrac.editing_order_of_library
+                  ? "Edit order"
+                  : "Stop editing order"}
+              </span>
+            </UI.Button>
+          )}
         </div>
       </OptionGroup>
 
@@ -94,9 +122,25 @@ const LibraryPage = () => {
           }}
         >
           <AnimatePresence>
-            {library.library.map((entry) => (
-              <FortniteBuild entry={entry} key={entry.version} />
-            ))}
+            {!options.tiled_builds ? (
+              <Reorder.Group
+                onReorder={(newOrder) => {
+                  library.setLibraryOrder(
+                    newOrder.map((entry) => entry.version)
+                  );
+                }}
+                values={sortedLibrary}
+                className="flex flex-col gap-2 w-full h-full"
+              >
+                {sortedLibrary.map((entry) => (
+                  <FortniteBuild entry={entry} key={entry.version} />
+                ))}
+              </Reorder.Group>
+            ) : (
+              sortedLibrary.map((entry) => (
+                <FortniteBuild entry={entry} key={entry.version} />
+              ))
+            )}
           </AnimatePresence>
 
           {library.library.length === 0 && (

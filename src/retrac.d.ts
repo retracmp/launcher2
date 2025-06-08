@@ -234,6 +234,8 @@ type LibraryEntry = {
   manifestId: string;
   hasIntialisedEasyAnticheat: boolean;
   addedToWindowsDefender: boolean;
+
+  order: number;
 };
 
 type BackendServer = {
