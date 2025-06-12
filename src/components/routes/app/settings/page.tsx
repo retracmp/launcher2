@@ -237,7 +237,7 @@ const SettingsPage = () => {
             />
 
             <BooleanOption
-              title="Show Background Image"
+              title="Custom Background"
               description={
                 <>Customise your look with a frosted glass background image.</>
               }
