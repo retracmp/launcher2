@@ -17,6 +17,7 @@ pub struct LaunchOptions {
   pub manifest_id: Option<String>,
   pub anti_cheat_already_intialised: bool,
   pub do_not_update_paks: bool,
+  pub bubble_builds_enabled: bool,
 }
 
 pub async fn launch_retrac(options: LaunchOptions) -> Result<(), String> {
@@ -29,6 +30,11 @@ pub async fn launch_retrac(options: LaunchOptions) -> Result<(), String> {
     if manifest_id == "++Fortnite+Release-14.40-CL-14550713-Windows" {
       if !options.do_not_update_paks {
         chunker::download_build("Custom_Content", options.root.to_str().unwrap()).await?;
+      }
+      if options.bubble_builds_enabled {
+        chunker::download_build("Bubble_Builds", options.root.to_str().unwrap()).await?;
+      } else {
+        chunker::delete_build("Bubble_Builds", options.root.to_str().unwrap()).await?;
       }
       chunker::download_build("Anticheat_Client", options.root.to_str().unwrap()).await?;
     }
@@ -46,7 +52,7 @@ pub async fn launch_retrac(options: LaunchOptions) -> Result<(), String> {
 
     util::get_app_handle().emit("EAC_INITIALISED", json!({ "version": options.version, "status": result })).map_err(|e| {
       eprintln!("Failed to emit EAC_INITIALISED event: {}", e);
-      "Failed to emit VERIFEAC_INITIALISEDING event".to_string()
+      "Failed to emit EAC_INITIALISED event".to_string()
     })?;
   }
 

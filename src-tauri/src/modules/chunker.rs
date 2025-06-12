@@ -583,3 +583,56 @@ pub async fn download_build_internal(
 pub async fn download_build(manifest_id: &str, download_path: &str) -> Result<bool, String> {
     download_build_internal(manifest_id, download_path, util::get_app_handle()).await
 }
+
+pub async fn delete_build_internal(
+    manifest_id: &str,
+    download_path: &str,
+    handle: AppHandle,
+) -> Result<bool, String> {
+    let client = Client::new();
+
+    let manifest = match download_manifest(manifest_id, &client).await {
+        Ok(m) => m,
+        Err(_) => return Err("Failed to fetch manifest for deletion".to_string()),
+    };
+
+    let mut failed_deletes = vec![];
+
+    for file in &manifest.Files {
+        let sanitized_path = FileEntry::beautify_display_path(file.DisplayPath.clone());
+        let full_path = Path::new(download_path).join(&sanitized_path);
+
+        if full_path.exists() {
+            if let Err(e) = tokio::fs::remove_file(&full_path).await {
+                dbg!(eprintln!("Failed to delete file {}: {}", full_path.display(), e));
+                failed_deletes.push(full_path.display().to_string());
+            }
+        }
+
+        if let Some(parent) = full_path.parent() {
+            if let Ok(mut entries) = tokio::fs::read_dir(parent).await {
+                if entries.next_entry().await.unwrap_or(None).is_none() {
+                    let _ = tokio::fs::remove_dir(parent).await;
+                }
+            }
+        }
+    }
+
+    let tmp_path = Path::new(download_path).join(TMP_FOLDER);
+    if tmp_path.exists() {
+        if let Err(e) = tokio::fs::remove_dir_all(&tmp_path).await {
+            dbg!(eprintln!("Warning: Failed to delete tmp folder {}: {}", tmp_path.display(), e));
+        }
+    }
+
+    let _ = handle.emit(
+        "BUILD_DELETED",
+        json!({ "manifest_id": manifest_id, "failed": failed_deletes }),
+    );
+
+    Ok(true)
+}
+
+pub async fn delete_build(manifest_id: &str, download_path: &str) -> Result<bool, String> {
+    delete_build_internal(manifest_id, download_path, util::get_app_handle()).await
+}

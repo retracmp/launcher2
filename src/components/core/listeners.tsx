@@ -168,7 +168,10 @@ const TauriListeners = () => {
     );
     if (!retracBuild) return console.error("Retrac build not found in library");
 
-    console.log("[download] auto downloading extra content");
+    console.log(
+      "[download] auto downloading extra content",
+      retrac.auto_download_manifests
+    );
 
     for (const manifest of retrac.auto_download_manifests) {
       const result = await invoke.download_build(
@@ -181,6 +184,42 @@ const TauriListeners = () => {
       }
     }
   }, [options.auto_download, retrac.auto_download_manifests]);
+
+  const deleteBubbleBuilds = useCallback(async () => {
+    console.log("[download] deleting bubble builds");
+
+    const retracBuild = library.library.find(
+      (x) => x.version === "++Fortnite+Release-14.40-CL-14550713"
+    );
+    if (!retracBuild) return console.error("Retrac build not found in library");
+
+    const result = await invoke.delete_build(
+      "Bubble_Builds",
+      retracBuild.rootLocation
+    );
+    if (result === null) {
+      console.error("[download] failed to delete bubble builds");
+      return;
+    }
+  }, [library.library]);
+
+  useEffect(() => {
+    const exists = retrac.auto_download_manifests.some(
+      (manifest) => manifest === "Bubble_Builds"
+    );
+
+    retrac.set_auto_download_manifests(
+      !options.bubble_builds_enabled
+        ? exists
+          ? retrac.auto_download_manifests.filter((m) => m !== "Bubble_Builds")
+          : retrac.auto_download_manifests
+        : exists
+        ? retrac.auto_download_manifests
+        : [...retrac.auto_download_manifests, "Bubble_Builds"]
+    );
+
+    if (!options.bubble_builds_enabled) deleteBubbleBuilds();
+  }, [options.bubble_builds_enabled]);
 
   useEffect(() => {
     setTimeout(() => options.auto_download && autoDownload(), 2000);

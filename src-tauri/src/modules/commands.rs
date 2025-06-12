@@ -61,6 +61,15 @@ pub async fn download_build(
 }
 
 #[tauri::command]
+pub async fn delete_build(
+  manifest_id: &str,
+  download_path: &str,
+  handle: AppHandle,
+) -> Result<bool, String> {
+  chunker::delete_build_internal(manifest_id, download_path, handle).await
+}
+
+#[tauri::command]
 pub async fn is_fortnite_running() -> Result<bool, String> {
   Ok(process::is_process_running(
     "FortniteClient-Win64-Shipping.exe",

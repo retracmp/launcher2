@@ -290,7 +290,11 @@ const Boostrap = () => {
       "--RETRAC",
       options.custom_theme_colour
     );
-  }, [options.custom_theme_colour]);
+
+    setTimeout(() => {
+      document.body.style.setProperty("zoom", `${options.launcher_scale}`);
+    }, 600);
+  }, [options.custom_theme_colour, options.launcher_scale]);
 
   useLayoutEffect(() => {
     boostrap();
