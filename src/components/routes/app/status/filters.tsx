@@ -19,13 +19,13 @@ const FiltersWidget = () => {
         <BooleanOption
           title="Europe Servers"
           description="Show European servers in the server list."
-          type={servers.show_eu_servers}
+          state={servers.show_eu_servers}
           set={servers.set_show_eu_servers}
         />
         <BooleanOption
           title="North America Servers"
           description="Show North American servers in the server list."
-          type={servers.show_na_servers}
+          state={servers.show_na_servers}
           set={servers.set_show_na_servers}
         />
       </div>
