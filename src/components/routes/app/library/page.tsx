@@ -86,7 +86,7 @@ const LibraryPage = () => {
             <span className="text-neutral-400">Using an external device?</span>
           </UI.Button>
 
-          {!options.tiled_builds && (
+          {!options._tiled_builds && (
             <UI.Button
               colour="invisible"
               className="py-0 px-2 mt-auto z-10 gap-0 min-w-full w-max"
@@ -122,7 +122,7 @@ const LibraryPage = () => {
           }}
         >
           <AnimatePresence>
-            {!options.tiled_builds ? (
+            {!options._tiled_builds ? (
               <Reorder.Group
                 onReorder={(newOrder) => {
                   library.setLibraryOrder(

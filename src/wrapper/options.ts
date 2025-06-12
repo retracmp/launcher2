@@ -38,7 +38,7 @@ type OptionsState = {
   leaderboard_page_size: number;
   set_leaderboard_page_size: (value: number) => void;
 
-  tiled_builds: boolean;
+  _tiled_builds: boolean;
   set_tiled_builds: (value: boolean) => void;
 
   launch_arguments: string;
@@ -99,8 +99,8 @@ export const useOptions = create<OptionsState>()(
       set_leaderboard_page_size: (value) =>
         set(() => ({ leaderboard_page_size: value })),
 
-      tiled_builds: false,
-      set_tiled_builds: (value) => set(() => ({ tiled_builds: value })),
+      _tiled_builds: false,
+      set_tiled_builds: (value) => set(() => ({ _tiled_builds: value })),
 
       launch_arguments: "",
       set_launch_arguments: (value) => set(() => ({ launch_arguments: value })),

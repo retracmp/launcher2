@@ -41,7 +41,7 @@ const LootLabsWidget = () => {
   };
 
   return (
-    <div className="relative flex flex-col p-2 gap-0.5 w-[70%] @max-xl:w-[100%] @max-xl:h-40 bg-neutral-800/10 rounded-sm border-neutral-700/40 border-1 border-solid backdrop-blur-sm">
+    <div className="relative flex flex-col p-2 gap-0.5 w-[70%] @max-2xl:w-[100%] @max-2xl:h-40 bg-neutral-800/10 rounded-sm border-neutral-700/40 border-1 border-solid backdrop-blur-sm">
       <UI.H1 className="z-20">Looking for more?</UI.H1>
       <UI.P className="z-20">
         Receive a gift package of V-Bucks every hour, for completely free! All

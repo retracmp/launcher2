@@ -48,7 +48,7 @@ const FortniteBuildTile = (props: FortniteBuildProps) => {
 
   return (
     <motion.div
-      className={`group relative flex items-center justify-center aspect-[9/11] w-40 max-w-40 rounded-sm border-neutral-700/40 border-[1px] border-solid overflow-hidden ${
+      className={`group relative flex items-center justify-center aspect-[9/11] w-40 max-w-40 rounded-sm border-neutral-700/40 border-[1px] border-solid overflow-hidden backdrop-blur-xl ${
         library.launchState === LAUNCH_STATE.NONE || launchedBuildIsCurrent
           ? "cursor-pointer"
           : "cursor-not-allowed"

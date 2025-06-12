@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 type RetracState = {
   players_online: number;
@@ -38,39 +39,50 @@ type RetracState = {
   set_editing_order_of_library: (editing: boolean) => void;
 };
 
-export const useRetrac = create<RetracState>((set) => ({
-  players_online: 0,
-  set_players_online: (players_online) => set({ players_online }),
-  launcher_news: [],
-  set_launcher_news: (launcher_news) => set({ launcher_news }),
-  events: [],
-  set_events: (events) => set({ events }),
-  manifests: [],
-  set_manifests: (manifests) => set({ manifests }),
-  auto_download_manifests: [],
-  set_auto_download_manifests: (manifests) =>
-    set({ auto_download_manifests: manifests }),
-  show_recent_matches: false,
-  set_show_recent_matches: (show_recent_matches) =>
-    set({ show_recent_matches }),
-  show_filters: false,
-  set_show_filters: (show_filters) => set({ show_filters }),
-  show_all_widgets: false,
-  set_show_all_widgets: (show_all_widgets) => set({ show_all_widgets }),
+export const useRetrac = create<RetracState>()(
+  persist(
+    (set) => ({
+      players_online: 0,
+      set_players_online: (players_online) => set({ players_online }),
+      launcher_news: [],
+      set_launcher_news: (launcher_news) => set({ launcher_news }),
+      events: [],
+      set_events: (events) => set({ events }),
+      manifests: [],
+      set_manifests: (manifests) => set({ manifests }),
+      auto_download_manifests: [],
+      set_auto_download_manifests: (manifests) =>
+        set({ auto_download_manifests: manifests }),
+      show_recent_matches: false,
+      set_show_recent_matches: (show_recent_matches) =>
+        set({ show_recent_matches }),
+      show_filters: false,
+      set_show_filters: (show_filters) => set({ show_filters }),
+      show_all_widgets: false,
+      set_show_all_widgets: (show_all_widgets) => set({ show_all_widgets }),
 
-  donation_message_popped: false,
-  set_donation_message_popped: (donation_message_popped) =>
-    set({ donation_message_popped }),
+      donation_message_popped: false,
+      set_donation_message_popped: (donation_message_popped) =>
+        set({ donation_message_popped }),
 
-  stop_auto_download_due_to_error: false,
-  set_stop_auto_download_due_to_error: (stop) =>
-    set({ stop_auto_download_due_to_error: stop }),
+      stop_auto_download_due_to_error: false,
+      set_stop_auto_download_due_to_error: (stop) =>
+        set({ stop_auto_download_due_to_error: stop }),
 
-  do_not_download_paks: false,
-  set_do_not_download_paks: (do_not_download_paks) =>
-    set({ do_not_download_paks }),
+      do_not_download_paks: false,
+      set_do_not_download_paks: (do_not_download_paks) =>
+        set({ do_not_download_paks }),
 
-  editing_order_of_library: false,
-  set_editing_order_of_library: (editing) =>
-    set({ editing_order_of_library: editing }),
-}));
+      editing_order_of_library: false,
+      set_editing_order_of_library: (editing) =>
+        set({ editing_order_of_library: editing }),
+    }),
+    {
+      name: "retrac",
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        do_not_download_paks: state.do_not_download_paks,
+      }),
+    }
+  )
+);

@@ -437,6 +437,7 @@ type OptionGroupProps = {
   _hideBorder?: boolean;
   _animate?: boolean;
   _hideable?: boolean;
+  _row?: boolean;
 };
 
 const OptionGroup = (props: OptionGroupProps) => {
@@ -444,7 +445,9 @@ const OptionGroup = (props: OptionGroupProps) => {
 
   return (
     <motion.div
-      className={`relative flex flex-col gap-2 p-2.5 ${
+      className={`group relative flex ${
+        props._row ? "flex-row @max-2xl:flex-col" : "flex-col"
+      } gap-2 p-2.5 ${
         !props._hideBorder &&
         "border-neutral-700/40 border-b-[1px] border-solid"
       } py-3.5 ${props._last ? "pb-3" : ""} ${props._first ? "pt-2.5" : ""}`}

@@ -1,3 +1,4 @@
+import { useRetrac } from "src/wrapper/retrac";
 import { useUserManager } from "src/wrapper/user";
 
 import UI from "src/components/core/default";
@@ -8,7 +9,7 @@ import NewsWidget from "src/components/routes/app/home/widgets/news";
 import EventsWidget from "src/components/routes/app/home/widgets/events";
 import LootLabsWidget from "src/components/routes/app/home/widgets/lootlabs";
 import DonateWidget from "src/components/routes/app/home/widgets/donate";
-import { useRetrac } from "src/wrapper/retrac";
+import { OptionGroup } from "../settings/option";
 
 const HomePage = () => {
   const retrac = useRetrac();
@@ -17,7 +18,7 @@ const HomePage = () => {
 
   return (
     <>
-      <div className="flex flex-row gap-1 p-1.5 pb-0 @max-xl:flex-col">
+      <OptionGroup _first _row>
         <CharacterWidget
           user={userManager._user}
           season={userManager._season}
@@ -26,15 +27,15 @@ const HomePage = () => {
           account={userManager._user.Account}
           season={userManager._season}
         />
-      </div>
+      </OptionGroup>
 
-      <UI.RowBox>
+      <OptionGroup _row title="Play Retrac">
         <FortniteWidget />
         <LootLabsWidget />
-      </UI.RowBox>
+      </OptionGroup>
 
       {retrac.show_all_widgets && (
-        <UI.RowBox>
+        <OptionGroup _row>
           <div className="flex flex-col gap-1 min-w-50">
             <UI.Button colour="invisible" className="h-8">
               Recent Matches
@@ -46,7 +47,7 @@ const HomePage = () => {
           <div className="flex flex-col gap-1 flex-1">
             <DonateWidget />
           </div>
-        </UI.RowBox>
+        </OptionGroup>
       )}
 
       {retrac.show_all_widgets && (

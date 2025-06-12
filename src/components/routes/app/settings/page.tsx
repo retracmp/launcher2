@@ -246,7 +246,7 @@ const SettingsPage = () => {
         <BooleanOption
           title="Grid Layout for Builds"
           description={<>Display your installed versions in a grid layout.</>}
-          state={options.tiled_builds}
+          state={options._tiled_builds}
           set={options.set_tiled_builds}
         />
       </OptionGroup>
