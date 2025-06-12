@@ -5,20 +5,29 @@ import * as Icons from "react-icons/io5";
 import UI from "src/components/core/default";
 import { AnimatePresence, motion } from "motion/react";
 
+export type OptionTypeString = { _a: "string" };
+export type OptionTypeBoolean = { _a: "boolean" };
+export type OptionTypeNumber = { _a: "number" };
 export type OptionTypeFile = { _a: "file" };
 export type OptionTypeColour = { _a: "colour" };
-type AllowedOptionTypes =
-  | string
-  | boolean
-  | number
-  | OptionTypeFile
-  | OptionTypeColour;
+export type OptionTypeSlider = { _a: "slider" };
 
-type OptionProps<T extends AllowedOptionTypes> = {
+type AllowedOptionTypes =
+  | OptionTypeString
+  | OptionTypeBoolean
+  | OptionTypeNumber
+  | OptionTypeFile
+  | OptionTypeColour
+  | OptionTypeSlider;
+
+type OptionStateType = string | number | boolean | string[] | null;
+
+type OptionProps<T extends AllowedOptionTypes, K extends OptionStateType> = {
   title: React.ReactNode;
   description: React.ReactNode;
-  state: T;
-  set: (state: T) => void;
+  type: T;
+  state: K;
+  set: (state: K) => void;
   icon?: keyof typeof Icons;
   colour?:
     | "red"
@@ -40,6 +49,7 @@ type OptionProps<T extends AllowedOptionTypes> = {
 
   _is_file_override?: boolean;
   _colour_options?: string[];
+  _colour_gradient?: boolean;
   _number_extra_text?: string;
   _number_min?: number;
   _number_max?: number;
@@ -47,22 +57,56 @@ type OptionProps<T extends AllowedOptionTypes> = {
   _attachImage?: boolean;
   _attachedImagePath?: string;
   _setAttachedImagePath?: (path: string) => void;
+  _slider?: boolean;
+  _slider_min?: number;
+  _slider_max?: number;
+  _slider_step?: number;
+  _slider_values?: number[];
 };
 
-const Option = <T extends AllowedOptionTypes>(props: OptionProps<T>) => {
+const Option = <T extends AllowedOptionTypes, K extends OptionStateType>(
+  props: OptionProps<T, K>
+) => {
   const Icon = (
     props.icon != null ? Icons[props.icon] : null
   ) as React.ElementType | null;
 
-  const isString = typeof props.state === "string";
-  const isBoolean = typeof props.state === "boolean";
-  const isNumber = typeof props.state === "number";
-  const isFile = props._is_file_override || props.state instanceof Object;
-  const isColour = props._colour_options && props._colour_options.length >= 0;
+  const controls: Record<string, React.ReactNode> = {
+    string: (
+      <ControlStateString
+        {...(props as any as OptionProps<OptionTypeString, string>)}
+      />
+    ),
+    boolean: (
+      <ControlStateBoolean
+        {...(props as any as OptionProps<OptionTypeBoolean, boolean>)}
+      />
+    ),
+    number: (
+      <ControlStateNumber
+        {...(props as any as OptionProps<OptionTypeNumber, number>)}
+      />
+    ),
+    file: (
+      <ControlStateFile
+        {...(props as any as OptionProps<OptionTypeFile, string>)}
+      />
+    ),
+    colour: (
+      <ControlStateColours
+        {...(props as any as OptionProps<OptionTypeColour, string>)}
+      />
+    ),
+    slider: (
+      <ControlStateSlider
+        {...(props as any as OptionProps<OptionTypeSlider, number>)}
+      />
+    ),
+  };
 
   return (
     <motion.div
-      className="relative flex flex-col p-2.5 py-2 gap-0.5 w-[100%] bg-neutral-800/10 rounded-sm border-neutral-700/40 border-1 border-solid overflow-hidden backdrop-blur-md"
+      className="relative flex flex-col p-2.5 py-2 gap-0.5 w-[100%] bg-neutral-800/10 rounded-sm border-neutral-700/40 border-1 border-solid backdrop-blur-md"
       variants={
         props._animate
           ? {
@@ -94,62 +138,17 @@ const Option = <T extends AllowedOptionTypes>(props: OptionProps<T>) => {
       </span>
 
       <AnimatePresence>
-        {isString && !isFile && !isBoolean && !isColour && (
-          <ControlStateString
-            state={props.state as string}
-            set={props.set as (state: string) => void}
-          />
-        )}
-        {isBoolean && !isFile && !isString && !isColour && (
-          <ControlStateBoolean
-            state={props.state as boolean}
-            set={props.set as (state: boolean) => void}
-            _attachImage={props._attachImage}
-            _attachedImagePath={props._attachedImagePath}
-            _setAttachedImagePath={props._setAttachedImagePath}
-          />
-        )}
-        {isNumber && !isFile && !isString && !isColour && (
-          <ControlStateNumber
-            state={props.state as number}
-            set={props.set as (state: number) => void}
-            _number_extra_text={props._number_extra_text}
-            _number_min={props._number_min}
-            _number_max={props._number_max}
-          />
-        )}
-        {isFile && !isColour && (
-          <ControlStateFile
-            state={props.state as string}
-            set={props.set as (state: string) => void}
-          />
-        )}
-        {isColour && (
-          <ControlStateColours
-            _colour_options={props._colour_options ?? []}
-            state={props.state as string}
-            set={props.set as (state: string) => void}
-          />
+        {controls[props.type._a] ?? (
+          <div className="text-red-300/70 text-sm">Unsupported option type</div>
         )}
       </AnimatePresence>
     </motion.div>
   );
 };
 
-type ControlStateProps<T extends AllowedOptionTypes> = {
-  state: T;
-  set: (state: T) => void;
-  _number_extra_text?: string;
-  _number_min?: number;
-  _number_max?: number;
-  _colour_options?: string[];
-
-  _attachImage?: boolean;
-  _attachedImagePath?: string;
-  _setAttachedImagePath?: (path: string) => void;
-};
-
-const ControlStateBoolean = (props: ControlStateProps<boolean>) => {
+const ControlStateBoolean = (
+  props: OptionProps<OptionTypeBoolean, boolean>
+) => {
   const [buttonHovered, setButtonHovered] = useState(false);
   const [textWidth, setTextWidth] = useState(0);
   const textMeasureRef = useRef<HTMLSpanElement>(null);
@@ -246,11 +245,11 @@ const ControlStateBoolean = (props: ControlStateProps<boolean>) => {
   );
 };
 
-const ControlStateString = (_: ControlStateProps<string>) => {
+const ControlStateString = (_: OptionProps<OptionTypeString, string>) => {
   return <></>;
 };
 
-const ControlStateColours = (props: ControlStateProps<string>) => {
+const ControlStateColours = (props: OptionProps<OptionTypeColour, string>) => {
   return (
     <div
       className="absolute right-2 top-[50%] min-w-7 h-7 rounded-sm flex flex-row items-center justify-center gap-1"
@@ -262,24 +261,34 @@ const ControlStateColours = (props: ControlStateProps<string>) => {
         <div
           key={colour}
           className={`w-7 h-7 rounded-sm cursor-pointer border-1 border-solid hover:bg-neutral-800/20 active:scale-[0.98] backdrop-blur-lg`}
-          style={{
-            backgroundColor:
-              colour === "#4f4f4f"
-                ? props.state === colour
-                  ? "#ffffff40"
-                  : "#ffffff20"
-                : `color-mix(in srgb, ${colour} ${
-                    props.state === colour ? "50%" : "10%"
-                  }, transparent 1%)`,
-            borderColor:
-              colour === "#4f4f4f" || colour === "#1f1f1f"
-                ? props.state === colour
-                  ? "#ffffff20"
-                  : "#ffffff10"
-                : `color-mix(in srgb, ${colour} ${
-                    props.state === colour ? "50%" : "15%"
-                  }, transparent 100%)`,
-          }}
+          style={
+            !props._colour_gradient
+              ? {
+                  backgroundColor:
+                    colour === "#4f4f4f"
+                      ? props.state === colour
+                        ? "#ffffff40"
+                        : "#ffffff20"
+                      : `color-mix(in srgb, ${colour} ${
+                          props.state === colour ? "50%" : "10%"
+                        }, transparent 1%)`,
+                  borderColor:
+                    colour === "#4f4f4f" || colour === "#1f1f1f"
+                      ? props.state === colour
+                        ? "#ffffff20"
+                        : "#ffffff10"
+                      : `color-mix(in srgb, ${colour} ${
+                          props.state === colour ? "50%" : "15%"
+                        }, transparent 100%)`,
+                }
+              : {
+                  backgroundImage: colour,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundColor: "transparent",
+                  borderColor: "#2f2f2f",
+                }
+          }
           onClick={() => props.set(colour)}
         ></div>
       ))}
@@ -287,10 +296,12 @@ const ControlStateColours = (props: ControlStateProps<string>) => {
   );
 };
 
-const ControlStateFile = (props: ControlStateProps<string>) => {
+const ControlStateFile = (props: OptionProps<OptionTypeFile, string>) => {
   const [buttonHovered, setButtonHovered] = useState(false);
   const [textWidth, setTextWidth] = useState(0);
   const textMeasureRef = useRef<HTMLSpanElement>(null);
+
+  console.log(props);
 
   const niceFileName = props.state
     .replace(/\\/g, "/")
@@ -358,7 +369,14 @@ const ControlStateFile = (props: ControlStateProps<string>) => {
   );
 };
 
-const ControlStateNumber = (props: ControlStateProps<number>) => {
+type OmmitedOptionProps<
+  T extends AllowedOptionTypes,
+  K extends OptionStateType
+> = Omit<OptionProps<T, K>, "type">;
+
+const ControlStateNumber = (
+  props: OmmitedOptionProps<OptionTypeNumber, number>
+) => {
   const onFocusLost = (e: React.FocusEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value);
     if (isNaN(value)) {
@@ -409,24 +427,184 @@ const ControlStateNumber = (props: ControlStateProps<number>) => {
   );
 };
 
-const BooleanOption = (props: OptionProps<boolean>) => {
-  return <Option {...props} />;
+const ControlStateSlider = (
+  props: OmmitedOptionProps<OptionTypeSlider, number>
+) => {
+  const [cachedValue, setCachedValue] = useState(props.state);
+
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const [sliderWidth, setSliderWidth] = useState(0);
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  const usingMinimum = props._slider_min ?? 0;
+  const usingMaximum = props._slider_max ?? 100;
+  const usingStep = props._slider_step ?? usingMaximum / 100;
+  const usingValues = props._slider_values ?? [];
+
+  const position = Math.max(
+    0,
+    Math.min(1, (cachedValue - usingMinimum) / (usingMaximum - usingMinimum))
+  );
+
+  const handleResize = () => {
+    if (!sliderRef.current) return;
+    setSliderWidth(sliderRef.current.offsetWidth);
+  };
+
+  useEffect(() => {
+    if (!sliderRef.current) return;
+    setSliderWidth(sliderRef.current.offsetWidth);
+
+    const resizeObserver = new ResizeObserver(handleResize);
+    resizeObserver.observe(sliderRef.current);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [sliderRef, handleResize]);
+
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const handlePointerMove = (moveEvent: PointerEvent) => {
+      if (!sliderRef.current) return;
+
+      const rect = sliderRef.current.getBoundingClientRect();
+      const x = moveEvent.clientX - rect.left;
+      const newPosition = Math.max(0, Math.min(1, x / (sliderWidth - 6)));
+
+      let newValue = usingMinimum + newPosition * (usingMaximum - usingMinimum);
+      if (usingValues.length > 0) {
+        newValue = usingValues.reduce((prev, curr) =>
+          Math.abs(curr - newValue) < Math.abs(prev - newValue) ? curr : prev
+        );
+      } else {
+        newValue = Math.round(newValue / usingStep) * usingStep;
+      }
+
+      setCachedValue(newValue);
+    };
+
+    const handlePointerUp = () => {
+      document.removeEventListener("pointermove", handlePointerMove);
+      document.removeEventListener("pointerup", handlePointerUp);
+    };
+
+    document.addEventListener("pointermove", handlePointerMove);
+    document.addEventListener("pointerup", handlePointerUp);
+  };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      props.set(cachedValue);
+    }, 100);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [cachedValue]);
+
+  type SliderSetValueProps = {
+    value: number;
+  };
+
+  const SliderSetValue = (props: SliderSetValueProps) => {
+    const position = Math.max(
+      0,
+      Math.min(1, (props.value - usingMinimum) / (usingMaximum - usingMinimum))
+    );
+
+    console.log("SliderSetValue", props.value, position);
+
+    return (
+      <motion.div
+        className="absolute w-[2px] h-1.5 select-none pointer-events-none bg-neutral-600/70"
+        style={{
+          left: position * (sliderWidth - 2),
+        }}
+      ></motion.div>
+    );
+  };
+
+  return (
+    <div className="relative py-1 w-full h-max">
+      <div
+        className="group @container relative w-full h-1.5 bg-neutral-700/60 rounded-full flex items-center"
+        ref={sliderRef}
+      >
+        <motion.div
+          className="relative w-3 h-3 bg-neutral-600 rounded-full cursor-pointer ring-0 hover:ring-3 ring-neutral-700/60"
+          initial={{ x: 0 }}
+          animate={{
+            x: position * (sliderWidth - 6),
+          }}
+          transition={{
+            type: "spring",
+            stiffness: 180,
+            damping: 22.5,
+          }}
+          onPointerDown={onPointerDown}
+          onMouseEnter={() => setShowTooltip(true)}
+          onMouseLeave={() => setShowTooltip(false)}
+        >
+          <AnimatePresence>
+            {showTooltip && (
+              <motion.div
+                className="absolute bg-neutral-800/80 text-neutral-300 text-xs font-code rounded-xl px-2 py-0.5 backdrop-blur-3xl flex items-center justify-center z-20"
+                style={{
+                  width: "max-content",
+                  whiteSpace: "nowrap",
+                  left: "-100%",
+                  transform: "translateX(50%) translateY(-100%)",
+                  top: "-1.5rem",
+                }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+              >
+                {cachedValue.toFixed(2)}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+
+        {usingValues.length > 0 && (
+          <div className="absolute inset-0 flex items-center pointer-events-none w-full px-1 overflow-hidden rounded-full">
+            {usingValues.map((value, index) => (
+              <SliderSetValue key={index} value={value} />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
-const StringOption = (props: OptionProps<string>) => {
-  return <Option {...props} />;
+const BooleanOption = (
+  props: OmmitedOptionProps<OptionTypeBoolean, boolean>
+) => {
+  return <Option {...props} type={{ _a: "boolean" }} />;
 };
 
-const NumberOption = (props: OptionProps<number>) => {
-  return <Option {...props} />;
+const StringOption = (props: OmmitedOptionProps<OptionTypeString, string>) => {
+  return <Option {...props} type={{ _a: "string" }} />;
 };
 
-const FileOption = (props: OptionProps<string>) => {
-  return <Option {...props} _is_file_override />;
+const NumberOption = (props: OmmitedOptionProps<OptionTypeNumber, number>) => {
+  return <Option {...props} type={{ _a: "number" }} />;
 };
 
-const ColourOption = (props: OptionProps<string>) => {
-  return <Option {...props} />;
+const FileOption = (props: OmmitedOptionProps<OptionTypeFile, string>) => {
+  return <Option {...props} _is_file_override type={{ _a: "file" }} />;
+};
+
+const ColourOption = (props: OmmitedOptionProps<OptionTypeColour, string>) => {
+  return <Option {...props} type={{ _a: "colour" }} />;
+};
+
+const SliderOption = (props: OmmitedOptionProps<OptionTypeSlider, number>) => {
+  return <Option {...props} _slider type={{ _a: "slider" }} />;
 };
 
 type OptionGroupProps = {
@@ -522,4 +700,5 @@ export {
   NumberOption,
   FileOption,
   ColourOption,
+  SliderOption,
 };

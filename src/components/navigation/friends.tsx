@@ -90,7 +90,7 @@ const Friend = (props: FriendProps) => {
 
   return (
     <>
-      <motion.p
+      <motion.div
         className="absolute  pointer-events-none"
         style={{
           left:
@@ -118,7 +118,7 @@ const Friend = (props: FriendProps) => {
             {props.friend.displayName || props.friend.accountId}
           </span>
         </div>
-      </motion.p>
+      </motion.div>
       <div
         ref={parentRef}
         onMouseEnter={onHoverEntered}

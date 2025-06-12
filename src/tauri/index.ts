@@ -75,6 +75,30 @@ const download_build = async (
   return result;
 };
 
+const delete_build = async (
+  manifestId: string,
+  downloadPath: string
+): Promise<boolean | null> => {
+  const result = await i<boolean>("delete_build", {
+    manifestId,
+    downloadPath,
+  }).catch((e: string) => {
+    if (e === "Another download is already in progress") return null;
+
+    useBannerManager.getState().push({
+      closable: true,
+      colour: "red",
+      id: "delete_build",
+      text: `Deleting build failed with reason: ${e}`,
+      expireAfter: 10,
+    });
+    console.error("Error downloading build:", e);
+    return null;
+  });
+
+  return result;
+};
+
 const is_fortnite_running = async (): Promise<boolean | null> => {
   const result = await i<boolean>("is_fortnite_running", {}).catch(
     (e: string) => {
@@ -153,6 +177,7 @@ const invoke = {
   get_fortnite_version,
   launch_retrac,
   download_build,
+  delete_build,
   is_fortnite_running,
   close_fortnite,
   add_to_defender,

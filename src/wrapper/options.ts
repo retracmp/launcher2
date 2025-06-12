@@ -26,6 +26,9 @@ type OptionsState = {
   reset_on_release: boolean;
   set_reset_on_release: (value: boolean) => void;
 
+  bubble_builds_enabled: boolean;
+  set_bubble_builds_enabled: (value: boolean) => void;
+
   wide_drawer: boolean;
   set_wide_drawer: (value: boolean) => void;
 
@@ -52,6 +55,15 @@ type OptionsState = {
 
   background_image: string;
   set_background_image: (value: string) => void;
+
+  launcher_scale: number;
+  set_launcher_scale: (value: number) => void;
+
+  background_blur: number;
+  set_background_blur: (value: number) => void;
+
+  background_gradient: string;
+  set_background_gradient: (value: string) => void;
 };
 
 export const useOptions = create<OptionsState>()(
@@ -82,6 +94,10 @@ export const useOptions = create<OptionsState>()(
       disable_pre_edits: false,
       set_disable_pre_edits: (value) =>
         set(() => ({ disable_pre_edits: value })),
+
+      bubble_builds_enabled: false,
+      set_bubble_builds_enabled: (value) =>
+        set(() => ({ bubble_builds_enabled: value })),
 
       reset_on_release: false,
       set_reset_on_release: (value) => set(() => ({ reset_on_release: value })),
@@ -115,6 +131,16 @@ export const useOptions = create<OptionsState>()(
 
       background_image: "/bg2.jpg",
       set_background_image: (value) => set(() => ({ background_image: value })),
+
+      launcher_scale: 1,
+      set_launcher_scale: (value) => set(() => ({ launcher_scale: value })),
+
+      background_blur: 0.5,
+      set_background_blur: (value) => set(() => ({ background_blur: value })),
+
+      background_gradient: "",
+      set_background_gradient: (value) =>
+        set(() => ({ background_gradient: value })),
     }),
     {
       name: "options",

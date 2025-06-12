@@ -238,6 +238,7 @@ export const useLibrary = create<LibraryState>()(
           anti_cheat_already_intialised:
             entry.hasIntialisedEasyAnticheat || false,
           do_not_update_paks: useRetrac.getState().do_not_download_paks,
+          bubble_builds_enabled: useOptions.getState().bubble_builds_enabled,
         });
 
         if (result === null || !!!result) {

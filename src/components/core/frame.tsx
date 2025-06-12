@@ -64,16 +64,33 @@ const Frame = () => {
             })`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            filter: "blur(3px)",
+            filter: `blur(${options.background_blur}rem)`,
             left: "50%",
             top: "50%",
             transform: "translate(-50%, -50%)",
           }}
         ></div>
       )}
+
+      {!options.enable_background_image &&
+        options.background_gradient != "" && (
+          <div
+            className="absolute w-[110%] h-[110%] opacity-100 pointer-events-none z-[-10000]"
+            style={{
+              backgroundImage: `${options.background_gradient}`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              filter: `blur(${options.background_blur}rem)`,
+              left: "50%",
+              top: "50%",
+              transform: "translate(-50%, -50%)",
+            }}
+          ></div>
+        )}
+
       <main
         className={`flex flex-row w-full h-full ${
-          options.enable_background_image
+          options.enable_background_image || options.background_gradient != ""
             ? "bg-neutral-900/20"
             : "bg-neutral-900"
         } max-w-[100dvw] max-h-[100dvh] overflow-hidden z-20`}
@@ -154,9 +171,11 @@ const Frame = () => {
 };
 
 const LoadingIndicator = () => {
+  const user = useUserManager();
+
   return (
     <UI.RowBox>
-      <div className="flex p-1.5 border-1 border-solid border-neutral-700/40 rounded-xs">
+      <div className="flex p-2.5 border-1 border-solid border-neutral-700/40 rounded-xs">
         <UI.LoadingSpinner />
       </div>
       <div className="flex p-1.5 border-1 border-solid border-neutral-700/40 rounded-xs w-full">
@@ -164,6 +183,13 @@ const LoadingIndicator = () => {
           Please wait while we connect you to our services.
         </UI.P>
       </div>
+      <UI.Button
+        colour="invisible"
+        className="py-0 px-2 mt-auto z-10 w-min gap-0"
+        onClick={() => user.logout()}
+      >
+        <span className="text-neutral-400 text-sm">Cancel</span>
+      </UI.Button>
     </UI.RowBox>
   );
 };

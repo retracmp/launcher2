@@ -11,6 +11,7 @@ import {
   NumberOption,
   OptionGroup,
   ColourOption,
+  SliderOption,
 } from "src/components/routes/app/settings/option";
 import { IoLogOutSharp } from "react-icons/io5";
 import UI from "src/components/core/default";
@@ -22,13 +23,13 @@ const SettingsPage = () => {
   const options = useOptions();
   const retrac = useRetrac();
 
-  const bannerManager = useBannerManager();
+  const push = useBannerManager((s) => s.push);
 
   useEffect(() => {
     if (user.has_any_donation_tier()) return;
     if (retrac.donation_message_popped) return;
 
-    bannerManager.push({
+    push({
       closable: true,
       colour: "pink",
       id: "settings-donation",
@@ -133,7 +134,7 @@ const SettingsPage = () => {
       </OptionGroup>
 
       <OptionGroup title="Gameplay Tweaks" _animate>
-        <BooleanOption
+        {/* <BooleanOption
           title="Simple Edit"
           description={
             <>Edit at lightning speed, exactly like latest Fortnite.</>
@@ -141,6 +142,16 @@ const SettingsPage = () => {
           state={options.simple_edit}
           set={options.set_simple_edit}
           _animate
+        /> */}
+        <BooleanOption
+          title="Bubble Builds"
+          description={
+            <>Change the mesh used in-game for all builds to optimise delay.</>
+          }
+          state={options.bubble_builds_enabled}
+          set={options.set_bubble_builds_enabled}
+          _animate
+          icon="IoLogoAppleAr"
         />
 
         <BooleanOption
@@ -163,16 +174,32 @@ const SettingsPage = () => {
       </OptionGroup>
 
       <OptionGroup title="Client Preferences" _animate>
+        <SliderOption
+          title="Launcher Scale"
+          description={
+            <>
+              Struggling to read the text? Adjust the size of the launcher to
+              make it easier to read.
+            </>
+          }
+          state={options.launcher_scale}
+          set={options.set_launcher_scale}
+          icon="IoResizeSharp"
+          _slider_min={0.7}
+          _slider_max={1.5}
+          _slider_values={[0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5]}
+        />
+
         {user.has_any_donation_tier() && (
           <>
             <ColourOption
-              title="Theme"
+              title="Hue"
               description={
-                <>Show off style with colourful redesigns of the launcher!</>
+                <>Change the colour of all elements of the launcher.</>
               }
               state={options.custom_theme_colour}
               set={options.set_custom_theme_colour}
-              icon="IoColorPaletteSharp"
+              icon="IoColorWandOutline"
               colour="purple"
               _colour_options={[
                 "#4f4f4f",
@@ -183,6 +210,30 @@ const SettingsPage = () => {
                 "#bbf45140",
               ]}
               _animate
+            />
+
+            <ColourOption
+              title="Gradient"
+              description={
+                <>
+                  Custom background gradient for the launcher,{" "}
+                  <b>your background Image will override this.</b>
+                </>
+              }
+              state={options.background_gradient}
+              set={options.set_background_gradient}
+              icon="IoColorPaletteSharp"
+              colour="purple"
+              _colour_options={[
+                "",
+                "linear-gradient(180deg, #1f2122, #054e053b)",
+                "linear-gradient(-45deg, #0b0b24, #004617)",
+                "linear-gradient(135deg, #000000, #ff950038)",
+                "linear-gradient(180deg, #881f1f, #ff9500ad)",
+                "linear-gradient(180deg, #1d8386, #ff00f29d)",
+              ]}
+              _animate
+              _colour_gradient
             />
 
             <BooleanOption
@@ -198,6 +249,17 @@ const SettingsPage = () => {
               _attachImage
               _attachedImagePath={options.background_image}
               _setAttachedImagePath={options.set_background_image}
+            />
+
+            <SliderOption
+              title="Background Blur"
+              description={
+                <>Adjust the amount of blur applied to the background image.</>
+              }
+              state={options.background_blur}
+              set={options.set_background_blur}
+              _slider_min={0}
+              _slider_max={3}
             />
           </>
         )}

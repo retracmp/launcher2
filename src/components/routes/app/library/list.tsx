@@ -218,9 +218,9 @@ type ButtonProps = {
 const Button = (props: ButtonProps) => {
   const colour = (
     {
-      blue: "hover:bg-blue-400/30 text-neutral-500 hover:text-blue-200",
-      green: "hover:bg-green-400/30 text-neutral-500 hover:text-green-200",
-      red: "hover:bg-red-400/30 text-neutral-500 hover:text-red-200",
+      blue: "hover:bg-blue-400/30 text-neutral-600 hover:text-blue-200",
+      green: "hover:bg-green-400/30 text-neutral-600 hover:text-green-200",
+      red: "hover:bg-red-400/30 text-neutral-600 hover:text-red-200",
       invisible: "hover:bg-neutral-700/10 text-neutral-400",
     } as const
   )[props.colour];
