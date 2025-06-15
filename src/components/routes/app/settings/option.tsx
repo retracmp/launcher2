@@ -117,31 +117,41 @@ const Option = <T extends AllowedOptionTypes, K extends OptionStateType>(
       }
       transition={{ type: "spring", stiffness: 200, damping: 19 }}
     >
-      <span className="flex flex-row items-center gap-1 font-[500] text-neutral-300 text-[1rem] leading-5">
-        {Icon && (
-          <Icon
-            style={{
-              color: props.colour
-                ? `var(--color-${props.colour}-300) !important`
-                : "",
-              fill: props.colour
-                ? `var(--color-${props.colour}-300) !important`
-                : "",
-            }}
-          />
-        )}
+      <div
+        className={`flex ${
+          props.type._a === "slider" ? "flex-col" : "flex-row items-center"
+        } w-full h-full gap-1`}
+      >
+        <div className="flex flex-col w-full h-full">
+          <span className="flex flex-row items-center gap-1 font-[500] text-neutral-300 text-[1rem] leading-5">
+            {Icon && (
+              <Icon
+                style={{
+                  color: props.colour
+                    ? `var(--color-${props.colour}-300) !important`
+                    : "",
+                  fill: props.colour
+                    ? `var(--color-${props.colour}-300) !important`
+                    : "",
+                }}
+              />
+            )}
 
-        {props.title}
-      </span>
-      <span className="text-sm font-[400] text-neutral-500 leading-4">
-        {props.description}
-      </span>
+            {props.title}
+          </span>
+          <span className="text-sm font-[400] text-neutral-500 leading-4">
+            {props.description}
+          </span>
+        </div>
 
-      <AnimatePresence>
-        {controls[props.type._a] ?? (
-          <div className="text-red-300/70 text-sm">Unsupported option type</div>
-        )}
-      </AnimatePresence>
+        <AnimatePresence>
+          {controls[props.type._a] ?? (
+            <div className="text-red-300/70 text-sm">
+              Unsupported option type
+            </div>
+          )}
+        </AnimatePresence>
+      </div>
     </motion.div>
   );
 };
@@ -186,12 +196,7 @@ const ControlStateBoolean = (
   };
 
   return (
-    <div
-      className="absolute right-2 top-[50%] min-w-7 h-7 rounded-sm flex flex-row items-center justify-center gap-1"
-      style={{
-        transform: "translateY(-50%)",
-      }}
-    >
+    <div className="min-w-7 h-7 rounded-sm flex flex-row items-center justify-center gap-1">
       {props._attachImage && (
         <div className="flex flex-row-reverse items-center gap-1.5">
           <span
@@ -251,16 +256,11 @@ const ControlStateString = (_: OptionProps<OptionTypeString, string>) => {
 
 const ControlStateColours = (props: OptionProps<OptionTypeColour, string>) => {
   return (
-    <div
-      className="absolute right-2 top-[50%] min-w-7 h-7 rounded-sm flex flex-row items-center justify-center gap-1"
-      style={{
-        transform: "translateY(-50%)",
-      }}
-    >
+    <div className="min-w-max h-7 rounded-sm flex flex-row items-center justify-center gap-1">
       {props._colour_options?.map((colour) => (
         <div
           key={colour}
-          className={`w-7 h-7 rounded-sm cursor-pointer border-1 border-solid hover:bg-neutral-800/20 active:scale-[0.98] backdrop-blur-lg`}
+          className={`min-w-7 h-7 rounded-sm cursor-pointer border-1 border-solid hover:bg-neutral-800/20 active:scale-[0.98] backdrop-blur-lg`}
           style={
             !props._colour_gradient
               ? {
@@ -329,10 +329,7 @@ const ControlStateFile = (props: OptionProps<OptionTypeFile, string>) => {
   };
 
   return (
-    <div
-      className="absolute right-2 top-[50%] flex flex-row-reverse items-center gap-1.5"
-      style={{ transform: "translateY(-50%)" }}
-    >
+    <div className="flex flex-row-reverse items-center gap-1.5 backdrop-blur-lg">
       <span
         ref={textMeasureRef}
         className="absolute invisible whitespace-nowrap text-xs font-code"
