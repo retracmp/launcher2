@@ -207,14 +207,14 @@ export const useLibrary = create<LibraryState>()(
 
         if (!entry.addedToWindowsDefender) {
           const result = await invoke.add_to_defender(entry.rootLocation);
-          if (result === null) {
-            get().setLaunchState(LAUNCH_STATE.NONE);
-            throw new Error("Failed to add to Windows Defender");
+          if (result !== null) {
+            // get().setLaunchState(LAUNCH_STATE.NONE);
+            // throw new Error("Failed to add to Windows Defender");
+          } else {
+            get().updateLibraryEntry(entry.version, {
+              addedToWindowsDefender: true,
+            });
           }
-
-          get().updateLibraryEntry(entry.version, {
-            addedToWindowsDefender: true,
-          });
         }
 
         const code = await socketExport.exchange_code();

@@ -55,7 +55,7 @@ pub fn spawn_admin_process_and_get_output(command: &str, args: Vec<&str>) -> Res
   }
 
   let output = String::from_utf16(&wide_file_data).expect("Failed to convert output to string");
-  // std::fs::remove_file(output_file).expect("Failed to delete output file");
+  std::fs::remove_file(output_file).expect("Failed to delete output file");
 
   Ok(output)
 }
@@ -68,7 +68,7 @@ pub fn add_windows_defender_exclusions(folder_path: &str) -> Result<bool, String
   let output = spawn_admin_process_and_get_output("powershell", vec!["-Command", &command])?;
 
   if !output.contains(folder_path) {
-    return Err("Failed to add folder to defender exclusion list.".to_string());
+    return Err("Failed to add folder to defender exclusion list, recieved output".to_string() + output.as_str());
   }
 
   Ok(true)
