@@ -8,7 +8,6 @@ import { useBannerManager } from "src/wrapper/banner";
 import {
   BooleanOption,
   FileOption,
-  NumberOption,
   OptionGroup,
   ColourOption,
   SliderOption,
@@ -185,9 +184,9 @@ const SettingsPage = () => {
           state={options.launcher_scale}
           set={options.set_launcher_scale}
           icon="IoResizeSharp"
-          _slider_min={0.7}
+          _slider_min={1}
           _slider_max={1.5}
-          _slider_values={[0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5]}
+          _slider_values={[1.0, 1.1, 1.2, 1.3, 1.4, 1.5]}
         />
 
         {user.has_any_donation_tier() && (
@@ -208,6 +207,7 @@ const SettingsPage = () => {
                 "#fda5d590",
                 "#1f1f1f",
                 "#bbf45140",
+                "#a1a1a1",
               ]}
               _animate
             />
@@ -229,7 +229,7 @@ const SettingsPage = () => {
                 "linear-gradient(180deg, #1f2122, #054e053b)",
                 "linear-gradient(-45deg, #0b0b24, #004617)",
                 "linear-gradient(135deg, #000000, #ff950038)",
-                "linear-gradient(180deg, #881f1f, #ff9500ad)",
+                "linear-gradient(180deg, #881f1f80, #ff950050)",
                 "linear-gradient(180deg, #1d8386, #ff00f29d)",
               ]}
               _animate
@@ -284,7 +284,7 @@ const SettingsPage = () => {
 
         {user.has_any_donation_tier() && (
           <>
-            <NumberOption
+            {/* <NumberOption
               title="Leaderboard Page Size"
               description={
                 <>
@@ -300,6 +300,22 @@ const SettingsPage = () => {
               }}
               _number_max={100}
               _number_min={1}
+              _animate
+            /> */}
+
+            <SliderOption
+              title="Leaderboard Page Size"
+              description={
+                <>
+                  Changes how many players are shown on the leaderboard per
+                  page.
+                </>
+              }
+              state={options.leaderboard_page_size}
+              set={options.set_leaderboard_page_size}
+              _slider_min={10}
+              _slider_max={100}
+              _slider_step={10}
               _animate
             />
           </>

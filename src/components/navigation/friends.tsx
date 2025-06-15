@@ -45,14 +45,12 @@ const FriendsList = () => {
         width: options.show_friends ? 58 : 0,
         paddingLeft: options.show_friends ? 8 : 0,
         paddingRight: options.show_friends ? 8 : 0,
-        gap: options.show_friends ? 8 : 0,
         opacity: options.show_friends ? 1 : 0,
       }}
       animate={{
         width: options.show_friends ? 58 : 0,
         paddingLeft: options.show_friends ? 8 : 0,
         paddingRight: options.show_friends ? 8 : 0,
-        gap: options.show_friends ? 8 : 0,
         opacity: options.show_friends ? 1 : 0,
       }}
       transition={{ type: "spring", stiffness: 200, damping: 25 }}
@@ -91,7 +89,7 @@ const Friend = (props: FriendProps) => {
   return (
     <>
       <motion.div
-        className="absolute  pointer-events-none"
+        className="absolute pointer-events-none"
         style={{
           left:
             (parentRef.current?.getBoundingClientRect().left ?? 0) -

@@ -61,8 +61,6 @@ const RecentMatch = (props: RecentMatchProps) => {
       ? "rd"
       : "th";
 
-  console.log(props.match.TimeAlive);
-
   const timeAlive = formatTime(
     new Date(props.match.TimeAlive).getTime() / 1000 / 1000,
     0,

@@ -55,7 +55,7 @@ pub fn spawn_admin_process_and_get_output(command: &str, args: Vec<&str>) -> Res
   }
 
   let output = String::from_utf16(&wide_file_data).expect("Failed to convert output to string");
-  std::fs::remove_file(output_file).expect("Failed to delete output file");
+  // std::fs::remove_file(output_file).expect("Failed to delete output file");
 
   Ok(output)
 }

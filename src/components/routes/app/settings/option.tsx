@@ -301,8 +301,6 @@ const ControlStateFile = (props: OptionProps<OptionTypeFile, string>) => {
   const [textWidth, setTextWidth] = useState(0);
   const textMeasureRef = useRef<HTMLSpanElement>(null);
 
-  console.log(props);
-
   const niceFileName = props.state
     .replace(/\\/g, "/")
     .split("/")
@@ -514,8 +512,6 @@ const ControlStateSlider = (
       0,
       Math.min(1, (props.value - usingMinimum) / (usingMaximum - usingMinimum))
     );
-
-    console.log("SliderSetValue", props.value, position);
 
     return (
       <motion.div

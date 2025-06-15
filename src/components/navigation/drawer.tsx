@@ -45,11 +45,14 @@ const Drawer = () => {
       {!userManager.access() ? <EmptyRoutes /> : <AuthenticatedRoutes />}
 
       {(application.dev || userManager.is_dev()) && (
-        <DrawerItem
-          path="/developer"
-          icon="IoConstructSharp"
-          label="Developer"
-        />
+        <>
+          <DrawerItem path="/app/editor" icon="IoCreate" label="Editor" />
+          <DrawerItem
+            path="/developer"
+            icon="IoConstructSharp"
+            label="Developer"
+          />
+        </>
       )}
     </motion.nav>
   );
