@@ -173,6 +173,19 @@ const Boostrap = () => {
     servers.delete_server(data.server_id);
   };
 
+  const onSocketDisplayNameChanged = (
+    data: SocketDownEventDataFromType<"display_name_updated">
+  ) => {
+    userManager.set_new_username(data.newDisplayName);
+    bannerManager.push({
+      colour: "pink",
+      id: "display_name_updated",
+      text: `Your display name has been updated, please restart your game to see the changes.`,
+      closable: true,
+      expireAfter: 5,
+    });
+  };
+
   const syncUserStages = () => {
     if (
       userManager._token != null &&
@@ -212,6 +225,7 @@ const Boostrap = () => {
     socket.bind("server_created", onSocketServerCreated);
     socket.bind("server_updated", onSocketServerUpdated);
     socket.bind("server_deleted", onSocketServerDeleted);
+    socket.bind("display_name_updated", onSocketDisplayNameChanged);
 
     return () => {
       socket.unbind("close", onSocketClose);
@@ -224,6 +238,7 @@ const Boostrap = () => {
       socket.unbind("server_created", onSocketServerCreated);
       socket.unbind("server_updated", onSocketServerUpdated);
       socket.unbind("server_deleted", onSocketServerDeleted);
+      socket.unbind("display_name_updated", onSocketDisplayNameChanged);
     };
   }, []);
 

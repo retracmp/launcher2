@@ -66,6 +66,7 @@ type UserManager = {
     | null;
   has_any_donation_tier: () => boolean;
   is_dev: () => boolean;
+  set_new_username: (username: string) => void;
 
   _stage: LauncherStage;
   set_stage: (stage: LauncherStage) => void;
@@ -127,6 +128,14 @@ export const useUserManager = create<UserManager>()(
         if (user === null) return false;
 
         return user.Account.State.Packages.includes("dev_bundle");
+      },
+
+      set_new_username: (username) => {
+        const user = get()._user;
+        if (user === null) return;
+
+        user.Account.DisplayName = username;
+        set({ _user: user });
       },
 
       _stage: LauncherStage.NoToken,
