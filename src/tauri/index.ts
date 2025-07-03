@@ -172,6 +172,23 @@ const get_app_action = async (): Promise<string | null> => {
   return action;
 };
 
+const cancel_download = async (manifestId: string): Promise<boolean | null> => {
+  const result = await i<boolean>("cancel_download", { manifestId }).catch(
+    (e: string) => {
+      useBannerManager.getState().push({
+        closable: true,
+        colour: "red",
+        id: "cancel_error",
+        text: `Cancelling download failed with reason: ${e}`,
+        expireAfter: 5,
+      });
+      console.error("Error cancelling download:", e);
+      return null;
+    }
+  );
+  return result;
+};
+
 const invoke = {
   get_windows_version,
   get_fortnite_version,
@@ -183,6 +200,7 @@ const invoke = {
   add_to_defender,
   add_to_defender_multi,
   get_app_action,
+  cancel_download,
 };
 
 export default invoke;

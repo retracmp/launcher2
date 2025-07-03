@@ -67,3 +67,8 @@ type EAC_INITIALISED = {
   manifest_id: string;
   status: boolean;
 };
+
+type DOWNLOAD_ERROR = {
+  manifest_id: string;
+  error: string;
+};

@@ -5,6 +5,7 @@ import {
   BUILD_NICE_NAMES,
   DOWNLOAD_FILE_NICE_NAMES,
 } from "src/wrapper/library";
+import invoke from "src/tauri/index";
 
 import UI from "src/components/core/default";
 import { SparkLineChart } from "@mui/x-charts";
@@ -16,6 +17,10 @@ type DownloadingBuildProps = {
 
 const DownloadingBuildUI = (props: DownloadingBuildProps) => {
   const options = useOptions();
+
+  const handleCancel = async () => {
+    await invoke.cancel_download(props.progress.manifest_id);
+  };
 
   return (
     <>
@@ -94,6 +99,13 @@ const DownloadingBuildUI = (props: DownloadingBuildProps) => {
           transition={{ type: "spring", stiffness: 200, damping: 19 }}
         ></motion.div>
       </div>
+
+      <button
+        onClick={handleCancel}
+        className="flex flex-row items-center gap-2 text-red-200/20 hover:text-red-300 hover:underline transition-colors text-xs cursor-pointer "
+      >
+        Cancel
+      </button>
     </>
   );
 };

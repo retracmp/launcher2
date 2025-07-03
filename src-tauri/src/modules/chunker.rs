@@ -29,16 +29,19 @@ use crate::modules::util;
 #[derive(Default, Serialize, Debug, Deserialize, Clone)]
 pub struct DownloadingStateTauri {
     pub active_downloads: std::collections::HashMap<String, bool>,
+    pub cancel_requests: std::collections::HashMap<String, bool>,
 }
 
 impl DownloadingStateTauri {
     pub fn new() -> Self {
         Self {
             active_downloads: std::collections::HashMap::new(),
+            cancel_requests: std::collections::HashMap::new(),
         }
     }
 
     pub fn add_download(&mut self, manifest_id: String) {
+        println!("Adding download for manifest: {}", manifest_id);
         self.active_downloads.insert(manifest_id, true);
     }
 
@@ -48,6 +51,18 @@ impl DownloadingStateTauri {
 
     pub fn is_downloading(&self, manifest_id: &str) -> bool {
         self.active_downloads.contains_key(manifest_id)
+    }
+
+    pub fn request_cancel(&mut self, manifest_id: String) {
+        self.cancel_requests.insert(manifest_id, true);
+    }
+
+    pub fn is_cancel_requested(&self, manifest_id: &str) -> bool {
+        self.cancel_requests.contains_key(manifest_id)
+    }
+
+    pub fn clear_cancel_requests(&mut self) {
+        self.cancel_requests.clear();
     }
 }
 
@@ -321,6 +336,12 @@ async fn download_build_chunk(
                 progress.eta_seconds = (remaining as f64 / 1024.0 / 1024.0 / mbps).ceil() as u64;
             }
         }
+
+        let state = util::get_downloading_state().await;
+        if state.is_cancel_requested(&progress.lock().await.manifest_id) {
+            dbg!(println!("Download cancelled for manifest: {}", progress.lock().await.manifest_id));
+            return Err("Download cancelled by user.".into());
+        }
     }
 
     file.flush().await?;
@@ -389,6 +410,12 @@ async fn download_file(
         }
 
         chunk_info.push((tmp_chunk_path.clone(), chunk.Offset as u64));
+
+        let state = util::get_downloading_state().await;
+        if state.is_cancel_requested(manifest_id) {
+            dbg!(println!("Download cancelled for manifest: {}", manifest_id));
+            return Err("Download cancelled by user.".into());
+        }
     }
 
     let final_save_path = Path::new(&download_path.to_string()).join(sanitized_path);
@@ -420,6 +447,12 @@ pub async fn download_build_internal(
     handle: AppHandle,
 ) -> Result<bool, String> {
     let client = Client::new();
+
+    let mut state = util::get_downloading_state().await;
+    if state.is_cancel_requested(manifest_id) && !state.is_downloading(manifest_id) {
+        state.clear_cancel_requests();
+        util::set_downloading_state(state).await;
+    }
 
     match download_manifest(manifest_id, &client).await {
         Ok(mut manifest) => {
@@ -481,10 +514,6 @@ pub async fn download_build_internal(
                 dbg!(println!("Starting download progress timer"));
 
                 {
-                    // let state = handle.state::<Mutex<DownloadingStateTauri>>();
-                    // let mut state = state.lock().await;
-                    // state.active_downloads.insert(manifest_id.to_string(), true);
-
                     let mut state = util::get_downloading_state().await;
                     state.add_download(manifest_id.to_string());
                     util::set_downloading_state(state).await;
@@ -501,6 +530,15 @@ pub async fn download_build_internal(
                         }
 
                         if progress.percent >= 100.0 || progress.wants_cancel {
+                            break;
+                        }
+
+                        let state = util::get_downloading_state().await;
+                        if state.is_cancel_requested(&progress.manifest_id) {
+                            dbg!(println!("Download cancelled for manifest: {}", progress.manifest_id));
+                            let mut state = util::get_downloading_state().await;
+                            state.request_cancel(progress.manifest_id.clone());
+                            util::set_downloading_state(state).await;
                             break;
                         }
                     }
@@ -532,6 +570,10 @@ pub async fn download_build_internal(
                     drop(permit);
 
                     if let Err(e) = result {
+                        if e.to_string() == "Download cancelled by user." {
+                            return Err("".to_string());
+                        }
+
                         dbg!(println!("Error downloading file: {}", e));
                         return Err(e.to_string());
                     }
@@ -552,11 +594,20 @@ pub async fn download_build_internal(
                         util::set_downloading_state(state).await;
                     }
 
-                    return Err(format!(
-                        "{} Please contact the support team.",
-                        e.to_string()
-                    ));
+                    let _ = handle.emit(
+                        "DOWNLOAD_ERROR2",
+                        json!({ "manifest_id": manifest_id, "error": e }),
+                    );
 
+                    if e.to_string() != "" {
+                        return Err(format!(
+                            "{} Please contact the support team.",
+                            e.to_string()
+                        ));
+                    } else {
+                        dbg!(println!("Download cancelled by user."));
+                        return Ok(false);
+                    }
                 }
             }
 
@@ -635,4 +686,17 @@ pub async fn delete_build_internal(
 
 pub async fn delete_build(manifest_id: &str, download_path: &str) -> Result<bool, String> {
     delete_build_internal(manifest_id, download_path, util::get_app_handle()).await
+}
+
+pub async fn cancel_download(manifest_id: &str) -> Result<(), String> {
+    let state = util::get_downloading_state().await;
+    if !state.is_downloading(manifest_id) {
+        return Err("No download in progress for this manifest".to_string());
+    }
+
+    let mut state = util::get_downloading_state().await;
+    state.request_cancel(manifest_id.to_string());
+    util::set_downloading_state(state).await;
+
+    Ok(())
 }

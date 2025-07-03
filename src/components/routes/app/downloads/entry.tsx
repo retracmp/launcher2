@@ -46,7 +46,7 @@ const DownloadEntry = (props: DownloadEntryProps) => {
       props.manifestInfo.manifestId,
       `${options.content_directory}/${props.manifestInfo.manifestId}`
     );
-    if (result === null) return;
+    if (result === null || result === false) return;
 
     const entry = await library.createLibraryEntry(
       `${options.content_directory}/${props.manifestInfo.manifestId}`

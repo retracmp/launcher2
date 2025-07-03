@@ -111,3 +111,14 @@ pub async fn add_to_defender_multi(
 pub async fn get_app_action() -> Result<String, String> {
   Ok(util::get_app_action())
 }
+
+#[tauri::command]
+pub async fn cancel_download(
+  manifest_id: &str,
+) -> Result<bool, String> {
+  let result = chunker::cancel_download(manifest_id).await;
+  match result {
+    Ok(_) => Ok(true),
+    Err(e) => Err(e),
+  }
+}

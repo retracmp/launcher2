@@ -48,7 +48,16 @@ const TauriListeners = () => {
     []
   );
 
+  const onDownloadErrorAdvancedEvent = useCallback(
+    (error: event.Event<DOWNLOAD_ERROR>) => {
+      downloadState.remove_active_download_progress(error.payload.manifest_id);
+      downloadState.remove_active_verifying_progress(error.payload.manifest_id);
+    },
+    []
+  );
+
   const onDownloadErrorEvent = useCallback((progress: event.Event<string>) => {
+    if (progress.payload.includes("by user")) return;
     banners.push({
       closable: true,
       colour: "red",
@@ -141,12 +150,18 @@ const TauriListeners = () => {
       onEasyAnticheatInitialised
     );
 
+    const unlistenDownloadErrorAdv = event.listen<DOWNLOAD_ERROR>(
+      "DOWNLOAD_ERROR2",
+      onDownloadErrorAdvancedEvent
+    );
+
     return () => {
       unlistenDownload.then((fn: event.UnlistenFn) => fn());
       unlistenDownloadError.then((fn: event.UnlistenFn) => fn());
       unlistenVerify.then((fn: event.UnlistenFn) => fn());
       unlistenVerifyComplete.then((fn: event.UnlistenFn) => fn());
       unlistenEACInitialised.then((fn: event.UnlistenFn) => fn());
+      unlistenDownloadErrorAdv.then((fn: event.UnlistenFn) => fn());
     };
   }, [
     onDownloadEvent,
@@ -154,6 +169,7 @@ const TauriListeners = () => {
     onVerifyComplete,
     onEasyAnticheatInitialised,
     onActionAfterLaunch,
+    onDownloadErrorEvent,
   ]);
 
   const autoDownload = useCallback(async () => {
@@ -178,7 +194,7 @@ const TauriListeners = () => {
         manifest,
         retracBuild.rootLocation
       );
-      if (result === null) {
+      if (result === null || result === false) {
         console.error(`[download] auto download failed for ${manifest}`);
         return;
       }
