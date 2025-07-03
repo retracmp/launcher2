@@ -14,6 +14,7 @@ type DrawerItemProps = {
 
   opt_string?: string;
   opt_number?: number;
+  opt_onlick?: () => void;
 };
 
 const DrawerItemBaseClassName =
@@ -61,6 +62,7 @@ const DrawerItem = (props: DrawerItemProps) => {
       activeOptions={{ exact: true }}
       onMouseEnter={onHoverEntered}
       onMouseLeave={onHoverExited}
+      onClick={props.opt_onlick}
     >
       <Icon className="min-w-4 min-h-4" />
 

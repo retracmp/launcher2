@@ -6,6 +6,7 @@ import { useOptions } from "src/wrapper/options";
 
 import DrawerItem, { SparklyDrawerItem } from "src/components/navigation/item";
 import { motion } from "motion/react";
+import { openUrl } from "@tauri-apps/plugin-opener";
 
 const Drawer = () => {
   const application = useApplicationInformation();
@@ -64,6 +65,14 @@ const EmptyRoutes = () => {
   return (
     <>
       <DrawerItem path="/" icon="IoLockClosedSharp" label="Welcome" />
+      <DrawerItem
+        path="/support"
+        icon="IoAccessibilitySharp"
+        label="Need Help?"
+        opt_onlick={() => {
+          openUrl("https://discord.gg/6sNFtW4Hva");
+        }}
+      />
 
       {application.updateNeeded != null && (
         <SparklyDrawerItem
@@ -111,6 +120,14 @@ const AuthenticatedRoutes = () => {
         icon="IoSparklesSharp"
         label="Donate"
         colour="yellow"
+      />
+      <DrawerItem
+        path="/support"
+        icon="IoAccessibilitySharp"
+        label="Need Help?"
+        opt_onlick={() => {
+          openUrl("https://discord.gg/6sNFtW4Hva");
+        }}
       />
 
       <s className="mt-auto" />
