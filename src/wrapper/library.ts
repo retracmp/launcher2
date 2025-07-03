@@ -205,14 +205,17 @@ export const useLibrary = create<LibraryState>()(
         get().setLaunchedBuild(entry);
         get().setLaunchState(LAUNCH_STATE.LAUNCHING);
 
-        if (!entry.addedToWindowsDefender) {
+        if (!entry.triedToAddToWindowsDefender) {
           const result = await invoke.add_to_defender(entry.rootLocation);
           if (result !== null) {
-            // get().setLaunchState(LAUNCH_STATE.NONE);
-            // throw new Error("Failed to add to Windows Defender");
+            get().updateLibraryEntry(entry.version, {
+              addedToWindowsDefender: false,
+              triedToAddToWindowsDefender: true,
+            });
           } else {
             get().updateLibraryEntry(entry.version, {
               addedToWindowsDefender: true,
+              triedToAddToWindowsDefender: true,
             });
           }
         }
@@ -273,6 +276,8 @@ export const useLibrary = create<LibraryState>()(
           manifestId: entry.manifestId,
           hasIntialisedEasyAnticheat: entry.hasIntialisedEasyAnticheat || false,
           addedToWindowsDefender: entry.addedToWindowsDefender || false,
+          triedToAddToWindowsDefender:
+            entry.triedToAddToWindowsDefender || false,
         })),
       }),
     }

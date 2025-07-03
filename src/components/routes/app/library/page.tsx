@@ -34,7 +34,7 @@ const LibraryPage = () => {
   };
 
   const sortedLibrary = library.library.sort((a, b) => {
-    return a.order - b.order;
+    return a._order - b._order;
   });
 
   return (
