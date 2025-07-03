@@ -11,7 +11,7 @@ import {
   OptionGroup,
   ColourOption,
   SliderOption,
-} from "src/components/routes/app/settings/option";
+} from "src/components/core/option";
 import { IoLogOutSharp } from "react-icons/io5";
 import UI from "src/components/core/default";
 import Account from "src/components/core/account";
@@ -330,7 +330,7 @@ const SettingsPage = () => {
       </OptionGroup>
 
       <OptionGroup title="Your Account" _last>
-        <Account />
+        <Account username_editable />
       </OptionGroup>
 
       <div className="flex flex-col gap-1.5 p-2">

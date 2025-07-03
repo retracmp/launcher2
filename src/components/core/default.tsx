@@ -1,5 +1,5 @@
-import { AnimatePresence } from "motion/react";
 import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "motion/react";
 
 namespace UI {
   export const Box = (
@@ -48,19 +48,6 @@ namespace UI {
       <p
         {...props}
         className={`text-neutral-300 font-plex text-sm leading-[15px] min-w-fit ${props.className}`}
-      />
-    );
-  };
-
-  export const PNoCol = (
-    props: {
-      children: React.ReactNode;
-    } & React.HTMLAttributes<HTMLParagraphElement>
-  ) => {
-    return (
-      <p
-        {...props}
-        className={`font-plex text-[14px] text-base leading-[14px] min-w-fit ${props.className}`}
       />
     );
   };
@@ -222,6 +209,55 @@ namespace UI {
         {" "}
         {shouldRender ? <>{children}</> : null}
       </AnimatePresence>
+    );
+  };
+
+  type ButtonProps = {
+    children: React.ReactNode;
+    on_click: () => void;
+    colour: "green" | "red" | "blue" | "invisible";
+    tooltip?: string;
+    _last?: boolean;
+    disabled?: boolean;
+  };
+
+  export const RowButton = (props: ButtonProps) => {
+    const colour = (
+      {
+        blue: "hover:bg-blue-400/30 text-neutral-600 hover:text-blue-200",
+        green: "hover:bg-green-400/30 text-neutral-600 hover:text-green-200",
+        red: "hover:bg-red-400/30 text-neutral-600 hover:text-red-200",
+        invisible: "hover:bg-neutral-700/10 text-neutral-400",
+      } as const
+    )[props.colour];
+
+    const [showTooltip, setShowTooltip] = useState(false);
+
+    return (
+      <>
+        <button
+          className={`aspect-square min-w-max h-8 flex items-center justify-center p-1.5 bg-neutral-700/20 rounded-md ${
+            props.disabled ? "cursor-not-allowed" : "cursor-pointer"
+          } transition-all ${colour}`}
+          onClick={props.on_click}
+          onMouseEnter={() => setShowTooltip(true)}
+          onMouseLeave={() => setShowTooltip(false)}
+          disabled={props.disabled}
+        >
+          <motion.div
+            className="absolute text-xs text-center pointer-events-none bg-neutral-800 p-0.5 px-1.5 min-w-max rounded-md backdrop-blur-md"
+            initial={{ opacity: 0, y: -10, x: !props._last ? 0 : -20 }}
+            animate={{
+              opacity: showTooltip ? 1 : 0,
+              y: showTooltip ? -30 : -20,
+              x: !props._last ? 0 : -20,
+            }}
+          >
+            {props.tooltip}
+          </motion.div>
+          {props.children}
+        </button>
+      </>
     );
   };
 }

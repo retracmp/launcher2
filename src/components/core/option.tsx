@@ -106,7 +106,7 @@ const Option = <T extends AllowedOptionTypes, K extends OptionStateType>(
 
   return (
     <motion.div
-      className="relative flex flex-col p-2.5 py-2 gap-0.5 w-[100%] bg-neutral-800/10 rounded-sm border-neutral-700/40 border-1 border-solid backdrop-blur-md"
+      className="@container relative flex flex-col p-2.5 py-2 gap-0.5 w-[100%] bg-neutral-800/10 rounded-sm border-neutral-700/40 border-1 border-solid backdrop-blur-md"
       variants={
         props._animate
           ? {
@@ -233,7 +233,7 @@ const ControlStateBoolean = (
       )}
 
       <div
-        className={`flex items-center justify-center w-7 h-7 rounded-sm cursor-pointer border-1 border-solid active:scale-[0.98] backdrop-blur-lg ${
+        className={`flex items-center justify-center min-w-7 h-7 rounded-sm cursor-pointer border-1 border-solid active:scale-[0.98] backdrop-blur-lg ${
           props.state
             ? "bg-green-700/40 border-green-500/20 hover:bg-green-800/50"
             : "bg-neutral-800/50 border-neutral-500/20 hover:bg-neutral-800/20"
@@ -256,7 +256,7 @@ const ControlStateString = (_: OptionProps<OptionTypeString, string>) => {
 
 const ControlStateColours = (props: OptionProps<OptionTypeColour, string>) => {
   return (
-    <div className="min-w-max h-7 rounded-sm flex flex-row items-center justify-center gap-1">
+    <div className="w-max rounded-sm flex flex-row items-center justify-center gap-1 @max-sm:flex-wrap">
       {props._colour_options?.map((colour) => (
         <div
           key={colour}
@@ -528,14 +528,13 @@ const ControlStateSlider = (
       >
         <motion.div
           className="relative w-3 h-3 bg-neutral-600 rounded-full cursor-pointer ring-0 hover:ring-3 ring-neutral-700/60"
-          initial={{ x: 0 }}
+          initial={{ x: position * (sliderWidth - 6) }}
           animate={{
             x: position * (sliderWidth - 6),
           }}
           transition={{
-            type: "spring",
-            stiffness: 180,
-            damping: 22.5,
+            type: "tween",
+            duration: 0.1,
           }}
           onPointerDown={onPointerDown}
           onMouseEnter={() => setShowTooltip(true)}

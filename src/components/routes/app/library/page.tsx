@@ -4,7 +4,7 @@ import { useRetrac } from "src/wrapper/retrac";
 import { useOptions } from "src/wrapper/options";
 import { open } from "@tauri-apps/plugin-dialog";
 
-import { OptionGroup } from "src/components/routes/app/settings/option";
+import { OptionGroup } from "src/components/core/option";
 import {
   IoApps,
   IoBanSharp,

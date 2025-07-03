@@ -1,4 +1,4 @@
-import { OptionGroup } from "src/components/routes/app/settings/option";
+import { OptionGroup } from "src/components/core/option";
 import UI from "src/components/core/default";
 import Package from "./package";
 import Effect from "./effect";

@@ -3,7 +3,7 @@ import { useBannerManager } from "src/wrapper/banner";
 import { useApplicationInformation } from "src/wrapper/tauri";
 import { relaunch } from "@tauri-apps/plugin-process";
 
-import { OptionGroup } from "../app/settings/option";
+import { OptionGroup } from "../../core/option";
 import UI from "src/components/core/default";
 
 const UpdatePage = () => {

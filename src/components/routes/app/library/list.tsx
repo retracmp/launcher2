@@ -1,5 +1,4 @@
 import { useRetrac } from "src/wrapper/retrac";
-import { useState } from "react";
 import { useBannerManager } from "src/wrapper/banner";
 import { LAUNCH_STATE, useLibrary } from "src/wrapper/library";
 import { convertFileSrc } from "@tauri-apps/api/core";
@@ -163,21 +162,25 @@ const FortniteBuildList = (props: FortniteBuildProps) => {
 
         <div className="flex flex-row items-center gap-2 ml-auto px-1">
           {!props.entry.addedToWindowsDefender && (
-            <Button
+            <UI.RowButton
               colour="blue"
               on_click={addToDefender}
               tooltip="Add to Windows Defender"
             >
               <IoShield className="w-full h-full" />
-            </Button>
+            </UI.RowButton>
           )}
 
           {launchedBuildIsCurrent ? (
-            <Button colour="red" on_click={closeBuild} tooltip="Close Fortnite">
+            <UI.RowButton
+              colour="red"
+              on_click={closeBuild}
+              tooltip="Close Fortnite"
+            >
               <IoClose className="w-full h-full" />
-            </Button>
+            </UI.RowButton>
           ) : (
-            <Button
+            <UI.RowButton
               colour="green"
               on_click={primaryhandler}
               tooltip="Launch Fortnite"
@@ -189,69 +192,20 @@ const FortniteBuildList = (props: FortniteBuildProps) => {
               }
             >
               <IoPlay className="w-full h-full" />
-            </Button>
+            </UI.RowButton>
           )}
 
-          <Button
+          <UI.RowButton
             colour="red"
             on_click={deleteBuild}
             tooltip="Remove Build"
             _last
           >
             <IoTrashBin className="w-full h-full" />
-          </Button>
+          </UI.RowButton>
         </div>
       </motion.div>
     </Reorder.Item>
-  );
-};
-
-type ButtonProps = {
-  children: React.ReactNode;
-  on_click: () => void;
-  colour: "green" | "red" | "blue" | "invisible";
-  tooltip?: string;
-  _last?: boolean;
-  disabled?: boolean;
-};
-
-const Button = (props: ButtonProps) => {
-  const colour = (
-    {
-      blue: "hover:bg-blue-400/30 text-neutral-600 hover:text-blue-200",
-      green: "hover:bg-green-400/30 text-neutral-600 hover:text-green-200",
-      red: "hover:bg-red-400/30 text-neutral-600 hover:text-red-200",
-      invisible: "hover:bg-neutral-700/10 text-neutral-400",
-    } as const
-  )[props.colour];
-
-  const [showTooltip, setShowTooltip] = useState(false);
-
-  return (
-    <>
-      <button
-        className={`aspect-square min-w-max h-8 flex items-center justify-center p-1.5 bg-neutral-700/20 rounded-md ${
-          props.disabled ? "cursor-not-allowed" : "cursor-pointer"
-        } transition-all ${colour}`}
-        onClick={props.on_click}
-        onMouseEnter={() => setShowTooltip(true)}
-        onMouseLeave={() => setShowTooltip(false)}
-        disabled={props.disabled}
-      >
-        <motion.div
-          className="absolute text-xs text-center pointer-events-none bg-neutral-800 p-0.5 px-1.5 min-w-max rounded-md backdrop-blur-md"
-          initial={{ opacity: 0, y: -10, x: !props._last ? 0 : -10 }}
-          animate={{
-            opacity: showTooltip ? 1 : 0,
-            y: showTooltip ? -30 : -20,
-            x: !props._last ? 0 : -10,
-          }}
-        >
-          {props.tooltip}
-        </motion.div>
-        {props.children}
-      </button>
-    </>
   );
 };
 

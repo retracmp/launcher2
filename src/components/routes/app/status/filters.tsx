@@ -3,7 +3,7 @@ import { useRetrac } from "src/wrapper/retrac";
 import { useServerManager } from "src/wrapper/server";
 
 import { motion, AnimatePresence } from "motion/react";
-import { BooleanOption } from "../settings/option";
+import { BooleanOption } from "../../../core/option";
 import { HiX } from "react-icons/hi";
 import UI from "src/components/core/default";
 

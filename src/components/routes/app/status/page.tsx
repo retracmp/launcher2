@@ -1,7 +1,7 @@
 import { useRetrac } from "src/wrapper/retrac";
 import { useServerManager } from "src/wrapper/server";
 
-import { OptionGroup } from "src/components/routes/app/settings/option";
+import { OptionGroup } from "src/components/core/option";
 import ServerRendered, {
   NoServers,
 } from "src/components/routes/app/status/server";

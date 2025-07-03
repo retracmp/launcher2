@@ -3,11 +3,7 @@ import { useOptions } from "src/wrapper/options";
 import { useRetrac } from "src/wrapper/retrac";
 
 import UI from "src/components/core/default";
-import {
-  BooleanOption,
-  OptionGroup,
-  StringOption,
-} from "../app/settings/option";
+import { BooleanOption, OptionGroup, StringOption } from "../../core/option";
 import invoke from "src/tauri";
 
 const DeveloperPage = () => {

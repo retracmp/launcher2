@@ -10,7 +10,7 @@ import * as deeplink from "@tauri-apps/plugin-deep-link";
 import client from "src/axios/client";
 
 import UI from "src/components/core/default";
-import { OptionGroup } from "../app/settings/option";
+import { OptionGroup } from "../../core/option";
 
 const LoginPage = () => {
   const userManager = useUserManager();

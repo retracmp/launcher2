@@ -41,6 +41,15 @@ type SocketUpEvent_UnsubscribeOTP = SocketBasicUpEvent & {
   id: "otp_unsubscribe";
 };
 
+type SocketUpEvent_UnsubscribeOTP = SocketBasicUpEvent & {
+  id: "otp_unsubscribe";
+};
+
+type SocketUpEvent_ChangeDisplayName = SocketBasicUpEvent & {
+  id: "change_display_name";
+  newDisplayName: string;
+};
+
 type SocketUpEvent =
   | SocketUpEvent_Heartbeat
   | SocketUpEvent_RequestUser
@@ -49,7 +58,8 @@ type SocketUpEvent =
   | SocketUpEvent_RequestFriendInfo
   | SocketUpEvent_RequestServers
   | SocketUpEvent_SubscribeOTP
-  | SocketUpEvent_UnsubscribeOTP;
+  | SocketUpEvent_UnsubscribeOTP
+  | SocketUpEvent_ChangeDisplayName;
 
 type SocketUpEventType = SocketUpEvent["id"];
 type SocketUpEventDataFromType<T extends SocketUpEventType> = Prettify<
@@ -65,3 +75,5 @@ type leaderboard_test = SocketUpEventDataFromType<"request_leaderboard">;
 type friend_info_test = SocketUpEventDataFromType<"request_friend_info">;
 type servers_test = SocketUpEventDataFromType<"request_servers">;
 type otp_subscribe_test = SocketUpEventDataFromType<"otp_subscribe">;
+type otp_unsubscribe_test = SocketUpEventDataFromType<"otp_unsubscribe">;
+type change_displayname_test = SocketUpEventDataFromType<"change_displayname">;

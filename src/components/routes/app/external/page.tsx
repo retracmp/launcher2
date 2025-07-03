@@ -3,7 +3,7 @@ import { useSocket } from "src/socket";
 import { useEffect } from "react";
 import { useBannerManager } from "src/wrapper/banner";
 
-import { OptionGroup } from "../settings/option";
+import { OptionGroup } from "../../../core/option";
 import { motion } from "motion/react";
 import UI from "src/components/core/default";
 import Account from "src/components/core/account";

@@ -84,6 +84,11 @@ type SocketDownEvent_OTP = SocketBasicUpEvent & {
   otp: string;
 };
 
+type SocketDownEvent_DisplayNameUpdated = SocketBasicUpEvent & {
+  id: "display_name_updated";
+  newDisplayName: string;
+};
+
 type SocketDownEvent =
   | SocketDownEvent_Close
   | SocketDownEvent_Error
@@ -99,7 +104,8 @@ type SocketDownEvent =
   | SocketDownEvent_ServerUpdated
   | SocketDownEvent_ServerDeleted
   | SocketDownEvent_Servers
-  | SocketDownEvent_OTP;
+  | SocketDownEvent_OTP
+  | SocketDownEvent_DisplayNameUpdated;
 
 type SocketDownEventType = SocketDownEvent["id"];
 type SocketDownEventDataFromType<T extends SocketDownEventType> = Prettify<
@@ -125,3 +131,5 @@ type server_updated_test = SocketDownEventDataFromType<"server_updated">;
 type server_deleted_test = SocketDownEventDataFromType<"server_deleted">;
 type servers_test = SocketDownEventDataFromType<"servers">;
 type otp_test = SocketDownEventDataFromType<"otp">;
+type change_displayname_test =
+  SocketDownEvent_DisplayNameUpdated<"displayName_updated">;

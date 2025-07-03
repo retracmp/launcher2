@@ -9,7 +9,7 @@ import NewsWidget from "src/components/routes/app/home/widgets/news";
 import EventsWidget from "src/components/routes/app/home/widgets/events";
 import LootLabsWidget from "src/components/routes/app/home/widgets/lootlabs";
 import DonateWidget from "src/components/routes/app/home/widgets/donate";
-import { OptionGroup } from "../settings/option";
+import { OptionGroup } from "../../../core/option";
 
 const HomePage = () => {
   const retrac = useRetrac();

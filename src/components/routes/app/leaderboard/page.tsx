@@ -12,7 +12,7 @@ import {
 import LeaderboardItem, {
   EmptyLeaderboardItem,
 } from "src/components/routes/app/leaderboard/item";
-import { OptionGroup } from "../settings/option";
+import { OptionGroup } from "../../../core/option";
 
 const LeaderboardPage = () => {
   const socket = useSocket();

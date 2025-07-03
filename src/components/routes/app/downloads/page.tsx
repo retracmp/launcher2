@@ -1,7 +1,7 @@
 import { useDownloadState } from "src/wrapper/download";
 import { useRetrac } from "src/wrapper/retrac";
 
-import { OptionGroup } from "src/components/routes/app/settings/option";
+import { OptionGroup } from "src/components/core/option";
 import UI from "src/components/core/default";
 import DownloadingBuild from "./downloading";
 import DownloadEntry from "./entry";
