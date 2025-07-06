@@ -236,7 +236,7 @@ type LibraryEntry = {
   addedToWindowsDefender: boolean;
   triedToAddToWindowsDefender: boolean;
 
-  _order: number;
+  order: number;
 };
 
 type BackendServer = {

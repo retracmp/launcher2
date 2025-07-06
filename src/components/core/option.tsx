@@ -523,7 +523,7 @@ const ControlStateSlider = (
   return (
     <div className="relative py-1 w-full h-max">
       <div
-        className="group @container relative w-full h-1.5 bg-neutral-700/60 rounded-full flex items-center"
+        className="@container relative w-full h-1.5 bg-neutral-700/60 rounded-full flex items-center"
         ref={sliderRef}
       >
         <motion.div
@@ -615,7 +615,7 @@ const OptionGroup = (props: OptionGroupProps) => {
 
   return (
     <motion.div
-      className={`group relative flex ${
+      className={`relative flex ${
         props._row ? "flex-row @max-2xl:flex-col" : "flex-col"
       } gap-2 p-2.5 ${
         !props._hideBorder &&

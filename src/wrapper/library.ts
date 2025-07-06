@@ -260,6 +260,9 @@ export const useLibrary = create<LibraryState>()(
           const index = order.indexOf(entry.version);
           return { ...entry, order: index };
         });
+
+        console.log("Updated library order:", updatedLibrary);
+
         set({ library: updatedLibrary });
       },
     }),
