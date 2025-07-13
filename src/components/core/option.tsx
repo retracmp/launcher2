@@ -62,6 +62,7 @@ type OptionProps<T extends AllowedOptionTypes, K extends OptionStateType> = {
   _slider_max?: number;
   _slider_step?: number;
   _slider_values?: number[];
+  _file_extensions?: string[];
 };
 
 const Option = <T extends AllowedOptionTypes, K extends OptionStateType>(
@@ -318,7 +319,13 @@ const ControlStateFile = (props: OptionProps<OptionTypeFile, string>) => {
   };
 
   const handleFindLocation = async () => {
-    const selectedPath = await open({ directory: true, multiple: false });
+    const selectedPath = await open({
+      directory: props._file_extensions ? false : true,
+      multiple: false,
+      filters: props._file_extensions
+        ? [{ name: "Files", extensions: props._file_extensions }]
+        : [],
+    });
     if (!selectedPath) return;
 
     if (Array.isArray(selectedPath)) {
@@ -358,7 +365,16 @@ const ControlStateFile = (props: OptionProps<OptionTypeFile, string>) => {
             {props.state ? niceFileName : "Empty"}
           </UI.P>
         )}
-        <Icons.IoFolderOpenSharp className="text-neutral-400 min-w-4" />
+
+        {props._file_extensions ? (
+          <>
+            <Icons.IoDocuments className="text-neutral-400 min-w-4" />
+          </>
+        ) : (
+          <>
+            <Icons.IoFolderOpenSharp className="text-neutral-400 min-w-4" />
+          </>
+        )}
       </motion.div>
     </div>
   );

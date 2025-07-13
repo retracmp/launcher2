@@ -145,6 +145,7 @@ export const useOptions = create<OptionsState>()(
     {
       name: "options",
       storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ ...state, disable_drawer: false }),
     }
   )
 );

@@ -190,7 +190,7 @@ pub struct ManifestProgress {
     wants_cancel: bool,
 }
 
-const BASE_URL: &str = "https://cdn.retrac.site/manifest";
+const BASE_URL: &str = "https://cdn.atmos.chat/manifest";
 const TMP_FOLDER: &str = "TemporaryChunks";
 
 async fn filter_missing_files_with_progress(
@@ -261,7 +261,7 @@ async fn download_manifest(manifest_name: &str, client: &Client) -> Result<Manif
     let manifest_url = format!(
         "{}/{}",
         BASE_URL,
-        format!("{}.acidmanifest", manifest_name).as_str()
+        format!("{}.acidmanifest#", manifest_name).as_str()
     );
 
     let response = client.get(&manifest_url).send().await.unwrap();

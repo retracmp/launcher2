@@ -16,6 +16,8 @@ const IMAGES = [
   "/donate/crystal.webp",
   "/donate/fncs.webp",
   "/donate/og.webp",
+  "/donate/anime.png",
+  "/donate/glider.png",
 ];
 
 const FaillingItem = () => {

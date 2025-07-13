@@ -41,6 +41,36 @@ const StorePage = () => {
           _iconColour2="bg-lime-500"
           _doNotAllowPurchaseIfOwnedThese={["ultimate"]}
         />
+        {/* <Package
+          donatePackageTag="anime"
+          title="Anime Legends Bundle"
+          price={20}
+          blurb="Unlock a wide range of anime inspred outfits."
+          iconImage="/donate/anime.png"
+          image="/donate/anime_big.png"
+          _iconColour1="bg-yellow-500"
+          _iconColour2="bg-red-400"
+        /> */}
+        <Package
+          donatePackageTag="glider"
+          title="Glorious Gliders"
+          price={10}
+          blurb="Play with four exclusive gliders and 5000 V-Bucks."
+          iconImage="/donate/glider.png"
+          image="/donate/glider_big.png"
+          _iconColour1="bg-pink-500"
+          _iconColour2="bg-fuchsia-400"
+        />
+        <Package
+          donatePackageTag="tvseries"
+          title="Television Bundle"
+          price={15}
+          blurb="Unlock a collection of popular television outfits."
+          iconImage="/donate/dexter.png"
+          image="/donate/dexter_big.png"
+          _iconColour1="bg-blue-500"
+          _iconColour2="bg-cyan-400"
+        />
       </OptionGroup>
 
       <OptionGroup title="Offers" _animate>

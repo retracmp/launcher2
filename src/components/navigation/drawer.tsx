@@ -47,7 +47,7 @@ const Drawer = () => {
 
       {(application.dev || userManager.is_dev()) && (
         <>
-          <DrawerItem path="/app/editor" icon="IoCreate" label="Editor" />
+          {/* <DrawerItem path="/app/editor" icon="IoCreate" label="Editor" /> */}
           <DrawerItem
             path="/developer"
             icon="IoConstructSharp"

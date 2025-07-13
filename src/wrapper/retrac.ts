@@ -37,6 +37,12 @@ type RetracState = {
 
   editing_order_of_library: boolean;
   set_editing_order_of_library: (editing: boolean) => void;
+
+  use_custom_dll_path: boolean;
+  set_use_custom_dll_path: (use_custom_dll_path: boolean) => void;
+
+  custom_dll_path: string;
+  set_custom_dll_path: (custom_dll_path: string) => void;
 };
 
 export const useRetrac = create<RetracState>()(
@@ -76,12 +82,21 @@ export const useRetrac = create<RetracState>()(
       editing_order_of_library: false,
       set_editing_order_of_library: (editing) =>
         set({ editing_order_of_library: editing }),
+
+      use_custom_dll_path: false,
+      set_use_custom_dll_path: (use_custom_dll_path) =>
+        set({ use_custom_dll_path }),
+
+      custom_dll_path: "",
+      set_custom_dll_path: (custom_dll_path) => set({ custom_dll_path }),
     }),
     {
       name: "retrac",
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         do_not_download_paks: state.do_not_download_paks,
+        custom_dll_path: state.custom_dll_path,
+        use_custom_dll_path: state.use_custom_dll_path,
       }),
     }
   )

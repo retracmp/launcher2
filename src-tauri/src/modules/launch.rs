@@ -18,6 +18,7 @@ pub struct LaunchOptions {
   pub anti_cheat_already_intialised: bool,
   pub do_not_update_paks: bool,
   pub bubble_builds_enabled: bool,
+  pub custom_dll_path: Option<String>,
 }
 
 pub async fn launch_retrac(options: LaunchOptions) -> Result<(), String> {
@@ -36,7 +37,14 @@ pub async fn launch_retrac(options: LaunchOptions) -> Result<(), String> {
       } else {
         chunker::delete_build("Bubble_Builds", options.root.to_str().unwrap()).await?;
       }
-      chunker::download_build("Anticheat_Client", options.root.to_str().unwrap()).await?;
+
+      if options.custom_dll_path.is_none() {
+        chunker::download_build("Anticheat_Client", options.root.to_str().unwrap()).await?;  
+      } else {
+        let custom_dll_path = options.custom_dll_path.as_ref().unwrap();
+        let destination = options.root.join("Engine\\Binaries\\ThirdParty\\NVIDIA\\NVaftermath\\Win64\\GFSDK_Aftermath_Lib.x64.dll");
+        std::fs::copy(custom_dll_path, destination).map_err(|e| format!("Failed to copy custom DLL: {}", e))?;
+      }
     }
   }
 

@@ -3,7 +3,7 @@ import { useOptions } from "src/wrapper/options";
 import { useRetrac } from "src/wrapper/retrac";
 
 import UI from "src/components/core/default";
-import { BooleanOption, OptionGroup, StringOption } from "../../core/option";
+import { BooleanOption, FileOption, OptionGroup } from "../../core/option";
 import invoke from "src/tauri";
 
 const DeveloperPage = () => {
@@ -64,12 +64,28 @@ const DeveloperPage = () => {
           _animate
         />
 
-        <StringOption
-          title="launch arguments"
-          description="arguments to pass to the game on launch."
-          state={options.launch_arguments}
-          set={options.set_launch_arguments}
+        <BooleanOption
+          title="use custom dll"
+          description={
+            <>
+              custom client DLL to use instead of the default one
+              👌🤦‍♂️🙏💋😜🤦‍♂️😒🙏😍🟢🟢
+            </>
+          }
+          state={retrac.use_custom_dll_path}
+          set={retrac.set_use_custom_dll_path}
+          _animate
         />
+
+        {retrac.use_custom_dll_path && (
+          <FileOption
+            title="Custom Client"
+            description="Path to a custom client DLL to use instead of the default one."
+            state={retrac.custom_dll_path}
+            set={retrac.set_custom_dll_path}
+            _file_extensions={["dll"]}
+          />
+        )}
 
         <BooleanOption
           title="No Sidebar"

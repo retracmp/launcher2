@@ -21,6 +21,7 @@ type LaunchOptions = {
   anti_cheat_already_intialised: boolean;
   do_not_update_paks: boolean;
   bubble_builds_enabled: boolean;
+  custom_dll_path?: string;
 };
 
 // pub struct ManifestProgress {
