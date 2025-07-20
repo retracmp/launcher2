@@ -52,7 +52,7 @@ const StorePage = () => {
           _iconColour2="bg-red-400"
         /> */}
         <Package
-          donatePackageTag="glider"
+          donatePackageTag="gliders"
           title="Glorious Gliders"
           price={10}
           blurb="Play with four exclusive gliders and 5000 V-Bucks."

@@ -46,9 +46,6 @@ const Package = (props: PackageProps) => {
       transition={{ type: "spring", stiffness: 200, damping: 19 }}
       onClick={() => {
         if (allowPurchase) {
-          if (owns) {
-            return;
-          }
           openUrl(
             props.link ??
               `https://shop.retrac.site/product/${props.donatePackageTag}`
