@@ -129,35 +129,35 @@ const LibraryPage = () => {
             staggerChildren: 0.05,
           }}
         >
-          <AnimatePresence>
-            {!options._tiled_builds ? (
-              <Reorder.Group
-                onReorder={(newOrder) => {
-                  library.setLibraryOrder(
-                    newOrder.map((entry) => entry.version)
-                  );
-                }}
-                values={sortedLibrary}
-                className="flex flex-col gap-2 w-full h-full"
-              >
-                {sortedLibrary.map((entry) => (
-                  <FortniteBuild entry={entry} key={entry.version} />
-                ))}
-              </Reorder.Group>
-            ) : (
-              sortedLibrary.map((entry) => (
-                <FortniteBuild entry={entry} key={entry.version} />
-              ))
-            )}
-          </AnimatePresence>
-
-          {library.library.length === 0 && (
+          {library.library.length === 0 ? (
             <div className="group flex items-center justify-center gap-1 rounded-sm">
               <IoBanSharp className="text-neutral-500 w-4 h-4" />
               <span className="text-neutral-500 text-sm">
                 No builds installed
               </span>
             </div>
+          ) : (
+            <AnimatePresence>
+              {!options._tiled_builds ? (
+                <Reorder.Group
+                  onReorder={(newOrder) => {
+                    library.setLibraryOrder(
+                      newOrder.map((entry) => entry.version)
+                    );
+                  }}
+                  values={sortedLibrary}
+                  className="flex flex-col gap-2 w-full h-full"
+                >
+                  {sortedLibrary.map((entry) => (
+                    <FortniteBuild entry={entry} key={entry.version} />
+                  ))}
+                </Reorder.Group>
+              ) : (
+                sortedLibrary.map((entry) => (
+                  <FortniteBuild entry={entry} key={entry.version} />
+                ))
+              )}
+            </AnimatePresence>
           )}
         </motion.div>
       </OptionGroup>
