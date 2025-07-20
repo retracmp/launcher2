@@ -115,6 +115,16 @@ const AuthenticatedRoutes = () => {
         label="Matches"
         opt_number={serverCount > 0 ? serverCount : undefined}
       />
+
+      {application.dev && (
+        <SparklyDrawerItem
+          path="/app/clans"
+          icon="IoPeopleSharp"
+          label="Clans"
+          colour="purple"
+        />
+      )}
+
       <SparklyDrawerItem
         path="/app/store"
         icon="IoSparklesSharp"

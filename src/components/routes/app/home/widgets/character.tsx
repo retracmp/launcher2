@@ -88,7 +88,7 @@ const CharacterWidget = (props: CharacterWidgetProps) => {
         </div>
       </div>
 
-      <div className="relative flex items-center justify-center overflow-hidden min-w-max h-full aspect-square ml-auto bg-neutral-900 border-neutral-500/10 border-1 border-solid rounded-xs">
+      <div className="relative @min-sm:flex items-center justify-center overflow-hidden min-w-max h-full aspect-square ml-auto bg-neutral-900 border-neutral-500/10 border-1 border-solid rounded-xs @max-sm:hidden">
         <CharacterImage url={icon} />
       </div>
     </div>

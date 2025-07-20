@@ -16,6 +16,7 @@ import DownloadsPage from "./routes/app/downloads/page";
 import UpdatePage from "./routes/update/page";
 import ExternalLoginPage from "./routes/app/external/page";
 import EditorPage from "./routes/app/editor/page";
+import ClansPage from "./routes/app/clans/page";
 
 export const rootRoute = rr.createRootRoute({
   component: () => <Frame />,
@@ -129,6 +130,12 @@ export const editor = rr.createRoute({
   path: "/editor",
 });
 
+export const clans = rr.createRoute({
+  getParentRoute: () => appContainer,
+  component: () => <ClansPage />,
+  path: "/clans",
+});
+
 const router = rr.createRouter({
   routeTree: rootRoute.addChildren([
     login,
@@ -144,6 +151,7 @@ const router = rr.createRouter({
       store,
       external,
       editor,
+      clans,
     ]),
   ]),
 });
