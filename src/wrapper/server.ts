@@ -15,6 +15,12 @@ type ServerManagerState = {
 
   show_na_servers: boolean;
   set_show_na_servers: (show_na_servers: boolean) => void;
+
+  show_naw_servers: boolean;
+  set_show_naw_servers: (show_naw_servers: boolean) => void;
+
+  show_oce_servers: boolean;
+  set_show_oce_servers: (show_oce_servers: boolean) => void;
 };
 
 export const useServerManager = create<ServerManagerState>((set, get) => ({
@@ -54,6 +60,9 @@ export const useServerManager = create<ServerManagerState>((set, get) => ({
       .filter((server) => {
         if (server.region === "EU") return get().show_eu_servers;
         if (server.region === "NA") return get().show_na_servers;
+        if (server.region === "NAW") return get().show_naw_servers;
+        if (server.region === "OCE") return get().show_oce_servers;
+        if (server.region === "SHADOW") return false;
         return true;
       })
       .sort((a, b) => {
@@ -68,4 +77,10 @@ export const useServerManager = create<ServerManagerState>((set, get) => ({
 
   show_na_servers: true,
   set_show_na_servers: (show_na_servers) => set({ show_na_servers }),
+
+  show_naw_servers: true,
+  set_show_naw_servers: (show_naw_servers) => set({ show_naw_servers }),
+
+  show_oce_servers: true,
+  set_show_oce_servers: (show_oce_servers) => set({ show_oce_servers }),
 }));

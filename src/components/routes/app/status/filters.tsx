@@ -3,7 +3,7 @@ import { useRetrac } from "src/wrapper/retrac";
 import { useServerManager } from "src/wrapper/server";
 
 import { motion, AnimatePresence } from "motion/react";
-import { BooleanOption } from "../../../core/option";
+import { BooleanOption, OptionGroup } from "../../../core/option";
 import { HiX } from "react-icons/hi";
 import UI from "src/components/core/default";
 
@@ -11,24 +11,64 @@ const FiltersWidget = () => {
   const servers = useServerManager();
 
   return (
-    <div className="flex flex-col gap-1.5 w-full overflow-hidden">
-      <UI.P>
-        <span className="font-[500] font-geist">Server List Filters</span>
-      </UI.P>
-      <div className="flex flex-col gap-1 overflow-auto w-full">
+    <div className="flex flex-col w-full overflow-hidden">
+      {/* <UI.P>
+        <span className="font-[700] text-md uppercase">
+          Server List Filters
+        </span>
+      </UI.P> */}
+      <OptionGroup _first>
+        <div className="flex flex-col gap-[0.2rem] p-1.5 pb-0">
+          <UI.H1 className="font-[300] text-neutral-300">Server Filters</UI.H1>
+          <UI.P className="text-neutral-400">
+            Filter the server list by a specific region.
+          </UI.P>
+        </div>
+      </OptionGroup>
+      <OptionGroup _last _first _hideBorder>
         <BooleanOption
-          title="Europe Servers"
-          description="Show European servers in the server list."
+          title="Gravelines, France Servers"
+          description={
+            <>
+              Show France <b>EU</b> servers in the server list.
+            </>
+          }
           state={servers.show_eu_servers}
           set={servers.set_show_eu_servers}
         />
         <BooleanOption
-          title="North America Servers"
-          description="Show North American servers in the server list."
+          title="Virginia Servers"
+          description={
+            <>
+              Show Virginia <b>NA</b> servers in the server list.
+            </>
+          }
           state={servers.show_na_servers}
           set={servers.set_show_na_servers}
         />
-      </div>
+
+        <BooleanOption
+          title="Los Angeles Servers"
+          description={
+            <>
+              Show Los Angeles <b>NAW</b> servers in the server list.
+            </>
+          }
+          state={servers.show_naw_servers}
+          set={servers.set_show_naw_servers}
+        />
+
+        <BooleanOption
+          title="Sydney Servers"
+          description={
+            <>
+              Show Sydney <b>OCE</b> servers in the server list.
+            </>
+          }
+          state={servers.show_oce_servers}
+          set={servers.set_show_oce_servers}
+        />
+      </OptionGroup>
     </div>
   );
 };
@@ -89,7 +129,7 @@ const FiltersParent = () => {
           ></div>
           <motion.div
             ref={widgetReference}
-            className="relative flex flex-col p-2 gap-2 min-w-96 w-[40%] max-h-[80%] bg-neutral-900 border-neutral-800 border-1 border-solid shadow-neutral-900/30 shadow-lg rounded-sm"
+            className="relative flex flex-col min-w-96 w-[40%] max-h-[80%] bg-neutral-900 border-neutral-800 border-1 border-solid shadow-neutral-900/30 shadow-lg rounded-md"
             initial={{ scale: 0.8 }}
             animate={{ scale: 1 }}
             exit={{ scale: 0.8 }}
@@ -97,7 +137,7 @@ const FiltersParent = () => {
           >
             <FiltersWidget />
             <HiX
-              className="absolute right-1.5 top-1.5 text-neutral-500 hover:text-neutral-300 cursor-pointer"
+              className="absolute right-3 top-3 text-neutral-500 hover:text-neutral-300 cursor-pointer"
               onClick={() => retrac.set_show_filters(false)}
             />
           </motion.div>

@@ -6,6 +6,7 @@ import { useRetrac } from "src/wrapper/retrac";
 import { AnimatePresence, motion } from "motion/react";
 import { HiX } from "react-icons/hi";
 import UI from "src/components/core/default";
+import { OptionGroup } from "src/components/core/option";
 
 const RecentMatchesWidget = () => {
   const user = useUserManager();
@@ -32,15 +33,20 @@ const RecentMatchesWidget = () => {
     );
 
   return (
-    <div className="flex flex-col gap-1.5 w-full @max-xl:w-full max-w-full @max-xl:max-w-full overflow-hidden">
-      <UI.P>
-        <span className="font-[500] font-geist">Recent Matches</span>
-      </UI.P>
-      <div className="flex flex-col gap-1 overflow-auto">
+    <div className="flex flex-col w-full @max-xl:w-full max-w-full @max-xl:max-w-full overflow-hidden">
+      <OptionGroup _first>
+        <div className="flex flex-col gap-[0.2rem] p-1.5 pb-0">
+          <UI.H1 className="font-[300] text-neutral-300">Matches</UI.H1>
+          <UI.P className="text-neutral-400">
+            View your recent match history with details.
+          </UI.P>
+        </div>
+      </OptionGroup>
+      <OptionGroup _first _last _hideBorder _overflow>
         {matches.map((match) => (
           <RecentMatch match={match} key={match.ID} />
         ))}
-      </div>
+      </OptionGroup>
     </div>
   );
 };
@@ -147,7 +153,7 @@ const RecentMatchesParent = () => {
           ></div>
           <motion.div
             ref={widgetReference}
-            className="relative flex flex-col p-2 gap-2 min-w-96 w-[60%] max-h-[80%] bg-neutral-900 border-neutral-800/40 border-1 border-solid shadow-neutral-900/30 shadow-lg rounded-sm"
+            className="relative flex flex-col min-w-96 w-[40%] max-h-[80%] bg-neutral-900 border-neutral-800 border-1 border-solid shadow-neutral-900/30 shadow-lg rounded-md"
             initial={{ scale: 0.8 }}
             animate={{ scale: 1 }}
             exit={{ scale: 0.8 }}
@@ -155,8 +161,8 @@ const RecentMatchesParent = () => {
           >
             <RecentMatchesWidget />
             <HiX
-              className="absolute right-1.5 top-1.5 text-neutral-500 hover:text-neutral-300 cursor-pointer"
-              onClick={() => retrac.set_show_recent_matches(false)}
+              className="absolute right-3 top-3 text-neutral-500 hover:text-neutral-300 cursor-pointer"
+              onClick={() => retrac.set_show_filters(false)}
             />
           </motion.div>
         </motion.div>

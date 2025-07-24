@@ -624,6 +624,7 @@ type OptionGroupProps = {
   _animate?: boolean;
   _hideable?: boolean;
   _row?: boolean;
+  _overflow?: boolean;
 };
 
 const OptionGroup = (props: OptionGroupProps) => {
@@ -636,7 +637,9 @@ const OptionGroup = (props: OptionGroupProps) => {
       } gap-2 p-2.5 ${
         !props._hideBorder &&
         "border-neutral-700/40 border-b-[1px] border-solid"
-      } py-3.5 ${props._last ? "pb-3" : ""} ${props._first ? "pt-2.5" : ""}`}
+      } py-3.5 ${props._last ? "pb-3" : ""} ${props._first ? "pt-2.5" : ""}
+      ${props._overflow ? "overflow-y-auto" : ""}
+      `}
       variants={
         props._animate
           ? {
