@@ -162,7 +162,7 @@ const RecentMatchesParent = () => {
             <RecentMatchesWidget />
             <HiX
               className="absolute right-3 top-3 text-neutral-500 hover:text-neutral-300 cursor-pointer"
-              onClick={() => retrac.set_show_filters(false)}
+              onClick={() => retrac.set_show_recent_matches(false)}
             />
           </motion.div>
         </motion.div>
