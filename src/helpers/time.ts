@@ -38,4 +38,31 @@ const formatTime = (
   return result.join(add_comma ? ", " : " ");
 };
 
-export { formatTime };
+const msUntil = (utc: string) => {
+  const end =
+    new Date(utc).getTime() +
+    new Date(new Date(utc)).getTimezoneOffset() * 60 * 1000 -
+    60 * 60 * 1000;
+  return end - (new Date() as any as number);
+};
+
+const msUntilDate = (date: Date) => {
+  return date.getTime() - (new Date() as any as number);
+};
+
+const renderTimeUntil = (ms: number) => {
+  if (ms <= 0) return "0m";
+
+  const minutes = Math.floor((ms / (1000 * 60)) % 60);
+  const hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
+  const days = Math.floor(ms / (1000 * 60 * 60 * 24));
+
+  let parts = [];
+  if (days) parts.push(`${days}d`);
+  if (hours) parts.push(`${hours}h`);
+  if (minutes) parts.push(`${minutes}m`);
+
+  return parts.join(", ");
+};
+
+export { formatTime, msUntil, renderTimeUntil, msUntilDate };

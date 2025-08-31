@@ -1,14 +1,14 @@
 import { useRetrac } from "src/wrapper/retrac";
 import { useUserManager } from "src/wrapper/user";
 
-import UI from "src/components/core/default";
+// import UI from "src/components/core/default";
 import CharacterWidget from "src/components/routes/app/home/widgets/character";
 import StatisticsWidget from "src/components/routes/app/home/widgets/statistics";
 import FortniteWidget from "src/components/routes/app/home/widgets/fortnite";
 import NewsWidget from "src/components/routes/app/home/widgets/news";
 import EventsWidget from "src/components/routes/app/home/widgets/events";
 import LootLabsWidget from "src/components/routes/app/home/widgets/lootlabs";
-import DonateWidget from "src/components/routes/app/home/widgets/donate";
+// import DonateWidget from "src/components/routes/app/home/widgets/donate";
 import { OptionGroup } from "../../../core/option";
 
 const HomePage = () => {
@@ -34,7 +34,7 @@ const HomePage = () => {
         <LootLabsWidget />
       </OptionGroup>
 
-      {retrac.show_all_widgets && (
+      {/* {retrac.show_all_widgets && (
         <OptionGroup _row>
           <div className="flex flex-col gap-1 min-w-50">
             <UI.Button colour="invisible" className="h-8">
@@ -48,13 +48,13 @@ const HomePage = () => {
             <DonateWidget />
           </div>
         </OptionGroup>
-      )}
+      )} */}
 
       {retrac.show_all_widgets && (
-        <UI.RowBox>
+        <OptionGroup _row title="New & Upcoming">
           <EventsWidget />
           <NewsWidget />
-        </UI.RowBox>
+        </OptionGroup>
       )}
     </>
   );

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useRetrac } from "src/wrapper/retrac";
-import { formatTime } from "src/helpers/time";
+import { msUntil, msUntilDate, renderTimeUntil } from "src/helpers/time";
 
 import { IoTimeSharp } from "react-icons/io5";
+import { TbPointFilled } from "react-icons/tb";
 import UI from "src/components/core/default";
 
 type EventsWidgetProps = {
@@ -53,7 +54,7 @@ type EventDisplayProps = {
 const EventDisplay = (props: EventDisplayProps) => {
   const nextWindowIndex = props.event.event.Windows.reduce(
     (acc, window, idx) => {
-      if (new Date(window.Start) > new Date()) {
+      if (msUntil(window.Start) > msUntilDate(new Date())) {
         acc = idx;
         return acc;
       }
@@ -66,8 +67,8 @@ const EventDisplay = (props: EventDisplayProps) => {
   const currentWindowIndex = props.event.event.Windows.reduce(
     (acc, window, idx) => {
       if (
-        new Date(window.Start) < new Date() &&
-        new Date(window.End) > new Date()
+        msUntil(window.Start) < msUntilDate(new Date()) &&
+        msUntil(window.End) > msUntilDate(new Date())
       ) {
         acc = idx;
         return acc;
@@ -81,12 +82,11 @@ const EventDisplay = (props: EventDisplayProps) => {
   return (
     <>
       <img
-        className="absolute w-full h-full object-center object-cover opacity-80 group-hover:opacity-75 top-0 left-0"
+        className="absolute w-full h-full object-center object-cover group-hover:opacity-95 top-0 left-0"
         src={props.event.style.playlist_tile_image}
         draggable={false}
         style={{
-          maskImage:
-            "linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0.25))",
+          maskImage: "linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0, 0.6))",
         }}
       />
 
@@ -97,9 +97,12 @@ const EventDisplay = (props: EventDisplayProps) => {
           />
         )}
         {currentWindowIndex !== -1 && (
-          <UI.P className="bg-red-600/20 uppercase p-0.5 px-1 font-geist font-[700] text-[12px] text-neutral-400 backdrop-blur-xs">
-            LIVE NOW
-          </UI.P>
+          <div className="flex flex-row items-center bg-red-600/45 p-0.5 backdrop-blur-xs rounded-sm pr-">
+            <TbPointFilled className="text-neutral-300 h-[15px] w-[15px]" />
+            <UI.P className="uppercase font-geist font-[700] text-[12px] leading-[14px] text-neutral-100">
+              LIVE NOW
+            </UI.P>
+          </div>
         )}
         {props.event.style.schedule_info !== "" && (
           <UI.P
@@ -113,11 +116,11 @@ const EventDisplay = (props: EventDisplayProps) => {
         )}
       </div>
 
-      <div className="mt-auto z-10 flex flex-col p-2 bg-neutral-800/50 gap-0.5">
+      <div className="mt-auto z-10 flex flex-col p-2 bg-neutral-800/80 gap-0.5 backdrop-blur-xs">
         <UI.P className="text-[16px] font-geist font-[700]">
           {props.event.style.short_format_title}
         </UI.P>
-        <UI.P className="text-neutral-400">
+        <UI.P className="text-neutral-300/90">
           {props.event.style.details_description}
         </UI.P>
       </div>
@@ -135,16 +138,13 @@ type StartsInTagProps = {
 };
 
 const StartsInTag = (props: StartsInTagProps) => {
-  const now = new Date();
-  const start = new Date(props.start);
-  if (start < now) return null;
-  const diff = start.getTime() - now.getTime();
-
   return (
-    <UI.P className="flex flex-row gap-0.5 bg-neutral-800/30 uppercase p-0.5 px-1 font-geist font-[700] text-[12px] text-neutral-100 backdrop-blur-xs">
-      <IoTimeSharp className="text-neutral-400" />
-      STARTS IN {formatTime(diff, 0, false).toUpperCase()}
-    </UI.P>
+    <div className="flex flex-row items-center gap-0.5 bg-neutral-800/30 p-0.5 backdrop-blur-xs rounded-sm">
+      <IoTimeSharp className="text-neutral-300 h-[15px] w-[15px]" />
+      <UI.P className="uppercase font-geist font-[700] text-[12px] leading-[14px] text-neutral-100">
+        {renderTimeUntil(msUntil(props.start)).toUpperCase()}
+      </UI.P>
+    </div>
   );
 };
 

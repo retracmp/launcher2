@@ -41,10 +41,15 @@ pub fn spawn_admin_process_and_get_output(command: &str, args: Vec<&str>) -> Res
   std::thread::sleep(std::time::Duration::from_millis(1500));
   
   let output_file = output_file.to_str().expect("Failed to convert output path to string");
-  let mut file = File::open(output_file).expect("Failed to open output file");
+  let file = File::open(output_file);
+  if file.is_err() {
+    return Err("Failed to open output file for reason {}".to_string() + &file.err().unwrap().to_string());
+  }
+
+  let mut final_file = file.unwrap();
   
   let mut file_data: Vec<u8> = Vec::new();
-  file.read_to_end(&mut file_data).expect("Failed to read output file");
+  final_file.read_to_end(&mut file_data).expect("Failed to read output file");
 
   let mut wide_file_data: Vec<u16> = Vec::new();
   for i in 0..file_data.len() / 2 {
