@@ -89,7 +89,7 @@ const Package = (props: PackageProps) => {
             className={`bg-neutral-700/40 backdrop-blur-lg transition-opacity duration-50 rounded-xl p-2 py-1 flex flex-row items-center gap-1`}
           >
             <UI.P className="text-[12px] flex flex-row items-center gap-0.5 text-neutral-400 group-hover:text-neutral-300 transition-colors duration-[70ms]">
-              {allowPurchase ? <>${props.price.toFixed(2)}</> : "Not Available"}
+              {allowPurchase ? <>£{props.price.toFixed(2)}</> : "Not Available"}
             </UI.P>
           </div>
         )}
