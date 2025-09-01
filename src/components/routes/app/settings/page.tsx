@@ -133,7 +133,7 @@ const SettingsPage = () => {
       </OptionGroup>
 
       <OptionGroup title="Gameplay Tweaks" _animate>
-        {/* <BooleanOption
+        <BooleanOption
           title="Simple Edit"
           description={
             <>Edit at lightning speed, exactly like latest Fortnite.</>
@@ -141,7 +141,10 @@ const SettingsPage = () => {
           state={options.simple_edit}
           set={options.set_simple_edit}
           _animate
-        /> */}
+          icon="IoFlash"
+          colour="indigo"
+        />
+
         <BooleanOption
           title="Bubble Builds"
           description={
@@ -159,6 +162,8 @@ const SettingsPage = () => {
           state={options.disable_pre_edits}
           set={options.set_disable_pre_edits}
           _animate
+          icon="IoBuild"
+          colour="red"
         />
 
         <BooleanOption
@@ -169,6 +174,8 @@ const SettingsPage = () => {
           state={options.reset_on_release}
           set={options.set_reset_on_release}
           _animate
+          icon="IoRefreshSharp"
+          colour="teal"
         />
       </OptionGroup>
 

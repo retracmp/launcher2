@@ -23,6 +23,12 @@ type RetracState = {
   show_filters: boolean;
   set_show_filters: (show_filters: boolean) => void;
 
+  show_news: boolean;
+  set_show_news: (show_news: boolean) => void;
+
+  selected_news_item: LauncherNewsItem | null;
+  set_selected_news_item: (selected_news_item: LauncherNewsItem | null) => void;
+
   show_all_widgets: boolean;
   set_show_all_widgets: (show_all_widgets: boolean) => void;
 
@@ -50,20 +56,34 @@ export const useRetrac = create<RetracState>()(
     (set) => ({
       players_online: 0,
       set_players_online: (players_online) => set({ players_online }),
+
       launcher_news: [],
       set_launcher_news: (launcher_news) => set({ launcher_news }),
+
       events: [],
       set_events: (events) => set({ events }),
+
       manifests: [],
       set_manifests: (manifests) => set({ manifests }),
+
       auto_download_manifests: [],
       set_auto_download_manifests: (manifests) =>
         set({ auto_download_manifests: manifests }),
+
       show_recent_matches: false,
       set_show_recent_matches: (show_recent_matches) =>
         set({ show_recent_matches }),
+
       show_filters: false,
       set_show_filters: (show_filters) => set({ show_filters }),
+
+      show_news: false,
+      set_show_news: (show_news) => set({ show_news }),
+
+      selected_news_item: null,
+      set_selected_news_item: (selected_news_item) =>
+        set({ selected_news_item }),
+
       show_all_widgets: false,
       set_show_all_widgets: (show_all_widgets) => set({ show_all_widgets }),
 
@@ -97,6 +117,7 @@ export const useRetrac = create<RetracState>()(
         do_not_download_paks: state.do_not_download_paks,
         custom_dll_path: state.custom_dll_path,
         use_custom_dll_path: state.use_custom_dll_path,
+        show_all_widgets: state.show_all_widgets,
       }),
     }
   )
