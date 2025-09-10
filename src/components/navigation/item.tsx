@@ -18,7 +18,7 @@ type DrawerItemProps = {
 };
 
 const DrawerItemBaseClassName =
-  "ditem relative flex gap-2 items-center justify-start min-w-9 w-full h-9 min-h-9 px-[9px] border-[1px] border-[#1f1f1f00] cursor-pointer transition-colors";
+  "ditem relative flex gap-2 items-center justify-start min-w-9 w-full h-9 min-h-9 px-[9px] border-[1px] border-[#1f1f1f00] cursor-pointer transition-colors hover:duration-50 duration-150";
 
 const DrawerItem = (props: DrawerItemProps) => {
   const hover = useHover();
@@ -53,7 +53,7 @@ const DrawerItem = (props: DrawerItemProps) => {
     <rr.Link
       to={props.path as any}
       draggable={false}
-      className={`${DrawerItemBaseClassName} hover:not-data-[status=active]:bg-neutral-700/10 hover:not-data-[status=active]:border-1 hover:not-data-[status=active]:border-neutral-700/[15%] rounded-sm text-neutral-400 border-solid overflow-hidden`}
+      className={`${DrawerItemBaseClassName} hover:not-data-[status=active]:bg-neutral-700/10 hover:not-data-[status=active]:border-1 hover:not-data-[status=active]:border-neutral-700/[15%] rounded-sm text-neutral-400 border-solid overflow-hidden ease-linear hover:duration-50 duration-150`}
       activeProps={{
         className:
           "bg-neutral-700/20 bg-opacity-50 border-neutral-700/40 hover:none border-1 text-white backdrop-blur-3xl",
