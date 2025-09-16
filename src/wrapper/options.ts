@@ -29,6 +29,9 @@ type OptionsState = {
   bubble_builds_enabled: boolean;
   set_bubble_builds_enabled: (value: boolean) => void;
 
+  mobile_builds_enabled: boolean;
+  set_mobile_builds_enabled: (value: boolean) => void;
+
   wide_drawer: boolean;
   set_wide_drawer: (value: boolean) => void;
 
@@ -68,7 +71,7 @@ type OptionsState = {
 
 export const useOptions = create<OptionsState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       auto_download: true,
       set_auto_download: (value) => set(() => ({ auto_download: value })),
 
@@ -97,7 +100,17 @@ export const useOptions = create<OptionsState>()(
 
       bubble_builds_enabled: false,
       set_bubble_builds_enabled: (value) =>
-        set(() => ({ bubble_builds_enabled: value })),
+        set(() => ({
+          bubble_builds_enabled: value,
+          mobile_builds_enabled: value ? false : get().mobile_builds_enabled,
+        })),
+
+      mobile_builds_enabled: false,
+      set_mobile_builds_enabled: (value) =>
+        set(() => ({
+          mobile_builds_enabled: value,
+          bubble_builds_enabled: value ? false : get().bubble_builds_enabled,
+        })),
 
       reset_on_release: false,
       set_reset_on_release: (value) => set(() => ({ reset_on_release: value })),

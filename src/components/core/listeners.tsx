@@ -219,23 +219,62 @@ const TauriListeners = () => {
     }
   }, [library.library]);
 
+  const deleteMobileBuilds = useCallback(async () => {
+    console.log("[download] deleting bubble builds");
+
+    const retracBuild = library.library.find(
+      (x) => x.version === "++Fortnite+Release-14.40-CL-14550713"
+    );
+    if (!retracBuild) return console.error("Retrac build not found in library");
+
+    const result = await invoke.delete_build(
+      "Mobile_Builds",
+      retracBuild.rootLocation
+    );
+    if (result === null) {
+      console.error("[download] failed to delete bubble builds");
+      return;
+    }
+  }, [library.library]);
+
   useEffect(() => {
-    const exists = retrac.auto_download_manifests.some(
+    if (downloadState.active_download_progress.size > 0) {
+      console.log(
+        "[download] active downloads, skipping auto download",
+        downloadState.active_download_progress
+      );
+      return;
+    }
+
+    const bubbleExists = retrac.auto_download_manifests.some(
       (manifest) => manifest === "Bubble_Builds"
     );
-
-    retrac.set_auto_download_manifests(
-      !options.bubble_builds_enabled
-        ? exists
-          ? retrac.auto_download_manifests.filter((m) => m !== "Bubble_Builds")
-          : retrac.auto_download_manifests
-        : exists
-        ? retrac.auto_download_manifests
-        : [...retrac.auto_download_manifests, "Bubble_Builds"]
+    const mobileExists = retrac.auto_download_manifests.some(
+      (manifest) => manifest === "Mobile_Builds"
     );
 
+    const filtered = retrac.auto_download_manifests.filter((m) => {
+      if (!options.bubble_builds_enabled && m === "Bubble_Builds") return false;
+      if (!options.mobile_builds_enabled && m === "Mobile_Builds") return false;
+      return true;
+    });
+
+    const added = [...filtered];
+    if (options.bubble_builds_enabled && !bubbleExists)
+      added.push("Bubble_Builds");
+    if (options.mobile_builds_enabled && !mobileExists)
+      added.push("Mobile_Builds");
+
+    retrac.set_auto_download_manifests(added);
+
     if (!options.bubble_builds_enabled) deleteBubbleBuilds();
-  }, [options.bubble_builds_enabled]);
+    if (!options.mobile_builds_enabled) deleteMobileBuilds();
+  }, [
+    downloadState.active_download_progress,
+    options.bubble_builds_enabled,
+    deleteBubbleBuilds,
+    deleteMobileBuilds,
+  ]);
 
   useEffect(() => {
     setTimeout(() => options.auto_download && autoDownload(), 2000);

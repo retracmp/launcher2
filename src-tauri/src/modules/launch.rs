@@ -18,6 +18,7 @@ pub struct LaunchOptions {
   pub anti_cheat_already_intialised: bool,
   pub do_not_update_paks: bool,
   pub bubble_builds_enabled: bool,
+  pub mobile_builds_enabled: bool,
   pub custom_dll_path: Option<String>,
 }
 
@@ -32,10 +33,17 @@ pub async fn launch_retrac(options: LaunchOptions) -> Result<(), String> {
       if !options.do_not_update_paks {
         chunker::download_build("Custom_Content", options.root.to_str().unwrap()).await?;
       }
+
       if options.bubble_builds_enabled {
         chunker::download_build("Bubble_Builds", options.root.to_str().unwrap()).await?;
       } else {
         chunker::delete_build("Bubble_Builds", options.root.to_str().unwrap()).await?;
+      }
+
+      if options.mobile_builds_enabled {
+        chunker::download_build("Mobile_Builds", options.root.to_str().unwrap()).await?;
+      } else {
+        chunker::delete_build("Mobile_Builds", options.root.to_str().unwrap()).await?;
       }
 
       if options.custom_dll_path.is_none() {

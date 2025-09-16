@@ -84,7 +84,8 @@ const DownloadingBuildUI = (props: DownloadingBuildProps) => {
                 2
               )}{" "}
               GB of{" "}
-              {(props.progress.total_bytes / 1024 / 1024 / 1024).toFixed(2)} GB
+              {(props.progress.total_bytes / 1024 / 1024 / 1024).toFixed(2)} GB{" "}
+              <b>{props.progress.percent.toFixed(2)}%</b>
             </UI.P>
             <s className="ml-auto" />
           </div>

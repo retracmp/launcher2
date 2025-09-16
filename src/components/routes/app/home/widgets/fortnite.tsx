@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { LAUNCH_STATE, useLibrary } from "src/wrapper/library";
 import { useNavigate } from "@tanstack/react-router";
+import { useDownloadState } from "src/wrapper/download";
 
 import UI from "src/components/core/default";
 
@@ -15,6 +16,9 @@ const VER = "++Fortnite+Release-14.40-CL-14550713";
 const FortniteWidget = () => {
   const navigate = useNavigate();
   const library = useLibrary();
+
+  const downloadState = useDownloadState();
+  const isAnyDownloadActive = downloadState.active_download_progress.size > 0;
 
   const imageIndex = new Date().getMinutes() % IMAGES.length;
 
@@ -34,25 +38,31 @@ const FortniteWidget = () => {
         December 1st 2020.
       </UI.P>
 
-      {!hasSeason14Downloaded && !buildLaunched && !buildLaunching && (
-        <UI.Button
-          colour="blue"
-          className="p-1.5 py-1 mt-auto z-10 backdrop-blur-2xl"
-          onClick={() => navigate({ to: "/app/downloads" })}
-        >
-          <span className="text-neutral-300">Download Now</span>
-        </UI.Button>
-      )}
+      {!hasSeason14Downloaded &&
+        !buildLaunched &&
+        !buildLaunching &&
+        !isAnyDownloadActive && (
+          <UI.Button
+            colour="blue"
+            className="p-1.5 py-1 mt-auto z-10 backdrop-blur-2xl"
+            onClick={() => navigate({ to: "/app/downloads" })}
+          >
+            <span className="text-neutral-300">Download Now</span>
+          </UI.Button>
+        )}
 
-      {!buildLaunching && !buildLaunched && hasSeason14Downloaded && (
-        <UI.Button
-          colour="green"
-          className="p-1.5 mt-auto z-10 backdrop-blur-2xl cursor-not-allowed"
-          onClick={() => library.launchBuild(VER)}
-        >
-          <span className="text-neutral-300">Launch Game</span>
-        </UI.Button>
-      )}
+      {!buildLaunching &&
+        !buildLaunched &&
+        hasSeason14Downloaded &&
+        !isAnyDownloadActive && (
+          <UI.Button
+            colour="green"
+            className="p-1.5 mt-auto z-10 backdrop-blur-2xl cursor-not-allowed"
+            onClick={() => library.launchBuild(VER)}
+          >
+            <span className="text-neutral-300">Launch Game</span>
+          </UI.Button>
+        )}
 
       {buildLaunching && (
         <UI.Button
@@ -63,8 +73,28 @@ const FortniteWidget = () => {
             cursor: "not-allowed",
           }}
         >
-          {buildLaunching && <UI.LoadingSpinner />}
-          <span className="text-neutral-300/50">Launching Game</span>
+          {isAnyDownloadActive ? (
+            <>
+              <UI.LoadingSpinner />
+              <span className="text-neutral-400">Download in Progress</span>
+            </>
+          ) : (
+            <>
+              {buildLaunching && <UI.LoadingSpinner />}{" "}
+              <span className="text-neutral-300/50">Launching Game</span>
+            </>
+          )}
+        </UI.Button>
+      )}
+
+      {!buildLaunching && !buildLaunched && isAnyDownloadActive && (
+        <UI.Button
+          colour="neutral"
+          className="p-1.5 mt-auto z-10 backdrop-blur-2xl cursor-not-allowed"
+          disabled
+        >
+          <UI.LoadingSpinner />
+          <span className="text-neutral-400">Download in Progress</span>
         </UI.Button>
       )}
 
@@ -105,7 +135,10 @@ const FortniteWidget = () => {
           }}
         >
           <span className="text-neutral-400">
-            Fortnite is Currently Running
+            {/* Fortnite is Currently Running */}
+            {isAnyDownloadActive
+              ? "Download in Progress"
+              : "Fortnite is Currently Running"}
           </span>
         </UI.Button>
       )}

@@ -146,9 +146,30 @@ const SettingsPage = () => {
         />
 
         <BooleanOption
+          title="Mobile Builds"
+          description={
+            <>
+              An even more optimized mesh for builds that is perfect for
+              lower-end devices.
+            </>
+          }
+          state={options.mobile_builds_enabled}
+          set={options.set_mobile_builds_enabled}
+          _animate
+          icon="IoPrismSharp"
+        />
+
+        <BooleanOption
           title="Bubble Builds"
           description={
-            <>Change the mesh used in-game for all builds to optimise delay.</>
+            <>
+              Change the mesh used in-game for all builds to optimise delay.
+              <i className="text-xs">
+                {" "}
+                Mobile Builds are recommended for better performance on lower
+                end devices.
+              </i>
+            </>
           }
           state={options.bubble_builds_enabled}
           set={options.set_bubble_builds_enabled}
