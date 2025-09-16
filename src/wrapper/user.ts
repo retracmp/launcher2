@@ -37,15 +37,30 @@ export const DONATION_TIERS = {
     text: "OG",
     tier: 7,
   },
+  anime: {
+    colour: "#fc9cfa",
+    text: "Anime Legends",
+    tier: 8,
+  },
+  tvseries: {
+    colour: "#070bf5",
+    text: "TV Series",
+    tier: 8,
+  },
+  gliders: {
+    colour: "#ff9cbf",
+    text: "Glorious Gliders",
+    tier: 8,
+  },
   crystal: {
     colour: "#b135ff",
     text: "Crystal",
-    tier: 8,
+    tier: 9,
   },
   ultimate: {
     colour: "#ff7300",
     text: "Ultimate",
-    tier: 9,
+    tier: 10,
   },
 };
 
