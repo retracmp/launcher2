@@ -3451,7 +3451,7 @@ dependencies = [
 
 [[package]]
 name = "retrac"
-version = "2.0.11"
+version = "2.0.12"
 dependencies = [
  "async-compression",
  "digest",
