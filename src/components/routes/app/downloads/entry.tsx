@@ -70,7 +70,7 @@ const DownloadEntry = (props: DownloadEntryProps) => {
       <div
         className={`absolute w-full h-full flex flex-row top-0 left-0 blur-[0.03rem] ${
           currentlyDownloading ? "bg-blue-400/[5%]" : "bg-blue-400/[0%]"
-        } transition-all duration-100`}
+        } transition-all ease-linear hover:duration-[20ms] duration-150`}
       >
         {
           <img
@@ -89,7 +89,7 @@ const DownloadEntry = (props: DownloadEntryProps) => {
 
       <div className="absolute top-2 right-2 flex flex-row gap-1">
         {!currentlyDownloading && (
-          <div className="bg-neutral-700/00 opacity-0 group-hover:opacity-100 group-hover:bg-neutral-700/70 border-[#2e2e2e00] border-[1px] group-hover:border-[#52525279] border-solid transition-opacity duration-50 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1">
+          <div className="bg-neutral-700/00 opacity-0 group-hover:opacity-100 group-hover:bg-neutral-700/70 border-[#2e2e2e00] border-[1px] group-hover:border-[#52525279] border-solid transition-opacity ease-linear hover:duration-[20ms] duration-150 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1">
             <UI.P className="text-[12px] flex flex-row items-center gap-0.5">
               {alreadyDownloaded ? (
                 <>
@@ -108,7 +108,7 @@ const DownloadEntry = (props: DownloadEntryProps) => {
           minDuration={1000}
         >
           <motion.div
-            className={`bg-neutral-700/40 backdrop-blur-lg border-neutral-700 border-[1px] border-solid transition-opacity duration-50 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1`}
+            className={`bg-neutral-700/40 backdrop-blur-lg border-neutral-700 border-[1px] border-solid transition-opacity ease-linear hover:duration-[20ms] duration-150 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.8 }}
             exit={{ opacity: 0, transition: { delay: 2 } }}
@@ -125,7 +125,7 @@ const DownloadEntry = (props: DownloadEntryProps) => {
         <AnimatePresence>
           {alreadyDownloaded && !currentlyDownloading && (
             <motion.div
-              className={`bg-green-700/40 backdrop-blur-lg border-green-900 border-[1px] border-solid transition-opacity duration-50 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1`}
+              className={`bg-green-700/40 backdrop-blur-lg border-green-900 border-[1px] border-solid transition-opacity ease-linear hover:duration-[20ms] duration-150 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.8 }}
               exit={{ opacity: 0, transition: { delay: 2 } }}
@@ -139,7 +139,7 @@ const DownloadEntry = (props: DownloadEntryProps) => {
           )}
 
           {currentlyDownloading && (
-            <div className="opacity-80 bg-neutral-800/50 backdrop-blur-lg border-neutral-700 border-[1px] border-solid transition-opacity duration-50 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1">
+            <div className="opacity-80 bg-neutral-800/50 backdrop-blur-lg border-neutral-700 border-[1px] border-solid transition-opacity ease-linear hover:duration-[20ms] duration-150 rounded-md p-1.5 py-0.5 flex flex-row items-center gap-1">
               <UI.P className="text-[12px] flex flex-row items-center gap-0.5">
                 Currently Downloading
               </UI.P>
@@ -151,7 +151,7 @@ const DownloadEntry = (props: DownloadEntryProps) => {
       <div
         className={`w-full h-full top-0 left-0 gap-0.5 flex flex-col z-20 opacity-80 ${
           currentlyDownloading ? "opacity-100" : "group-hover:opacity-100"
-        } transition-opacity duration-100`}
+        } transition-opacity ease-linear hover:duration-[20ms] duration-150`}
       >
         <div
           className="w-16 h-16 aspect-square bg-blue-400 mb-1 rounded-md bg-cover bg-no-repeat bg-center"
