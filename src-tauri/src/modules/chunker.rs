@@ -420,6 +420,8 @@ async fn download_file(
 
     let final_save_path = Path::new(&download_path.to_string()).join(sanitized_path);
 
+    tokio::time::sleep(std::time::Duration::from_secs(3)).await;
+
     if let Err(e) = rebuild_file(chunk_info, &final_save_path).await {
         dbg!(println!("Error rebuilding file: {}", e));
 

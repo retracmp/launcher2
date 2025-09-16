@@ -270,8 +270,8 @@ const TauriListeners = () => {
     if (!options.bubble_builds_enabled) deleteBubbleBuilds();
     if (!options.mobile_builds_enabled) deleteMobileBuilds();
   }, [
-    downloadState.active_download_progress,
     options.bubble_builds_enabled,
+    options.mobile_builds_enabled,
     deleteBubbleBuilds,
     deleteMobileBuilds,
   ]);

@@ -1,6 +1,6 @@
 [package]
 name = "retrac"
-version = "2.0.12"
+version = "2.0.13"
 description = "The game launcher for Retrac, an OG Fortnite Experience."
 authors = ["ectrc"]
 edition = "2021"
