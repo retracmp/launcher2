@@ -14,6 +14,7 @@ import { useOptions } from "src/wrapper/options";
 import { useLeaderboard } from "src/wrapper/leaderboard";
 import { LAUNCH_STATE, useLibrary } from "src/wrapper/library";
 import * as app from "@tauri-apps/api/app";
+import * as path from "@tauri-apps/api/path";
 import invoke from "src/tauri";
 
 const ANTI_SHORTCUTS = ["ctrl+p", "ctrl+f", "ctrl+u", "ctrl+j"];
@@ -36,10 +37,11 @@ const Boostrap = () => {
     application.load(
       await app.getName(),
       await app.getVersion(),
-      // import.meta.env.MODE === "development",
       false,
       (await invoke.get_windows_version()) || 0
     );
+
+    options.fix_content_directory(await path.appLocalDataDir());
   };
 
   const nil = (e: MouseEvent) => e.preventDefault();

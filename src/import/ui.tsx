@@ -137,7 +137,7 @@ export namespace SimpleUI {
 
     const navigate = useNavigate();
     const location = useLocation();
-    console.log(location.pathname);
+
     const active =
       options.clicked &&
       options.clicked.type === "LINK" &&

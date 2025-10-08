@@ -16,6 +16,7 @@ type OptionsState = {
 
   content_directory: string;
   set_content_directory: (value: string) => void;
+  fix_content_directory: (value: string) => void;
 
   simple_edit: boolean;
   set_simple_edit: (value: boolean) => void;
@@ -90,6 +91,12 @@ export const useOptions = create<OptionsState>()(
       content_directory: "",
       set_content_directory: (value) =>
         set(() => ({ content_directory: value })),
+      fix_content_directory: (value) => {
+        set(() => ({
+          content_directory:
+            get().content_directory === "" ? value : get().content_directory,
+        }));
+      },
 
       simple_edit: false,
       set_simple_edit: (value) => set(() => ({ simple_edit: value })),
