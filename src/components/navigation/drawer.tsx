@@ -7,42 +7,63 @@ import { useOptions } from "src/wrapper/options";
 import DrawerItem, { SparklyDrawerItem } from "src/components/navigation/item";
 import { motion } from "motion/react";
 import { openUrl } from "@tauri-apps/plugin-opener";
+import { SimpleUI } from "src/import/ui";
 
 const Drawer = () => {
   const application = useApplicationInformation();
   const userManager = useUserManager();
   const options = useOptions();
 
+  const state = options.disable_drawer
+    ? SimpleUI.DrawerState.Disabled
+    : options.wide_drawer
+    ? SimpleUI.DrawerState.Expanded
+    : SimpleUI.DrawerState.Collapsed;
+
   return (
-    <motion.nav
-      className="flex flex-col items-center gap-1 h-full w-12 border-r-neutral-700/40 border-r-1 border-solid overflow-hidden pt-1.5 pb-1.5 backdrop-blur-[2px]"
-      initial={{
-        width: options.disable_drawer ? 0 : 48,
-        padding: options.disable_drawer ? 0 : "0.375rem",
-      }}
-      animate={{
-        width: options.disable_drawer ? 0 : options.wide_drawer ? 192 : 48,
-        padding: options.disable_drawer ? 0 : "0.375rem",
-      }}
-      transition={
-        options.disable_drawer
-          ? {
-              duration: 0.2,
-            }
-          : {
-              type: "spring",
-              stiffness: 200,
-              damping: 21,
-            }
-      }
-      style={
-        options.disable_drawer
-          ? {
-              borderRightWidth: 0,
-            }
-          : {}
-      }
-    >
+    // <motion.nav
+    //   className="flex flex-col items-center gap-1 h-full w-12 border-r-neutral-700/40 border-r-1 border-solid overflow-hidden pt-1.5 pb-1.5 backdrop-blur-[2px]"
+    //   initial={{
+    //     width: options.disable_drawer ? 0 : 48,
+    //     padding: options.disable_drawer ? 0 : "0.375rem",
+    //   }}
+    //   animate={{
+    //     width: options.disable_drawer ? 0 : options.wide_drawer ? 192 : 48,
+    //     padding: options.disable_drawer ? 0 : "0.375rem",
+    //   }}
+    //   transition={
+    //     options.disable_drawer
+    //       ? {
+    //           duration: 0.2,
+    //         }
+    //       : {
+    //           type: "spring",
+    //           stiffness: 200,
+    //           damping: 21,
+    //         }
+    //   }
+    //   style={
+    //     options.disable_drawer
+    //       ? {
+    //           borderRightWidth: 0,
+    //         }
+    //       : {}
+    //   }
+    // >
+    //   {!userManager.access() ? <EmptyRoutes /> : <AuthenticatedRoutes />}
+
+    //   {(application.dev || userManager.is_dev()) && (
+    //     <>
+    //       {/* <DrawerItem path="/app/editor" icon="IoCreate" label="Editor" /> */}
+    //       <DrawerItem
+    //         path="/developer"
+    //         icon="IoConstructSharp"
+    //         label="Developer"
+    //       />
+    //     </>
+    //   )}
+    // </motion.nav>
+    <SimpleUI.Drawer state={state}>
       {!userManager.access() ? <EmptyRoutes /> : <AuthenticatedRoutes />}
 
       {(application.dev || userManager.is_dev()) && (
@@ -55,7 +76,7 @@ const Drawer = () => {
           />
         </>
       )}
-    </motion.nav>
+    </SimpleUI.Drawer>
   );
 };
 
