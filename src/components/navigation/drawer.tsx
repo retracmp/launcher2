@@ -3,10 +3,8 @@ import { useUserManager } from "src/wrapper/user";
 import { useServerManager } from "src/wrapper/server";
 import { useDownloadState } from "src/wrapper/download";
 import { useOptions } from "src/wrapper/options";
-
-import DrawerItem, { SparklyDrawerItem } from "src/components/navigation/item";
-import { motion } from "motion/react";
 import { openUrl } from "@tauri-apps/plugin-opener";
+
 import { SimpleUI } from "src/import/ui";
 
 const Drawer = () => {
@@ -20,95 +18,7 @@ const Drawer = () => {
     ? SimpleUI.DrawerState.Expanded
     : SimpleUI.DrawerState.Collapsed;
 
-  return (
-    // <motion.nav
-    //   className="flex flex-col items-center gap-1 h-full w-12 border-r-neutral-700/40 border-r-1 border-solid overflow-hidden pt-1.5 pb-1.5 backdrop-blur-[2px]"
-    //   initial={{
-    //     width: options.disable_drawer ? 0 : 48,
-    //     padding: options.disable_drawer ? 0 : "0.375rem",
-    //   }}
-    //   animate={{
-    //     width: options.disable_drawer ? 0 : options.wide_drawer ? 192 : 48,
-    //     padding: options.disable_drawer ? 0 : "0.375rem",
-    //   }}
-    //   transition={
-    //     options.disable_drawer
-    //       ? {
-    //           duration: 0.2,
-    //         }
-    //       : {
-    //           type: "spring",
-    //           stiffness: 200,
-    //           damping: 21,
-    //         }
-    //   }
-    //   style={
-    //     options.disable_drawer
-    //       ? {
-    //           borderRightWidth: 0,
-    //         }
-    //       : {}
-    //   }
-    // >
-    //   {!userManager.access() ? <EmptyRoutes /> : <AuthenticatedRoutes />}
-
-    //   {(application.dev || userManager.is_dev()) && (
-    //     <>
-    //       {/* <DrawerItem path="/app/editor" icon="IoCreate" label="Editor" /> */}
-    //       <DrawerItem
-    //         path="/developer"
-    //         icon="IoConstructSharp"
-    //         label="Developer"
-    //       />
-    //     </>
-    //   )}
-    // </motion.nav>
-    <SimpleUI.Drawer state={state}>
-      {!userManager.access() ? <EmptyRoutes /> : <AuthenticatedRoutes />}
-
-      {(application.dev || userManager.is_dev()) && (
-        <>
-          {/* <DrawerItem path="/app/editor" icon="IoCreate" label="Editor" /> */}
-          <DrawerItem
-            path="/developer"
-            icon="IoConstructSharp"
-            label="Developer"
-          />
-        </>
-      )}
-    </SimpleUI.Drawer>
-  );
-};
-
-const EmptyRoutes = () => {
-  const application = useApplicationInformation();
-
-  return (
-    <>
-      <DrawerItem path="/" icon="IoLockClosedSharp" label="Welcome" />
-      <DrawerItem
-        path="/support"
-        icon="IoAccessibilitySharp"
-        label="Need Help?"
-        opt_onlick={() => {
-          openUrl("https://discord.gg/6sNFtW4Hva");
-        }}
-      />
-
-      {application.updateNeeded != null && (
-        <SparklyDrawerItem
-          path="/update"
-          icon="IoBuildSharp"
-          label="Update"
-          colour="blue"
-        />
-      )}
-    </>
-  );
-};
-
-const AuthenticatedRoutes = () => {
-  const application = useApplicationInformation();
+  const developer_mode = application.dev || userManager.is_dev();
 
   const servers = useServerManager((s) => s._servers);
   const serverCount = Object.values(servers).length;
@@ -116,75 +26,165 @@ const AuthenticatedRoutes = () => {
   const builds = useDownloadState((s) => s.active_download_progress);
   const buildCount = Object.values(Object.fromEntries(builds.entries())).length;
 
-  return (
-    <>
-      <DrawerItem path="/app/home" icon="IoHomeSharp" label="Home" />
-      {/* <DrawerItem path="/app/shop" icon="IoCartSharp" label="Shop" /> */}
-      <DrawerItem
-        path="/app/leaderboard"
-        icon="IoTrophySharp"
-        label="Leaderboard"
-      />
-      <DrawerItem
-        path="/app/library"
-        icon="IoFileTrayFullSharp"
-        label="Library"
-      />
-      <DrawerItem
-        path="/app/status"
-        icon="IoPulseSharp"
-        label="Matches"
-        opt_number={serverCount > 0 ? serverCount : undefined}
-      />
+  const AuthenticatedDrawerItems = {
+    top: [
+      {
+        label: "Home",
+        icon: "IoHomeSharp",
+        clicked: {
+          type: "LINK",
+          href: "/app/home",
+        },
+      },
+      {
+        label: "Leaderboard",
+        icon: "IoTrophySharp",
+        clicked: {
+          type: "LINK",
+          href: "/app/leaderboard",
+        },
+      },
+      {
+        label: "Library",
+        icon: "IoFileTrayFullSharp",
+        clicked: {
+          type: "LINK",
+          href: "/app/library",
+        },
+        notification:
+          buildCount > 0
+            ? {
+                colour_scheme: "grey",
+                text: buildCount.toString(),
+              }
+            : undefined,
+      },
+      {
+        label: "Matches",
+        icon: "IoPulseSharp",
+        clicked: {
+          type: "LINK",
+          href: "/app/status",
+        },
+        notification:
+          serverCount > 0
+            ? {
+                colour_scheme: "grey",
+                text: serverCount.toString(),
+              }
+            : undefined,
+      },
+      {
+        label: "Donate",
+        icon: "IoSparklesSharp",
+        clicked: {
+          type: "LINK",
+          href: "/app/store",
+        },
+        colour_scheme: "yellow",
+      },
+      {
+        label: "Need Help?",
+        icon: "IoAccessibilitySharp",
+        clicked: {
+          type: "FUNCTION",
+          fn: () => {
+            openUrl("https://discord.gg/6sNFtW4Hva");
+          },
+        },
+      },
+    ],
+    bottom: [
+      application.updateNeeded != null
+        ? {
+            label: "Update",
+            icon: "IoBuildSharp",
+            clicked: {
+              type: "LINK",
+              href: "/update",
+            },
+            colour_scheme: "blue",
+          }
+        : null,
+      developer_mode
+        ? {
+            label: "Clans",
+            icon: "IoPeopleSharp",
+            clicked: {
+              type: "LINK",
+              href: "/app/clans",
+            },
+            colour_scheme: "purple",
+          }
+        : null,
+      developer_mode
+        ? {
+            label: "Developer",
+            icon: "IoConstructSharp",
+            clicked: {
+              type: "LINK",
+              href: "/developer",
+            },
+          }
+        : null,
+      {
+        label: "Downloads",
+        icon: "IoArchiveSharp",
+        clicked: {
+          type: "LINK",
+          href: "/app/downloads",
+        },
+      },
+      {
+        label: "Settings",
+        icon: "IoSettingsSharp",
+        clicked: {
+          type: "LINK",
+          href: "/app/settings",
+        },
+      },
+    ],
+  } as SimpleUI.DrawerItemsOptions;
 
-      {application.dev && (
-        <SparklyDrawerItem
-          path="/app/clans"
-          icon="IoPeopleSharp"
-          label="Clans"
-          colour="purple"
-        />
-      )}
+  const EmptyDrawerItems = {
+    top: [
+      {
+        label: "Welcome",
+        icon: "IoLockClosedSharp",
+        clicked: {
+          type: "LINK",
+          href: "/",
+        },
+      },
+      {
+        label: "Need Help?",
+        icon: "IoAccessibilitySharp",
+        clicked: {
+          type: "FUNCTION",
+          fn: () => {
+            openUrl("https://discord.gg/6sNFtW4Hva");
+          },
+        },
+      },
+      application.updateNeeded != null
+        ? {
+            label: "Update",
+            icon: "IoBuildSharp",
+            clicked: {
+              type: "LINK",
+              href: "/update",
+            },
+          }
+        : null,
+    ],
+    bottom: [],
+  } as SimpleUI.DrawerItemsOptions;
 
-      <SparklyDrawerItem
-        path="/app/store"
-        icon="IoSparklesSharp"
-        label="Donate"
-        colour="yellow"
-      />
-      <DrawerItem
-        path="/support"
-        icon="IoAccessibilitySharp"
-        label="Need Help?"
-        opt_onlick={() => {
-          openUrl("https://discord.gg/6sNFtW4Hva");
-        }}
-      />
+  const routes = !userManager.access()
+    ? EmptyDrawerItems
+    : AuthenticatedDrawerItems;
 
-      <s className="mt-auto" />
-
-      {application.updateNeeded != null && (
-        <SparklyDrawerItem
-          path="/update"
-          icon="IoBuildSharp"
-          label="Update"
-          colour="blue"
-        />
-      )}
-
-      <DrawerItem
-        path="/app/downloads"
-        icon="IoArchiveSharp"
-        label="Downloads"
-        opt_number={buildCount > 0 ? buildCount : undefined}
-      />
-      <DrawerItem
-        path="/app/settings"
-        icon="IoSettingsSharp"
-        label="Settings"
-      />
-    </>
-  );
+  return <SimpleUI.Drawer state={state} items={routes} />;
 };
 
 export default Drawer;

@@ -2,9 +2,9 @@ import { useBannerManager } from "src/wrapper/banner";
 import { useOptions } from "src/wrapper/options";
 import { useRetrac } from "src/wrapper/retrac";
 
-import UI from "src/components/core/default";
+import { SimpleUI } from "src/import/ui";
 import { BooleanOption, FileOption, OptionGroup } from "../../core/option";
-import invoke from "src/tauri";
+import UI from "src/components/core/default";
 
 const DeveloperPage = () => {
   const bannerManager = useBannerManager();
@@ -14,28 +14,20 @@ const DeveloperPage = () => {
   return (
     <>
       <OptionGroup _first>
-        <UI.Button
-          onClick={() =>
-            invoke.add_to_defender(
-              "C:\\Users\\User\\Documents\\fortnite\\++Fortnite+Release-14.40-CL-14550713-Windows"
-            )
-          }
-          colour="invisible"
-          className="p-2"
-        >
-          add defender
-        </UI.Button>
-      </OptionGroup>
-      <OptionGroup _first>
-        <UI.H1>dev</UI.H1>
-        <p className="text-neutral-300 font-plex text-[14px] text-base ">
-          on this page, everything is either client sided or protected by the
-          server. this does not show on production builds unless the account
-          logged in is a developer.
-        </p>
+        <div className="flex flex-col gap-[0.2rem]">
+          <UI.H1 className="font-[300] text-neutral-300">
+            Developer Playground
+          </UI.H1>
+          <UI.P className="text-neutral-400">
+            Here you can test out various components and settings for
+            development purposes. Anything here is client sided and even if you
+            have access here you cannot affect production data or use any admin
+            features.
+          </UI.P>
+        </div>
       </OptionGroup>
 
-      <OptionGroup title="opts">
+      <OptionGroup title="Playground">
         <UI.Button
           onClick={() =>
             bannerManager.push({
@@ -48,11 +40,11 @@ const DeveloperPage = () => {
           colour="invisible"
           className="p-2"
         >
-          test banner
+          Add Lorem Banner
         </UI.Button>
 
         <BooleanOption
-          title="Do not download paks on launch"
+          title="Do not check for outdated paks on launch"
           description={
             <>
               Mainly for zylox armoon and tev so they can test paks without
@@ -65,11 +57,11 @@ const DeveloperPage = () => {
         />
 
         <BooleanOption
-          title="use custom dll"
+          title="Override the default client runtime"
           description={
             <>
-              custom client DLL to use instead of the default one
-              👌🤦‍♂️🙏💋😜🤦‍♂️😒🙏😍🟢🟢
+              Use a custom client dll instead of the default one provided by
+              retrac.
             </>
           }
           state={retrac.use_custom_dll_path}
@@ -79,7 +71,7 @@ const DeveloperPage = () => {
 
         {retrac.use_custom_dll_path && (
           <FileOption
-            title="Custom Client"
+            title="Runtime path"
             description="Path to a custom client DLL to use instead of the default one."
             state={retrac.custom_dll_path}
             set={retrac.set_custom_dll_path}
@@ -96,103 +88,140 @@ const DeveloperPage = () => {
         />
 
         <BooleanOption
-          title="All wdigets on home page"
-          description={<>test</>}
+          title="All available widgets on home page"
+          description={
+            <>Show all widgets on the home page for testing layout.</>
+          }
           state={retrac.show_all_widgets}
           set={retrac.set_show_all_widgets}
           _animate
         />
       </OptionGroup>
 
-      <div className="relative m-2 w-96 min-h-20 bg-neutral-800 overflow-hidden">
-        <div className="w-full h-full blur-[5r0em]">
-          <div
-            className="absolute w-24 h-24 top-0 left-0 bg-red-500 rounded-full"
-            style={{
-              transform: "translate(-50%, -50%)",
-            }}
-          ></div>
+      <OptionGroup title="UI Components" _row>
+        <SimpleUI.Drawer
+          state={SimpleUI.DrawerState.Expanded}
+          items={{
+            top: [
+              { label: "Grey", colour_scheme: "grey" },
+              { label: "Red", colour_scheme: "red" },
+              { label: "Blue", colour_scheme: "blue" },
+              { label: "Green", colour_scheme: "green" },
+              { label: "Yellow", colour_scheme: "yellow" },
+              { label: "Pink", colour_scheme: "pink" },
+              { label: "Purple", colour_scheme: "purple" },
+            ],
+            bottom: [],
+          }}
+        ></SimpleUI.Drawer>
+        <div className="flex flex-col overflow-auto">
+          <div className="relative m-2 w-96 min-h-20 bg-neutral-800 overflow-hidden">
+            <div className="w-full h-full blur-[5r0em]">
+              <div
+                className="absolute w-24 h-24 top-0 left-0 bg-red-500 rounded-full"
+                style={{
+                  transform: "translate(-50%, -50%)",
+                }}
+              ></div>
 
-          <div
-            className="absolute w-28 h-24 bottom-0 right-0 bg-fuchsia-500 rounded-full"
-            style={{
-              transform: "translate(-50%, 50%)",
-            }}
-          ></div>
+              <div
+                className="absolute w-28 h-24 bottom-0 right-0 bg-fuchsia-500 rounded-full"
+                style={{
+                  transform: "translate(-50%, 50%)",
+                }}
+              ></div>
+            </div>
+          </div>
+
+          <div className="relative m-2 w-96 min-h-20 bg-neutral-800 overflow-hidden">
+            <div className="w-full h-full blur-[5r0em]">
+              <div
+                className="absolute w-[29%] h-[120%] top-0 left-0 bg-red-500 rounded-full"
+                style={{
+                  transform: "translate(-50%, -50%)",
+                }}
+              ></div>
+
+              <div
+                className="absolute w-[29%] h-[120%] bottom-0 right-0 bg-fuchsia-500 rounded-full"
+                style={{
+                  transform: "translate(-50%, 50%)",
+                }}
+              ></div>
+            </div>
+          </div>
+
+          <div className="relative m-2 w-20 min-h-20 bg-neutral-800 overflow-hidden">
+            <div className="w-full h-full blur-[5r0em]">
+              <div
+                className="absolute w-24 h-24 top-0 left-0 bg-red-500 rounded-full"
+                style={{
+                  transform: "translate(-50%, -50%)",
+                }}
+              ></div>
+
+              <div
+                className="absolute w-28 h-24 bottom-0 right-0 bg-fuchsia-500 rounded-full"
+                style={{
+                  transform: "translate(-50%, 50%)",
+                }}
+              ></div>
+            </div>
+          </div>
+
+          <div className="relative m-2 w-20 min-h-20 bg-neutral-800 overflow-hidden">
+            <div className="w-full h-full">
+              <div
+                className="absolute w-[29%] h-[120%] top-0 left-0 bg-red-500 rounded-full"
+                style={{
+                  transform: "translate(-50%, -50%)",
+                }}
+              ></div>
+
+              <div
+                className="absolute w-[29%] h-[120%] bottom-0 right-0 bg-fuchsia-500 rounded-full"
+                style={{
+                  transform: "translate(-50%, 50%)",
+                }}
+              ></div>
+            </div>
+          </div>
+
+          <div className="relative m-2 w-20 min-h-20 bg-neutral-800 overflow-hidden">
+            <div className="w-full h-full blur-[2rem]">
+              <div
+                className="absolute w-[29%] h-[120%] top-0 left-0 bg-red-500 rounded-full"
+                style={{
+                  transform: "translate(-50%, -50%)",
+                }}
+              ></div>
+
+              <div
+                className="absolute w-[29%] h-[120%] bottom-0 right-0 bg-fuchsia-500 rounded-full"
+                style={{
+                  transform: "translate(-50%, 50%)",
+                }}
+              ></div>
+            </div>
+          </div>
         </div>
-      </div>
-
-      <div className="relative m-2 w-96 min-h-20 bg-neutral-800 overflow-hidden">
-        <div className="w-full h-full blur-[5r0em]">
-          <div
-            className="absolute w-[29%] h-[120%] top-0 left-0 bg-red-500 rounded-full"
-            style={{
-              transform: "translate(-50%, -50%)",
-            }}
-          ></div>
-
-          <div
-            className="absolute w-[29%] h-[120%] bottom-0 right-0 bg-fuchsia-500 rounded-full"
-            style={{
-              transform: "translate(-50%, 50%)",
-            }}
-          ></div>
-        </div>
-      </div>
-
-      <div className="relative m-2 w-20 min-h-20 bg-neutral-800 overflow-hidden">
-        <div className="w-full h-full blur-[5r0em]">
-          <div
-            className="absolute w-24 h-24 top-0 left-0 bg-red-500 rounded-full"
-            style={{
-              transform: "translate(-50%, -50%)",
-            }}
-          ></div>
-
-          <div
-            className="absolute w-28 h-24 bottom-0 right-0 bg-fuchsia-500 rounded-full"
-            style={{
-              transform: "translate(-50%, 50%)",
-            }}
-          ></div>
-        </div>
-      </div>
-
-      <div className="relative m-2 w-20 min-h-20 bg-neutral-800 overflow-hidden">
-        <div className="w-full h-full">
-          <div
-            className="absolute w-[29%] h-[120%] top-0 left-0 bg-red-500 rounded-full"
-            style={{
-              transform: "translate(-50%, -50%)",
-            }}
-          ></div>
-
-          <div
-            className="absolute w-[29%] h-[120%] bottom-0 right-0 bg-fuchsia-500 rounded-full"
-            style={{
-              transform: "translate(-50%, 50%)",
-            }}
-          ></div>
-        </div>
-      </div>
-
-      <div className="relative m-2 w-20 min-h-20 bg-neutral-800 overflow-hidden">
-        <div className="w-full h-full blur-[2rem]">
-          <div
-            className="absolute w-[29%] h-[120%] top-0 left-0 bg-red-500 rounded-full"
-            style={{
-              transform: "translate(-50%, -50%)",
-            }}
-          ></div>
-
-          <div
-            className="absolute w-[29%] h-[120%] bottom-0 right-0 bg-fuchsia-500 rounded-full"
-            style={{
-              transform: "translate(-50%, 50%)",
-            }}
-          ></div>
-        </div>
-      </div>
+        <SimpleUI.Drawer
+          state={SimpleUI.DrawerState.Collapsed}
+          position={SimpleUI.DrawerPosition.Right}
+          items={{
+            top: [
+              { label: "Grey", colour_scheme: "grey" },
+              { label: "Red", colour_scheme: "red" },
+              { label: "Blue", colour_scheme: "blue" },
+              { label: "Green", colour_scheme: "green" },
+              { label: "Yellow", colour_scheme: "yellow" },
+              { label: "Pink", colour_scheme: "pink" },
+              { label: "Purple", colour_scheme: "purple" },
+            ],
+            bottom: [],
+          }}
+        ></SimpleUI.Drawer>
+      </OptionGroup>
     </>
   );
 };
