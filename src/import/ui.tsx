@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "@tanstack/react-router";
 
 import * as Icons from "react-icons/io5";
 import { motion } from "motion/react";
+import NumberFlow from "@number-flow/react";
 
 export namespace SimpleUI {
   export const DrawerState = {
@@ -108,10 +109,17 @@ export namespace SimpleUI {
     type: "FUNCTION";
     fn: () => void;
   };
-  export type DrawerItemNotification = {
-    colour_scheme: "blue" | "red" | "green" | "yellow" | "grey";
-    text: string;
-  };
+  export type DrawerItemNotification =
+    | {
+        type: "TEXT";
+        colour_scheme: "blue" | "red" | "green" | "yellow" | "grey";
+        text: string;
+      }
+    | {
+        type: "NUMBER";
+        colour_scheme: "blue" | "red" | "green" | "yellow" | "grey";
+        number: number;
+      };
   export type DrawerItemOptions = {
     icon: keyof typeof Icons;
     label: string;
@@ -229,6 +237,18 @@ export namespace SimpleUI {
         >
           {props.label}
         </motion.span>
+
+        {props.notification && props.notification.type === "NUMBER" && (
+          <span className="absolute font-semibold p-1.5 pl-[0.35rem] py-2 bg-neutral-800 right-1 h-5 text-sm flex flex-row items-center justify-center rounded-[0.6rem]">
+            <NumberFlow value={props.notification.number} />
+          </span>
+        )}
+
+        {props.notification && props.notification.type === "TEXT" && (
+          <span className="absolute p-1.5 py-2 bg-neutral-800 right-1 h-5 text-sm flex flex-row items-center justify-center rounded-[0.6rem]">
+            {props.notification.text}
+          </span>
+        )}
       </button>
     );
   };

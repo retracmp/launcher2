@@ -7,6 +7,7 @@ import { openUrl } from "@tauri-apps/plugin-opener";
 
 import { SimpleUI } from "src/import/ui";
 import * as axios from "src/axios/client";
+import { useLibrary } from "src/wrapper/library";
 
 const Drawer = () => {
   const application = useApplicationInformation();
@@ -20,13 +21,23 @@ const Drawer = () => {
     : SimpleUI.DrawerState.Collapsed;
 
   const developer_mode = axios.dev || application.dev || userManager.is_dev();
-  console.log("Drawer render - Developer Mode:", developer_mode);
 
   const servers = useServerManager((s) => s._servers);
   const serverCount = Object.values(servers).length;
 
-  const builds = useDownloadState((s) => s.active_download_progress);
-  const buildCount = Object.values(Object.fromEntries(builds.entries())).length;
+  const downloads = useDownloadState((s) => s.active_download_progress);
+  const downloadsCount = Object.values(
+    Object.fromEntries(downloads.entries())
+  ).length;
+
+  const builds = useLibrary((l) => l.library);
+  const buildsCount = Object.values(builds).length;
+
+  console.log("drawer render", {
+    serverCount,
+    buildCount: buildsCount,
+    downloadsCount,
+  });
 
   const AuthenticatedDrawerItems = {
     top: [
@@ -54,10 +65,11 @@ const Drawer = () => {
           href: "/app/library",
         },
         notification:
-          buildCount > 0
+          buildsCount > 0
             ? {
                 colour_scheme: "grey",
-                text: buildCount.toString(),
+                number: buildsCount,
+                type: "NUMBER",
               }
             : undefined,
       },
@@ -72,7 +84,8 @@ const Drawer = () => {
           serverCount > 0
             ? {
                 colour_scheme: "grey",
-                text: serverCount.toString(),
+                number: serverCount,
+                type: "NUMBER",
               }
             : undefined,
       },
@@ -136,6 +149,14 @@ const Drawer = () => {
           type: "LINK",
           href: "/app/downloads",
         },
+        notification:
+          downloadsCount > 0
+            ? {
+                colour_scheme: "grey",
+                number: downloadsCount,
+                type: "NUMBER",
+              }
+            : undefined,
       },
       {
         label: "Settings",
