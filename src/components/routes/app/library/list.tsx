@@ -33,7 +33,7 @@ const FortniteBuildList = (props: FortniteBuildProps) => {
   const primaryhandler = async () => {
     switch (library.launchState) {
       case LAUNCH_STATE.NONE:
-        library.launchBuild(props.entry.version);
+        library.launchBuild(props.entry.version, null);
         break;
       case LAUNCH_STATE.LAUNCHED:
         handleClose();

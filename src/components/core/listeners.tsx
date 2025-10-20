@@ -298,7 +298,7 @@ const TauriListeners = () => {
         if (!param)
           return console.error("[launch] no param provided for launch");
 
-        const result = await library.launchBuild(param);
+        const result = await library.launchBuild(param, null);
         if (result === null) {
           console.error("[launch] failed to launch build");
           return;
