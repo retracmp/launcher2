@@ -123,7 +123,10 @@ type LibraryState = {
   launchedBuild: LibraryEntry | null;
   setLaunchedBuild: (build: LibraryEntry | null) => void;
 
-  launchBuild: (version: string) => Promise<void>;
+  launchBuild: (
+    version: string,
+    override_password: string | null
+  ) => Promise<void>;
 
   setEacInitialisedForBuild: (version: string, value: boolean) => void;
   setLibraryOrder: (order: string[]) => void;
@@ -193,8 +196,11 @@ export const useLibrary = create<LibraryState>()(
       launchedBuild: null,
       setLaunchedBuild: (build) => set({ launchedBuild: build }),
 
-      launchBuild: async (version) => {
-        if (get().launchState !== LAUNCH_STATE.NONE) {
+      launchBuild: async (version, override_password = null) => {
+        if (
+          get().launchState !== LAUNCH_STATE.NONE &&
+          override_password === null
+        ) {
           throw new Error("Cannot launch while another build is launching");
         }
 
@@ -221,7 +227,7 @@ export const useLibrary = create<LibraryState>()(
         }
 
         const code = await socketExport.exchange_code();
-        if (!code) {
+        if (!code && override_password === null) {
           get().setLaunchState(LAUNCH_STATE.NONE);
           throw new Error("Failed to get exchange code");
         }
@@ -231,7 +237,7 @@ export const useLibrary = create<LibraryState>()(
           launch_args: useApplicationInformation.getState().dev
             ? useOptions.getState().launch_arguments
             : "",
-          exchange_code: code,
+          exchange_code: code || "NO_CODE_FOUND",
           anticheat_token: useUserManager.getState()._token || "",
           disable_pre_edits: useOptions.getState().disable_pre_edits,
           reset_on_release: useOptions.getState().reset_on_release,
@@ -246,6 +252,7 @@ export const useLibrary = create<LibraryState>()(
           custom_dll_path: useRetrac.getState().use_custom_dll_path
             ? useRetrac.getState().custom_dll_path
             : undefined,
+          override_password: override_password || undefined,
         });
 
         if (result === null || !!!result) {

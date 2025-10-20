@@ -3,13 +3,20 @@ import { useOptions } from "src/wrapper/options";
 import { useRetrac } from "src/wrapper/retrac";
 
 import { SimpleUI } from "src/import/ui";
-import { BooleanOption, FileOption, OptionGroup } from "../../core/option";
+import {
+  BooleanOption,
+  FileOption,
+  OptionGroup,
+  StringOption,
+} from "../../core/option";
 import UI from "src/components/core/default";
+import { useLibrary } from "src/wrapper/library";
 
 const DeveloperPage = () => {
   const bannerManager = useBannerManager();
   const options = useOptions();
   const retrac = useRetrac();
+  const library = useLibrary();
 
   return (
     <>
@@ -27,22 +34,7 @@ const DeveloperPage = () => {
         </div>
       </OptionGroup>
 
-      <OptionGroup title="Playground">
-        <UI.Button
-          onClick={() =>
-            bannerManager.push({
-              id: "slow",
-              text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-              colour: "yellow",
-              closable: true,
-            })
-          }
-          colour="invisible"
-          className="p-2"
-        >
-          Add Lorem Banner
-        </UI.Button>
-
+      <OptionGroup title="Content Options">
         <BooleanOption
           title="Do not check for outdated paks on launch"
           description={
@@ -55,7 +47,9 @@ const DeveloperPage = () => {
           set={retrac.set_do_not_download_paks}
           _animate
         />
+      </OptionGroup>
 
+      <OptionGroup title="Client Options">
         <BooleanOption
           title="Override the default client runtime"
           description={
@@ -76,9 +70,64 @@ const DeveloperPage = () => {
             state={retrac.custom_dll_path}
             set={retrac.set_custom_dll_path}
             _file_extensions={["dll"]}
+            _animate
           />
         )}
+      </OptionGroup>
 
+      <OptionGroup title="Authenticate Options">
+        <BooleanOption
+          title="Use a custom display name"
+          description={
+            <>
+              Skip exchange code login and use a custom display name for testing
+              purposes.
+            </>
+          }
+          state={retrac.enable_override_password}
+          set={retrac.set_enable_override_password}
+          _animate
+        />
+
+        {retrac.enable_override_password && (
+          <>
+            <StringOption
+              title="Display Name"
+              description="The display name to use when logging in."
+              state={retrac.override_password}
+              set={(s) => {
+                retrac.set_override_password(s);
+                if (s === "") {
+                  retrac.set_override_password("goaterik");
+                }
+              }}
+              _animate
+              icon="IoInformationCircleSharp"
+              _string_placeholder="Display Name"
+            />
+
+            <UI.Button
+              onClick={() =>
+                library.launchBuild(
+                  "++Fortnite+Release-14.40-CL-14550713",
+                  retrac.override_password
+                )
+              }
+              loadAfterClick
+              loadAfterClickText="Loading"
+              colour="green"
+              className="p-2"
+            >
+              Launch as{" "}
+              {retrac.enable_override_password
+                ? retrac.override_password
+                : "normal login"}
+            </UI.Button>
+          </>
+        )}
+      </OptionGroup>
+
+      <OptionGroup title="UI Options" _row>
         <BooleanOption
           title="No Sidebar"
           description={<>Remove for debugging purposes</>}
@@ -96,6 +145,23 @@ const DeveloperPage = () => {
           set={retrac.set_show_all_widgets}
           _animate
         />
+      </OptionGroup>
+
+      <OptionGroup _row>
+        <UI.Button
+          onClick={() =>
+            bannerManager.push({
+              id: "slow",
+              text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+              colour: "yellow",
+              closable: true,
+            })
+          }
+          colour="invisible"
+          className="p-2"
+        >
+          Add Lorem Banner
+        </UI.Button>
       </OptionGroup>
 
       <OptionGroup title="UI Components" _row>

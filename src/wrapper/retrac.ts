@@ -49,6 +49,12 @@ type RetracState = {
 
   custom_dll_path: string;
   set_custom_dll_path: (custom_dll_path: string) => void;
+
+  enable_override_password: boolean;
+  set_enable_override_password: (enable_override_password: boolean) => void;
+
+  override_password: string;
+  set_override_password: (override_password: string) => void;
 };
 
 export const useRetrac = create<RetracState>()(
@@ -109,6 +115,13 @@ export const useRetrac = create<RetracState>()(
 
       custom_dll_path: "",
       set_custom_dll_path: (custom_dll_path) => set({ custom_dll_path }),
+
+      enable_override_password: false,
+      set_enable_override_password: (enable_override_password) =>
+        set({ enable_override_password }),
+
+      override_password: "",
+      set_override_password: (override_password) => set({ override_password }),
     }),
     {
       name: "retrac",
@@ -116,8 +129,8 @@ export const useRetrac = create<RetracState>()(
       partialize: (state) => ({
         do_not_download_paks: state.do_not_download_paks,
         custom_dll_path: state.custom_dll_path,
-        use_custom_dll_path: state.use_custom_dll_path,
         show_all_widgets: state.show_all_widgets,
+        override_password: state.override_password,
       }),
     }
   )

@@ -23,6 +23,7 @@ type LaunchOptions = {
   bubble_builds_enabled: boolean;
   mobile_builds_enabled: boolean;
   custom_dll_path?: string;
+  override_password?: string;
 };
 
 // pub struct ManifestProgress {

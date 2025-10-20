@@ -6,6 +6,7 @@ import { useOptions } from "src/wrapper/options";
 import { openUrl } from "@tauri-apps/plugin-opener";
 
 import { SimpleUI } from "src/import/ui";
+import * as axios from "src/axios/client";
 
 const Drawer = () => {
   const application = useApplicationInformation();
@@ -18,7 +19,8 @@ const Drawer = () => {
     ? SimpleUI.DrawerState.Expanded
     : SimpleUI.DrawerState.Collapsed;
 
-  const developer_mode = application.dev || userManager.is_dev();
+  const developer_mode = axios.dev || application.dev || userManager.is_dev();
+  console.log("Drawer render - Developer Mode:", developer_mode);
 
   const servers = useServerManager((s) => s._servers);
   const serverCount = Object.values(servers).length;
@@ -166,6 +168,16 @@ const Drawer = () => {
           },
         },
       },
+      developer_mode
+        ? {
+            label: "Developer",
+            icon: "IoConstructSharp",
+            clicked: {
+              type: "LINK",
+              href: "/developer",
+            },
+          }
+        : null,
       application.updateNeeded != null
         ? {
             label: "Update",

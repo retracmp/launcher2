@@ -20,12 +20,13 @@ pub struct LaunchOptions {
   pub bubble_builds_enabled: bool,
   pub mobile_builds_enabled: bool,
   pub custom_dll_path: Option<String>,
+  pub override_password: Option<String>,
 }
 
 pub async fn launch_retrac(options: LaunchOptions) -> Result<(), String> {
   println!("Launching Retrac with options: {:?}", options);
 
-  if options.manifest_id.is_some() {
+  if options.manifest_id.is_some() && options.override_password.is_none() {
     let manifest_id = options.manifest_id.unwrap();
     chunker::download_build(&manifest_id, options.root.to_str().unwrap()).await?;
 
@@ -56,7 +57,10 @@ pub async fn launch_retrac(options: LaunchOptions) -> Result<(), String> {
     }
   }
 
-  chunker::download_build("EAC_Client", options.root.to_str().unwrap()).await?;
+  if options.override_password.is_none() {
+    chunker::download_build("EAC_Client", options.root.to_str().unwrap()).await?;
+  }
+  
   if !options.anti_cheat_already_intialised {
     let result = match process::launch_eac_setup(&options.root, "b2504259773b40e3a818f820e31979ca") {
       Ok(_) => true,
@@ -72,13 +76,15 @@ pub async fn launch_retrac(options: LaunchOptions) -> Result<(), String> {
     })?;
   }
 
-  process::kill_all(&[
-    "FortniteClient-Win64-Shipping_BE.exe",
-    "FortniteClient-Win64-Shipping_EAC.exe",
-    "FortniteClient-Win64-Shipping.exe",
-    "EpicGamesLauncher.exe",
-    "FortniteLauncher.exe",
-  ])?;
+  if options.override_password.is_none() {
+    process::kill_all(&[
+      "FortniteClient-Win64-Shipping_BE.exe",
+      "FortniteClient-Win64-Shipping_EAC.exe",
+      "FortniteClient-Win64-Shipping.exe",
+      "EpicGamesLauncher.exe",
+      "FortniteLauncher.exe",
+    ])?;
+  }
   process::start_suspended(
     options
       .root
@@ -89,6 +95,22 @@ pub async fn launch_retrac(options: LaunchOptions) -> Result<(), String> {
       .root
       .join("FortniteGame\\Binaries\\Win64\\FortniteClient-Win64-Shipping_EAC.exe"),
   )?;
+
+  let password_arg = if let Some(password) = &options.override_password {
+    format!("-AUTH_PASSWORD={}", password)
+  } else {
+    format!("-AUTH_PASSWORD={}", options.exchange_code)
+  };
+  let login_arg = if let Some(password) = &options.override_password {
+    format!("-AUTH_LOGIN={}@.", password)
+  } else {
+    "-AUTH_LOGIN=retrac@.".to_string()
+  };
+  let auth_type = if options.override_password.is_some() {
+    "-AUTH_TYPE=epic".to_string()
+  } else {
+    "-AUTH_TYPE=exchangecode".to_string()
+  };
 
   if !options.custom_dll_path.is_none() {
     process::start_with_args(options.root.join("FortniteGame\\Binaries\\Win64\\FortniteClient-Win64-Shipping.exe"), vec![
@@ -101,9 +123,9 @@ pub async fn launch_retrac(options: LaunchOptions) -> Result<(), String> {
       "-caldera=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiYmU5ZGE1YzJmYmVhNDQwN2IyZjQwZWJhYWQ4NTlhZDQiLCJnZW5lcmF0ZWQiOjE2Mzg3MTcyNzgsImNhbGRlcmFHdWlkIjoiMzgxMGI4NjMtMmE2NS00NDU3LTliNTgtNGRhYjNiNDgyYTg2IiwiYWNQcm92aWRlciI6IkVhc3lBbnRpQ2hlYXQiLCJub3RlcyI6IiIsImZhbGxiYWNrIjpmYWxzZX0.VAWQB67RTxhiWOxx7DBjnzDnXyyEnX7OljJm-j2d88G_WgwQ9wrE6lwMEHZHjBd1ISJdUO1UVUqkfLdU5nofBQ",
       "-skippatchcheck",
       "-noeac",
-      "-AUTH_TYPE=exchangecode",
-      "-AUTH_LOGIN=retrac",
-      (format!("-AUTH_PASSWORD={}", options.exchange_code).as_str()),
+      login_arg.as_str(),
+      auth_type.as_str(),
+      password_arg.as_str(),
       (format!("-actoken={}", options.anticheat_token).as_str()),
       (options.launch_args.as_str()),
       (if options.simple_edit { "-simpleedit" } else { "" }),
@@ -124,9 +146,9 @@ pub async fn launch_retrac(options: LaunchOptions) -> Result<(), String> {
     "-caldera=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiYmU5ZGE1YzJmYmVhNDQwN2IyZjQwZWJhYWQ4NTlhZDQiLCJnZW5lcmF0ZWQiOjE2Mzg3MTcyNzgsImNhbGRlcmFHdWlkIjoiMzgxMGI4NjMtMmE2NS00NDU3LTliNTgtNGRhYjNiNDgyYTg2IiwiYWNQcm92aWRlciI6IkVhc3lBbnRpQ2hlYXQiLCJub3RlcyI6IiIsImZhbGxiYWNrIjpmYWxzZX0.VAWQB67RTxhiWOxx7DBjnzDnXyyEnX7OljJm-j2d88G_WgwQ9wrE6lwMEHZHjBd1ISJdUO1UVUqkfLdU5nofBQ",
     "-skippatchcheck",
     "-noeac",
-    "-AUTH_TYPE=exchangecode",
-    "-AUTH_LOGIN=retrac",
-    (format!("-AUTH_PASSWORD={}", options.exchange_code).as_str()),
+    login_arg.as_str(),
+    auth_type.as_str(),
+    password_arg.as_str(),
     (format!("-actoken={}", options.anticheat_token).as_str()),
     (options.launch_args.as_str()),
     (if options.simple_edit { "-simpleedit" } else { "" }),

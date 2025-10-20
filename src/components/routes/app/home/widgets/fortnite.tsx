@@ -10,7 +10,7 @@ const IMAGES = [
   "https://fortniteinsider.com/wp-content/uploads/2020/08/Fortnite-Chapter-2-Season-4-Battle-Pass-Skins.jpg",
 ];
 
-const VER = "++Fortnite+Release-14.40-CL-14550713";
+export const VER = "++Fortnite+Release-14.40-CL-14550713";
 // const VER = "++Fortnite+Release-Live-CL-3724489";
 
 const FortniteWidget = () => {
@@ -58,7 +58,7 @@ const FortniteWidget = () => {
           <UI.Button
             colour="green"
             className="p-1.5 mt-auto z-10 backdrop-blur-2xl cursor-not-allowed"
-            onClick={() => library.launchBuild(VER)}
+            onClick={() => library.launchBuild(VER, null)}
           >
             <span className="text-neutral-300">Launch Game</span>
           </UI.Button>

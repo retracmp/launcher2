@@ -63,6 +63,7 @@ type OptionProps<T extends AllowedOptionTypes, K extends OptionStateType> = {
   _slider_step?: number;
   _slider_values?: number[];
   _file_extensions?: string[];
+  _string_placeholder?: string;
 };
 
 const Option = <T extends AllowedOptionTypes, K extends OptionStateType>(
@@ -251,8 +252,30 @@ const ControlStateBoolean = (
   );
 };
 
-const ControlStateString = (_: OptionProps<OptionTypeString, string>) => {
-  return <></>;
+const ControlStateString = (props: OptionProps<OptionTypeString, string>) => {
+  const stringRef = useRef<HTMLInputElement>(null);
+
+  return (
+    <div className="flex flex-row-reverse items-center gap-1.5 backdrop-blur-lg">
+      <div
+        onClick={() => {
+          stringRef.current?.focus();
+        }}
+        className="flex items-center justify-center min-w-7 h-7 rounded-sm cursor-text border-1 border-solid backdrop-blur-lg active:bg-neutral-800/50 border-neutral-500/20 bg-neutral-800/20 text-sm px-1.5 font-light text-neutral-200"
+      >
+        <input
+          ref={stringRef}
+          type="text"
+          className="bg-transparent outline-none w-full"
+          value={props.state}
+          onChange={(e) => props.set(e.target.value)}
+          placeholder={props._string_placeholder ?? "String option"}
+          autoComplete="off"
+          spellCheck={false}
+        />
+      </div>
+    </div>
+  );
 };
 
 const ControlStateColours = (props: OptionProps<OptionTypeColour, string>) => {
