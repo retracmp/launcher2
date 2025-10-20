@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { useBannerManager } from "src/wrapper/banner";
 import { useOptions } from "src/wrapper/options";
 import { useRetrac } from "src/wrapper/retrac";
+import { useLibrary } from "src/wrapper/library";
 
 import { SimpleUI } from "src/import/ui";
 import {
@@ -10,13 +12,14 @@ import {
   StringOption,
 } from "../../core/option";
 import UI from "src/components/core/default";
-import { useLibrary } from "src/wrapper/library";
 
 const DeveloperPage = () => {
   const bannerManager = useBannerManager();
   const options = useOptions();
   const retrac = useRetrac();
   const library = useLibrary();
+
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
   return (
     <>
@@ -127,27 +130,56 @@ const DeveloperPage = () => {
         )}
       </OptionGroup>
 
-      <OptionGroup title="UI Options" _row>
-        <BooleanOption
-          title="No Sidebar"
-          description={<>Remove for debugging purposes</>}
-          state={options.disable_drawer}
-          set={options.set_disable_drawer}
-          _animate
-        />
+      <OptionGroup title="UI Options">
+        <div className="flex flex-row gap-2">
+          <BooleanOption
+            title="No Sidebar"
+            description={<>Remove for debugging purposes</>}
+            state={options.disable_drawer}
+            set={options.set_disable_drawer}
+            _animate
+          />
+
+          <BooleanOption
+            title="All available widgets on home page"
+            description={
+              <>Show all widgets on the home page for testing layout.</>
+            }
+            state={retrac.show_all_widgets}
+            set={retrac.set_show_all_widgets}
+            _animate
+          />
+        </div>
 
         <BooleanOption
-          title="All available widgets on home page"
+          title="Show colour examples"
           description={
-            <>Show all widgets on the home page for testing layout.</>
+            <>Show various colour schemes and blurred backgrounds for testing</>
           }
-          state={retrac.show_all_widgets}
-          set={retrac.set_show_all_widgets}
+          state={showAdvanced}
+          set={setShowAdvanced}
+          icon="IoColorPaletteSharp"
           _animate
         />
       </OptionGroup>
 
       <OptionGroup _row>
+        <UI.Button
+          onClick={() => {
+            library.launchBuild(
+              "++Fortnite+Release-14.40-CL-14550713",
+              "goaterik"
+            );
+            library.launchBuild(
+              "++Fortnite+Release-14.40-CL-14550713",
+              "Eneko"
+            );
+          }}
+          colour="green"
+          className="p-2"
+        >
+          Launch two instances
+        </UI.Button>
         <UI.Button
           onClick={() =>
             bannerManager.push({
@@ -164,130 +196,132 @@ const DeveloperPage = () => {
         </UI.Button>
       </OptionGroup>
 
-      <OptionGroup title="UI Components" _row>
-        <SimpleUI.Drawer
-          state={SimpleUI.DrawerState.Expanded}
-          items={{
-            top: [
-              { label: "Grey", colour_scheme: "grey" },
-              { label: "Red", colour_scheme: "red" },
-              { label: "Blue", colour_scheme: "blue" },
-              { label: "Green", colour_scheme: "green" },
-              { label: "Yellow", colour_scheme: "yellow" },
-              { label: "Pink", colour_scheme: "pink" },
-              { label: "Purple", colour_scheme: "purple" },
-            ],
-            bottom: [],
-          }}
-        ></SimpleUI.Drawer>
-        <div className="flex flex-col overflow-auto">
-          <div className="relative m-2 w-96 min-h-20 bg-neutral-800 overflow-hidden">
-            <div className="w-full h-full blur-[5r0em]">
-              <div
-                className="absolute w-24 h-24 top-0 left-0 bg-red-500 rounded-full"
-                style={{
-                  transform: "translate(-50%, -50%)",
-                }}
-              ></div>
+      {showAdvanced && (
+        <OptionGroup title="UI Components" _row>
+          <SimpleUI.Drawer
+            state={SimpleUI.DrawerState.Expanded}
+            items={{
+              top: [
+                { label: "Grey", colour_scheme: "grey" },
+                { label: "Red", colour_scheme: "red" },
+                { label: "Blue", colour_scheme: "blue" },
+                { label: "Green", colour_scheme: "green" },
+                { label: "Yellow", colour_scheme: "yellow" },
+                { label: "Pink", colour_scheme: "pink" },
+                { label: "Purple", colour_scheme: "purple" },
+              ],
+              bottom: [],
+            }}
+          ></SimpleUI.Drawer>
+          <div className="flex flex-col overflow-auto">
+            <div className="relative m-2 w-96 min-h-20 bg-neutral-800 overflow-hidden">
+              <div className="w-full h-full blur-[5r0em]">
+                <div
+                  className="absolute w-24 h-24 top-0 left-0 bg-red-500 rounded-full"
+                  style={{
+                    transform: "translate(-50%, -50%)",
+                  }}
+                ></div>
 
-              <div
-                className="absolute w-28 h-24 bottom-0 right-0 bg-fuchsia-500 rounded-full"
-                style={{
-                  transform: "translate(-50%, 50%)",
-                }}
-              ></div>
+                <div
+                  className="absolute w-28 h-24 bottom-0 right-0 bg-fuchsia-500 rounded-full"
+                  style={{
+                    transform: "translate(-50%, 50%)",
+                  }}
+                ></div>
+              </div>
+            </div>
+
+            <div className="relative m-2 w-96 min-h-20 bg-neutral-800 overflow-hidden">
+              <div className="w-full h-full blur-[5r0em]">
+                <div
+                  className="absolute w-[29%] h-[120%] top-0 left-0 bg-red-500 rounded-full"
+                  style={{
+                    transform: "translate(-50%, -50%)",
+                  }}
+                ></div>
+
+                <div
+                  className="absolute w-[29%] h-[120%] bottom-0 right-0 bg-fuchsia-500 rounded-full"
+                  style={{
+                    transform: "translate(-50%, 50%)",
+                  }}
+                ></div>
+              </div>
+            </div>
+
+            <div className="relative m-2 w-20 min-h-20 bg-neutral-800 overflow-hidden">
+              <div className="w-full h-full blur-[5r0em]">
+                <div
+                  className="absolute w-24 h-24 top-0 left-0 bg-red-500 rounded-full"
+                  style={{
+                    transform: "translate(-50%, -50%)",
+                  }}
+                ></div>
+
+                <div
+                  className="absolute w-28 h-24 bottom-0 right-0 bg-fuchsia-500 rounded-full"
+                  style={{
+                    transform: "translate(-50%, 50%)",
+                  }}
+                ></div>
+              </div>
+            </div>
+
+            <div className="relative m-2 w-20 min-h-20 bg-neutral-800 overflow-hidden">
+              <div className="w-full h-full">
+                <div
+                  className="absolute w-[29%] h-[120%] top-0 left-0 bg-red-500 rounded-full"
+                  style={{
+                    transform: "translate(-50%, -50%)",
+                  }}
+                ></div>
+
+                <div
+                  className="absolute w-[29%] h-[120%] bottom-0 right-0 bg-fuchsia-500 rounded-full"
+                  style={{
+                    transform: "translate(-50%, 50%)",
+                  }}
+                ></div>
+              </div>
+            </div>
+
+            <div className="relative m-2 w-20 min-h-20 bg-neutral-800 overflow-hidden">
+              <div className="w-full h-full blur-[2rem]">
+                <div
+                  className="absolute w-[29%] h-[120%] top-0 left-0 bg-red-500 rounded-full"
+                  style={{
+                    transform: "translate(-50%, -50%)",
+                  }}
+                ></div>
+
+                <div
+                  className="absolute w-[29%] h-[120%] bottom-0 right-0 bg-fuchsia-500 rounded-full"
+                  style={{
+                    transform: "translate(-50%, 50%)",
+                  }}
+                ></div>
+              </div>
             </div>
           </div>
-
-          <div className="relative m-2 w-96 min-h-20 bg-neutral-800 overflow-hidden">
-            <div className="w-full h-full blur-[5r0em]">
-              <div
-                className="absolute w-[29%] h-[120%] top-0 left-0 bg-red-500 rounded-full"
-                style={{
-                  transform: "translate(-50%, -50%)",
-                }}
-              ></div>
-
-              <div
-                className="absolute w-[29%] h-[120%] bottom-0 right-0 bg-fuchsia-500 rounded-full"
-                style={{
-                  transform: "translate(-50%, 50%)",
-                }}
-              ></div>
-            </div>
-          </div>
-
-          <div className="relative m-2 w-20 min-h-20 bg-neutral-800 overflow-hidden">
-            <div className="w-full h-full blur-[5r0em]">
-              <div
-                className="absolute w-24 h-24 top-0 left-0 bg-red-500 rounded-full"
-                style={{
-                  transform: "translate(-50%, -50%)",
-                }}
-              ></div>
-
-              <div
-                className="absolute w-28 h-24 bottom-0 right-0 bg-fuchsia-500 rounded-full"
-                style={{
-                  transform: "translate(-50%, 50%)",
-                }}
-              ></div>
-            </div>
-          </div>
-
-          <div className="relative m-2 w-20 min-h-20 bg-neutral-800 overflow-hidden">
-            <div className="w-full h-full">
-              <div
-                className="absolute w-[29%] h-[120%] top-0 left-0 bg-red-500 rounded-full"
-                style={{
-                  transform: "translate(-50%, -50%)",
-                }}
-              ></div>
-
-              <div
-                className="absolute w-[29%] h-[120%] bottom-0 right-0 bg-fuchsia-500 rounded-full"
-                style={{
-                  transform: "translate(-50%, 50%)",
-                }}
-              ></div>
-            </div>
-          </div>
-
-          <div className="relative m-2 w-20 min-h-20 bg-neutral-800 overflow-hidden">
-            <div className="w-full h-full blur-[2rem]">
-              <div
-                className="absolute w-[29%] h-[120%] top-0 left-0 bg-red-500 rounded-full"
-                style={{
-                  transform: "translate(-50%, -50%)",
-                }}
-              ></div>
-
-              <div
-                className="absolute w-[29%] h-[120%] bottom-0 right-0 bg-fuchsia-500 rounded-full"
-                style={{
-                  transform: "translate(-50%, 50%)",
-                }}
-              ></div>
-            </div>
-          </div>
-        </div>
-        <SimpleUI.Drawer
-          state={SimpleUI.DrawerState.Collapsed}
-          position={SimpleUI.DrawerPosition.Right}
-          items={{
-            top: [
-              { label: "Grey", colour_scheme: "grey" },
-              { label: "Red", colour_scheme: "red" },
-              { label: "Blue", colour_scheme: "blue" },
-              { label: "Green", colour_scheme: "green" },
-              { label: "Yellow", colour_scheme: "yellow" },
-              { label: "Pink", colour_scheme: "pink" },
-              { label: "Purple", colour_scheme: "purple" },
-            ],
-            bottom: [],
-          }}
-        ></SimpleUI.Drawer>
-      </OptionGroup>
+          <SimpleUI.Drawer
+            state={SimpleUI.DrawerState.Collapsed}
+            position={SimpleUI.DrawerPosition.Right}
+            items={{
+              top: [
+                { label: "Grey", colour_scheme: "grey" },
+                { label: "Red", colour_scheme: "red" },
+                { label: "Blue", colour_scheme: "blue" },
+                { label: "Green", colour_scheme: "green" },
+                { label: "Yellow", colour_scheme: "yellow" },
+                { label: "Pink", colour_scheme: "pink" },
+                { label: "Purple", colour_scheme: "purple" },
+              ],
+              bottom: [],
+            }}
+          ></SimpleUI.Drawer>
+        </OptionGroup>
+      )}
     </>
   );
 };

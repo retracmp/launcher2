@@ -646,12 +646,13 @@ type OptionGroupProps = {
   _hideBorder?: boolean;
   _animate?: boolean;
   _hideable?: boolean;
+  _hiddenByDefault?: boolean;
   _row?: boolean;
   _overflow?: boolean;
 };
 
 const OptionGroup = (props: OptionGroupProps) => {
-  const [open, set] = useState(true);
+  const [open, set] = useState(props._hiddenByDefault ? false : true);
 
   return (
     <motion.div
