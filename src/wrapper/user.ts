@@ -142,7 +142,7 @@ export const useUserManager = create<UserManager>()(
         const user = get()._user;
         if (user === null) return false;
 
-        return user.Account.State.Packages.includes("dev_bundle");
+        return user.Account.State.Packages.includes("p_all");
       },
 
       set_new_username: (username) => {

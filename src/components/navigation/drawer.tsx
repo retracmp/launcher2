@@ -108,17 +108,17 @@ const Drawer = () => {
             colour_scheme: "blue",
           }
         : null,
-      developer_mode
-        ? {
-            label: "Clans",
-            icon: "IoPeopleSharp",
-            clicked: {
-              type: "LINK",
-              href: "/app/clans",
-            },
-            colour_scheme: "purple",
-          }
-        : null,
+      // developer_mode
+      //   ? {
+      //       label: "Clans",
+      //       icon: "IoPeopleSharp",
+      //       clicked: {
+      //         type: "LINK",
+      //         href: "/app/clans",
+      //       },
+      //       colour_scheme: "purple",
+      //     }
+      //   : null,
       developer_mode
         ? {
             label: "Developer",
