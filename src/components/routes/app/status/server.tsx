@@ -26,6 +26,20 @@ const PLAYLIST_LOOKUP = {
   playlist_showdown_squads: "Squads Tournament",
   playlist_vamp_squads: "Squads Lategame",
   playlist_defaultsquad: "Squads",
+
+  playlist_arseniccore_solo_maxfog: "Retracmares Solo",
+  playlist_arseniccore_duos_maxfog: "Retracmares Duos",
+  playlist_arseniccore_squads_maxfog: "Retracmares Squads",
+  playlist_arseniccore_solo_minfog: "Retracmares Solo",
+  playlist_arseniccore_duos_minfog: "Retracmares Duos",
+  playlist_arseniccore_squads_minfog: "Retracmares Squads",
+  playlist_arseniccore_solo: "Retracmares Solo",
+  playlist_arseniccore_duos: "Retracmares Duos",
+  playlist_arseniccore_squads: "Retracmares Squads",
+
+  playlist_gg_solo: "Arsenal Solo",
+  playlist_gg_duo: "Arsenal Duos",
+  playlist_gg_squad: "Arsenal Squads",
 };
 
 const STATUS_LOOKUP = {
