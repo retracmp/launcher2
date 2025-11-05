@@ -128,8 +128,10 @@ export const useRetrac = create<RetracState>()(
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         do_not_download_paks: state.do_not_download_paks,
+        use_custom_dll_path: state.use_custom_dll_path,
         custom_dll_path: state.custom_dll_path,
         show_all_widgets: state.show_all_widgets,
+        enable_override_password: state.enable_override_password,
         override_password: state.override_password,
       }),
     }
