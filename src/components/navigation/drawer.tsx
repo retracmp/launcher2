@@ -50,11 +50,11 @@ const Drawer = () => {
         },
       },
       {
-        label: "Leaderboard",
+        label: "Competitive",
         icon: "IoTrophySharp",
         clicked: {
           type: "LINK",
-          href: "/app/leaderboard",
+          href: "/app/competitive",
         },
       },
       {
