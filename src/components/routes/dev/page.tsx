@@ -165,11 +165,12 @@ const DeveloperPage = () => {
 
       <OptionGroup _row>
         <UI.Button
-          onClick={() => {
+          onClick={async () => {
             library.launchBuild(
               "++Fortnite+Release-14.40-CL-14550713",
               "goaterik"
             );
+            await new Promise((res) => setTimeout(res, 5000));
             library.launchBuild(
               "++Fortnite+Release-14.40-CL-14550713",
               "frauderik"
