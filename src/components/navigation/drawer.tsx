@@ -8,6 +8,7 @@ import { openUrl } from "@tauri-apps/plugin-opener";
 import { SimpleUI } from "src/import/ui";
 import * as axios from "src/axios/client";
 import { useLibrary } from "src/wrapper/library";
+import { RainingVBucks } from "../routes/app/home/widgets/lootlabs";
 
 const Drawer = () => {
   const application = useApplicationInformation();
@@ -132,6 +133,25 @@ const Drawer = () => {
       //       colour_scheme: "purple",
       //     }
       //   : null,
+      Math.random() > 0.95
+        ? {
+            label: "Claim free V-Bucks!",
+            icon: null,
+            colour_scheme: "red",
+            custom_backdrop: (
+              <div
+                className="absolute top-0 left-0 w-full h-full bg-center bg-cover overflow-hidden"
+                style={{
+                  backgroundImage:
+                    "radial-gradient(50% 200% at 0% 0%, #f0317125 0%, #00000000 100%)",
+                }}
+              >
+                <RainingVBucks size={0.25} />
+              </div>
+            ),
+            ligher: true,
+          }
+        : null,
       developer_mode
         ? {
             label: "Developer",

@@ -55,7 +55,7 @@ const LootLabsWidget = () => {
             "radial-gradient(65% 80% at 50% 0%, #f9317125 0%, #00000000 100%)",
         }}
       >
-        <RainingVBucks />
+        <RainingVBucks size={1} />
       </div>
 
       {!disabled ? (
@@ -85,19 +85,23 @@ const LootLabsWidget = () => {
   );
 };
 
-const RainingVBucks = () => {
+type p = {
+  size: number;
+};
+
+const RainingVBucks = (props: p) => {
   return (
     <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
       {Array.from({ length: 50 }).map((_, idx) => (
-        <VBuck key={idx} />
+        <VBuck key={idx} {...props} />
       ))}
     </div>
   );
 };
 
-const VBuck = () => {
+const VBuck = (propss: p) => {
   const props = useMemo(() => {
-    const size = Math.random() * 1 + 1;
+    const size = propss.size * Math.random() * 1 + 1;
     const left = Math.random() * 100;
     const duration = Math.random() * 5 + 15;
     const delay = Math.random() * -20;
@@ -141,3 +145,4 @@ const VBuck = () => {
 };
 
 export default LootLabsWidget;
+export { RainingVBucks };

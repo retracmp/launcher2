@@ -134,11 +134,14 @@ export namespace SimpleUI {
     clicked?: DrawerItemClickLink | DrawerItemClickFunction;
     notification?: DrawerItemNotification;
     drawer_state?: (typeof DrawerState)[keyof typeof DrawerState];
+    custom_backdrop?: React.ReactNode;
+    ligher: boolean;
   };
   export const DefaultDrawerItemOptions: DrawerItemOptions = {
     icon: "IoAlertCircleSharp",
     label: "Item",
     colour_scheme: "grey",
+    ligher: false,
   };
   export const DrawerItem = (props: Partial<DrawerItemOptions>) => {
     const options = { ...DefaultDrawerItemOptions, ...props };
@@ -209,16 +212,20 @@ export namespace SimpleUI {
         onClick={handleInteraction}
         data-status={active ? "active" : "inactive"}
         className={twJoin(
-          "relative flex gap-2 items-center justify-start min-w-9 w-full h-9 min-h-9 px-[9px] border-[1px] cursor-pointer transition-colors bg-[#ffffff00] hover:duration-[20ms] duration-150 hover:not-data-[status=active]:border-1 rounded-sm outline-none",
+          "overflow-hidden relative flex gap-2 items-center justify-start min-w-9 w-full h-9 min-h-9 px-[9px] border-[1px] cursor-pointer transition-colors bg-[#ffffff00] hover:duration-[20ms] duration-150 hover:not-data-[status=active]:border-1 rounded-sm outline-none",
           class_[options.colour_scheme].base,
           active &&
             twJoin(
               class_[options.colour_scheme].active,
               "hover:none border-1 backdrop-blur-3xl bg-opacity-50"
-            )
+            ),
+          props.ligher &&
+            "border-[1px] border-solid not-data-[status=active]:border-red-500/5 bg-red-400/5"
         )}
       >
-        <Icon className="min-w-4 min-h-4" />
+        {props.custom_backdrop ? props.custom_backdrop : null}
+
+        {props.icon && <Icon className="min-w-4 min-h-4" />}
 
         <motion.span
           className="text-sm leading-[15px] min-w-fit mb-[1px]"
