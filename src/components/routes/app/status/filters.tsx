@@ -68,6 +68,16 @@ const FiltersWidget = () => {
           state={servers.show_oce_servers}
           set={servers.set_show_oce_servers}
         />
+        <BooleanOption
+          title="Middle East Servers"
+          description={
+            <>
+              Show Middle East <b>ME</b> servers in the server list.
+            </>
+          }
+          state={servers.show_me_servers}
+          set={servers.set_show_me_servers}
+        />
       </OptionGroup>
     </div>
   );

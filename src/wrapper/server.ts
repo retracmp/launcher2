@@ -21,6 +21,9 @@ type ServerManagerState = {
 
   show_oce_servers: boolean;
   set_show_oce_servers: (show_oce_servers: boolean) => void;
+
+  show_me_servers: boolean;
+  set_show_me_servers: (show_eu_servers: boolean) => void;
 };
 
 export const useServerManager = create<ServerManagerState>((set, get) => ({
@@ -62,6 +65,7 @@ export const useServerManager = create<ServerManagerState>((set, get) => ({
         if (server.region === "NA") return get().show_na_servers;
         if (server.region === "NAW") return get().show_naw_servers;
         if (server.region === "OCE") return get().show_oce_servers;
+        if (server.region === "ME") return get().show_me_servers;
         if (server.region === "SHADOW") return false;
         return true;
       })
@@ -83,4 +87,7 @@ export const useServerManager = create<ServerManagerState>((set, get) => ({
 
   show_oce_servers: true,
   set_show_oce_servers: (show_oce_servers) => set({ show_oce_servers }),
+
+  show_me_servers: true,
+  set_show_me_servers: (show_me_servers) => set({ show_me_servers }),
 }));
