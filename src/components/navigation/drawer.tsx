@@ -6,9 +6,10 @@ import { useOptions } from "src/wrapper/options";
 import { openUrl } from "@tauri-apps/plugin-opener";
 
 import { SimpleUI } from "src/import/ui";
-import * as axios from "src/axios/client";
 import { useLibrary } from "src/wrapper/library";
 import { RainingVBucks } from "../routes/app/home/widgets/lootlabs";
+
+const show_advert_test = Math.random();
 
 const Drawer = () => {
   const application = useApplicationInformation();
@@ -21,7 +22,7 @@ const Drawer = () => {
     ? SimpleUI.DrawerState.Expanded
     : SimpleUI.DrawerState.Collapsed;
 
-  const developer_mode = axios.dev || application.dev || userManager.is_dev();
+  const developer_mode = application.dev || userManager.is_dev();
 
   const servers = useServerManager((s) => s._servers);
   const serverCount = Object.values(servers).length;
@@ -122,18 +123,7 @@ const Drawer = () => {
             colour_scheme: "blue",
           }
         : null,
-      // developer_mode
-      //   ? {
-      //       label: "Clans",
-      //       icon: "IoPeopleSharp",
-      //       clicked: {
-      //         type: "LINK",
-      //         href: "/app/clans",
-      //       },
-      //       colour_scheme: "purple",
-      //     }
-      //   : null,
-      Math.random() > 0.95
+      show_advert_test > 0.95
         ? {
             label: "Claim free V-Bucks!",
             icon: null,
@@ -146,10 +136,10 @@ const Drawer = () => {
                     "radial-gradient(50% 200% at 0% 0%, #f0317125 0%, #00000000 100%)",
                 }}
               >
-                <RainingVBucks size={0.25} />
+                <RainingVBucks size={0.25} colour={false} />
               </div>
             ),
-            ligher: true,
+            advert: true,
           }
         : null,
       developer_mode

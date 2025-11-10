@@ -12,6 +12,7 @@ import {
   StringOption,
 } from "../../core/option";
 import UI from "src/components/core/default";
+import { RainingVBucks } from "../app/home/widgets/lootlabs";
 
 const DeveloperPage = () => {
   const bannerManager = useBannerManager();
@@ -49,6 +50,17 @@ const DeveloperPage = () => {
           state={retrac.do_not_download_paks}
           set={retrac.set_do_not_download_paks}
           _animate
+        />
+        <StringOption
+          title="Custom Server"
+          description="Change the backend server to make requests to."
+          state={retrac.override_client_url}
+          set={(s) => {
+            retrac.set_override_client_url(s);
+          }}
+          _animate
+          icon="IoUmbrella"
+          _string_placeholder="https://retrac.site"
         />
       </OptionGroup>
 
@@ -203,6 +215,23 @@ const DeveloperPage = () => {
             state={SimpleUI.DrawerState.Expanded}
             items={{
               top: [
+                {
+                  label: "Claim free V-Bucks!",
+                  icon: "IoTime",
+                  colour_scheme: "red",
+                  custom_backdrop: (
+                    <div
+                      className="absolute top-0 left-0 w-full h-full bg-center bg-cover overflow-hidden"
+                      style={{
+                        backgroundImage:
+                          "radial-gradient(50% 200% at 0% 0%, #f0317125 0%, #00000000 100%)",
+                      }}
+                    >
+                      <RainingVBucks size={0.25} colour={false} />
+                    </div>
+                  ),
+                  advert: true,
+                },
                 { label: "Grey", colour_scheme: "grey" },
                 { label: "Red", colour_scheme: "red" },
                 { label: "Blue", colour_scheme: "blue" },

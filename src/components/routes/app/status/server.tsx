@@ -72,7 +72,7 @@ const ServerRendered = (props: ServerRenderedProps) => {
   return (
     <motion.div
       key={props.server.id}
-      className="group relative min-h-max border-neutral-700/40 bg-neutral-800/10 backdrop-blur-2xl border-[1px] border-solid rounded-sm overflow-hidden p-2 gap-[0.125rem] flex flex-col"
+      className="group relative min-h-max border-neutral-700/20 bg-neutral-700/10 backdrop-blur-2xl border-[1px] border-solid rounded-sm overflow-hidden p-2 gap-[0.125rem] flex flex-col"
       variants={{
         hidden: { opacity: 0, x: -20 },
         visible: { opacity: 1, x: 0 },

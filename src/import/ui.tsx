@@ -135,13 +135,13 @@ export namespace SimpleUI {
     notification?: DrawerItemNotification;
     drawer_state?: (typeof DrawerState)[keyof typeof DrawerState];
     custom_backdrop?: React.ReactNode;
-    ligher: boolean;
+    advert: boolean;
   };
   export const DefaultDrawerItemOptions: DrawerItemOptions = {
     icon: "IoAlertCircleSharp",
     label: "Item",
     colour_scheme: "grey",
-    ligher: false,
+    advert: false,
   };
   export const DrawerItem = (props: Partial<DrawerItemOptions>) => {
     const options = { ...DefaultDrawerItemOptions, ...props };
@@ -219,7 +219,7 @@ export namespace SimpleUI {
               class_[options.colour_scheme].active,
               "hover:none border-1 backdrop-blur-3xl bg-opacity-50"
             ),
-          props.ligher &&
+          props.advert &&
             "border-[1px] border-solid not-data-[status=active]:border-red-500/5 bg-red-400/5"
         )}
       >

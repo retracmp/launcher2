@@ -55,6 +55,9 @@ type RetracState = {
 
   override_password: string;
   set_override_password: (override_password: string) => void;
+
+  override_client_url: string;
+  set_override_client_url: (override_client_url: string) => void;
 };
 
 export const useRetrac = create<RetracState>()(
@@ -122,6 +125,10 @@ export const useRetrac = create<RetracState>()(
 
       override_password: "",
       set_override_password: (override_password) => set({ override_password }),
+
+      override_client_url: "",
+      set_override_client_url: (override_client_url) =>
+        set({ override_client_url }),
     }),
     {
       name: "retrac",

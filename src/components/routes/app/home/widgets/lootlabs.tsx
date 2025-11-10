@@ -55,7 +55,7 @@ const LootLabsWidget = () => {
             "radial-gradient(65% 80% at 50% 0%, #f9317125 0%, #00000000 100%)",
         }}
       >
-        <RainingVBucks size={1} />
+        <RainingVBucks size={1} colour={false} />
       </div>
 
       {!disabled ? (
@@ -87,6 +87,7 @@ const LootLabsWidget = () => {
 
 type p = {
   size: number;
+  colour: boolean;
 };
 
 const RainingVBucks = (props: p) => {
@@ -138,7 +139,8 @@ const VBuck = (propss: p) => {
         backgroundSize: "cover",
         backgroundPosition: "center",
         pointerEvents: "none",
-        filter: "brightness(0.4)",
+        // filter: "brightness(0.4)",
+        opacity: 0.2,
       }}
     />
   );
