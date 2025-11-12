@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "@tanstack/react-router";
 
 import * as Icons from "react-icons/io5";
 import { motion } from "motion/react";
+import { useMemo } from "react";
 import NumberFlow from "@number-flow/react";
 
 export namespace SimpleUI {
@@ -257,6 +258,88 @@ export namespace SimpleUI {
           </span>
         )}
       </button>
+    );
+  };
+
+  export type FallingElementsOptions = {
+    element: React.ElementType;
+  };
+  export const DefaultFallingElementsOptions: FallingElementsOptions = {
+    element: () => <></>,
+  };
+  export const FallingElements = (props: Partial<FallingElementsOptions>) => {
+    const options = { ...DefaultFallingElementsOptions, ...props };
+
+    const Element = options.element;
+
+    return (
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
+        {Array.from({ length: 50 }).map((_, idx) => (
+          <Element key={idx} {...props} />
+        ))}
+      </div>
+    );
+  };
+
+  export type FallingElementContainersOptions = {
+    element: React.ElementType;
+    size_scale: number;
+  };
+  export const DefaultFallingElementContainersOptions: FallingElementContainersOptions =
+    {
+      element: () => <></>,
+      size_scale: 1,
+    };
+  export const FallingElementContainer = (
+    props: Partial<FallingElementContainersOptions>
+  ) => {
+    const options = { ...DefaultFallingElementContainersOptions, ...props };
+    const Element = options.element;
+
+    const randomised = useMemo(() => {
+      const size = options.size_scale * Math.random() * 1 + 1;
+      const left = Math.random() * 100;
+      const duration = Math.random() * 5 + 15;
+      const delay = Math.random() * -20;
+      const rotation = Math.random() * 360 - 90;
+
+      return { size, left, duration, delay, rotation };
+    }, []);
+
+    return (
+      <motion.div
+        initial={{
+          y: "-10vh",
+          rotate: 0,
+        }}
+        animate={{
+          y: "110vh",
+          rotate: randomised.rotation,
+        }}
+        transition={{
+          duration: randomised.duration,
+          delay: randomised.delay,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        style={{
+          position: "absolute",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          top: 0,
+          left: `${randomised.left}%`,
+          height: `${randomised.size}rem`,
+          width: `${randomised.size}rem`,
+          // backgroundImage: "url(/vbuck.png)",
+          // backgroundSize: "cover",
+          // backgroundPosition: "center",
+          pointerEvents: "none",
+          opacity: 0.2,
+        }}
+      >
+        <Element />
+      </motion.div>
     );
   };
 }
