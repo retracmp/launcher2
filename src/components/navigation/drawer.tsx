@@ -2,12 +2,11 @@ import { useApplicationInformation } from "src/wrapper/tauri";
 import { useUserManager } from "src/wrapper/user";
 import { useServerManager } from "src/wrapper/server";
 import { useDownloadState } from "src/wrapper/download";
+import { useLibrary } from "src/wrapper/library";
 import { useOptions } from "src/wrapper/options";
 import { openUrl } from "@tauri-apps/plugin-opener";
 
 import { SimpleUI } from "src/import/ui";
-import { useLibrary } from "src/wrapper/library";
-import { RainingVBucks } from "../routes/app/home/widgets/lootlabs";
 
 const show_advert_test = Math.random();
 
@@ -123,7 +122,7 @@ const Drawer = () => {
             colour_scheme: "blue",
           }
         : null,
-      show_advert_test > 0.95
+      show_advert_test > 0
         ? {
             label: "Claim free V-Bucks!",
             icon: null,
@@ -136,7 +135,21 @@ const Drawer = () => {
                     "radial-gradient(50% 200% at 0% 0%, #f0317125 0%, #00000000 100%)",
                 }}
               >
-                <RainingVBucks size={0.25} colour={false} />
+                <SimpleUI.FallingElements
+                  density={50}
+                  element={() => (
+                    <SimpleUI.FallingElementContainer
+                      element={() => (
+                        <img
+                          className="w-full h-full select-none"
+                          src="/vbuck.png"
+                        ></img>
+                      )}
+                      size_scale_min={0.35}
+                      size_scale_max={0.5}
+                    />
+                  )}
+                />
               </div>
             ),
             advert: true,

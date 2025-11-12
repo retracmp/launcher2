@@ -271,14 +271,17 @@ export namespace SimpleUI {
   };
   export const FallingElements = (props: Partial<FallingElementsOptions>) => {
     const options = { ...DefaultFallingElementsOptions, ...props };
-
     const Element = options.element;
+
+    const rendered = useMemo(() => {
+      return Array.from({ length: options.density }).map((_, idx) => (
+        <Element key={idx} {...props} />
+      ));
+    }, []);
 
     return (
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
-        {Array.from({ length: options.density }).map((_, idx) => (
-          <Element key={idx} {...props} />
-        ))}
+        {rendered}
       </div>
     );
   };
@@ -337,6 +340,7 @@ export namespace SimpleUI {
           left: `${randomised.left}%`,
           height: `${randomised.size}rem`,
           width: `${randomised.size}rem`,
+          backdropFilter: "blur(1rem)",
           // backgroundImage: "url(/vbuck.png)",
           // backgroundSize: "cover",
           // backgroundPosition: "center",
