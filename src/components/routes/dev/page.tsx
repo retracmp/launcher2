@@ -203,15 +203,41 @@ const DeveloperPage = () => {
       </OptionGroup>
 
       {showAdvanced && (
-        <OptionGroup title="UI Components">
-          <div className="relative w-full h-40 bg-white/5 rounded-sm">
-            <SimpleUI.FallingElements
-              element={() => (
-                <SimpleUI.FallingElementContainer element={() => <>hi</>} />
-              )}
-            />
-          </div>
-        </OptionGroup>
+        <>
+          <OptionGroup title="Falling Snow">
+            <div className="relative w-full h-40 bg-white/5 rounded-sm">
+              <SimpleUI.FallingElements
+                density={150}
+                element={() => (
+                  <SimpleUI.FallingElementContainer
+                    element={() => (
+                      <div className="w-full h-full bg-white rounded-full"></div>
+                    )}
+                    size_scale_min={0.1}
+                    size_scale_max={0.5}
+                  />
+                )}
+              />
+            </div>
+          </OptionGroup>
+
+          <OptionGroup title="Falling Snow">
+            <div className="relative w-full h-40 bg-white/5 rounded-sm">
+              <SimpleUI.FallingElements
+                density={150}
+                element={() => (
+                  <SimpleUI.FallingElementContainer
+                    element={() => (
+                      <div className="w-full h-full bg-white rounded-full"></div>
+                    )}
+                    size_scale_min={0.1}
+                    size_scale_max={0.5}
+                  />
+                )}
+              />
+            </div>
+          </OptionGroup>
+        </>
       )}
     </>
   );

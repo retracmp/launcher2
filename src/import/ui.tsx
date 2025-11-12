@@ -263,9 +263,11 @@ export namespace SimpleUI {
 
   export type FallingElementsOptions = {
     element: React.ElementType;
+    density: number;
   };
   export const DefaultFallingElementsOptions: FallingElementsOptions = {
     element: () => <></>,
+    density: 50,
   };
   export const FallingElements = (props: Partial<FallingElementsOptions>) => {
     const options = { ...DefaultFallingElementsOptions, ...props };
@@ -274,7 +276,7 @@ export namespace SimpleUI {
 
     return (
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
-        {Array.from({ length: 50 }).map((_, idx) => (
+        {Array.from({ length: options.density }).map((_, idx) => (
           <Element key={idx} {...props} />
         ))}
       </div>
@@ -283,12 +285,14 @@ export namespace SimpleUI {
 
   export type FallingElementContainersOptions = {
     element: React.ElementType;
-    size_scale: number;
+    size_scale_min: number;
+    size_scale_max: number;
   };
   export const DefaultFallingElementContainersOptions: FallingElementContainersOptions =
     {
       element: () => <></>,
-      size_scale: 1,
+      size_scale_min: 1,
+      size_scale_max: 1,
     };
   export const FallingElementContainer = (
     props: Partial<FallingElementContainersOptions>
@@ -297,7 +301,9 @@ export namespace SimpleUI {
     const Element = options.element;
 
     const randomised = useMemo(() => {
-      const size = options.size_scale * Math.random() * 1 + 1;
+      const size =
+        Math.random() * options.size_scale_max + options.size_scale_min;
+
       const left = Math.random() * 100;
       const duration = Math.random() * 5 + 15;
       const delay = Math.random() * -20;
