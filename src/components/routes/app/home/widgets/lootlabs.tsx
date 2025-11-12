@@ -55,8 +55,6 @@ const LootLabsWidget = () => {
             "radial-gradient(65% 80% at 50% 0%, #f9317125 0%, #00000000 100%)",
         }}
       >
-        {/* <RainingVBucks size={1} colour={false} /> */}
-
         <SimpleUI.FallingElements
           density={50}
           element={() => (

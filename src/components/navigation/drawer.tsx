@@ -58,6 +58,19 @@ const Drawer = () => {
           href: "/app/competitive",
         },
       },
+      ((): boolean => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const start = new Date(year, 11, 1);
+        const end = new Date(year, 11, 31);
+        return today >= start && today <= end;
+      })()
+        ? {
+            label: "14 Days of Retrac",
+            icon: "IoSnow",
+            colour_scheme: "blue",
+          }
+        : null,
       {
         label: "Library",
         icon: "IoFileTrayFullSharp",
@@ -122,7 +135,7 @@ const Drawer = () => {
             colour_scheme: "blue",
           }
         : null,
-      show_advert_test > 0
+      show_advert_test > 0.95
         ? {
             label: "Claim free V-Bucks!",
             icon: null,

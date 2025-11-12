@@ -1,6 +1,6 @@
 import { useOptions } from "src/wrapper/options";
 import FortniteBuildTile from "src/components/routes/app/library/tiled";
-import FortniteBuildList from "src/components/routes/app/library/list";
+import FortniteBuildList from "src/components/routes/app/library/list_item";
 
 type FortniteBuildProps = {
   entry: LibraryEntry;

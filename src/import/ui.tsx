@@ -245,17 +245,20 @@ export namespace SimpleUI {
         >
           {props.label}
         </motion.span>
+        {options.drawer_state === DrawerState.Expanded && (
+          <>
+            {props.notification && props.notification.type === "NUMBER" && (
+              <span className="absolute font-semibold p-1.5 pl-[0.35rem] py-2 bg-neutral-800 right-1 h-5 text-sm flex flex-row items-center justify-center rounded-[0.6rem]">
+                <NumberFlow value={props.notification.number} />
+              </span>
+            )}
 
-        {props.notification && props.notification.type === "NUMBER" && (
-          <span className="absolute font-semibold p-1.5 pl-[0.35rem] py-2 bg-neutral-800 right-1 h-5 text-sm flex flex-row items-center justify-center rounded-[0.6rem]">
-            <NumberFlow value={props.notification.number} />
-          </span>
-        )}
-
-        {props.notification && props.notification.type === "TEXT" && (
-          <span className="absolute p-1.5 py-2 bg-neutral-800 right-1 h-5 text-sm flex flex-row items-center justify-center rounded-[0.6rem]">
-            {props.notification.text}
-          </span>
+            {props.notification && props.notification.type === "TEXT" && (
+              <span className="absolute p-1.5 py-2 bg-neutral-800 right-1 h-5 text-sm flex flex-row items-center justify-center rounded-[0.6rem]">
+                {props.notification.text}
+              </span>
+            )}
+          </>
         )}
       </button>
     );
