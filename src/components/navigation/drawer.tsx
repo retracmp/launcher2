@@ -58,35 +58,35 @@ const Drawer = () => {
           href: "/app/competitive",
         },
       },
-      ((): boolean => {
-        const today = new Date();
-        const year = today.getFullYear();
-        const start = new Date(year, 11, 1);
-        const end = new Date(year, 11, 31);
-        return today >= start && today <= end;
-      })()
-        ? {
-            label: "14 Days of Retrac",
-            icon: "IoSnow",
-            colour_scheme: "blue",
-          }
-        : null,
-      {
-        label: "Library",
-        icon: "IoFileTrayFullSharp",
-        clicked: {
-          type: "LINK",
-          href: "/app/library",
-        },
-        notification:
-          buildsCount > 0
-            ? {
-                colour_scheme: "grey",
-                number: buildsCount,
-                type: "NUMBER",
-              }
-            : undefined,
-      },
+      // ((): boolean => {
+      //   const today = new Date();
+      //   const year = today.getFullYear();
+      //   const start = new Date(year, 11, 1);
+      //   const end = new Date(year, 11, 31);
+      //   return today >= start && today <= end;
+      // })()
+      //   ? {
+      //       label: "14 Days of Retrac",
+      //       icon: "IoSnow",
+      //       colour_scheme: "blue",
+      //     }
+      //   : null,
+      // {
+      //   label: "Library",
+      //   icon: "IoFileTrayFullSharp",
+      //   clicked: {
+      //     type: "LINK",
+      //     href: "/app/library",
+      //   },
+      //   notification:
+      //     buildsCount > 0
+      //       ? {
+      //           colour_scheme: "grey",
+      //           number: buildsCount,
+      //           type: "NUMBER",
+      //         }
+      //       : undefined,
+      // },
       {
         label: "Matches",
         icon: "IoPulseSharp",

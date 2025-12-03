@@ -36,6 +36,8 @@ const CompetitivePage = () => {
             name="Leaderboards"
             description="Find out if you are among the top-rated players."
             path="/app/leaderboard"
+            disabled
+            yellow_tag="under maintenance"
           />
           <Redirect
             name="Tournaments"

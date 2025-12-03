@@ -355,4 +355,19 @@ export namespace SimpleUI {
       </motion.div>
     );
   };
+
+  export type ListOptions = {
+    title?: string;
+    direction: "column" | "row";
+    scrollable: boolean;
+  };
+  export const DefaultListOptions: ListOptions = {
+    direction: "column",
+    scrollable: false,
+  };
+  export const List = (props: Partial<ListOptions>) => {
+    const options = { ...DefaultListOptions, ...props };
+
+    return <motion.div></motion.div>;
+  };
 }
