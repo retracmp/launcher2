@@ -68,6 +68,12 @@ type OptionsState = {
 
   background_gradient: string;
   set_background_gradient: (value: string) => void;
+
+  enable_snow: boolean;
+  set_enable_snow: (value: boolean) => void;
+
+  snow_particles: number;
+  set_snow_particles: (value: number) => void;
 };
 
 export const useOptions = create<OptionsState>()(
@@ -161,6 +167,12 @@ export const useOptions = create<OptionsState>()(
       background_gradient: "",
       set_background_gradient: (value) =>
         set(() => ({ background_gradient: value })),
+
+      enable_snow: true,
+      set_enable_snow: (value) => set(() => ({ enable_snow: value })),
+
+      snow_particles: 50,
+      set_snow_particles: (value) => set(() => ({ snow_particles: value })),
     }),
     {
       name: "options",

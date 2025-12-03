@@ -280,7 +280,7 @@ export namespace SimpleUI {
       return Array.from({ length: options.density }).map((_, idx) => (
         <Element key={idx} {...props} />
       ));
-    }, []);
+    }, [props.density]);
 
     return (
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
@@ -365,8 +365,8 @@ export namespace SimpleUI {
     direction: "column",
     scrollable: false,
   };
-  export const List = (props: Partial<ListOptions>) => {
-    const options = { ...DefaultListOptions, ...props };
+  export const List = (_: Partial<ListOptions>) => {
+    // const options = { ...DefaultListOptions, ...props };
 
     return <motion.div></motion.div>;
   };
