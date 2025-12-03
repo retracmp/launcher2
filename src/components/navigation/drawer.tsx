@@ -253,6 +253,8 @@ const Drawer = () => {
     ? EmptyDrawerItems
     : AuthenticatedDrawerItems;
 
+  if (application.updateNeeded) return null;
+
   return <SimpleUI.Drawer state={state} items={routes} />;
 };
 

@@ -23,12 +23,12 @@ const UpdatePage = () => {
   };
 
   return (
-    <>
+    <div className="max-w-[40rem] mx-auto p-10">
       <OptionGroup _first>
         <div className="flex flex-col gap-[0.2rem]">
-          {/* <UI.H1 className="font-[300] text-neutral-300">
-            Launcher Update Available
-          </UI.H1> */}
+          <UI.H1 className="font-[300] text-neutral-300">
+            Update Available
+          </UI.H1>
           <UI.P className="text-neutral-400">
             A new version of the launcher is available. Please update to get the
             latest features and bug fixes.
@@ -46,7 +46,7 @@ const UpdatePage = () => {
           Update Now
         </UI.Button>
       </OptionGroup>
-    </>
+    </div>
   );
 };
 

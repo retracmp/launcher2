@@ -1,6 +1,7 @@
 import { useLayoutEffect } from "react";
 import { useApplicationInformation } from "src/wrapper/tauri";
 import { useBannerManager } from "src/wrapper/banner";
+
 import { check } from "@tauri-apps/plugin-updater";
 
 const UpdateChecker = () => {
@@ -8,6 +9,12 @@ const UpdateChecker = () => {
   const banners = useBannerManager();
 
   const queryUpdate = async () => {
+    // application.setUpdateNeeded({
+    //   available: true,
+    //   currentVersion: "2.0.0",
+    //   version: "2.2.1",
+    // } as any);
+
     const result = await check();
     if (result == null) return console.log("[update] no update needed");
 

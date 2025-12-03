@@ -38,6 +38,13 @@ const Frame = () => {
   const show = userManager.access() || !userManager.loading();
 
   useEffect(() => {
+    if (application.updateNeeded) {
+      navigate({
+        to: "/update",
+      });
+      return;
+    }
+
     if (
       userManager._stage === LauncherStage.NoToken ||
       userManager._stage === LauncherStage.TestingToken
@@ -52,7 +59,7 @@ const Frame = () => {
         to: "/app/home",
       });
     }
-  }, [userManager._stage]);
+  }, [userManager._stage, application.updateNeeded]);
 
   return (
     <>
