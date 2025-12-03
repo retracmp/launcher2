@@ -9,12 +9,6 @@ const UpdateChecker = () => {
   const banners = useBannerManager();
 
   const queryUpdate = async () => {
-    // application.setUpdateNeeded({
-    //   available: true,
-    //   currentVersion: "2.0.0",
-    //   version: "2.2.1",
-    // } as any);
-
     const result = await check();
     if (result == null) return console.log("[update] no update needed");
 
