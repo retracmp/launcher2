@@ -96,7 +96,7 @@ const FortniteBuildList = (props: FortniteBuildProps) => {
       dragControls={dragControls}
     >
       <motion.div
-        className={`group flex flex-row items-center w-full p-2.5 px-2 gap-2 rounded-sm border-neutral-700/40 border-[1px] border-solid overflow-hidden hover:bg-neutral-700/5 transition-colors duration-75 ${""}`}
+        className={`group flex flex-row items-center w-full p-2.5 px-2 gap-2 rounded-sm border-neutral-700/10 border-[1px] border-solid bg-neutral-700/10 hover:bg-neutral-700/15 transition-colors duration-75 backdrop-blur-md z-[200]`}
         variants={{
           hidden: { opacity: 0, y: 20 },
           visible: { opacity: 1, y: 0 },

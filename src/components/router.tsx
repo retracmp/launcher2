@@ -17,6 +17,7 @@ import UpdatePage from "./routes/update/page";
 import ExternalLoginPage from "./routes/app/external/page";
 import EditorPage from "./routes/app/editor/page";
 import ClansPage from "./routes/app/clans/page";
+import CompetitivePage from "./routes/app/competitive/page";
 
 export const rootRoute = rr.createRootRoute({
   component: () => <Frame />,
@@ -88,6 +89,12 @@ export const settings = rr.createRoute({
   path: "/settings",
 });
 
+export const competitive = rr.createRoute({
+  getParentRoute: () => appContainer,
+  component: () => <CompetitivePage />,
+  path: "/competitive",
+});
+
 export const leaderboard = rr.createRoute({
   getParentRoute: () => appContainer,
   component: () => <LeaderboardPage />,
@@ -144,6 +151,7 @@ const router = rr.createRouter({
     appContainer.addChildren([
       home.addChildren([recentMatches]),
       settings,
+      competitive,
       leaderboard,
       library,
       downloads,

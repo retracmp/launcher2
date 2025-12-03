@@ -14,10 +14,10 @@ import {
 import UI from "src/components/core/default";
 
 const DeveloperPage = () => {
-  const bannerManager = useBannerManager();
+  const push = useBannerManager((s) => s.push);
   const options = useOptions();
   const retrac = useRetrac();
-  const library = useLibrary();
+  const launch = useLibrary((s) => s.launchBuild);
 
   const [showAdvanced, setShowAdvanced] = useState(false);
 
@@ -49,6 +49,17 @@ const DeveloperPage = () => {
           state={retrac.do_not_download_paks}
           set={retrac.set_do_not_download_paks}
           _animate
+        />
+        <StringOption
+          title="Custom Server"
+          description="Change the backend server to make requests to."
+          state={retrac.override_client_url}
+          set={(s) => {
+            retrac.set_override_client_url(s);
+          }}
+          _animate
+          icon="IoUmbrella"
+          _string_placeholder="https://retrac.site"
         />
       </OptionGroup>
 
@@ -111,7 +122,7 @@ const DeveloperPage = () => {
 
             <UI.Button
               onClick={() =>
-                library.launchBuild(
+                launch(
                   "++Fortnite+Release-14.40-CL-14550713",
                   retrac.override_password
                 )
@@ -152,9 +163,9 @@ const DeveloperPage = () => {
         </div>
 
         <BooleanOption
-          title="Show colour examples"
+          title="UI examples"
           description={
-            <>Show various colour schemes and blurred backgrounds for testing</>
+            <>Stub ui examples to test without needing to be logged in</>
           }
           state={showAdvanced}
           set={setShowAdvanced}
@@ -165,15 +176,10 @@ const DeveloperPage = () => {
 
       <OptionGroup _row>
         <UI.Button
-          onClick={() => {
-            library.launchBuild(
-              "++Fortnite+Release-14.40-CL-14550713",
-              "goaterik"
-            );
-            library.launchBuild(
-              "++Fortnite+Release-14.40-CL-14550713",
-              "frauderik"
-            );
+          onClick={async () => {
+            launch("++Fortnite+Release-14.40-CL-14550713", "goaterik");
+            await new Promise((res) => setTimeout(res, 5000));
+            launch("++Fortnite+Release-14.40-CL-14550713", "frauderik");
           }}
           colour="green"
           className="p-2"
@@ -182,7 +188,7 @@ const DeveloperPage = () => {
         </UI.Button>
         <UI.Button
           onClick={() =>
-            bannerManager.push({
+            push({
               id: "slow",
               text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
               colour: "yellow",
@@ -197,130 +203,41 @@ const DeveloperPage = () => {
       </OptionGroup>
 
       {showAdvanced && (
-        <OptionGroup title="UI Components" _row>
-          <SimpleUI.Drawer
-            state={SimpleUI.DrawerState.Expanded}
-            items={{
-              top: [
-                { label: "Grey", colour_scheme: "grey" },
-                { label: "Red", colour_scheme: "red" },
-                { label: "Blue", colour_scheme: "blue" },
-                { label: "Green", colour_scheme: "green" },
-                { label: "Yellow", colour_scheme: "yellow" },
-                { label: "Pink", colour_scheme: "pink" },
-                { label: "Purple", colour_scheme: "purple" },
-              ],
-              bottom: [],
-            }}
-          ></SimpleUI.Drawer>
-          <div className="flex flex-col overflow-auto">
-            <div className="relative m-2 w-96 min-h-20 bg-neutral-800 overflow-hidden">
-              <div className="w-full h-full blur-[5r0em]">
-                <div
-                  className="absolute w-24 h-24 top-0 left-0 bg-red-500 rounded-full"
-                  style={{
-                    transform: "translate(-50%, -50%)",
-                  }}
-                ></div>
-
-                <div
-                  className="absolute w-28 h-24 bottom-0 right-0 bg-fuchsia-500 rounded-full"
-                  style={{
-                    transform: "translate(-50%, 50%)",
-                  }}
-                ></div>
-              </div>
+        <>
+          <OptionGroup title="Falling Snow">
+            <div className="relative w-full h-40 bg-white/5 rounded-sm">
+              <SimpleUI.FallingElements
+                density={150}
+                element={() => (
+                  <SimpleUI.FallingElementContainer
+                    element={() => (
+                      <div className="w-full h-full bg-white rounded-full"></div>
+                    )}
+                    size_scale_min={0.1}
+                    size_scale_max={0.5}
+                  />
+                )}
+              />
             </div>
+          </OptionGroup>
 
-            <div className="relative m-2 w-96 min-h-20 bg-neutral-800 overflow-hidden">
-              <div className="w-full h-full blur-[5r0em]">
-                <div
-                  className="absolute w-[29%] h-[120%] top-0 left-0 bg-red-500 rounded-full"
-                  style={{
-                    transform: "translate(-50%, -50%)",
-                  }}
-                ></div>
-
-                <div
-                  className="absolute w-[29%] h-[120%] bottom-0 right-0 bg-fuchsia-500 rounded-full"
-                  style={{
-                    transform: "translate(-50%, 50%)",
-                  }}
-                ></div>
-              </div>
+          <OptionGroup title="Falling Snow">
+            <div className="relative w-full h-40 bg-white/5 rounded-sm">
+              <SimpleUI.FallingElements
+                density={150}
+                element={() => (
+                  <SimpleUI.FallingElementContainer
+                    element={() => (
+                      <div className="w-full h-full bg-white rounded-full"></div>
+                    )}
+                    size_scale_min={0.1}
+                    size_scale_max={0.5}
+                  />
+                )}
+              />
             </div>
-
-            <div className="relative m-2 w-20 min-h-20 bg-neutral-800 overflow-hidden">
-              <div className="w-full h-full blur-[5r0em]">
-                <div
-                  className="absolute w-24 h-24 top-0 left-0 bg-red-500 rounded-full"
-                  style={{
-                    transform: "translate(-50%, -50%)",
-                  }}
-                ></div>
-
-                <div
-                  className="absolute w-28 h-24 bottom-0 right-0 bg-fuchsia-500 rounded-full"
-                  style={{
-                    transform: "translate(-50%, 50%)",
-                  }}
-                ></div>
-              </div>
-            </div>
-
-            <div className="relative m-2 w-20 min-h-20 bg-neutral-800 overflow-hidden">
-              <div className="w-full h-full">
-                <div
-                  className="absolute w-[29%] h-[120%] top-0 left-0 bg-red-500 rounded-full"
-                  style={{
-                    transform: "translate(-50%, -50%)",
-                  }}
-                ></div>
-
-                <div
-                  className="absolute w-[29%] h-[120%] bottom-0 right-0 bg-fuchsia-500 rounded-full"
-                  style={{
-                    transform: "translate(-50%, 50%)",
-                  }}
-                ></div>
-              </div>
-            </div>
-
-            <div className="relative m-2 w-20 min-h-20 bg-neutral-800 overflow-hidden">
-              <div className="w-full h-full blur-[2rem]">
-                <div
-                  className="absolute w-[29%] h-[120%] top-0 left-0 bg-red-500 rounded-full"
-                  style={{
-                    transform: "translate(-50%, -50%)",
-                  }}
-                ></div>
-
-                <div
-                  className="absolute w-[29%] h-[120%] bottom-0 right-0 bg-fuchsia-500 rounded-full"
-                  style={{
-                    transform: "translate(-50%, 50%)",
-                  }}
-                ></div>
-              </div>
-            </div>
-          </div>
-          <SimpleUI.Drawer
-            state={SimpleUI.DrawerState.Collapsed}
-            position={SimpleUI.DrawerPosition.Right}
-            items={{
-              top: [
-                { label: "Grey", colour_scheme: "grey" },
-                { label: "Red", colour_scheme: "red" },
-                { label: "Blue", colour_scheme: "blue" },
-                { label: "Green", colour_scheme: "green" },
-                { label: "Yellow", colour_scheme: "yellow" },
-                { label: "Pink", colour_scheme: "pink" },
-                { label: "Purple", colour_scheme: "purple" },
-              ],
-              bottom: [],
-            }}
-          ></SimpleUI.Drawer>
-        </OptionGroup>
+          </OptionGroup>
+        </>
       )}
     </>
   );

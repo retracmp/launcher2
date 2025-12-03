@@ -1,11 +1,11 @@
-import { useMemo, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useUserManager } from "src/wrapper/user";
 import { openUrl } from "@tauri-apps/plugin-opener";
-import { motion } from "motion/react";
 import client from "src/axios/client";
 
 import UI from "src/components/core/default";
 import { formatTime } from "src/helpers/time";
+import { SimpleUI } from "src/import/ui";
 
 const LootLabsWidget = () => {
   const user = useUserManager();
@@ -55,7 +55,21 @@ const LootLabsWidget = () => {
             "radial-gradient(65% 80% at 50% 0%, #f9317125 0%, #00000000 100%)",
         }}
       >
-        <RainingVBucks />
+        <SimpleUI.FallingElements
+          density={50}
+          element={() => (
+            <SimpleUI.FallingElementContainer
+              element={() => (
+                <img
+                  className="w-full h-full select-none"
+                  src="/vbuck.png"
+                ></img>
+              )}
+              size_scale_min={0.8}
+              size_scale_max={1.1}
+            />
+          )}
+        />
       </div>
 
       {!disabled ? (
@@ -84,60 +98,4 @@ const LootLabsWidget = () => {
     </div>
   );
 };
-
-const RainingVBucks = () => {
-  return (
-    <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
-      {Array.from({ length: 50 }).map((_, idx) => (
-        <VBuck key={idx} />
-      ))}
-    </div>
-  );
-};
-
-const VBuck = () => {
-  const props = useMemo(() => {
-    const size = Math.random() * 1 + 1;
-    const left = Math.random() * 100;
-    const duration = Math.random() * 5 + 15;
-    const delay = Math.random() * -20;
-    const rotation = Math.random() * 360 - 90;
-
-    return { size, left, duration, delay, rotation };
-  }, []);
-
-  return (
-    <motion.div
-      initial={{
-        y: "-10vh",
-        rotate: 0,
-        // opacity: 0,
-      }}
-      animate={{
-        y: "110vh",
-        rotate: props.rotation,
-        // opacity: [0, 0.6, 0],
-      }}
-      transition={{
-        duration: props.duration,
-        delay: props.delay,
-        repeat: Infinity,
-        ease: "easeInOut",
-      }}
-      style={{
-        position: "absolute",
-        top: 0,
-        left: `${props.left}%`,
-        height: `${props.size}rem`,
-        width: `${props.size}rem`,
-        backgroundImage: "url(/vbuck.png)",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        pointerEvents: "none",
-        filter: "brightness(0.4)",
-      }}
-    />
-  );
-};
-
 export default LootLabsWidget;

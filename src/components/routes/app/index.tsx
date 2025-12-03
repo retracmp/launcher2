@@ -1,9 +1,11 @@
 import { Outlet, useNavigate } from "@tanstack/react-router";
 import { useLayoutEffect } from "react";
+import { useApplicationInformation } from "src/wrapper/tauri";
 import { useUserManager } from "src/wrapper/user";
 
 const AppContainer = () => {
   const userManager = useUserManager();
+  const application = useApplicationInformation();
   const navigate = useNavigate();
 
   useLayoutEffect(() => {
@@ -12,7 +14,7 @@ const AppContainer = () => {
         to: "/",
       });
     }
-  }, [userManager._token]);
+  }, [userManager._token, application.updateNeeded]);
 
   return <Outlet />;
 };

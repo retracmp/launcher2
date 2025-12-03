@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "@tanstack/react-router";
 
 import * as Icons from "react-icons/io5";
 import { motion } from "motion/react";
+import { useMemo } from "react";
 import NumberFlow from "@number-flow/react";
 
 export namespace SimpleUI {
@@ -134,11 +135,14 @@ export namespace SimpleUI {
     clicked?: DrawerItemClickLink | DrawerItemClickFunction;
     notification?: DrawerItemNotification;
     drawer_state?: (typeof DrawerState)[keyof typeof DrawerState];
+    custom_backdrop?: React.ReactNode;
+    advert: boolean;
   };
   export const DefaultDrawerItemOptions: DrawerItemOptions = {
     icon: "IoAlertCircleSharp",
     label: "Item",
     colour_scheme: "grey",
+    advert: false,
   };
   export const DrawerItem = (props: Partial<DrawerItemOptions>) => {
     const options = { ...DefaultDrawerItemOptions, ...props };
@@ -209,16 +213,20 @@ export namespace SimpleUI {
         onClick={handleInteraction}
         data-status={active ? "active" : "inactive"}
         className={twJoin(
-          "relative flex gap-2 items-center justify-start min-w-9 w-full h-9 min-h-9 px-[9px] border-[1px] cursor-pointer transition-colors bg-[#ffffff00] hover:duration-[20ms] duration-150 hover:not-data-[status=active]:border-1 rounded-sm outline-none",
+          "overflow-hidden relative flex gap-2 items-center justify-start min-w-9 w-full h-9 min-h-9 px-[9px] border-[1px] cursor-pointer transition-colors bg-[#ffffff00] hover:duration-[20ms] duration-150 hover:not-data-[status=active]:border-1 rounded-sm outline-none",
           class_[options.colour_scheme].base,
           active &&
             twJoin(
               class_[options.colour_scheme].active,
               "hover:none border-1 backdrop-blur-3xl bg-opacity-50"
-            )
+            ),
+          props.advert &&
+            "border-[1px] border-solid not-data-[status=active]:border-red-500/5 bg-red-400/5"
         )}
       >
-        <Icon className="min-w-4 min-h-4" />
+        {props.custom_backdrop ? props.custom_backdrop : null}
+
+        {props.icon && <Icon className="min-w-4 min-h-4" />}
 
         <motion.span
           className="text-sm leading-[15px] min-w-fit mb-[1px]"
@@ -237,19 +245,129 @@ export namespace SimpleUI {
         >
           {props.label}
         </motion.span>
+        {options.drawer_state === DrawerState.Expanded && (
+          <>
+            {props.notification && props.notification.type === "NUMBER" && (
+              <span className="absolute font-semibold p-1.5 pl-[0.35rem] py-2 bg-neutral-800 right-1 h-5 text-sm flex flex-row items-center justify-center rounded-[0.6rem]">
+                <NumberFlow value={props.notification.number} />
+              </span>
+            )}
 
-        {props.notification && props.notification.type === "NUMBER" && (
-          <span className="absolute font-semibold p-1.5 pl-[0.35rem] py-2 bg-neutral-800 right-1 h-5 text-sm flex flex-row items-center justify-center rounded-[0.6rem]">
-            <NumberFlow value={props.notification.number} />
-          </span>
-        )}
-
-        {props.notification && props.notification.type === "TEXT" && (
-          <span className="absolute p-1.5 py-2 bg-neutral-800 right-1 h-5 text-sm flex flex-row items-center justify-center rounded-[0.6rem]">
-            {props.notification.text}
-          </span>
+            {props.notification && props.notification.type === "TEXT" && (
+              <span className="absolute p-1.5 py-2 bg-neutral-800 right-1 h-5 text-sm flex flex-row items-center justify-center rounded-[0.6rem]">
+                {props.notification.text}
+              </span>
+            )}
+          </>
         )}
       </button>
     );
+  };
+
+  export type FallingElementsOptions = {
+    element: React.ElementType;
+    density: number;
+  };
+  export const DefaultFallingElementsOptions: FallingElementsOptions = {
+    element: () => <></>,
+    density: 50,
+  };
+  export const FallingElements = (props: Partial<FallingElementsOptions>) => {
+    const options = { ...DefaultFallingElementsOptions, ...props };
+    const Element = options.element;
+
+    const rendered = useMemo(() => {
+      return Array.from({ length: options.density }).map((_, idx) => (
+        <Element key={idx} {...props} />
+      ));
+    }, []);
+
+    return (
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
+        {rendered}
+      </div>
+    );
+  };
+
+  export type FallingElementContainersOptions = {
+    element: React.ElementType;
+    size_scale_min: number;
+    size_scale_max: number;
+  };
+  export const DefaultFallingElementContainersOptions: FallingElementContainersOptions =
+    {
+      element: () => <></>,
+      size_scale_min: 1,
+      size_scale_max: 1,
+    };
+  export const FallingElementContainer = (
+    props: Partial<FallingElementContainersOptions>
+  ) => {
+    const options = { ...DefaultFallingElementContainersOptions, ...props };
+    const Element = options.element;
+
+    const randomised = useMemo(() => {
+      const size =
+        Math.random() * options.size_scale_max + options.size_scale_min;
+
+      const left = Math.random() * 100;
+      const duration = Math.random() * 5 + 15;
+      const delay = Math.random() * -20;
+      const rotation = Math.random() * 360 - 90;
+
+      return { size, left, duration, delay, rotation };
+    }, []);
+
+    return (
+      <motion.div
+        initial={{
+          y: "-10vh",
+          rotate: 0,
+        }}
+        animate={{
+          y: "110vh",
+          rotate: randomised.rotation,
+        }}
+        transition={{
+          duration: randomised.duration,
+          delay: randomised.delay,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        style={{
+          position: "absolute",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          top: 0,
+          left: `${randomised.left}%`,
+          height: `${randomised.size}rem`,
+          width: `${randomised.size}rem`,
+          backdropFilter: "blur(1rem)",
+          // backgroundImage: "url(/vbuck.png)",
+          // backgroundSize: "cover",
+          // backgroundPosition: "center",
+          pointerEvents: "none",
+          opacity: 0.2,
+        }}
+      >
+        <Element />
+      </motion.div>
+    );
+  };
+
+  export type ListOptions = {
+    title?: string;
+    direction: "column" | "row";
+    scrollable: boolean;
+  };
+  export const DefaultListOptions: ListOptions = {
+    direction: "column",
+    scrollable: false,
+  };
+  export const List = (props: Partial<ListOptions>) => {
+    const options = { ...DefaultListOptions, ...props };
+
+    return <motion.div></motion.div>;
   };
 }

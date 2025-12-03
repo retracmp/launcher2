@@ -2,12 +2,13 @@ import { useApplicationInformation } from "src/wrapper/tauri";
 import { useUserManager } from "src/wrapper/user";
 import { useServerManager } from "src/wrapper/server";
 import { useDownloadState } from "src/wrapper/download";
+import { useLibrary } from "src/wrapper/library";
 import { useOptions } from "src/wrapper/options";
 import { openUrl } from "@tauri-apps/plugin-opener";
 
 import { SimpleUI } from "src/import/ui";
-import * as axios from "src/axios/client";
-import { useLibrary } from "src/wrapper/library";
+
+const show_advert_test = Math.random();
 
 const Drawer = () => {
   const application = useApplicationInformation();
@@ -20,7 +21,7 @@ const Drawer = () => {
     ? SimpleUI.DrawerState.Expanded
     : SimpleUI.DrawerState.Collapsed;
 
-  const developer_mode = axios.dev || application.dev || userManager.is_dev();
+  const developer_mode = application.dev || userManager.is_dev();
 
   const servers = useServerManager((s) => s._servers);
   const serverCount = Object.values(servers).length;
@@ -50,29 +51,42 @@ const Drawer = () => {
         },
       },
       {
-        label: "Leaderboard",
+        label: "Competitive",
         icon: "IoTrophySharp",
         clicked: {
           type: "LINK",
-          href: "/app/leaderboard",
+          href: "/app/competitive",
         },
       },
-      {
-        label: "Library",
-        icon: "IoFileTrayFullSharp",
-        clicked: {
-          type: "LINK",
-          href: "/app/library",
-        },
-        notification:
-          buildsCount > 0
-            ? {
-                colour_scheme: "grey",
-                number: buildsCount,
-                type: "NUMBER",
-              }
-            : undefined,
-      },
+      // ((): boolean => {
+      //   const today = new Date();
+      //   const year = today.getFullYear();
+      //   const start = new Date(year, 11, 1);
+      //   const end = new Date(year, 11, 31);
+      //   return today >= start && today <= end;
+      // })()
+      //   ? {
+      //       label: "14 Days of Retrac",
+      //       icon: "IoSnow",
+      //       colour_scheme: "blue",
+      //     }
+      //   : null,
+      // {
+      //   label: "Library",
+      //   icon: "IoFileTrayFullSharp",
+      //   clicked: {
+      //     type: "LINK",
+      //     href: "/app/library",
+      //   },
+      //   notification:
+      //     buildsCount > 0
+      //       ? {
+      //           colour_scheme: "grey",
+      //           number: buildsCount,
+      //           type: "NUMBER",
+      //         }
+      //       : undefined,
+      // },
       {
         label: "Matches",
         icon: "IoPulseSharp",
@@ -121,17 +135,39 @@ const Drawer = () => {
             colour_scheme: "blue",
           }
         : null,
-      // developer_mode
-      //   ? {
-      //       label: "Clans",
-      //       icon: "IoPeopleSharp",
-      //       clicked: {
-      //         type: "LINK",
-      //         href: "/app/clans",
-      //       },
-      //       colour_scheme: "purple",
-      //     }
-      //   : null,
+      show_advert_test > 0.95
+        ? {
+            label: "Claim free V-Bucks!",
+            icon: null,
+            colour_scheme: "red",
+            custom_backdrop: (
+              <div
+                className="absolute top-0 left-0 w-full h-full bg-center bg-cover overflow-hidden"
+                style={{
+                  backgroundImage:
+                    "radial-gradient(50% 200% at 0% 0%, #f0317125 0%, #00000000 100%)",
+                }}
+              >
+                <SimpleUI.FallingElements
+                  density={50}
+                  element={() => (
+                    <SimpleUI.FallingElementContainer
+                      element={() => (
+                        <img
+                          className="w-full h-full select-none"
+                          src="/vbuck.png"
+                        ></img>
+                      )}
+                      size_scale_min={0.35}
+                      size_scale_max={0.5}
+                    />
+                  )}
+                />
+              </div>
+            ),
+            advert: true,
+          }
+        : null,
       developer_mode
         ? {
             label: "Developer",
@@ -216,6 +252,8 @@ const Drawer = () => {
   const routes = !userManager.access()
     ? EmptyDrawerItems
     : AuthenticatedDrawerItems;
+
+  if (application.updateNeeded) return null;
 
   return <SimpleUI.Drawer state={state} items={routes} />;
 };

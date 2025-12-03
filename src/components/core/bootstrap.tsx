@@ -6,7 +6,7 @@ import {
   useBannerManager,
 } from "src/wrapper/banner";
 import { LauncherStage, useUserManager } from "src/wrapper/user";
-import { hostname, dev } from "src/axios/client";
+import { hostname } from "src/axios/client";
 import { useRetrac } from "src/wrapper/retrac";
 import { useSocket } from "src/socket";
 import { useServerManager } from "src/wrapper/server";
@@ -37,7 +37,7 @@ const Boostrap = () => {
     application.load(
       await app.getName(),
       await app.getVersion(),
-      false,
+      import.meta.env.MODE === "development",
       (await invoke.get_windows_version()) || 0
     );
 
@@ -82,7 +82,9 @@ const Boostrap = () => {
 
     const tokenBase64 = btoa(userManager._token);
     socket.connect(
-      `ws${dev ? "" : "s"}://${hostname}/launcher/ws?token=${tokenBase64}`,
+      `ws${
+        application.dev ? "" : "s"
+      }://${hostname}/launcher/ws?token=${tokenBase64}`,
       application.version,
       userManager._token
     );

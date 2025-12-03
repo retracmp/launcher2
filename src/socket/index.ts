@@ -27,7 +27,15 @@ export const useSocket = create<SocketManager>()((set, get) => ({
 
   connect: (url, version, token) => {
     const state = get();
-    if (state._socket !== null) return;
+
+    if (state._socket !== null) {
+      if (state._socket.version === "") {
+        state._socket.close();
+        state._socket = null;
+      } else {
+        return;
+      }
+    }
 
     const _socket = newRetracSocket({
       state,

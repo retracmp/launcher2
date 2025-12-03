@@ -1,6 +1,7 @@
 import { useLayoutEffect } from "react";
 import { useApplicationInformation } from "src/wrapper/tauri";
 import { useBannerManager } from "src/wrapper/banner";
+
 import { check } from "@tauri-apps/plugin-updater";
 
 const UpdateChecker = () => {
