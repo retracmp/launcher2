@@ -165,27 +165,29 @@ const Frame = () => {
           </nav>
 
           <BannerRenderer />
+
           <div className="flex flex-row flex-1 max-w-full max-h-full overflow-hidden">
-            {((): boolean => {
-              const today = new Date();
-              const year = today.getFullYear();
-              const start = new Date(year, 11, 1);
-              const end = new Date(year, 11, 31);
-              return today >= start && today <= end;
-            })() && (
-              <SimpleUI.FallingElements
-                density={150}
-                element={() => (
-                  <SimpleUI.FallingElementContainer
-                    element={() => (
-                      <div className="w-full h-full bg-white rounded-full"></div>
-                    )}
-                    size_scale_min={0.1}
-                    size_scale_max={0.5}
-                  />
-                )}
-              />
-            )}
+            {options.enable_snow &&
+              ((): boolean => {
+                const today = new Date();
+                const year = today.getFullYear();
+                const start = new Date(year, 11, 1);
+                const end = new Date(year, 11, 31);
+                return today >= start && today <= end;
+              })() && (
+                <SimpleUI.FallingElements
+                  density={options.snow_particles}
+                  element={() => (
+                    <SimpleUI.FallingElementContainer
+                      element={() => (
+                        <div className="w-full h-full bg-white rounded-full"></div>
+                      )}
+                      size_scale_min={0.1}
+                      size_scale_max={0.5}
+                    />
+                  )}
+                />
+              )}
 
             <div className="relative flex flex-col flex-1 max-w-full max-h-full overflow-hidden overflow-y-auto @container">
               {show ? <rr.Outlet /> : <LoadingIndicator />}

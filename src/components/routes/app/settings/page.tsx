@@ -68,6 +68,45 @@ const SettingsPage = () => {
         </div>
       </OptionGroup>
 
+      {((): boolean => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const start = new Date(year, 11, 1);
+        const end = new Date(year, 11, 31);
+        return today >= start && today <= end;
+      })() && (
+        <OptionGroup title="Seasonal" _animate>
+          <BooleanOption
+            title="Enable Falling Snow"
+            description={
+              <>
+                Christmas decorated launcher to get into the{" "}
+                <b>merry spirit!</b>
+              </>
+            }
+            state={options.enable_snow}
+            set={options.set_enable_snow}
+            icon="IoSnowSharp"
+            _animate
+          />
+          <SliderOption
+            title="Snow Particles"
+            description={
+              <>
+                Adjust the number of visible snow particles at any one time,{" "}
+                <b>lower if Graphics Usage is high!</b>
+              </>
+            }
+            state={options.snow_particles}
+            set={options.set_snow_particles}
+            icon="IoResizeSharp"
+            _slider_min={10}
+            _slider_max={500}
+            _slider_step={10}
+          />
+        </OptionGroup>
+      )}
+
       <OptionGroup title="Network" _animate>
         <BooleanOption
           title="Auto Download"
