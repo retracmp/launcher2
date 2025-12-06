@@ -72,6 +72,9 @@ export enum LauncherStage {
 
 type UserManager = {
   _token: string | null;
+  _token_expires_at: Date | null;
+  _refresh_token: string | null;
+
   _user: User | null;
   otp: string | null;
   set_otp: (otp: string | null) => void;
@@ -89,7 +92,7 @@ type UserManager = {
   access: () => boolean;
   loading: () => boolean;
 
-  login: (token: string) => void;
+  login: (token: string, expires: Date, refresh: string) => void;
   logout: () => void;
   load: (user: User) => void;
 
@@ -101,6 +104,8 @@ export const useUserManager = create<UserManager>()(
   persist(
     (set, get) => ({
       _token: null,
+      _token_expires_at: null,
+      _refresh_token: null,
       _user: null,
 
       user_best_donation_tier: () => {
@@ -189,7 +194,11 @@ export const useUserManager = create<UserManager>()(
     {
       name: "token",
       storage: createJSONStorage(() => localStorage),
-      partialize: (s) => ({ _token: s._token }),
+      partialize: (s) => ({
+        _token: s._token,
+        _token_expires_at: s._token_expires_at,
+        _refresh_token: s._refresh_token,
+      }),
     }
   )
 );

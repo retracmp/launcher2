@@ -6,7 +6,6 @@ import {
   useBannerManager,
 } from "src/wrapper/banner";
 import { LauncherStage, useUserManager } from "src/wrapper/user";
-import { hostname } from "src/axios/client";
 import { useRetrac } from "src/wrapper/retrac";
 import { useSocket } from "src/socket";
 import { useServerManager } from "src/wrapper/server";
@@ -16,6 +15,7 @@ import { LAUNCH_STATE, useLibrary } from "src/wrapper/library";
 import * as app from "@tauri-apps/api/app";
 import * as path from "@tauri-apps/api/path";
 import invoke from "src/tauri";
+import { endpoints_config } from "src/axios/endpoints";
 
 const ANTI_SHORTCUTS = ["ctrl+p", "ctrl+f", "ctrl+u", "ctrl+j"];
 const ANTI_SHORTCUTS_ALLOW_IN_DEV = ["ctrl+r", "f5"];
@@ -79,12 +79,13 @@ const Boostrap = () => {
     if (socket._socket !== null && socket._socket.token === userManager._token)
       return;
     if (socket._socket !== null) socket.disconnect();
+    if (application.version === "") return;
+
+    const endpoints = endpoints_config(application);
 
     const tokenBase64 = btoa(userManager._token);
     socket.connect(
-      `ws${
-        application.dev ? "" : "s"
-      }://${hostname}/websocket/launcher?token=${tokenBase64}`,
+      `${endpoints.launcher_websocket_endpoint}?token=${tokenBase64}`,
       application.version,
       userManager._token
     );
@@ -214,7 +215,7 @@ const Boostrap = () => {
         socket.disconnect();
       }
     };
-  }, [userManager._token]);
+  }, [userManager._token, application.version]);
 
   useEffect(() => {
     syncUserStages();

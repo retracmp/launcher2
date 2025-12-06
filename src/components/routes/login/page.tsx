@@ -1,61 +1,24 @@
 import { useEffect } from "react";
-import { getCurrentWindow, UserAttentionType } from "@tauri-apps/api/window";
-import { UnlistenFn } from "@tauri-apps/api/event";
-import { useBannerManager } from "src/wrapper/banner";
+
 import { useUserManager } from "src/wrapper/user";
 import { useNavigate } from "@tanstack/react-router";
+import { useApplicationInformation } from "src/wrapper/tauri";
 import { openUrl } from "@tauri-apps/plugin-opener";
 
-import * as deeplink from "@tauri-apps/plugin-deep-link";
-import client from "src/axios/client";
+import { endpoints_config } from "src/axios/endpoints";
 
 import UI from "src/components/core/default";
 import { OptionGroup } from "../../core/option";
 
 const LoginPage = () => {
   const userManager = useUserManager();
-  const bannerManager = useBannerManager();
+  const application = useApplicationInformation();
   const navigate = useNavigate();
 
   const handleAuthenticate = async () => {
-    const redirect = await client.get_discord_login_url();
-    if (!redirect.ok) {
-      bannerManager.push({
-        id: "login-error",
-        text: "Our servers seem to be down, please try again later.",
-        closable: true,
-        colour: "red",
-      });
-      throw new Error("Failed to get Discord login URL");
-    }
-    await openUrl(redirect.data);
+    const endpoint_configuration = await endpoints_config(application);
+    await openUrl(endpoint_configuration.oauth_authorise_endpoint);
   };
-
-  const onNewToken = async (input: string[]) => {
-    for (const scheme of input) {
-      console.log("[login] new token", input);
-      if (scheme.startsWith("retrac://token@")) {
-        const token = scheme
-          .replace("retrac://token@", "")
-          .replace("/", "")
-          .trim();
-        userManager.login(token);
-        navigate({
-          to: "/app/home",
-        });
-        getCurrentWindow().requestUserAttention(UserAttentionType.Critical);
-        getCurrentWindow().setFocus();
-      }
-    }
-  };
-
-  useEffect(() => {
-    const unlisten = deeplink.onOpenUrl(onNewToken);
-
-    return () => {
-      unlisten.then((fn: UnlistenFn) => fn());
-    };
-  }, []);
 
   useEffect(() => {
     if (userManager.access()) {

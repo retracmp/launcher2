@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { useUserManager } from "src/wrapper/user";
+import { endpoints_config } from "src/axios/endpoints";
+import { useApplicationInformation } from "src/wrapper/tauri";
 import { openUrl } from "@tauri-apps/plugin-opener";
-import client from "src/axios/client";
 
 import UI from "src/components/core/default";
 import { formatTime } from "src/helpers/time";
 import { SimpleUI } from "src/import/ui";
 
 const LootLabsWidget = () => {
+  const application = useApplicationInformation();
+
   const user = useUserManager();
   if (user._user === null)
     return (
@@ -34,10 +37,8 @@ const LootLabsWidget = () => {
     if (user._token === null)
       return console.error("No token found, so cannot claim the link");
 
-    const link = await client.get_lootlabs_offer_url(user._token);
-    if (link.ok) {
-      openUrl(link.data);
-    }
+    const endpoints = endpoints_config(application);
+    await openUrl(endpoints.fiscal_advert_endpoint);
   };
 
   return (

@@ -1,10 +1,11 @@
 import { convertFileSrc } from "@tauri-apps/api/core";
 import { useEffect } from "react";
-import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useApplicationInformation } from "src/wrapper/tauri";
 import { LauncherStage, useUserManager } from "src/wrapper/user";
 import { useOptions } from "src/wrapper/options";
 import * as rr from "@tanstack/react-router";
+
+import { getCurrentWindow } from "@tauri-apps/api/window";
 
 import { HiMinus } from "react-icons/hi";
 import { IoCloseSharp } from "react-icons/io5";
@@ -15,6 +16,7 @@ import BannerRenderer from "src/components/banner/parent";
 import FriendsList from "src/components/navigation/friends";
 import HoverManager from "src/components/core/hover";
 import { SimpleUI } from "src/import/ui";
+import AuthoriseHandler from "./authorise";
 
 const ENSURE_IMAGES_ARE_CACHED = [
   "/donate/carti.webp",
@@ -63,6 +65,8 @@ const Frame = () => {
 
   return (
     <>
+      <AuthoriseHandler />
+
       {options.enable_background_image && (
         <div
           className="absolute w-[110%] h-[110%] opacity-20 pointer-events-none z-[-10000]"

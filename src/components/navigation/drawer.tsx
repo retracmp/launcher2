@@ -21,7 +21,7 @@ const Drawer = () => {
     ? SimpleUI.DrawerState.Expanded
     : SimpleUI.DrawerState.Collapsed;
 
-  const developer_mode = application.dev || userManager.is_dev();
+  const developer_mode = application.dev;
 
   const servers = useServerManager((s) => s._servers);
   const serverCount = Object.values(servers).length;

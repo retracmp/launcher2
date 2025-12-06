@@ -344,9 +344,6 @@ export namespace SimpleUI {
           height: `${randomised.size}rem`,
           width: `${randomised.size}rem`,
           backdropFilter: "blur(1rem)",
-          // backgroundImage: "url(/vbuck.png)",
-          // backgroundSize: "cover",
-          // backgroundPosition: "center",
           pointerEvents: "none",
           opacity: 0.2,
         }}

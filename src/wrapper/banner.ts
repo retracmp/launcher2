@@ -81,4 +81,13 @@ export const BANNER_DEFAULTS = {
     closable: false,
     expireAfter: 5,
   },
-} as Record<string, BannerT>;
+  LOGIN_ERROR: {
+    id: "login",
+    text: "Failed to fetch authorisation token from our servers, please try again.",
+    colour: "red",
+    closable: false,
+    expireAfter: 5,
+  },
+} as {
+  [key: string]: BannerT;
+};
