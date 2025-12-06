@@ -84,7 +84,7 @@ const Boostrap = () => {
     socket.connect(
       `ws${
         application.dev ? "" : "s"
-      }://${hostname}/launcher/ws?token=${tokenBase64}`,
+      }://${hostname}/websocket/launcher?token=${tokenBase64}`,
       application.version,
       userManager._token
     );

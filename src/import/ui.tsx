@@ -1,9 +1,9 @@
 import { twJoin } from "tailwind-merge";
+import { useMemo, useState } from "react";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 
 import * as Icons from "react-icons/io5";
 import { motion } from "motion/react";
-import { useMemo } from "react";
 import NumberFlow from "@number-flow/react";
 
 export namespace SimpleUI {
@@ -359,15 +359,82 @@ export namespace SimpleUI {
   export type ListOptions = {
     title?: string;
     direction: "column" | "row";
+    position: "top" | "middle" | "bottom";
     scrollable: boolean;
+    foldable?: "start-open" | "start-folded";
+    border_hidden?: boolean;
   };
   export const DefaultListOptions: ListOptions = {
     direction: "column",
+    position: "middle",
     scrollable: false,
   };
-  export const List = (_: Partial<ListOptions>) => {
-    // const options = { ...DefaultListOptions, ...props };
+  export const List = (props: Partial<ListOptions>) => {
+    const options = { ...DefaultListOptions, ...props };
 
-    return <motion.div></motion.div>;
+    const [folded_state, set_folded_state] = useState(
+      props.foldable && props.foldable === "start-folded" ? true : false
+    );
+
+    return (
+      <div
+        className={twJoin(
+          "relative flex gap-2 p-2.5 py-3.5 border-neutral-700/40 border-b-[1px] border-solid",
+          options.border_hidden && "border-0",
+          options.scrollable && "overflow-y-auto",
+          options.direction === "column"
+            ? "flex-col"
+            : "flex-row @max-xl:flex-col",
+          options.position === "top" && "pt-2.5",
+          options.position === "bottom" && "pb-3"
+        )}
+      >
+        {options.title != undefined && (
+          <p
+            className={twJoin(
+              "absolute flex flex-row items-center gap-0.5 pb-[0.15rem] pt-[0.1rem] top-[-0.6rem] bg-neutral-900/50 backdrop-blur-3xl text-neutral-300/70 font-plex text-sm leading-[15px] min-w-fit rounded-sm px-1",
+              options.foldable != undefined &&
+                "cursor-pointer hover:text-neutral-400 transition-colors duration-[70ms]"
+            )}
+            onClick={() =>
+              set_folded_state((prev) => (options.foldable ? !prev : true))
+            }
+          >
+            {options.foldable != undefined && (
+              <motion.span
+                initial={{ rotate: 0 }}
+                animate={{ rotate: folded_state ? -90 : 0 }}
+              >
+                <Icons.IoChevronDownSharp />
+              </motion.span>
+            )}
+
+            {props.title}
+          </p>
+        )}
+
+        <motion.div
+          className="relative flex flex-col gap-2 overflow-hidden"
+          animate={{
+            opacity: !folded_state ? 1 : 0,
+            height: !folded_state ? "auto" : 0,
+          }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{
+            height: {
+              type: "spring",
+              stiffness: 170,
+              damping: 18,
+            },
+            opacity: {
+              duration: 0.4,
+            },
+            staggerChildren: 1,
+          }}
+        >
+          "hello aweoasdkjahbgsdvcashjgdfsauhgj"
+        </motion.div>
+      </div>
+    );
   };
 }

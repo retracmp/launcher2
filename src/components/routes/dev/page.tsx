@@ -9,6 +9,7 @@ import {
   BooleanOption,
   FileOption,
   OptionGroup,
+  SliderOption,
   StringOption,
 } from "../../core/option";
 import UI from "src/components/core/default";
@@ -37,6 +38,8 @@ const DeveloperPage = () => {
         </div>
       </OptionGroup>
 
+      <SimpleUI.List title="hello world" foldable="start-open"></SimpleUI.List>
+
       <OptionGroup title="Content Options">
         <BooleanOption
           title="Do not check for outdated paks on launch"
@@ -52,7 +55,7 @@ const DeveloperPage = () => {
         />
         <StringOption
           title="Custom Server"
-          description="Change the backend server to make requests to."
+          description="Change the backend server to make requests to. (requires restart)"
           state={retrac.override_client_url}
           set={(s) => {
             retrac.set_override_client_url(s);
@@ -200,6 +203,35 @@ const DeveloperPage = () => {
         >
           Add Lorem Banner
         </UI.Button>
+      </OptionGroup>
+      <OptionGroup title="Seasonal" _animate>
+        <BooleanOption
+          title="Enable Falling Snow"
+          description={
+            <>
+              Christmas decorated launcher to get into the <b>merry spirit!</b>
+            </>
+          }
+          state={options.enable_snow}
+          set={options.set_enable_snow}
+          icon="IoSnowSharp"
+          _animate
+        />
+        <SliderOption
+          title="Snow Particles"
+          description={
+            <>
+              Adjust the number of visible snow particles at any one time,{" "}
+              <b>lower if Graphics Usage is high!</b>
+            </>
+          }
+          state={options.snow_particles}
+          set={options.set_snow_particles}
+          icon="IoResizeSharp"
+          _slider_min={10}
+          _slider_max={500}
+          _slider_step={10}
+        />
       </OptionGroup>
 
       {showAdvanced && (

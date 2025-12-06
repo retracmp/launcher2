@@ -2,29 +2,13 @@ import axios, { AxiosError } from "axios";
 import { useRetrac } from "src/wrapper/retrac";
 import { useApplicationInformation } from "src/wrapper/tauri";
 
-export const protocol = ((): string => {
-  if (useRetrac.getState().override_client_url != "") {
-    return useRetrac.getState().override_client_url.split("://")[0];
-  }
-  return useApplicationInformation.getState().dev ? "http" : "https";
-})();
-
-export const hostname = ((): string => {
-  if (useRetrac.getState().override_client_url != "") {
-    return useRetrac.getState().override_client_url.split("://")[1];
-  }
-  return useApplicationInformation.getState().dev
-    ? "localhost:3000"
-    : "retrac.site";
-})();
-
 export const axiosClient = axios.create({
-  baseURL: `${protocol}://${hostname}`,
+  baseURL: `asd`,
 });
 
 const get_discord_login_url = async (): Promise<RResponse<string>> => {
   const response = await axiosClient
-    .get<string>("/retrac/discord?v=2")
+    .get<string>("/authenicate")
     .catch((e: AxiosError<any>) => {
       return e;
     });

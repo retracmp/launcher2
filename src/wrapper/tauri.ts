@@ -1,7 +1,7 @@
 import { Update } from "@tauri-apps/plugin-updater";
 import { create } from "zustand";
 
-type ApplicationInformation = {
+export type ApplicationInformation = {
   name: string;
   version: string;
   dev: boolean;

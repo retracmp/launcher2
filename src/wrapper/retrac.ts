@@ -140,6 +140,7 @@ export const useRetrac = create<RetracState>()(
         show_all_widgets: state.show_all_widgets,
         enable_override_password: state.enable_override_password,
         override_password: state.override_password,
+        override_client_url: state.override_client_url,
       }),
     }
   )
