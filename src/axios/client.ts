@@ -6,6 +6,9 @@ export const axiosClient = axios.create({
   baseURL: `asd`,
 });
 
+export const hostname = "";
+export const protocol = "";
+
 const get_discord_login_url = async (): Promise<RResponse<string>> => {
   const response = await axiosClient
     .get<string>("/authenicate")

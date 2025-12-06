@@ -502,6 +502,9 @@ const ControlStateSlider = (
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
+
+    const target = e.currentTarget;
+    target.setPointerCapture(e.pointerId);
     setIsDragging(true);
 
     const handlePointerMove = (moveEvent: PointerEvent) => {
@@ -523,14 +526,15 @@ const ControlStateSlider = (
       setCachedValue(newValue);
     };
 
-    const handlePointerUp = () => {
+    const endDrag = () => {
       setIsDragging(false);
-      document.removeEventListener("pointermove", handlePointerMove);
-      document.removeEventListener("pointerup", handlePointerUp);
+      target.removeEventListener("pointermove", handlePointerMove);
+      target.removeEventListener("pointerup", endDrag);
+      target.releasePointerCapture(e.pointerId);
     };
 
-    document.addEventListener("pointermove", handlePointerMove);
-    document.addEventListener("pointerup", handlePointerUp);
+    target.addEventListener("pointermove", handlePointerMove);
+    target.addEventListener("pointerup", endDrag);
   };
 
   useEffect(() => {
