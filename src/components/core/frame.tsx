@@ -112,9 +112,6 @@ const Frame = () => {
             ? {}
             : {
                 borderTop: "1px solid #303030",
-                // backgroundImage: "url(/c2s4_keyart.jpg)",
-                // backgroundSize: "cover",
-                // backgroundPosition: "center",
               }
         }
       >
