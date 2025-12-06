@@ -468,6 +468,8 @@ const ControlStateSlider = (
 
   const sliderRef = useRef<HTMLDivElement>(null);
   const [sliderWidth, setSliderWidth] = useState(0);
+
+  const [isDragging, setIsDragging] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
 
   const usingMinimum = props._slider_min ?? 0;
@@ -500,6 +502,7 @@ const ControlStateSlider = (
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
+    setIsDragging(true);
 
     const handlePointerMove = (moveEvent: PointerEvent) => {
       if (!sliderRef.current) return;
@@ -521,6 +524,7 @@ const ControlStateSlider = (
     };
 
     const handlePointerUp = () => {
+      setIsDragging(false);
       document.removeEventListener("pointermove", handlePointerMove);
       document.removeEventListener("pointerup", handlePointerUp);
     };
@@ -553,7 +557,7 @@ const ControlStateSlider = (
       <motion.div
         className="absolute w-[2px] h-1.5 select-none pointer-events-none bg-neutral-600/70"
         style={{
-          left: position * (sliderWidth - 2),
+          left: position * (sliderWidth - 2) - sliderWidth / 2,
         }}
       ></motion.div>
     );
@@ -577,12 +581,12 @@ const ControlStateSlider = (
           }}
           onPointerDown={onPointerDown}
           onMouseEnter={() => setShowTooltip(true)}
-          onMouseLeave={() => setShowTooltip(false)}
+          onMouseLeave={() => !isDragging && setShowTooltip(false)}
         >
           <AnimatePresence>
-            {showTooltip && (
+            {(showTooltip || isDragging) && (
               <motion.div
-                className="absolute bg-neutral-800/80 text-neutral-300 text-xs font-code rounded-xl px-2 py-0.5 backdrop-blur-3xl flex items-center justify-center z-20"
+                className="absolute bg-neutral-800 text-neutral-300 font-semibold text-xs font-code rounded-xl px-2 py-0.5 flex items-center justify-center z-20"
                 style={{
                   width: "max-content",
                   whiteSpace: "nowrap",
