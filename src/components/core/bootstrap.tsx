@@ -107,6 +107,8 @@ const Boostrap = () => {
 
   const onSocketWelcome = (data: SocketDownEvent_Welcome) => {
     console.log("[socket] welcome", data);
+    userManager.set_stage(LauncherStage.AllGood);
+
     socket.send({ id: "request_user" });
     socket.send({ id: "request_servers" });
     retrac.set_launcher_news(data.news);
