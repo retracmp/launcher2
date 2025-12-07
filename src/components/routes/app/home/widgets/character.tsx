@@ -17,19 +17,40 @@ const CharacterWidget = (props: CharacterWidgetProps) => {
   );
   if (loadout == null) return console.error("failed to get loadout") ?? null;
 
-  const character = props.user.profiles.athena.items[loadout.characterId || ""];
+  const character = (() => {
+    if (!loadout.characterId.toLowerCase().includes("random")) {
+      return (
+        props.user.profiles.athena.items[loadout.characterId || ""] || null
+      );
+    }
+
+    const character_cosmetics = Object.values(
+      props.user.profiles.athena.items
+    ).filter((x) => x.grant.backendType === "AthenaCharacter");
+
+    const favourited_cosmetics = character_cosmetics.filter(
+      (x) => x.attributes["favorite"] === true
+    );
+    const randomised_list =
+      favourited_cosmetics.length > 0
+        ? favourited_cosmetics
+        : character_cosmetics;
+
+    return randomised_list[Math.floor(Math.random() * randomised_list.length)];
+  })() as Item | null;
+
   if (character == null)
     return console.error("failed to get character") ?? null;
 
   const template = character.grant.template.replace("_Retrac", "");
   const icon = `https://fortnite-api.com/images/cosmetics/br/${template}/icon.png`;
 
-  const currency = props.user.account.perks["current"];
+  const currency = props.user.account.perks["currency"];
   if (currency == null) return console.error("failed to get currency") ?? null;
 
   const season_level = props.user.account.perks["season_level"];
   if (season_level == null)
-    return console.error("failed to get currency") ?? null;
+    return console.error("failed to get season_level") ?? null;
 
   return (
     <div className="flex flex-row p-2 gap-2 min-w-max w-[60%] @max-2xl:w-full bg-neutral-800/10 rounded-sm border-neutral-700/40 border-1 border-solid backdrop-blur-sm">
