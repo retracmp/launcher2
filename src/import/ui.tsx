@@ -428,13 +428,7 @@ export namespace SimpleUI {
             },
             staggerChildren: 1,
           }}
-        >
-          {Array.from({
-            length: 5,
-          }).map((_, s) => (
-            <div className="mx-auto">{s}</div>
-          ))}
-        </motion.div>
+        ></motion.div>
       </div>
     );
   };
