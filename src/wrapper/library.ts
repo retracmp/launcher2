@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { useOptions } from "./options";
 import { useUserManager } from "./user";
-import socketExport from "src/socket/export";
+import socketExport from "src/sockets/export";
 import { useApplicationInformation } from "./tauri";
 import { useRetrac } from "./retrac";
 

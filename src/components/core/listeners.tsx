@@ -5,7 +5,7 @@ import { useRetrac } from "src/wrapper/retrac";
 import { event } from "@tauri-apps/api";
 import { useLibrary } from "src/wrapper/library";
 import { useUserManager } from "src/wrapper/user";
-import { useLauncherSocket } from "src/socket";
+import { useLauncherSocket } from "src/sockets";
 import { useBannerManager } from "src/wrapper/banner";
 import invoke from "src/tauri";
 

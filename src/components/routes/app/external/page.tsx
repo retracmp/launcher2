@@ -1,5 +1,5 @@
 import { useUserManager } from "src/wrapper/user";
-import { useLauncherSocket } from "src/socket";
+import { useLauncherSocket } from "src/sockets";
 import { useEffect } from "react";
 import { useBannerManager } from "src/wrapper/banner";
 

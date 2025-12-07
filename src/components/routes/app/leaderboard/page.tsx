@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useLauncherSocket } from "src/socket";
+import { useLauncherSocket } from "src/sockets";
 import { useLeaderboard } from "src/wrapper/leaderboard";
 import { useOptions } from "src/wrapper/options";
 

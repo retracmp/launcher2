@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useLauncherSocket } from "src/socket";
+import { useLauncherSocket } from "src/sockets";
 import { useFriends } from "src/wrapper/friends";
 import { useUserManager } from "src/wrapper/user";
 import { useOptions } from "src/wrapper/options";

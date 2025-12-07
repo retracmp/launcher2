@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useUserManager } from "src/wrapper/user";
-import { useLauncherSocket } from "src/socket";
+import { useLauncherSocket } from "src/sockets";
 
 import UI from "./default";
 import { IoCloseSharp, IoPersonSharp } from "react-icons/io5";

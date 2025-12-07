@@ -1,4 +1,4 @@
-import { SocketManager } from "src/socket";
+import { SocketManager } from "src/sockets";
 
 export class RetracSocket extends WebSocket {
   constructor(

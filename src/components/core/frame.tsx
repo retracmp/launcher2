@@ -17,7 +17,7 @@ import FriendsList from "src/components/navigation/friends";
 import HoverManager from "src/components/core/hover";
 import { SimpleUI } from "src/import/ui";
 import AuthoriseHandler from "./authorise";
-import { useLauncherSocket } from "src/socket";
+import { useLauncherSocket } from "src/sockets";
 
 const ENSURE_IMAGES_ARE_CACHED = [
   "/donate/carti.webp",

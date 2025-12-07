@@ -7,7 +7,7 @@ import {
 } from "src/wrapper/banner";
 import { LauncherStage, useUserManager } from "src/wrapper/user";
 import { useRetrac } from "src/wrapper/retrac";
-import { useLauncherSocket } from "src/socket";
+import { useLauncherSocket } from "src/sockets";
 import { useServerManager } from "src/wrapper/server";
 import { useOptions } from "src/wrapper/options";
 import { useLeaderboard } from "src/wrapper/leaderboard";
