@@ -38,7 +38,11 @@ const DeveloperPage = () => {
         </div>
       </OptionGroup>
 
-      <SimpleUI.List title="hello world" foldable="start-open"></SimpleUI.List>
+      <SimpleUI.List
+        title="hello world"
+        foldable="start-open"
+        direction="row"
+      ></SimpleUI.List>
 
       <OptionGroup title="Content Options">
         <BooleanOption

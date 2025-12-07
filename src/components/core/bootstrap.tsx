@@ -75,8 +75,8 @@ const Boostrap = () => {
   };
 
   const socketConnect = () => {
+    socket.disconnect();
     if (userManager._token === null) return;
-    if (socket.socket !== null) socket.disconnect();
     if (application.version === "") return;
 
     const endpoints = endpoints_config(application);
@@ -210,9 +210,7 @@ const Boostrap = () => {
     socketConnect();
 
     return () => {
-      if (socket.socket !== null) {
-        socket.disconnect();
-      }
+      socket.disconnect();
     };
   }, [userManager._token, application.version]);
 

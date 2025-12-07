@@ -2,11 +2,17 @@ import { SocketManager } from "src/sockets";
 
 export class RetracSocket extends WebSocket {
   constructor(
-    websocket_uri: string,
+    private websocket_uri: string,
     public version: string,
+    private token: string,
     private controlling_manager: SocketManager
   ) {
     super(websocket_uri);
+
+    this.open_handler = this.open_handler.bind(this);
+    this.message_handler = this.message_handler.bind(this);
+    this.close_handler = this.close_handler.bind(this);
+    this.error_handler = this.error_handler.bind(this);
 
     this.addEventListener("open", this.open_handler);
     this.addEventListener("message", this.message_handler);
@@ -17,6 +23,11 @@ export class RetracSocket extends WebSocket {
   public force_close() {
     this.removeEventListener("close", this.close_handler);
     this.close();
+    this.controlling_manager.connect(
+      this.websocket_uri,
+      this.version,
+      this.token
+    );
   }
 
   private open_handler() {
@@ -53,7 +64,7 @@ export class RetracSocket extends WebSocket {
     this.controlling_manager.unlink_current_socket();
 
     console.log("closing socket with code", close_event.code);
-    if (close_event.code === 1006) return;
+    if (close_event.code === 1006) return this.force_close();
 
     const error_listeners = (t["error"] || []) as SocketDownEventFn<"error">[];
     if (error_listeners === undefined) return;
@@ -68,6 +79,7 @@ export class RetracSocket extends WebSocket {
 
   private error_handler(error: Event) {
     console.log("socket has recieved an error", "error", error);
+    this.force_close();
   }
 }
 

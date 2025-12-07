@@ -376,12 +376,9 @@ export namespace SimpleUI {
     return (
       <div
         className={twJoin(
-          "relative flex gap-2 p-2.5 py-3.5 border-neutral-700/40 border-b-[1px] border-solid",
+          "group relative flex flex-col gap-2 p-2.5 py-3.5 border-neutral-700/40 border-b-[1px] border-solid",
           options.border_hidden && "border-0",
           options.scrollable && "overflow-y-auto",
-          options.direction === "column"
-            ? "flex-col"
-            : "flex-row @max-xl:flex-col",
           options.position === "top" && "pt-2.5",
           options.position === "bottom" && "pb-3"
         )}
@@ -411,7 +408,10 @@ export namespace SimpleUI {
         )}
 
         <motion.div
-          className="relative flex flex-col gap-2 overflow-hidden"
+          className={twJoin(
+            "relative flex flex-1 gap-2 overflow-hidden",
+            options.direction === "column" ? "flex-col" : "flex-row flex-wrap"
+          )}
           animate={{
             opacity: !folded_state ? 1 : 0,
             height: !folded_state ? "auto" : 0,
@@ -429,7 +429,11 @@ export namespace SimpleUI {
             staggerChildren: 1,
           }}
         >
-          "hello aweoasdkjahbgsdvcashjgdfsauhgj"
+          {Array.from({
+            length: 5,
+          }).map((_, s) => (
+            <div className="mx-auto">{s}</div>
+          ))}
         </motion.div>
       </div>
     );

@@ -7,12 +7,7 @@ export type SocketManager = {
     [K in SocketDownEventType]: SocketDownEventFn<K>[];
   }>;
 
-  connect: (
-    url: string,
-    version: string,
-    token: string,
-    retries: number
-  ) => void;
+  connect: (url: string, version: string, token: string) => void;
   disconnect: () => void;
   unlink_current_socket: () => void;
 
@@ -36,17 +31,19 @@ const create_socket_manager = (): UseBoundStore<StoreApi<SocketManager>> => {
     connect: (url, version, token) => {
       const state = get();
       console.log("connecting with token", token);
+      console.trace();
 
-      const socket = make(RetracSocket, url, version, state);
+      const socket = make(RetracSocket, url, version, token, state);
       if (socket === null) return;
 
       set({ socket });
     },
     disconnect: () => {
-      const state = get();
-      if (state.socket === null) return;
-      state.socket.force_close();
-      get().unlink_current_socket();
+      const { socket } = get();
+      if (!socket) return;
+
+      socket.close();
+      set({ socket: null });
     },
     unlink_current_socket: () => {
       set({ socket: null });
