@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect } from "react";
+import { useCallback, useEffect, useLayoutEffect } from "react";
 import { useApplicationInformation } from "src/wrapper/tauri";
 import {
   BANNER_DEFAULTS,
@@ -74,7 +74,7 @@ const Boostrap = () => {
     if (event.key === "Tab") event.preventDefault();
   };
 
-  const socketConnect = () => {
+  const socketConnect = useCallback(() => {
     socket.disconnect();
     if (userManager._token === null) return;
     if (application.version === "") return;
@@ -85,10 +85,9 @@ const Boostrap = () => {
     socket.connect(
       `${endpoints.launcher_websocket_endpoint}?token=${tokenBase64}`,
       application.version,
-      userManager._token,
-      0
+      userManager._token
     );
-  };
+  }, [userManager._token, application.version]);
 
   const onSocketError = (data: SocketDownEvent_Error) => {
     console.log("[socket] error", data);
@@ -102,6 +101,8 @@ const Boostrap = () => {
       closable: true,
       expireAfter: 5,
     });
+    socket.disconnect();
+    userManager.set_stage(LauncherStage.NoToken);
   };
 
   const onSocketWelcome = (data: SocketDownEvent_Welcome) => {

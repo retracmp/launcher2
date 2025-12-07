@@ -12,6 +12,8 @@ import { make_request } from "src/axios/endpoints";
 
 const AuthoriseHandler = () => {
   const application = useApplicationInformation();
+
+  // const set_user_state
   const navigate = useNavigate();
   const set_token = useUserManager((s) => s.login);
   const push_banner = useBannerManager((s) => s.push);
