@@ -21,7 +21,7 @@ export class RetracSocket extends WebSocket {
     this.addEventListener("error", this.error_handler);
   }
 
-  public force_close() {
+  public close_and_reconnect() {
     this.removeEventListener("close", this.close_handler);
     this.close();
     this.controlling_manager.connect(
@@ -29,6 +29,10 @@ export class RetracSocket extends WebSocket {
       this.version,
       this.token
     );
+  }
+
+  public force_close() {
+    this.close();
   }
 
   private open_handler() {

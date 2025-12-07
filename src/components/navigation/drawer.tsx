@@ -2,7 +2,6 @@ import { useApplicationInformation } from "src/wrapper/tauri";
 import { useUserManager } from "src/wrapper/user";
 import { useServerManager } from "src/wrapper/server";
 import { useDownloadState } from "src/wrapper/download";
-import { useLibrary } from "src/wrapper/library";
 import { useOptions } from "src/wrapper/options";
 import { openUrl } from "@tauri-apps/plugin-opener";
 
@@ -30,9 +29,6 @@ const Drawer = () => {
   const downloadsCount = Object.values(
     Object.fromEntries(downloads.entries())
   ).length;
-
-  const builds = useLibrary((l) => l.library);
-  const buildsCount = Object.values(builds).length;
 
   const AuthenticatedDrawerItems = {
     top: [
@@ -65,22 +61,14 @@ const Drawer = () => {
       //       colour_scheme: "blue",
       //     }
       //   : null,
-      // {
-      //   label: "Library",
-      //   icon: "IoFileTrayFullSharp",
-      //   clicked: {
-      //     type: "LINK",
-      //     href: "/app/library",
-      //   },
-      //   notification:
-      //     buildsCount > 0
-      //       ? {
-      //           colour_scheme: "grey",
-      //           number: buildsCount,
-      //           type: "NUMBER",
-      //         }
-      //       : undefined,
-      // },
+      {
+        label: "Library",
+        icon: "IoFileTrayFullSharp",
+        clicked: {
+          type: "LINK",
+          href: "/app/library",
+        },
+      },
       {
         label: "Matches",
         icon: "IoPulseSharp",
@@ -98,6 +86,22 @@ const Drawer = () => {
             : undefined,
       },
       {
+        label: "Downloads",
+        icon: "IoArchiveSharp",
+        clicked: {
+          type: "LINK",
+          href: "/app/downloads",
+        },
+        notification:
+          downloadsCount > 0
+            ? {
+                colour_scheme: "grey",
+                number: downloadsCount,
+                type: "NUMBER",
+              }
+            : undefined,
+      },
+      {
         label: "Donate",
         icon: "IoSparklesSharp",
         clicked: {
@@ -105,16 +109,6 @@ const Drawer = () => {
           href: "/app/store",
         },
         colour_scheme: "yellow",
-      },
-      {
-        label: "Need Help?",
-        icon: "IoAccessibilitySharp",
-        clicked: {
-          type: "FUNCTION",
-          fn: () => {
-            openUrl("https://discord.gg/6sNFtW4Hva");
-          },
-        },
       },
     ],
     bottom: [
@@ -173,20 +167,14 @@ const Drawer = () => {
           }
         : null,
       {
-        label: "Downloads",
-        icon: "IoArchiveSharp",
+        label: "Need Help?",
+        icon: "IoAccessibilitySharp",
         clicked: {
-          type: "LINK",
-          href: "/app/downloads",
+          type: "FUNCTION",
+          fn: () => {
+            openUrl("https://discord.gg/6sNFtW4Hva");
+          },
         },
-        notification:
-          downloadsCount > 0
-            ? {
-                colour_scheme: "grey",
-                number: downloadsCount,
-                type: "NUMBER",
-              }
-            : undefined,
       },
       {
         label: "Settings",

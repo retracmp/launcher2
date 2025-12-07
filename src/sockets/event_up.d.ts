@@ -20,7 +20,11 @@ type SocketUpEvent_RequestLeaderboard = SocketBasicUpEvent & {
   pagination: {
     page: number;
     pageSize: number;
-    sortBy: "eliminations" | "points" | "hype";
+    sortBy:
+      | "EliminationAll"
+      | "VictoriesAll"
+      | "AccumulatedScoreAll"
+      | "MatchesPlayedAll";
   };
 };
 

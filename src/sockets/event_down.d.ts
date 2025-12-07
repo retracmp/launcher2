@@ -47,8 +47,9 @@ type SocketDownEvent_FriendInfos = SocketBasicUpEvent & {
 type SocketDownEvent_Leaderboard = SocketBasicUpEvent & {
   id: "leaderboard";
   leaderboard: LeaderboardEntry[];
-  you: LeaderboardEntry;
-  pageInfo: LeaderboardPageInfo;
+  leaderboard_ranks: Record<string, LeaderboardStatsInformation>;
+  page_information: LeaderboardPageInfo;
+  rank_information: LeaderboardRankInformation;
 };
 
 type SocketDownEvent_Usernames = SocketBasicUpEvent & {

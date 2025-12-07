@@ -33,7 +33,15 @@ const DownloadsPage = () => {
       )}
 
       <OptionGroup title="Available" _last _animate>
-        {manifestInformation.map((manifestInfo) => {
+        {[
+          {
+            manifestId: "++Fortnite+Release-14.40-CL-14550713-Windows",
+            title: "Chapter 2 Season 4",
+            imageUrl: "/c2s4_keyart.jpg",
+            iconUrl: "/c2s4_icon.jpg",
+            gigabyteSize: 32,
+          },
+        ].map((manifestInfo) => {
           return (
             <DownloadEntry
               manifestInfo={manifestInfo}

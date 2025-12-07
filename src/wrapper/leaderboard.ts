@@ -1,10 +1,22 @@
 import { create } from "zustand";
 
 type LeaderboardState = {
+  _cached_stats: Map<string, LeaderboardStatsInformation>;
+
   _set: Map<string, LeaderboardEntry[][]>;
-  _setMe: Map<string, LeaderboardEntry>;
-  activeSortedBy: "eliminations" | "points" | "hype";
-  setSortedBy: (sortedBy: "eliminations" | "points" | "hype") => void;
+  _setMe: Map<string, LeaderboardRankInformation>;
+  activeSortedBy:
+    | "EliminationAll"
+    | "VictoriesAll"
+    | "AccumulatedScoreAll"
+    | "MatchesPlayedAll";
+  setSortedBy: (
+    sortedBy:
+      | "EliminationAll"
+      | "VictoriesAll"
+      | "AccumulatedScoreAll"
+      | "MatchesPlayedAll"
+  ) => void;
 
   _pageInfo: LeaderboardPageInfo;
   setPageInfo: (pageInfo: LeaderboardPageInfo) => void;
@@ -20,12 +32,15 @@ type LeaderboardState = {
     leaderboard: LeaderboardEntry[],
     page: number
   ) => void;
-  populateMe: (type: string, entry: LeaderboardEntry) => void;
+  populateMe: (type: string, entry: LeaderboardRankInformation) => void;
   getLeaderboard: (
     type: string,
     page: number
   ) => LeaderboardEntry[] | undefined;
-  getMe: (type: string) => LeaderboardEntry | undefined;
+  getMe: (type: string) => LeaderboardRankInformation | undefined;
+
+  addToStats: (response: Record<string, LeaderboardStatsInformation>) => void;
+  getCachedStats: (account: string) => LeaderboardStatsInformation | null;
 };
 
 export const useLeaderboard = create<LeaderboardState>((set, get) => ({
@@ -34,7 +49,7 @@ export const useLeaderboard = create<LeaderboardState>((set, get) => ({
     pageSize: 10,
     totalPages: 0,
     totalResults: 0,
-    sortBy: "eliminations",
+    sortBy: "EliminationAll",
   },
   setPageInfo: (pageInfo) => {
     set({ _pageInfo: pageInfo });
@@ -57,7 +72,8 @@ export const useLeaderboard = create<LeaderboardState>((set, get) => ({
   },
   _set: new Map(),
   _setMe: new Map(),
-  activeSortedBy: "eliminations",
+  _cached_stats: new Map(),
+  activeSortedBy: "EliminationAll",
   setSortedBy: (sortedBy) => {
     set({ activeSortedBy: sortedBy });
   },
@@ -87,5 +103,21 @@ export const useLeaderboard = create<LeaderboardState>((set, get) => ({
   getMe: (type) => {
     const _set = get()._setMe;
     return _set.get(type);
+  },
+  addToStats: (response) => {
+    const cached = get()._cached_stats;
+
+    Object.values(response).forEach((entry) => {
+      cached.set(entry.account, entry);
+    });
+
+    set({ _cached_stats: cached });
+  },
+
+  getCachedStats: (account) => {
+    const _set = get()._cached_stats;
+    const stat = _set.get(account);
+    if (!stat) return null;
+    return stat;
   },
 }));

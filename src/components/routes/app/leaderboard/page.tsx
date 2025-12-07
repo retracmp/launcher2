@@ -24,12 +24,13 @@ const LeaderboardPage = () => {
   ) => {
     if (data.leaderboard.length === 0) return;
     leaderboard.populateLeaderboard(
-      data.leaderboard[0].sortedBy,
+      data.page_information.sortBy,
       data.leaderboard,
-      data.pageInfo.page
+      data.page_information.page
     );
-    leaderboard.populateMe(data.leaderboard[0].sortedBy, data.you);
-    leaderboard.setPageInfo(data.pageInfo);
+    leaderboard.populateMe(data.page_information.sortBy, data.rank_information);
+    leaderboard.setPageInfo(data.page_information);
+    leaderboard.addToStats(data.leaderboard_ranks);
   };
 
   useEffect(() => {
@@ -78,9 +79,13 @@ const LeaderboardPage = () => {
         <div className="border-neutral-700/40 border-[1px] border-solid rounded-sm overflow-hidden">
           {currentMe && (
             <LeaderboardItem
-              key={currentMe.sortedBy + currentMe.accountId}
-              position={currentMe.position}
-              leaderboardItem={currentMe}
+              key={leaderboard.activeSortedBy + currentMe.account}
+              position={currentMe.current_rank}
+              leaderboardItem={{
+                AccountID: currentMe.account,
+                Rank: currentMe.current_rank,
+                Score: currentMe.score,
+              }}
               _last
               _me
             />
@@ -108,21 +113,21 @@ const LeaderboardPage = () => {
             <span className="ml-auto"></span>
             <UI.P
               className={`flex items-center justify-center py-1.5 min-w-16 w-16 border-neutral-700/40 border-l-[1px] border-solid cursor-pointer ${
-                leaderboard.activeSortedBy === "eliminations"
+                leaderboard.activeSortedBy === "EliminationAll"
                   ? "font-[600]"
                   : "text-neutral-500"
               }`}
-              onClick={() => leaderboard.setSortedBy("eliminations")}
+              onClick={() => leaderboard.setSortedBy("EliminationAll")}
             >
               Kills
             </UI.P>
             <UI.P
               className={`flex items-center justify-center py-1.5 min-w-16 w-16 border-neutral-700/40 border-l-[1px] border-solid cursor-pointer ${
-                leaderboard.activeSortedBy === "points"
+                leaderboard.activeSortedBy === "VictoriesAll"
                   ? "font-[600]"
                   : "text-neutral-500"
               }`}
-              onClick={() => leaderboard.setSortedBy("points")}
+              onClick={() => leaderboard.setSortedBy("VictoriesAll")}
             >
               Wins
             </UI.P>
@@ -131,7 +136,7 @@ const LeaderboardPage = () => {
             currentLeaderboard.length > 0 &&
             currentLeaderboard.map((leaderboardItem, index, array) => (
               <LeaderboardItem
-                key={leaderboardItem.sortedBy + leaderboardItem.accountId}
+                key={leaderboard.activeSortedBy + leaderboardItem.AccountID}
                 position={index + 1}
                 leaderboardItem={leaderboardItem}
                 _last={index === array.length - 1 ? true : false}

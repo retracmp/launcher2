@@ -14,7 +14,25 @@ import {
 } from "react-icons/io5";
 import { AnimatePresence, motion, Reorder } from "motion/react";
 import UI from "src/components/core/default";
-import FortniteBuild from "src/components/routes/app/library/build";
+import FortniteBuild from "src/components/routes/app/library/installed_build";
+import DownloadBuild from "./download_build";
+
+const fake_manifest_information = [
+  {
+    manifestId: "++Fortnite+Release-14.40-CL-14550713-Windows",
+    title: "Chapter 2 Season 4",
+    imageUrl: "/c2s4_keyart.jpg",
+    iconUrl: "/c2s4_icon.jpg",
+    gigabyteSize: 32,
+  },
+  {
+    manifestId: "++Fortnite+Release-27.00-CL-15433455-Windows",
+    title: "Chapter 5 Season 1",
+    imageUrl: "/c2s4_keyart.jpg",
+    iconUrl: "/c2s4_icon.jpg",
+    gigabyteSize: 32,
+  },
+];
 
 const LibraryPage = () => {
   const library = useLibrary();
@@ -115,28 +133,27 @@ const LibraryPage = () => {
         </div>
       </OptionGroup>
 
-      <OptionGroup title="Installed Builds" _last>
-        <motion.div
-          className="flex flex-row flex-wrap gap-2"
-          variants={{
-            hidden: { opacity: 0, scale: 0.95 },
-            visible: { opacity: 1, scale: 1 },
-          }}
-          initial="hidden"
-          animate="visible"
-          exit="hidden"
-          transition={{
-            staggerChildren: 0.05,
-          }}
-        >
-          {library.library.length === 0 ? (
-            <div className="group flex items-center justify-center gap-1 rounded-sm">
-              <IoBanSharp className="text-neutral-500 w-4 h-4" />
-              <span className="text-neutral-500 text-sm">
-                No builds installed
-              </span>
-            </div>
-          ) : (
+      <OptionGroup title="Public Builds" _last>
+        {fake_manifest_information.map((s) => (
+          <DownloadBuild entry={s} key={s.manifestId} />
+        ))}
+      </OptionGroup>
+
+      {library.library.length !== 0 && (
+        <OptionGroup>
+          <motion.div
+            className="flex flex-row flex-wrap gap-2"
+            variants={{
+              hidden: { opacity: 0, scale: 0.95 },
+              visible: { opacity: 1, scale: 1 },
+            }}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            transition={{
+              staggerChildren: 0.05,
+            }}
+          >
             <AnimatePresence>
               {!options._tiled_builds ? (
                 <Reorder.Group
@@ -158,9 +175,9 @@ const LibraryPage = () => {
                 ))
               )}
             </AnimatePresence>
-          )}
-        </motion.div>
-      </OptionGroup>
+          </motion.div>
+        </OptionGroup>
+      )}
     </>
   );
 };

@@ -144,22 +144,36 @@ type FriendInformation = {
 };
 
 type LeaderboardEntry = {
-  accountId: string;
-  sortedBy: string;
-  value: number;
-  displayName: string;
-  otherWinValue: number;
-  otherElimValue: number;
-  otherHypeValue: number;
-  position: number;
+  AccountID: string;
+  Score: number;
+  Rank: number;
+};
+
+type LeaderboardRankInformation = {
+  account: string;
+  current_rank: number;
+  page_number: number;
+  score: number;
+};
+
+type LeaderboardStatsInformation = {
+  account: string;
+  EliminationAll: number;
+  VictoriesAll: number;
+  AccumulatedScoreAll: number;
+  MatchesPlayedAll: number;
 };
 
 type LeaderboardPageInfo = {
   page: number;
   pageSize: number;
+  sortBy:
+    | "EliminationAll"
+    | "VictoriesAll"
+    | "AccumulatedScoreAll"
+    | "MatchesPlayedAll";
   totalPages: number;
   totalResults: number;
-  sortBy: "eliminations" | "points" | "hype";
 };
 
 type ManifestInformation = {

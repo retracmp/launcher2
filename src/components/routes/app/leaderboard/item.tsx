@@ -16,10 +16,12 @@ const LeaderboardItem = (props: LeaderboardItemProps) => {
   const leaderboard = useLeaderboard();
   const options = useOptions();
 
+  const stats = leaderboard.getCachedStats(props.leaderboardItem.AccountID);
+
   const renderedName =
     props._me && me._user
-      ? me._user.Account.DisplayName || me._user.ID
-      : props.leaderboardItem.displayName || props.leaderboardItem.accountId;
+      ? me._user.account.display_name || me._user.account.id
+      : props.leaderboardItem.AccountID;
 
   const styledPosition = {
     1: "text-yellow-400",
@@ -31,14 +33,14 @@ const LeaderboardItem = (props: LeaderboardItemProps) => {
   const styledPositionClass =
     (() => {
       for (const [key, value] of Object.entries(styledPosition)) {
-        if (props.leaderboardItem.position <= Number(key)) {
+        if (props.leaderboardItem.Rank <= Number(key)) {
           return value;
         }
       }
     })() || "";
 
   const myPageIndex =
-    props.leaderboardItem.position / options.leaderboard_page_size;
+    props.leaderboardItem.Rank / options.leaderboard_page_size;
   const myPageIndexFloor = Math.ceil(myPageIndex);
 
   return (
@@ -58,11 +60,11 @@ const LeaderboardItem = (props: LeaderboardItemProps) => {
           leaderboard.setPage(myPageIndexFloor);
         }}
       >
-        {props.leaderboardItem.position}
+        {props.leaderboardItem.Rank}
       </UI.P>
       <UI.P
         className={`flex items-center justify-center py-2 p-2 ${
-          props.leaderboardItem.accountId === me._user?.ID
+          props.leaderboardItem.AccountID === me._user?.account.id
             ? "font-semibold"
             : ""
         }`}
@@ -71,10 +73,10 @@ const LeaderboardItem = (props: LeaderboardItemProps) => {
       </UI.P>
       <span className="ml-auto"></span>
       <UI.P className="flex items-center justify-center py-2 min-w-16 w-16 border-neutral-700/40 border-l-[1px] border-solid">
-        {props.leaderboardItem.otherElimValue}
+        {stats?.EliminationAll || 0}
       </UI.P>
       <UI.P className="flex items-center justify-center py-2 min-w-16 w-16 border-neutral-700/40 border-l-[1px] border-solid">
-        {props.leaderboardItem.otherWinValue}
+        {stats?.VictoriesAll || 0}
       </UI.P>
     </div>
   );
