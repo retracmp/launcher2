@@ -6,7 +6,6 @@ import CharacterWidget from "src/components/routes/app/home/widgets/character";
 import StatisticsWidget from "src/components/routes/app/home/widgets/statistics";
 import FortniteWidget from "src/components/routes/app/home/widgets/fortnite";
 import NewsWidget from "src/components/routes/app/home/widgets/news";
-import EventsWidget from "src/components/routes/app/home/widgets/events";
 import LootLabsWidget from "src/components/routes/app/home/widgets/lootlabs";
 import DonateWidget from "src/components/routes/app/home/widgets/donate";
 import NewsModalParent from "./widgets/news_modal";
@@ -42,7 +41,6 @@ const HomePage = () => {
 
       {retrac.show_all_widgets && (
         <OptionGroup _row title="Todo">
-          <EventsWidget />
           <DonateWidget />
         </OptionGroup>
       )}

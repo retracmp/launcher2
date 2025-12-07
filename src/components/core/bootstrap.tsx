@@ -112,16 +112,6 @@ const Boostrap = () => {
     socket.send({ id: "request_user" });
     socket.send({ id: "request_servers" });
     retrac.set_launcher_news(data.news);
-    retrac.set_events(
-      data.event_information.events.map((e) => {
-        return {
-          event: e,
-          style: data.event_information.style.find(
-            (s) => s.tournament_display_id === e.DisplayID
-          )!,
-        };
-      })
-    );
     retrac.set_manifests(data.manifest_information);
     retrac.set_auto_download_manifests(
       (data.extra_content_manifests || []).map((m) =>
