@@ -12,6 +12,7 @@ const LootLabsWidget = () => {
   const application = useApplicationInformation();
 
   const user = useUserManager();
+  return null;
   if (user._user === null)
     return (
       console.error("cannot load loot labs widget: user._user = null") ?? null

@@ -22,17 +22,19 @@ type PackageProps = {
 const Package = (props: PackageProps) => {
   const user = useUserManager();
 
-  const owns = user._user?.Account.State.Packages.includes(
-    props.donatePackageTag ?? "none"
-  );
+  // const owns = user._user?.Account.State.Packages.includes(
+  //   props.donatePackageTag ?? "none"
+  // );
 
-  const allowPurchase =
-    user._user?.Account.State.Packages.reduce((acc, cur) => {
-      if (props._doNotAllowPurchaseIfOwnedThese?.includes(cur)) {
-        return false;
-      }
-      return acc;
-    }, true) ?? true;
+  // const allowPurchase =
+  //   user._user?.Account.State.Packages.reduce((acc, cur) => {
+  //     if (props._doNotAllowPurchaseIfOwnedThese?.includes(cur)) {
+  //       return false;
+  //     }
+  //     return acc;
+  //   }, true) ?? true;
+
+  return null;
 
   return (
     <motion.div

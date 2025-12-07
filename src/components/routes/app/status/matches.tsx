@@ -10,6 +10,7 @@ import { OptionGroup } from "src/components/core/option";
 
 const RecentMatchesWidget = () => {
   const user = useUserManager();
+  return null;
   if (user._user === null)
     return (
       console.error("cannot load recent matches widget: user._user = null") ??

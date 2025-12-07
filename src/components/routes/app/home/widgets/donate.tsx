@@ -6,6 +6,7 @@ import UI from "src/components/core/default";
 
 const DonateWidget = () => {
   const user = useUserManager();
+  return null;
   if (user._user === null)
     return (
       console.error("cannot load donate widget: user._user == null") ?? null

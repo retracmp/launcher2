@@ -21,6 +21,7 @@ const FriendsList = () => {
   };
   useEffect(() => {
     if (socket.socket === null) return;
+    return;
     if (user._user === null) return;
 
     socket.bind("friend_infos", onSocketRecieveFriendInfo);
@@ -37,6 +38,8 @@ const FriendsList = () => {
       socket.unbind("friend_infos", onSocketRecieveFriendInfo);
     };
   }, [socket.socket, user._user]);
+
+  return null;
 
   return (
     <motion.div

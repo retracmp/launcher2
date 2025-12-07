@@ -20,6 +20,7 @@ const Account = (props: AccountProps) => {
   );
   const usernameEditComponentRef = useRef<HTMLInputElement>(null);
   const [imageRendered, setImageRendered] = useState(false);
+  return null;
   if (!user._user) return null;
 
   const handleUsernameChange = async () => {

@@ -11,6 +11,8 @@ const RecentMatchesWidget = () => {
       null
     );
 
+  return null;
+
   const stats = Object.values(user._user.Account.Stats);
   const matches = stats
     .flatMap((stat) => Object.values(stat.Matches))

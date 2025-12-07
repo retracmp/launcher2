@@ -35,6 +35,7 @@ const ExternalLoginPage = () => {
   }, [socket.socket]);
 
   const user = useUserManager();
+  return null;
   if (!user._user) return null;
 
   const usernameContainsSpaces = user._user.Account.DisplayName.includes(" ");
