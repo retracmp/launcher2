@@ -1,9 +1,8 @@
 import invoke from "src/tauri";
+import socketExport from "src/sockets/export";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { useOptions } from "./options";
-import { useUserManager } from "./user";
-import socketExport from "src/sockets/export";
 import { useApplicationInformation } from "./tauri";
 import { useRetrac } from "./retrac";
 
@@ -237,8 +236,8 @@ export const useLibrary = create<LibraryState>()(
           launch_args: useApplicationInformation.getState().dev
             ? useOptions.getState().launch_arguments
             : "",
-          exchange_code: code || "NO_CODE_FOUND",
-          anticheat_token: useUserManager.getState()._token || "",
+          exchange_code: code?.authorisation_code || "NO_CODE_FOUND",
+          anticheat_token: code?.anticheat_token || "NO_TOKEN_FOUND",
           disable_pre_edits: useOptions.getState().disable_pre_edits,
           reset_on_release: useOptions.getState().reset_on_release,
           simple_edit: useOptions.getState().simple_edit,

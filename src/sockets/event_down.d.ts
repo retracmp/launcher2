@@ -29,7 +29,8 @@ type SocketDownEvent_RequestHeartbeat = SocketBasicDownEvent & {
 
 type SocketDownEvent_Code = SocketBasicDownEvent & {
   id: "code";
-  code: string;
+  authorisation_code: string;
+  anticheat_token: string;
 };
 
 type SocketDownEvent_PlayerCount = SocketBasicDownEvent & {
