@@ -7,7 +7,7 @@ import {
 } from "src/wrapper/banner";
 import { LauncherStage, useUserManager } from "src/wrapper/user";
 import { useRetrac } from "src/wrapper/retrac";
-import { useSocket } from "src/socket";
+import { useLauncherSocket } from "src/socket";
 import { useServerManager } from "src/wrapper/server";
 import { useOptions } from "src/wrapper/options";
 import { useLeaderboard } from "src/wrapper/leaderboard";
@@ -25,7 +25,7 @@ const Boostrap = () => {
   const bannerManager = useBannerManager();
   const userManager = useUserManager();
   const retrac = useRetrac();
-  const socket = useSocket();
+  const socket = useLauncherSocket();
   const library = useLibrary();
   const servers = useServerManager();
   const options = useOptions();
@@ -76,9 +76,7 @@ const Boostrap = () => {
 
   const socketConnect = () => {
     if (userManager._token === null) return;
-    if (socket._socket !== null && socket._socket.token === userManager._token)
-      return;
-    if (socket._socket !== null) socket.disconnect();
+    if (socket.socket !== null) socket.disconnect();
     if (application.version === "") return;
 
     const endpoints = endpoints_config(application);
@@ -87,7 +85,8 @@ const Boostrap = () => {
     socket.connect(
       `${endpoints.launcher_websocket_endpoint}?token=${tokenBase64}`,
       application.version,
-      userManager._token
+      userManager._token,
+      0
     );
   };
 
@@ -211,7 +210,7 @@ const Boostrap = () => {
     socketConnect();
 
     return () => {
-      if (socket._socket !== null) {
+      if (socket.socket !== null) {
         socket.disconnect();
       }
     };
@@ -253,15 +252,15 @@ const Boostrap = () => {
         return bannerManager.remove("websocket");
       }
 
-      if (socket._socket === null) {
+      if (socket.socket === null) {
         return bannerManager.push(BANNER_DEFAULTS.WEBSOCKET_NULL);
       }
 
-      if (socket._socket.readyState === WebSocket.CONNECTING) {
+      if (socket.socket.readyState === WebSocket.CONNECTING) {
         return bannerManager.push(BANNER_DEFAULTS.WEBSOCKET_CONNECTING);
       }
 
-      if (socket._socket.readyState === WebSocket.CLOSED) {
+      if (socket.socket.readyState === WebSocket.CLOSED) {
         return bannerManager.push(BANNER_DEFAULTS.WEBSOCKET_CLOSED);
       }
 
@@ -273,7 +272,7 @@ const Boostrap = () => {
     return () => {
       clearInterval(interval);
     };
-  }, [socket._socket]);
+  }, [socket.socket]);
 
   useEffect(() => {
     const check = async () => {

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useSocket } from "src/socket";
+import { useLauncherSocket } from "src/socket";
 import { useLeaderboard } from "src/wrapper/leaderboard";
 import { useOptions } from "src/wrapper/options";
 
@@ -15,7 +15,7 @@ import LeaderboardItem, {
 import { OptionGroup } from "../../../core/option";
 
 const LeaderboardPage = () => {
-  const socket = useSocket();
+  const socket = useLauncherSocket();
   const leaderboard = useLeaderboard();
   const options = useOptions();
 
@@ -33,13 +33,13 @@ const LeaderboardPage = () => {
   };
 
   useEffect(() => {
-    if (!socket._socket) return;
+    if (!socket.socket) return;
     socket.bind("leaderboard", onSocketLeaderboard);
 
     return () => {
       socket.unbind("leaderboard", onSocketLeaderboard);
     };
-  }, [socket._socket]);
+  }, [socket.socket]);
 
   useEffect(() => {
     socket.send({

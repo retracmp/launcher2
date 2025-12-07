@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useSocket } from "src/socket";
+import { useLauncherSocket } from "src/socket";
 import { useFriends } from "src/wrapper/friends";
 import { useUserManager } from "src/wrapper/user";
 import { useOptions } from "src/wrapper/options";
@@ -8,7 +8,7 @@ import { IoPersonAddSharp, IoPersonSharp } from "react-icons/io5";
 import { motion } from "motion/react";
 
 const FriendsList = () => {
-  const socket = useSocket();
+  const socket = useLauncherSocket();
   const options = useOptions();
 
   const friends = useFriends();
@@ -20,7 +20,7 @@ const FriendsList = () => {
     friends.populateFriends(data.friendInformation);
   };
   useEffect(() => {
-    if (socket._socket === null) return;
+    if (socket.socket === null) return;
     if (user._user === null) return;
 
     socket.bind("friend_infos", onSocketRecieveFriendInfo);
@@ -36,7 +36,7 @@ const FriendsList = () => {
     return () => {
       socket.unbind("friend_infos", onSocketRecieveFriendInfo);
     };
-  }, [socket._socket, user._user]);
+  }, [socket.socket, user._user]);
 
   return (
     <motion.div

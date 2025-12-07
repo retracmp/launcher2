@@ -1,5 +1,5 @@
 import { useUserManager } from "src/wrapper/user";
-import { useSocket } from "src/socket";
+import { useLauncherSocket } from "src/socket";
 import { useEffect } from "react";
 import { useBannerManager } from "src/wrapper/banner";
 
@@ -10,7 +10,7 @@ import Account from "src/components/core/account";
 import * as Icons from "react-icons/io5";
 
 const ExternalLoginPage = () => {
-  const socket = useSocket();
+  const socket = useLauncherSocket();
 
   const onOtpRecieve = (data: SocketDownEventDataFromType<"otp">) => {
     console.log("[socket] otp", data.otp);
@@ -32,7 +32,7 @@ const ExternalLoginPage = () => {
         id: "otp_unsubscribe",
       } as Omit<SocketUpEventDataFromType<"otp_unsubscribe">, "version">);
     };
-  }, [socket._socket]);
+  }, [socket.socket]);
 
   const user = useUserManager();
   if (!user._user) return null;

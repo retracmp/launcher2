@@ -1,12 +1,20 @@
 import { create } from "zustand";
-import { RetracSocket, newRetracSocket } from "src/socket/handler";
+import { make, RetracSocket } from "src/socket/retrac_socket";
 
 export type SocketManager = {
-  _socket: RetracSocket | null;
-  _listeners: Partial<{ [K in SocketDownEventType]: SocketDownEventFn<K>[] }>;
+  socket: RetracSocket | null;
+  event_listeners: Partial<{
+    [K in SocketDownEventType]: SocketDownEventFn<K>[];
+  }>;
 
-  connect: (url: string, version: string, token: string) => void;
+  connect: (
+    url: string,
+    version: string,
+    token: string,
+    retries: number
+  ) => void;
   disconnect: () => void;
+  unlink_current_socket: () => void;
 
   bind: <T extends SocketDownEventType>(
     event: T,
@@ -20,38 +28,27 @@ export type SocketManager = {
   send: (event: Omit<SocketUpEvent, "version">) => void;
 };
 
-export const useSocket = create<SocketManager>()((set, get) => ({
-  _socket: null,
-  _listeners: {},
-  _onclose: [],
+export const useLauncherSocket = create<SocketManager>()((set, get) => ({
+  socket: null,
+  event_listeners: {},
 
   connect: (url, version, token) => {
     const state = get();
+    console.log("connecting with token", token);
 
-    if (state._socket !== null) {
-      if (state._socket.version === "") {
-        state._socket.close();
-        state._socket = null;
-      } else {
-        return;
-      }
-    }
+    const socket = make(RetracSocket, url, version, state);
+    if (socket === null) return;
 
-    const _socket = newRetracSocket({
-      state,
-      url,
-      version,
-      token,
-    });
-    if (_socket === null) return;
-
-    set({ _socket });
+    set({ socket });
   },
   disconnect: () => {
     const state = get();
-    if (state._socket === null) return;
-    state._socket.close();
-    set({ _socket: null });
+    if (state.socket === null) return;
+    state.socket.force_close();
+    get().unlink_current_socket();
+  },
+  unlink_current_socket: () => {
+    set({ socket: null });
   },
 
   bind: <T extends SocketDownEventType>(
@@ -59,10 +56,10 @@ export const useSocket = create<SocketManager>()((set, get) => ({
     listener: SocketDownEventFn<T>
   ) => {
     const state = get();
-    const listeners = state._listeners[event] || [];
+    const listeners = state.event_listeners[event] || [];
     (listeners as SocketDownEventFn<T>[]).push(listener);
-    state._listeners[event] = listeners;
-    set({ _listeners: state._listeners });
+    state.event_listeners[event] = listeners;
+    set({ event_listeners: state.event_listeners });
   },
 
   unbind: <T extends SocketDownEventType>(
@@ -70,25 +67,25 @@ export const useSocket = create<SocketManager>()((set, get) => ({
     listener: SocketDownEventFn<T>
   ) => {
     const state = get();
-    let listeners = state._listeners[event];
+    let listeners = state.event_listeners[event];
     if (listeners === undefined) return;
 
     (listeners as SocketDownEventFn<T>[]) = listeners.filter(
       (l) => l !== listener
     );
-    state._listeners[event] = listeners;
-    set({ _listeners: state._listeners });
+    state.event_listeners[event] = listeners;
+    set({ event_listeners: state.event_listeners });
   },
 
   send: (event) => {
     const state = get();
-    if (state._socket === null || state._socket.readyState !== WebSocket.OPEN)
+    if (state.socket === null || state.socket.readyState !== WebSocket.OPEN)
       return;
 
-    state._socket.send(
+    state.socket.send(
       JSON.stringify({
         ...event,
-        version: state._socket.version,
+        version: state.socket.version,
       })
     );
   },

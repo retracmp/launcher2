@@ -1,8 +1,8 @@
-import { useSocket } from ".";
+import { useLauncherSocket } from ".";
 
 const exchange_code = async (): Promise<string | null> => {
-  const socket = useSocket.getState();
-  if (!socket._socket) return "";
+  const socket = useLauncherSocket.getState();
+  if (!socket.socket) return "";
 
   return new Promise((resolve, reject) => {
     setTimeout(() => {

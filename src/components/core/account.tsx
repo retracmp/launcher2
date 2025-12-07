@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useUserManager } from "src/wrapper/user";
-import { useSocket } from "src/socket";
+import { useLauncherSocket } from "src/socket";
 
 import UI from "./default";
 import { IoCloseSharp, IoPersonSharp } from "react-icons/io5";
@@ -12,7 +12,7 @@ type AccountProps = {
 
 const Account = (props: AccountProps) => {
   const user = useUserManager();
-  const socket = useSocket();
+  const socket = useLauncherSocket();
 
   const [editingUsername, setEditingUsername] = useState(false);
   const [newUsername, setNewUsername] = useState(

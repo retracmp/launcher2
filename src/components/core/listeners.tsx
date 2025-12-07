@@ -5,7 +5,7 @@ import { useRetrac } from "src/wrapper/retrac";
 import { event } from "@tauri-apps/api";
 import { useLibrary } from "src/wrapper/library";
 import { useUserManager } from "src/wrapper/user";
-import { useSocket } from "src/socket";
+import { useLauncherSocket } from "src/socket";
 import { useBannerManager } from "src/wrapper/banner";
 import invoke from "src/tauri";
 
@@ -14,7 +14,7 @@ const TauriListeners = () => {
   const options = useOptions();
   const user = useUserManager();
   const library = useLibrary();
-  const socket = useSocket();
+  const socket = useLauncherSocket();
   const retrac = useRetrac();
   const banners = useBannerManager();
 
@@ -318,7 +318,7 @@ const TauriListeners = () => {
     return () => {
       socket.unbind("welcome", onSocketWelcome);
     };
-  }, [socket._socket]);
+  }, [socket.socket]);
 
   return null;
 };

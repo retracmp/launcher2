@@ -17,6 +17,7 @@ import FriendsList from "src/components/navigation/friends";
 import HoverManager from "src/components/core/hover";
 import { SimpleUI } from "src/import/ui";
 import AuthoriseHandler from "./authorise";
+import { useLauncherSocket } from "src/socket";
 
 const ENSURE_IMAGES_ARE_CACHED = [
   "/donate/carti.webp",
@@ -204,6 +205,12 @@ const Frame = () => {
 
 const LoadingIndicator = () => {
   const user = useUserManager();
+  const socket = useLauncherSocket();
+
+  const cancelConnection = () => {
+    user.logout();
+    socket.disconnect();
+  };
 
   return (
     <UI.RowBox>
@@ -218,7 +225,7 @@ const LoadingIndicator = () => {
       <UI.Button
         colour="invisible"
         className="py-0 px-2 mt-auto z-10 w-min gap-0"
-        onClick={() => user.logout()}
+        onClick={() => cancelConnection()}
       >
         <span className="text-neutral-400 text-sm">Cancel</span>
       </UI.Button>
