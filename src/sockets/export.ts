@@ -2,6 +2,7 @@ import { useLauncherSocket } from ".";
 
 const exchange_code = async (): Promise<SocketDownEvent_Code | null> => {
   const socket = useLauncherSocket.getState();
+  console.log(socket.socket === null);
   if (!socket.socket) return null;
 
   return new Promise((resolve, reject) => {

@@ -3,17 +3,11 @@ import { formatTime } from "src/helpers/time";
 import UI from "src/components/core/default";
 
 type StatisticsWidgetProps = {
-  account: User["Account"];
-  season: number;
+  account: User["account"];
 };
 
 const StatisticsWidget = (props: StatisticsWidgetProps) => {
-  const seasonStat = props.account.Stats[props.season];
-  if (!seasonStat)
-    return (
-      console.error("cannot load stats matches widget: seasonStat = null 0") ??
-      null
-    );
+  return null;
 
   const eliminations = Object.values(seasonStat.Matches).reduce(
     (acc, match) => acc + match.Eliminations,

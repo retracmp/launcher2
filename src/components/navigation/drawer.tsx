@@ -34,12 +34,6 @@ const Drawer = () => {
   const builds = useLibrary((l) => l.library);
   const buildsCount = Object.values(builds).length;
 
-  console.log("drawer render", {
-    serverCount,
-    buildCount: buildsCount,
-    downloadsCount,
-  });
-
   const AuthenticatedDrawerItems = {
     top: [
       {

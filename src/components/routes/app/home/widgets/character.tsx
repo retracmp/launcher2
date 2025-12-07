@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useRetrac } from "src/wrapper/retrac";
-import { useUserManager } from "src/wrapper/user";
 
 import UI from "src/components/core/default";
 import NumberFlow from "@number-flow/react";
@@ -11,29 +10,26 @@ type CharacterWidgetProps = {
 };
 
 const CharacterWidget = (props: CharacterWidgetProps) => {
-  const donationTier = useUserManager((s) => s.user_best_donation_tier)();
-
   const online = useRetrac((s) => s.players_online);
 
-  const loadout = props.user.Profiles.athena.Loadouts.find(
-    (l) => l.ID === props.user.Profiles.athena.Attributes["loadouts"][0]
+  const loadout = Object.values(props.user.profiles.athena.loadouts).find(
+    (l) => l.index === 0
   );
   if (loadout == null) return console.error("failed to get loadout") ?? null;
 
-  const character = props.user.Profiles.athena.Items[loadout.CharacterID || ""];
+  const character = props.user.profiles.athena.items[loadout.characterId || ""];
   if (character == null)
     return console.error("failed to get character") ?? null;
 
-  const template = character.Template.replace("_Retrac", "");
+  const template = character.grant.template.replace("_Retrac", "");
   const icon = `https://fortnite-api.com/images/cosmetics/br/${template}/icon.png`;
 
-  const currency = Object.values(props.user.Profiles.common_core.Items).find(
-    (i) => i.Template === "MtxPurchased"
-  );
+  const currency = props.user.account.perks["current"];
   if (currency == null) return console.error("failed to get currency") ?? null;
 
-  const seasonStat = props.user.Account.Stats[props.season];
-  if (!seasonStat) return console.error("failed to get account stats") ?? null;
+  const season_level = props.user.account.perks["season_level"];
+  if (season_level == null)
+    return console.error("failed to get currency") ?? null;
 
   return (
     <div className="flex flex-row p-2 gap-2 min-w-max w-[60%] @max-2xl:w-full bg-neutral-800/10 rounded-sm border-neutral-700/40 border-1 border-solid backdrop-blur-sm">
@@ -41,11 +37,8 @@ const CharacterWidget = (props: CharacterWidgetProps) => {
         <div className="flex flex-col w-full gap-0.5">
           <UI.P>
             Welcome back,
-            <span
-              className="font-bold font-geist"
-              style={donationTier != null ? { color: donationTier.colour } : {}}
-            >
-              {" " + props.user.Account.DisplayName}
+            <span className="font-bold font-geist">
+              {" " + props.user.account.display_name}
             </span>
             .
           </UI.P>
@@ -66,13 +59,13 @@ const CharacterWidget = (props: CharacterWidgetProps) => {
           <div className="flex flex-row w-full items-center gap-2">
             <UI.P className="text-neutral-500">V-Bucks</UI.P>
             <div className="w-full min-w-8 h-[1px] bg-neutral-600/20"></div>
-            <UI.P>{currency.Quantity.toLocaleString()}</UI.P>
+            <UI.P>{currency.toLocaleString()}</UI.P>
           </div>
 
           <div className="flex flex-row w-full items-center gap-2">
             <UI.P className="text-neutral-500">Season Level</UI.P>
             <div className="w-full min-w-8 h-[1px] bg-neutral-600/20"></div>
-            <UI.P>{seasonStat.LevelClaimed.toLocaleString()}</UI.P>
+            <UI.P>{season_level.toLocaleString()}</UI.P>
           </div>
 
           <div className="flex flex-row w-full items-center gap-2">
@@ -80,8 +73,8 @@ const CharacterWidget = (props: CharacterWidgetProps) => {
             <div className="w-full min-w-8 h-[1px] bg-neutral-600/20"></div>
             <UI.P>
               {(
-                (seasonStat.PersistentScores["NormalHype"] || 0) +
-                (seasonStat.PersistentScores["LategameHype"] || 0)
+                (props.user.account.scores["NormalHype"] || 0) +
+                (props.user.account.scores["LategameHype"] || 0)
               ).toLocaleString()}
             </UI.P>
           </div>

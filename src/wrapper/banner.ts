@@ -65,21 +65,18 @@ export const BANNER_DEFAULTS = {
     text: "A websocket connection could not be established, please check the status of retrac or your internet connection.",
     colour: "red",
     closable: false,
-    expireAfter: 5,
   },
   WEBSOCKET_CONNECTING: {
     id: "websocket",
     text: "Websocket connection is currently reconnecting, please wait.",
     colour: "yellow",
     closable: false,
-    expireAfter: 5,
   },
   WEBSOCKET_CLOSED: {
     id: "websocket",
     text: "Websocket connection has been closed, please check your internet connection.",
     colour: "red",
     closable: false,
-    expireAfter: 5,
   },
   LOGIN_ERROR: {
     id: "login",

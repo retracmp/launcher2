@@ -77,12 +77,14 @@ type Account = {
       updated_at: string;
     };
   };
+  scores: {
+    [key: string]: number;
+  };
 };
 
 type User = {
-  ID: string;
-  Account: Account;
-  Profiles: {
+  account: Account;
+  profiles: {
     athena: Profile;
     collections: Profile;
     common_core: Profile;

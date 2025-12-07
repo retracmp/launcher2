@@ -266,15 +266,9 @@ const Boostrap = () => {
   }, [socket.socket]);
 
   useEffect(() => {
+    // is not the cause for the lag after like 1 minute
     const check = async () => {
       const result = await invoke.is_fortnite_running();
-      console.log(
-        "[invoke.is_fortnite_running()] =",
-        result,
-        "[library.launchState] =",
-        library.launchState
-      );
-
       switch (library.launchState) {
         case LAUNCH_STATE.NONE:
           if (result) library.setLaunchState(LAUNCH_STATE.LAUNCHED);
