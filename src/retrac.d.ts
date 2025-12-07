@@ -1,92 +1,94 @@
+type Grant = { backendType: string; quantity: number; template: string };
+
 type Item = {
-  ID: string;
-  ProfileType: string;
-  Attributes: Record<string, any>;
-  BackendValue: string;
-  Template: string;
-  Quantity: number;
+  id: string;
+  attributes: {
+    [key: string]: any;
+  };
+  grant: Grant;
+  profileType: string;
 };
 
 type Loadout = {
-  ID: string;
-  ProfileID: string;
-  LockerName: string;
-  CharacterID: string;
-  BackpackID: string;
-  PickaxeID: string;
-  GliderID: string;
-  ContrailID: string;
-  LoadingScreenID: string;
-  MusicPackID: string;
-  DanceIDs: string[6];
-  WrapIDs: string[7];
-  BannerColour: string;
-  BannerIcon: string;
+  id: string;
+  index: number;
+  backpackId: string;
+  bannerColorTemplateId: string;
+  bannerIconTemplateId: string;
+  characterId: string;
+  contrailId: string;
+  danceIds: string[];
+  gliderId: string;
+  loadingScreenId: string;
+  musicPackId: string;
+  name: string;
+  pickaxeId: string;
+  profileType: string;
+  wrapIds: [];
 };
 
 type Profile = {
-  Items: Record<string, Item>;
-  Loadouts: Loadout[];
-  Attributes: Record<string, any>;
+  type: "string";
+  version: number;
+
+  items: Record<string, Item>;
+  gifts: Record<string, Gift>;
+  loadouts: Record<string, Loadout>;
+  attributes: Record<string, any>;
 };
 
-type StatMatch = {
-  ID: string;
-  Eliminations: number;
-  Placement: number;
-  TeamType: "solo" | "duo" | "trio" | "squad";
-  TimeAlive: int;
-  CreatedAt: string;
-  DeathLocation: {
-    X: number;
-    Y: number;
+type Account = {
+  id: string;
+  display_name: string;
+  connection_discord: {
+    id: string;
+    username: string;
+    refresh_token: string;
+    access_token: string;
+    avatar: string;
+    banner: string;
+    expires_at: number;
   };
-  EliminationLocations: Array<{
-    X: number;
-    Y: number;
-  }>;
-};
-
-type Stat = {
-  Season: number;
-  XP: number;
-  BookXP: number;
-  Premium: boolean;
-  Matches: Record<string, StatMatch>;
-  TierFreeClaimed: number;
-  TierPaidClaimed: number;
-  LevelClaimed: number;
-  PersistentScores: Record<string, number>;
-  Tokens: string[];
+  bans: {
+    [key: string]: Object;
+  };
+  perks: {
+    [key: string]: number;
+  };
+  permissions: {
+    [key: string]: Object;
+  };
+  purchases: {
+    [key: string]: {
+      created_at: string;
+      id: string;
+      purchase_processed_at: null;
+      rewards: {
+        [key: string]: {
+          id: string;
+          attributes: {};
+          grant: Grant;
+          profileType: string;
+          variants: Object[];
+        };
+      };
+      status: string;
+      total_paid: number;
+      updated_at: string;
+    };
+  };
 };
 
 type User = {
   ID: string;
-  Account: {
-    DisplayName: string;
-    Discord: {
-      ID: string;
-      Avatar: string;
-      Username: string;
-    };
-    Stats: Record<int, Stat>;
-    State: {
-      Packages: string[];
-      ClaimedPackages: Record<string, string>;
-    };
-    Friendships: Record<
-      string,
-      {
-        ID: string;
-        Account: string;
-        Friend: string;
-        Status: "PENDING" | "ACCEPTED";
-      }
-    >;
-  };
+  Account: Account;
   Profiles: {
     athena: Profile;
+    collections: Profile;
     common_core: Profile;
+    common_public: Profile;
+    creative: Profile;
+    profile0: Profile;
   };
 };
 
@@ -96,65 +98,6 @@ type LauncherNewsItem = {
   date: string;
   body: string;
   authors: string;
-};
-
-type EventItem = {
-  ID: string;
-  DisplayID: string;
-  Begins: string;
-  Expire: string;
-  PlaylistID: string;
-  ScoreID: string;
-  IsArena: boolean;
-  ArenaProgressionRules: any;
-  Windows: {
-    ID: string;
-    Round: number;
-    TBD: boolean;
-    CanLiveSpectate: boolean;
-    Meta: Record<string, any>;
-    DivisionRank: number;
-    ThresholdToAdvanceDivision: number;
-    Start: string;
-    End: string;
-    TemplateID: string;
-    UseIndividualScores: boolean;
-  }[];
-  Templates: {
-    ID: string;
-    MatchLimit: number;
-    PlaylistID: string;
-    DivRank: number;
-    PointNeeded: number;
-    ScoringRules: {
-      Stat: string;
-      Type: string;
-      Tiers: {
-        Value: number;
-        Points: number;
-        Multiply: boolean;
-      }[];
-    }[];
-    NextToken: string;
-    PayoutTable: {
-      ranks: {
-        payouts: {
-          quantity: number;
-          rewardMode: string;
-          rewardType: string;
-          value: string;
-        }[];
-        threshold: number;
-      }[];
-      rolling: boolean;
-      scoreId: string;
-      scoringType: string;
-    };
-  }[];
-  OnlyEnabledForPackages: boolean;
-  MinimumAccountLevel: number;
-  EnabledForPackages: string[];
-  RegionsAllowed: string[];
 };
 
 type EventStyle = {
@@ -239,22 +182,45 @@ type LibraryEntry = {
   order: number;
 };
 
-type BackendServer = {
-  alivecount: number;
-  bucket_id: string;
+type Playlist = {
+  asset_id: string;
+  display_name: string;
+  display_url: string;
+  enable_match_options: boolean;
+  player_cap: number;
+  priority_percent: number;
+  squad_size: number;
+  unique_nametag: string;
+};
+
+type PoolID = {
+  version: number;
+  build: number;
+  region: "EU" | "NAE" | "NAW" | "ME" | "OCE";
+  playlist_nametag: string;
+  tournament: {
+    tournament_id: string;
+    window_id: string;
+  } | null;
+};
+
+type Match = {
   id: string;
-  ip: string;
-  maxplayercount: number;
-  name: string;
-  playercount: number;
-  port: number;
-  region: string;
-  status: number;
-  string_status:
-    | "Initialised"
-    | "AssignedParties_WaitingForGameserverSocket"
-    | "GameserverConfirmedParties_CanBackfill_WaitingToMatchmake"
-    | "PlayersMatchmaked_WaitingForBus"
-    | "BusStarted_WaitingToEnd";
-  version: string;
+  pool_id: PoolID;
+  created_at: string;
+  updated_at: string;
+  custom_match_options: Object;
+  live_player_count: number | null;
+  reserved_player_count: number | null;
+  playlist: Playlist;
+  state:
+    | "NotCreated"
+    | "CreatedNotConnected"
+    | "PostMatchmakingSession"
+    | "RegisteredWithWebsocket"
+    | "IntialReservationsAllocated"
+    | "ConfirmedMatchAssigned"
+    | "BackfillingReservations"
+    | "Concluded";
+  unique_port: number;
 };

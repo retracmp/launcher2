@@ -1,4 +1,5 @@
 import { SocketManager } from "src/sockets";
+import { useUserManager } from "src/wrapper/user";
 
 export class RetracSocket extends WebSocket {
   constructor(
@@ -79,6 +80,7 @@ export class RetracSocket extends WebSocket {
 
   private error_handler(error: Event) {
     console.log("socket has recieved an error", "error", error);
+    useUserManager.getState().logout();
     this.force_close();
   }
 }

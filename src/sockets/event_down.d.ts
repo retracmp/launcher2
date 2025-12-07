@@ -58,12 +58,12 @@ type SocketDownEvent_Usernames = SocketBasicUpEvent & {
 
 type SocketDownEvent_ServerCreated = SocketBasicUpEvent & {
   id: "server_created";
-  server: BackendServer;
+  server: Match;
 };
 
 type SocketDownEvent_ServerUpdated = SocketBasicUpEvent & {
   id: "server_updated";
-  server: BackendServer;
+  server: Match;
 };
 
 type SocketDownEvent_ServerDeleted = SocketBasicUpEvent & {
@@ -73,7 +73,7 @@ type SocketDownEvent_ServerDeleted = SocketBasicUpEvent & {
 
 type SocketDownEvent_Servers = SocketBasicUpEvent & {
   id: "servers";
-  servers: BackendServer[];
+  servers: Match[];
 };
 
 type SocketDownEvent_OTP = SocketBasicUpEvent & {

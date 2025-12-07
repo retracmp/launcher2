@@ -1,14 +1,14 @@
 import { create } from "zustand";
 
 type ServerManagerState = {
-  _servers: Record<string, BackendServer>;
+  _servers: Record<string, Match>;
 
-  set_servers: (servers: BackendServer[]) => void;
-  set_server: (server: BackendServer) => void;
+  set_servers: (servers: Match[]) => void;
+  set_server: (server: Match) => void;
   delete_server: (server_id: string) => void;
 
-  servers: () => BackendServer[];
-  servers_by_status: (...statuses: string[]) => BackendServer[];
+  servers: () => Match[];
+  servers_by_status: (...statuses: string[]) => Match[];
 
   show_eu_servers: boolean;
   set_show_eu_servers: (show_eu_servers: boolean) => void;
@@ -30,7 +30,7 @@ export const useServerManager = create<ServerManagerState>((set, get) => ({
   _servers: {},
 
   set_servers: (servers) => {
-    const server_map: Record<string, BackendServer> = {};
+    const server_map: Record<string, Match> = {};
     servers.forEach((server) => {
       server_map[server.id] = server;
     });
