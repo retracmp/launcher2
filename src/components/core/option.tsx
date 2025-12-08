@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { open } from "@tauri-apps/plugin-dialog";
 
 import * as Icons from "react-icons/io5";
@@ -482,12 +482,14 @@ const ControlStateSlider = (
     Math.min(1, (cachedValue - usingMinimum) / (usingMaximum - usingMinimum))
   );
 
-  const handleResize = () => {
+  const handleResize = useCallback(() => {
     if (!sliderRef.current) return;
     setSliderWidth(sliderRef.current.offsetWidth);
-  };
+  }, []);
 
   useEffect(() => {
+    console.log("resize handler");
+
     if (!sliderRef.current) return;
     setSliderWidth(sliderRef.current.offsetWidth);
 
@@ -497,7 +499,7 @@ const ControlStateSlider = (
     return () => {
       resizeObserver.disconnect();
     };
-  }, [sliderRef, handleResize]);
+  }, [sliderRef]);
 
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     e.preventDefault();

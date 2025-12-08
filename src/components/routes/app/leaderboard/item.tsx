@@ -1,6 +1,7 @@
 import { useLeaderboard } from "src/wrapper/leaderboard";
 import { useUserManager } from "src/wrapper/user";
 import { useOptions } from "src/wrapper/options";
+import { useUsernameLookup } from "src/wrapper/usernames";
 
 import UI from "src/components/core/default";
 
@@ -15,13 +16,15 @@ const LeaderboardItem = (props: LeaderboardItemProps) => {
   const me = useUserManager();
   const leaderboard = useLeaderboard();
   const options = useOptions();
+  const usernames = useUsernameLookup();
 
   const stats = leaderboard.getCachedStats(props.leaderboardItem.AccountID);
-
+  const username = usernames.lookup_username(props.leaderboardItem.AccountID);
   const renderedName =
     props._me && me._user
       ? me._user.account.display_name || me._user.account.id
-      : props.leaderboardItem.AccountID;
+      : username ||
+        `Player ${props.leaderboardItem.AccountID.substring(16, 20)}`;
 
   const styledPosition = {
     1: "text-yellow-400",
@@ -45,14 +48,14 @@ const LeaderboardItem = (props: LeaderboardItemProps) => {
 
   return (
     <div
-      className={`relative flex flex-row border-neutral-700/40 ${
+      className={`relative grid grid-cols-[48px_1fr_64px_64px] border-neutral-700/40 ${
         !props._last ? "border-b-[1px]" : ""
       } border-solid backdrop-blur-md ${
         props.position % 2 === 0 ? "bg-neutral-800/20" : ""
       }`}
     >
       <UI.P
-        className={`flex items-center justify-center min-w-4 w-8 max-w-8 px-2 text-center font-[600] border-neutral-700/40 border-r-[1px] border-solid text-neutral-400 ${styledPositionClass} ${
+        className={`flex items-center justify-center text-center font-[600] border-neutral-700/40 border-r-[1px] border-solid text-neutral-400 ${styledPositionClass} ${
           props._me ? "cursor-pointer hover:bg-neutral-800/20" : ""
         }`}
         onClick={() => {
@@ -63,7 +66,7 @@ const LeaderboardItem = (props: LeaderboardItemProps) => {
         {props.leaderboardItem.Rank}
       </UI.P>
       <UI.P
-        className={`flex items-center justify-center py-2 p-2 ${
+        className={`flex items-center justify-start py-2 px-3 ${
           props.leaderboardItem.AccountID === me._user?.account.id
             ? "font-semibold"
             : ""
@@ -71,11 +74,10 @@ const LeaderboardItem = (props: LeaderboardItemProps) => {
       >
         {renderedName}
       </UI.P>
-      <span className="ml-auto"></span>
-      <UI.P className="flex items-center justify-center py-2 min-w-16 w-16 border-neutral-700/40 border-l-[1px] border-solid">
+      <UI.P className="flex items-center justify-center py-2 border-neutral-700/40 border-l-[1px] border-solid">
         {stats?.EliminationAll || 0}
       </UI.P>
-      <UI.P className="flex items-center justify-center py-2 min-w-16 w-16 border-neutral-700/40 border-l-[1px] border-solid">
+      <UI.P className="flex items-center justify-center py-2 border-neutral-700/40 border-l-[1px] border-solid">
         {stats?.VictoriesAll || 0}
       </UI.P>
     </div>
@@ -90,21 +92,20 @@ type EmptyLeaderboardItemProps = {
 const EmptyLeaderboardItem = (props: EmptyLeaderboardItemProps) => {
   return (
     <div
-      className={`relative flex flex-row border-neutral-700/40 backdrop-blur-md ${
+      className={`relative grid grid-cols-[48px_1fr_64px_64px] border-neutral-700/40 backdrop-blur-md ${
         !props._last ? "border-b-[1px]" : ""
       } border-solid ${props.position % 2 === 0 ? "bg-neutral-800/20" : ""}`}
     >
-      <UI.P className="flex items-center justify-center min-w-4 w-8 max-w-8 px-2 text-center font-[600] border-neutral-700/40 border-r-[1px] border-solid text-neutral-500">
+      <UI.P className="flex items-center justify-center text-center font-[600] border-neutral-700/40 border-r-[1px] border-solid text-neutral-500">
         ?
       </UI.P>
       <UI.P className="flex items-center justify-center py-2 p-2 text-neutral-500">
         Loading
       </UI.P>
-      <span className="ml-auto"></span>
-      <UI.P className="flex items-center justify-center py-2 min-w-16 w-16 border-neutral-700/40 border-l-[1px] border-solid text-neutral-500">
+      <UI.P className="flex items-center justify-center py-2 border-neutral-700/40 border-l-[1px] border-solid text-neutral-500">
         0
       </UI.P>
-      <UI.P className="flex items-center justify-center py-2 min-w-16 w-16 border-neutral-700/40 border-l-[1px] border-solid text-neutral-500">
+      <UI.P className="flex items-center justify-center py-2 border-neutral-700/40 border-l-[1px] border-solid text-neutral-500">
         0
       </UI.P>
     </div>

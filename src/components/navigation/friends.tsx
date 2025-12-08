@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useLauncherSocket } from "src/sockets";
 import { useFriends } from "src/wrapper/friends";
 import { useUserManager } from "src/wrapper/user";
@@ -14,32 +14,31 @@ const FriendsList = () => {
   const friends = useFriends();
   const user = useUserManager();
 
-  const onSocketRecieveFriendInfo = (
-    data: SocketDownEventDataFromType<"friend_infos">
-  ) => {
-    friends.populateFriends(data.friendInformation);
-  };
+  const onSocketRecieveFriendInfo = useCallback(
+    (data: SocketDownEventDataFromType<"friend_infos">) => {
+      friends.populateFriends(data.friendInformation);
+    },
+    [friends]
+  );
+
   useEffect(() => {
     if (socket.socket === null) return;
-    return;
     if (user._user === null) return;
 
-    socket.bind("friend_infos", onSocketRecieveFriendInfo);
+    // socket.bind("friend_infos", onSocketRecieveFriendInfo);
 
-    socket.send({
-      id: "request_friend_info",
-      friendIds: Object.values(user._user.Account.Friendships)
-        .filter((f) => f.Status === "ACCEPTED")
-        .map((f) => (f.Account === user._user?.ID ? f.Friend : f.Account))
-        .filter((f) => !friends._set.has(f)),
-    } as Omit<SocketUpEventDataFromType<"request_friend_info">, "version">);
+    // socket.send({
+    //   id: "request_friend_info",
+    //   friendIds: Object.values(user._user.account.Friendships)
+    //     .filter((f) => f.Status === "ACCEPTED")
+    //     .map((f) => (f.Account === user._user?.ID ? f.Friend : f.Account))
+    //     .filter((f) => !friends._set.has(f)),
+    // } as Omit<SocketUpEventDataFromType<"request_friend_info">, "version">);
 
     return () => {
       socket.unbind("friend_infos", onSocketRecieveFriendInfo);
     };
-  }, [socket.socket, user._user]);
-
-  return null;
+  }, [socket.socket, user._user, onSocketRecieveFriendInfo, friends]);
 
   return (
     <motion.div

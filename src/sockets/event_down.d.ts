@@ -39,12 +39,12 @@ type SocketDownEvent_User = SocketBasicDownEvent & {
   user: User;
 };
 
-type SocketDownEvent_FriendInfos = SocketBasicUpEvent & {
+type SocketDownEvent_FriendInfos = SocketBasicDownEvent & {
   id: "friend_infos";
   friendInformation: FriendInformation[];
 };
 
-type SocketDownEvent_Leaderboard = SocketBasicUpEvent & {
+type SocketDownEvent_Leaderboard = SocketBasicDownEvent & {
   id: "leaderboard";
   leaderboard: LeaderboardEntry[];
   leaderboard_ranks: Record<string, LeaderboardStatsInformation>;
@@ -52,37 +52,37 @@ type SocketDownEvent_Leaderboard = SocketBasicUpEvent & {
   rank_information: LeaderboardRankInformation;
 };
 
-type SocketDownEvent_Usernames = SocketBasicUpEvent & {
+type SocketDownEvent_Usernames = SocketBasicDownEvent & {
   id: "user_names";
-  friendInformation: Record<string, string>;
+  user_names: Record<string, string>;
 };
 
-type SocketDownEvent_ServerCreated = SocketBasicUpEvent & {
+type SocketDownEvent_ServerCreated = SocketBasicDownEvent & {
   id: "server_created";
   server: Match;
 };
 
-type SocketDownEvent_ServerUpdated = SocketBasicUpEvent & {
+type SocketDownEvent_ServerUpdated = SocketBasicDownEvent & {
   id: "server_updated";
   server: Match;
 };
 
-type SocketDownEvent_ServerDeleted = SocketBasicUpEvent & {
+type SocketDownEvent_ServerDeleted = SocketBasicDownEvent & {
   id: "server_deleted";
   server_id: string;
 };
 
-type SocketDownEvent_Servers = SocketBasicUpEvent & {
+type SocketDownEvent_Servers = SocketBasicDownEvent & {
   id: "servers";
   servers: Match[];
 };
 
-type SocketDownEvent_OTP = SocketBasicUpEvent & {
+type SocketDownEvent_OTP = SocketBasicDownEvent & {
   id: "otp";
   otp: string;
 };
 
-type SocketDownEvent_DisplayNameUpdated = SocketBasicUpEvent & {
+type SocketDownEvent_DisplayNameUpdated = SocketBasicDownEvent & {
   id: "display_name_updated";
   newDisplayName: string;
 };

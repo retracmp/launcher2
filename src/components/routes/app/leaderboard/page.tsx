@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useLauncherSocket } from "src/sockets";
 import { useLeaderboard } from "src/wrapper/leaderboard";
 import { useOptions } from "src/wrapper/options";
+import { useUsernameLookup } from "src/wrapper/usernames";
 
 import UI from "src/components/core/default";
 import {
@@ -19,28 +20,47 @@ const LeaderboardPage = () => {
   const leaderboard = useLeaderboard();
   const options = useOptions();
 
-  const onSocketLeaderboard = (
-    data: SocketDownEventDataFromType<"leaderboard">
-  ) => {
-    if (data.leaderboard.length === 0) return;
-    leaderboard.populateLeaderboard(
-      data.page_information.sortBy,
-      data.leaderboard,
-      data.page_information.page
-    );
-    leaderboard.populateMe(data.page_information.sortBy, data.rank_information);
-    leaderboard.setPageInfo(data.page_information);
-    leaderboard.addToStats(data.leaderboard_ranks);
-  };
+  const addToUsernames = useUsernameLookup((s) => s.add_from_response);
+
+  const onSocketLeaderboard = useCallback(
+    (data: SocketDownEventDataFromType<"leaderboard">) => {
+      if (data.leaderboard.length === 0) return;
+      leaderboard.populateLeaderboard(
+        data.page_information.sortBy,
+        data.leaderboard,
+        data.page_information.page
+      );
+      leaderboard.populateMe(data.page_information.sortBy, data.rank_information);
+      leaderboard.setPageInfo(data.page_information);
+      leaderboard.addToStats(data.leaderboard_ranks);
+
+      socket.send({
+        id: "request_user_names",
+        userAccountIds: Object.keys(data.leaderboard_ranks),
+      } as Omit<SocketUpEventDataFromType<"request_user_names">, "version">);
+    },
+    [leaderboard, socket]
+  );
+
+  const onSocketUsernames = useCallback(
+    (data: SocketDownEventDataFromType<"user_names">) => {
+      console.log("binding usernames to cache");
+      addToUsernames(data.user_names);
+    },
+    [addToUsernames]
+  );
 
   useEffect(() => {
     if (!socket.socket) return;
     socket.bind("leaderboard", onSocketLeaderboard);
+    socket.bind("user_names", onSocketUsernames);
+    console.log("binded socket events");
 
     return () => {
       socket.unbind("leaderboard", onSocketLeaderboard);
+      socket.unbind("user_names", onSocketUsernames);
     };
-  }, [socket.socket]);
+  }, [socket.socket, onSocketLeaderboard, onSocketUsernames]);
 
   useEffect(() => {
     socket.send({
@@ -102,17 +122,16 @@ const LeaderboardPage = () => {
       <OptionGroup title="Global Rankings" _last>
         <div className="border-neutral-700/40 border-[1px] border-solid rounded-sm overflow-hidden">
           <div
-            className={`relative flex flex-row border-neutral-700/40 border-b-[1px] border-solid bg-neutral-800/20`}
+            className={`relative grid grid-cols-[48px_1fr_64px_64px] border-neutral-700/40 border-b-[1px] border-solid bg-neutral-800/20`}
           >
-            <UI.P className="flex items-center justify-center min-w-4 w-8 max-w-8 px-2 text-center font-[600] border-neutral-700/40 border-r-[1px] border-solid text-neutral-500">
+            <UI.P className="flex items-center justify-center text-center font-[600] border-neutral-700/40 border-r-[1px] border-solid text-neutral-500">
               #
             </UI.P>
             <UI.P className="flex items-center justify-center py-1.5 p-2 text-neutral-500">
               Display Name
             </UI.P>
-            <span className="ml-auto"></span>
             <UI.P
-              className={`flex items-center justify-center py-1.5 min-w-16 w-16 border-neutral-700/40 border-l-[1px] border-solid cursor-pointer ${
+              className={`flex items-center justify-center py-1.5 border-neutral-700/40 border-l-[1px] border-solid cursor-pointer ${
                 leaderboard.activeSortedBy === "EliminationAll"
                   ? "font-[600]"
                   : "text-neutral-500"
@@ -122,7 +141,7 @@ const LeaderboardPage = () => {
               Kills
             </UI.P>
             <UI.P
-              className={`flex items-center justify-center py-1.5 min-w-16 w-16 border-neutral-700/40 border-l-[1px] border-solid cursor-pointer ${
+              className={`flex items-center justify-center py-1.5 border-neutral-700/40 border-l-[1px] border-solid cursor-pointer ${
                 leaderboard.activeSortedBy === "VictoriesAll"
                   ? "font-[600]"
                   : "text-neutral-500"

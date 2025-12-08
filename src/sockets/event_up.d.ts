@@ -33,6 +33,11 @@ type SocketUpEvent_RequestFriendInfo = SocketBasicUpEvent & {
   friendIds: string[];
 };
 
+type SocketUpEvent_RequestUsernames = SocketBasicUpEvent & {
+  id: "request_user_names";
+  userAccountIds: string[];
+};
+
 type SocketUpEvent_RequestServers = SocketBasicUpEvent & {
   id: "request_servers";
 };
@@ -60,6 +65,7 @@ type SocketUpEvent =
   | SocketUpEvent_RequestCode
   | SocketUpEvent_RequestLeaderboard
   | SocketUpEvent_RequestFriendInfo
+  | SocketUpEvent_RequestUsernames
   | SocketUpEvent_RequestServers
   | SocketUpEvent_SubscribeOTP
   | SocketUpEvent_UnsubscribeOTP
