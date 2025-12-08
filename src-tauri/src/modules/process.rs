@@ -22,7 +22,7 @@ pub fn kill_all(process_names: &[&str]) -> Result<(), String> {
 }
 
 pub fn is_process_running(exe_name: &str) -> bool {
-    let mut system = System::new_all();
+    let mut system = System::new();
     system.refresh_processes();
 
     system.processes().values().any(|process| {

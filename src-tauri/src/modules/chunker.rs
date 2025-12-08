@@ -227,22 +227,23 @@ async fn filter_missing_files_with_progress(
 async fn rebuild_file(
     chunk_info: Vec<(PathBuf, u64)>,
     output_path: &Path,
-) -> Result<(), Box<dyn std::error::Error>> {
+) -> Result<(), String> {
     if let Some(parent) = output_path.parent() {
-        tokio::fs::create_dir_all(parent).await?;
+        tokio::fs::create_dir_all(parent).await.map_err(|e| e.to_string())?;
     }
 
     let mut output_file = tokio::fs::OpenOptions::new()
         .create(true)
         .write(true)
         .open(output_path)
-        .await?;
+        .await
+        .map_err(|e| e.to_string())?;
 
     for (chunk_path, offset) in chunk_info {
-        let chunk_data = tokio::fs::read(&chunk_path).await?;
+        let chunk_data = tokio::fs::read(&chunk_path).await.map_err(|e| e.to_string())?;
 
-        output_file.seek(SeekFrom::Start(offset)).await?;
-        output_file.write_all(&chunk_data).await?;
+        output_file.seek(SeekFrom::Start(offset)).await.map_err(|e| e.to_string())?;
+        output_file.write_all(&chunk_data).await.map_err(|e| e.to_string())?;
 
         if let Err(e) = tokio::fs::remove_file(&chunk_path).await {
             dbg!(eprintln!(
@@ -253,7 +254,7 @@ async fn rebuild_file(
         }
     }
 
-    output_file.flush().await?;
+    output_file.flush().await.map_err(|e| e.to_string())?;
     Ok(())
 }
 
@@ -289,14 +290,14 @@ async fn download_build_chunk(
     temp_chunk_path: PathBuf,
     progress: Arc<Mutex<ManifestProgress>>,
     start_time: Instant,
-) -> Result<(), Box<dyn std::error::Error>> {
-    let response = client.get(download_url).send().await?;
+) -> Result<(), String> {
+    let response = client.get(download_url).send().await.map_err(|e| e.to_string())?;
     if !response.status().is_success() {
-        return Err(format!("Failed to download chunk {}", chunk.Hash).into());
+        return Err(format!("Failed to download chunk {}", chunk.Hash));
     }
 
     if let Some(parent) = temp_chunk_path.parent() {
-        tokio::fs::create_dir_all(parent).await?;
+        tokio::fs::create_dir_all(parent).await.map_err(|e| e.to_string())?;
     }
 
     let stream = response
@@ -305,21 +306,21 @@ async fn download_build_chunk(
     let stream_reader = tokio_util::io::StreamReader::new(stream);
 
     let mut decoder = GzipDecoder::new(stream_reader);
-    let mut file = File::create(&temp_chunk_path).await?;
+    let mut file = File::create(&temp_chunk_path).await.map_err(|e| e.to_string())?;
 
     let mut buffer = [0u8; 8192];
 
     loop {
         if progress.lock().await.wants_cancel {
-            return Err("Download cancelled".into());
+            return Err("Download cancelled".to_string());
         }
 
-        let n = decoder.read(&mut buffer).await?;
+        let n = decoder.read(&mut buffer).await.map_err(|e| e.to_string())?;
         if n == 0 {
             break;
         }
 
-        file.write_all(&buffer[..n]).await?;
+        file.write_all(&buffer[..n]).await.map_err(|e| e.to_string())?;
 
         {
             let mut progress = progress.lock().await;
@@ -340,11 +341,11 @@ async fn download_build_chunk(
         let state = util::get_downloading_state().await;
         if state.is_cancel_requested(&progress.lock().await.manifest_id) {
             dbg!(println!("Download cancelled for manifest: {}", progress.lock().await.manifest_id));
-            return Err("Download cancelled by user.".into());
+            return Err("Download cancelled by user.".to_string());
         }
     }
 
-    file.flush().await?;
+    file.flush().await.map_err(|e| e.to_string())?;
 
     Ok(())
 }
@@ -357,10 +358,12 @@ async fn download_file(
     progress: Arc<Mutex<ManifestProgress>>,
     start_time: Instant,
     // handle: &AppHandle,
-) -> Result<(), Box<dyn std::error::Error>> {
+) -> Result<(), String> {
+    let file_name = file.get_filename().clone();
+
     {
         let mut progress = progress.lock().await;
-        progress.current_files.push(file.get_filename().clone());
+        progress.current_files.push(file_name.clone());
     }
 
     let mut chunk_info: Vec<(PathBuf, u64)> = vec![];
@@ -386,7 +389,11 @@ async fn download_file(
 
     for chunk in file.Chunks.clone().unwrap_or(vec![]) {
         if progress.lock().await.wants_cancel {
-            return Err("Download cancelled".into());
+            {
+                let mut progress = progress.lock().await;
+                progress.current_files.retain(|f| f != &file_name);
+            }
+            return Err("Download cancelled".to_string());
         }
 
         let tmp_chunk_path = Path::new(&download_path.to_string())
@@ -396,7 +403,7 @@ async fn download_file(
 
         let chunk_url = format!("{}/{}/{}", BASE_URL, manifest_id, chunk.Hash);
 
-        if let Err(errror_chunk_download) = download_build_chunk(
+        let chunk_result = download_build_chunk(
             client,
             chunk_url,
             &chunk,
@@ -404,9 +411,15 @@ async fn download_file(
             progress.clone(),
             start_time,
         )
-        .await
-        {
-            return Err(errror_chunk_download);
+        .await;
+
+        if let Err(errror_chunk_download) = chunk_result {
+            let error_msg = errror_chunk_download.to_string();
+            {
+                let mut progress = progress.lock().await;
+                progress.current_files.retain(|f| f != &file_name);
+            }
+            return Err(error_msg);
         }
 
         chunk_info.push((tmp_chunk_path.clone(), chunk.Offset as u64));
@@ -414,7 +427,11 @@ async fn download_file(
         let state = util::get_downloading_state().await;
         if state.is_cancel_requested(manifest_id) {
             dbg!(println!("Download cancelled for manifest: {}", manifest_id));
-            return Err("Download cancelled by user.".into());
+            {
+                let mut progress = progress.lock().await;
+                progress.current_files.retain(|f| f != &file_name);
+            }
+            return Err("Download cancelled by user.".to_string());
         }
     }
 
@@ -422,22 +439,27 @@ async fn download_file(
 
     tokio::time::sleep(std::time::Duration::from_secs(3)).await;
 
-    if let Err(e) = rebuild_file(chunk_info, &final_save_path).await {
+        if let Err(e) = rebuild_file(chunk_info, &final_save_path).await {
         dbg!(println!("Error rebuilding file: {}", e));
+
+        {
+            let mut progress = progress.lock().await;
+            progress.current_files.retain(|f| f != &file_name);
+        }
 
         // let _ = handle.emit(
         //     "DOWNLOAD_ERROR",
         //     e.to_string(),
         // );
 
-        return Err(e);
+        return Err(e.to_string());
     }
 
     // rebuild_file(chunk_info, &final_save_path).await.unwrap();
 
     {
         let mut progress = progress.lock().await;
-        progress.current_files.retain(|f| f != &file.get_filename());
+        progress.current_files.retain(|f| f != &file_name);
     }
 
     Ok(())
@@ -512,6 +534,8 @@ pub async fn download_build_internal(
             let progress_clone = progress.clone();
             let handle_clone = handle.clone();
 
+            let mut progress_timer_handle: Option<JoinHandle<()>> = None;
+
             if manifest.Files.len() > 0 {
                 dbg!(println!("Starting download progress timer"));
 
@@ -521,7 +545,7 @@ pub async fn download_build_internal(
                     util::set_downloading_state(state).await;
                 }
 
-                tokio::spawn(async move {
+                progress_timer_handle = Some(tokio::spawn(async move {
                     let mut interval = tokio::time::interval(std::time::Duration::from_millis(100));
                     loop {
                         interval.tick().await;
@@ -544,7 +568,7 @@ pub async fn download_build_internal(
                             break;
                         }
                     }
-                });
+                }));
             }
 
             for file in manifest.Files {
@@ -590,6 +614,10 @@ pub async fn download_build_internal(
                 if let Err(e) = thread_handle.await.unwrap() {
                     dbg!(println!("Error in download handle: {}", e));
 
+                    if let Some(handle) = progress_timer_handle {
+                        handle.abort();
+                    }
+
                     {
                         let mut state = util::get_downloading_state().await;
                         state.remove_download(manifest_id.to_string());
@@ -611,6 +639,15 @@ pub async fn download_build_internal(
                         return Ok(false);
                     }
                 }
+            }
+
+            if let Some(handle) = progress_timer_handle {
+                {
+                    let mut progress = progress.lock().await;
+                    progress.wants_cancel = true;
+                }
+                tokio::time::sleep(std::time::Duration::from_millis(150)).await;
+                handle.abort();
             }
 
             {
