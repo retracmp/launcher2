@@ -92,6 +92,11 @@ type SocketDownEvent_DisplayNameUpdated = SocketBasicDownEvent & {
   newDisplayName: string;
 };
 
+type SocketDownEvent_AggregatedStats = SocketBasicDownEvent & {
+  id: "aggregated_stats";
+  aggregated_stats: AggregatedStats;
+};
+
 type SocketDownEvent =
   | SocketDownEvent_Close
   | SocketDownEvent_Error
@@ -108,7 +113,8 @@ type SocketDownEvent =
   | SocketDownEvent_ServerDeleted
   | SocketDownEvent_Servers
   | SocketDownEvent_OTP
-  | SocketDownEvent_DisplayNameUpdated;
+  | SocketDownEvent_DisplayNameUpdated
+  | SocketDownEvent_AggregatedStats;
 
 type SocketDownEventType = SocketDownEvent["id"];
 type SocketDownEventDataFromType<T extends SocketDownEventType> = Prettify<

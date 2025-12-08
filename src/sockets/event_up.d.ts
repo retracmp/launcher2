@@ -34,10 +34,6 @@ type SocketUpEvent_RequestUsernames = SocketBasicUpEvent & {
   userAccountIds: string[];
 };
 
-type SocketUpEvent_RequestUsernames = SocketBasicUpEvent & {
-  id: "request_stats";
-};
-
 type SocketUpEvent_RequestServers = SocketBasicUpEvent & {
   id: "request_servers";
 };
@@ -59,6 +55,10 @@ type SocketUpEvent_ChangeDisplayName = SocketBasicUpEvent & {
   newDisplayName: string;
 };
 
+type SocketUpEvent_RequestAggregatedstats = SocketBasicUpEvent & {
+  id: "request_aggregated_stats";
+};
+
 type SocketUpEvent =
   | SocketUpEvent_Heartbeat
   | SocketUpEvent_RequestUser
@@ -69,7 +69,8 @@ type SocketUpEvent =
   | SocketUpEvent_RequestServers
   | SocketUpEvent_SubscribeOTP
   | SocketUpEvent_UnsubscribeOTP
-  | SocketUpEvent_ChangeDisplayName;
+  | SocketUpEvent_ChangeDisplayName
+  | SocketUpEvent_RequestAggregatedstats;
 
 type SocketUpEventType = SocketUpEvent["id"];
 type SocketUpEventDataFromType<T extends SocketUpEventType> = Prettify<

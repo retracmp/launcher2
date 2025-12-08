@@ -52,7 +52,6 @@ const LeaderboardPage = () => {
     if (!socket.socket) return;
     socket.bind("leaderboard", onSocketLeaderboard);
     socket.bind("user_names", onSocketUsernames);
-    console.log("binded socket events");
 
     return () => {
       socket.unbind("leaderboard", onSocketLeaderboard);

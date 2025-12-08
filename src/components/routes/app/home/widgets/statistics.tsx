@@ -1,25 +1,42 @@
 import { formatTime } from "src/helpers/time";
 
 import UI from "src/components/core/default";
+import { useEffect } from "react";
+import { useLauncherSocket } from "src/sockets";
+import { useAggregatedStats } from "src/wrapper/aggregated_stats";
 
-type StatisticsWidgetProps = {
-  account: User["account"];
-};
+const StatisticsWidget = () => {
+  const socket = useLauncherSocket();
+  const aggregatedStats = useAggregatedStats();
 
-const StatisticsWidget = (props: StatisticsWidgetProps) => {
-  return null;
+  const onSocketAggregatedstats = (
+    data: SocketDownEventDataFromType<"aggregated_stats">
+  ) => {
+    aggregatedStats.add_from_response(data.aggregated_stats);
+  };
 
-  const eliminations = Object.values(seasonStat.Matches).reduce(
-    (acc, match) => acc + match.Eliminations,
-    0
-  );
-  const matchesPlayed = Object.values(seasonStat.Matches).length;
-  const victoryRoyales = Object.values(seasonStat.Matches).filter(
-    (match) => match.Placement === 1
-  ).length;
-  const timeAlive = Object.values(seasonStat.Matches).reduce((acc, match) => {
-    return acc + new Date(match.TimeAlive).getTime() / 1000 / 1000;
-  }, 0);
+  useEffect(() => {
+    if (!socket.socket) return;
+
+    socket.send({
+      id: "request_aggregated_stats",
+    } as Omit<SocketUpEventDataFromType<"request_aggregated_stats">, "version">);
+
+    socket.bind("aggregated_stats", onSocketAggregatedstats);
+
+    return () => {
+      socket.unbind("aggregated_stats", onSocketAggregatedstats);
+    };
+  }, [socket.socket]);
+
+  const using_stats = aggregatedStats.aggregatedStats;
+
+  const eliminations = using_stats?.EliminationAll || 0;
+  const matchesPlayed = using_stats?.MatchesPlayedAll || 0;
+  const victoryRoyales = using_stats?.VictoriesAll || 0;
+  const timeAlive = using_stats?.TimeAliveAll || 0;
+
+  console.log(using_stats?.TimeAliveAll);
 
   return (
     <div className="flex flex-col p-2 w-[40%] @max-2xl:w-full min-w-max bg-neutral-800/10 rounded-sm border-neutral-700/40 border-1 border-solid backdrop-blur-sm">
@@ -46,7 +63,7 @@ const StatisticsWidget = (props: StatisticsWidgetProps) => {
         <div className="flex flex-row w-full items-center gap-2">
           <UI.P className="text-neutral-500">Time Alive</UI.P>
           <div className="w-full min-w-8 h-[1px] bg-neutral-600/20"></div>
-          <UI.P>{formatTime(timeAlive)}</UI.P>
+          <UI.P>{formatTime(timeAlive * 1000)}</UI.P>
         </div>
       </div>
     </div>
