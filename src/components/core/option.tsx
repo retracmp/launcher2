@@ -488,8 +488,6 @@ const ControlStateSlider = (
   }, []);
 
   useEffect(() => {
-    console.log("resize handler");
-
     if (!sliderRef.current) return;
     setSliderWidth(sliderRef.current.offsetWidth);
 

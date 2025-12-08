@@ -5,7 +5,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { BANNER_DEFAULTS, useBannerManager } from "src/wrapper/banner";
 
 import { getCurrentWindow, UserAttentionType } from "@tauri-apps/api/window";
-import { UnlistenFn } from "@tauri-apps/api/event";
+import { type UnlistenFn } from "@tauri-apps/api/event";
 import * as deeplink from "@tauri-apps/plugin-deep-link";
 
 import { make_request } from "src/axios/endpoints";

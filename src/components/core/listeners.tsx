@@ -2,7 +2,7 @@ import { useOptions } from "src/wrapper/options";
 import { useCallback, useEffect } from "react";
 import { useDownloadState } from "src/wrapper/download";
 import { useRetrac } from "src/wrapper/retrac";
-import { event } from "@tauri-apps/api";
+import { listen, type Event } from "@tauri-apps/api/event";
 import { useLibrary } from "src/wrapper/library";
 import { useUserManager } from "src/wrapper/user";
 import { useLauncherSocket } from "src/sockets";
@@ -19,7 +19,7 @@ const TauriListeners = () => {
   const banners = useBannerManager();
 
   const onDownloadEvent = useCallback(
-    (progress: event.Event<ManifestProgress>) => {
+    (progress: Event<ManifestProgress>) => {
       downloadState.set_active_download_progress(
         progress.payload.manifest_id,
         progress.payload
@@ -49,14 +49,14 @@ const TauriListeners = () => {
   );
 
   const onDownloadErrorAdvancedEvent = useCallback(
-    (error: event.Event<DOWNLOAD_ERROR>) => {
+    (error: Event<DOWNLOAD_ERROR>) => {
       downloadState.remove_active_download_progress(error.payload.manifest_id);
       downloadState.remove_active_verifying_progress(error.payload.manifest_id);
     },
     []
   );
 
-  const onDownloadErrorEvent = useCallback((progress: event.Event<string>) => {
+  const onDownloadErrorEvent = useCallback((progress: Event<string>) => {
     if (progress.payload.includes("by user")) return;
     banners.push({
       closable: true,
@@ -68,7 +68,7 @@ const TauriListeners = () => {
   }, []);
 
   const onVerifyEvent = useCallback(
-    (progress: event.Event<ManifestVerifyProgress>) => {
+    (progress: Event<ManifestVerifyProgress>) => {
       if (!downloadState.allowed_to_verify(progress.payload.manifest_id)) {
         return;
       }
@@ -94,7 +94,7 @@ const TauriListeners = () => {
   );
 
   const onVerifyComplete = useCallback(
-    (progress: event.Event<VERIFYING_STATUS>) => {
+    (progress: Event<VERIFYING_STATUS>) => {
       downloadState.set_allowed_to_verify(
         progress.payload.manifest_id,
         progress.payload.status
@@ -108,7 +108,7 @@ const TauriListeners = () => {
   );
 
   const onEasyAnticheatInitialised = useCallback(
-    (progress: event.Event<EAC_INITIALISED>) => {
+    (progress: Event<EAC_INITIALISED>) => {
       console.log("[EAC_INITIALISED] initialised", progress.payload);
       library.setEacInitialisedForBuild(progress.payload.version, true);
     },
@@ -116,7 +116,7 @@ const TauriListeners = () => {
   );
 
   const onActionAfterLaunch = useCallback(
-    (progress: event.Event<ManifestProgress>) => {
+    (progress: Event<ManifestProgress>) => {
       console.log("[download] action after launch", progress.payload);
     },
     []
@@ -125,43 +125,43 @@ const TauriListeners = () => {
   useEffect(() => {
     console.log("[download] listening for download events");
 
-    const unlistenDownload = event.listen<ManifestProgress>(
+    const unlistenDownload = listen<ManifestProgress>(
       "DOWNLOAD_PROGRESS",
       onDownloadEvent
     );
 
-    const unlistenDownloadError = event.listen<string>(
+    const unlistenDownloadError = listen<string>(
       "DOWNLOAD_ERROR",
       onDownloadErrorEvent
     );
 
-    const unlistenVerify = event.listen<ManifestVerifyProgress>(
+    const unlistenVerify = listen<ManifestVerifyProgress>(
       "VERIFY_PROGRESS",
       onVerifyEvent
     );
 
-    const unlistenVerifyComplete = event.listen<VERIFYING_STATUS>(
+    const unlistenVerifyComplete = listen<VERIFYING_STATUS>(
       "VERIFYING",
       onVerifyComplete
     );
 
-    const unlistenEACInitialised = event.listen<EAC_INITIALISED>(
+    const unlistenEACInitialised = listen<EAC_INITIALISED>(
       "EAC_INITIALISED",
       onEasyAnticheatInitialised
     );
 
-    const unlistenDownloadErrorAdv = event.listen<DOWNLOAD_ERROR>(
+    const unlistenDownloadErrorAdv = listen<DOWNLOAD_ERROR>(
       "DOWNLOAD_ERROR2",
       onDownloadErrorAdvancedEvent
     );
 
     return () => {
-      unlistenDownload.then((fn: event.UnlistenFn) => fn());
-      unlistenDownloadError.then((fn: event.UnlistenFn) => fn());
-      unlistenVerify.then((fn: event.UnlistenFn) => fn());
-      unlistenVerifyComplete.then((fn: event.UnlistenFn) => fn());
-      unlistenEACInitialised.then((fn: event.UnlistenFn) => fn());
-      unlistenDownloadErrorAdv.then((fn: event.UnlistenFn) => fn());
+      unlistenDownload.then((fn) => fn());
+      unlistenDownloadError.then((fn) => fn());
+      unlistenVerify.then((fn) => fn());
+      unlistenVerifyComplete.then((fn) => fn());
+      unlistenEACInitialised.then((fn) => fn());
+      unlistenDownloadErrorAdv.then((fn) => fn());
     };
   }, [
     onDownloadEvent,

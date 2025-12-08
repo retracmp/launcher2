@@ -12,8 +12,8 @@ import { useServerManager } from "src/wrapper/server";
 import { useOptions } from "src/wrapper/options";
 import { useLeaderboard } from "src/wrapper/leaderboard";
 import { LAUNCH_STATE, useLibrary } from "src/wrapper/library";
-import * as app from "@tauri-apps/api/app";
-import * as path from "@tauri-apps/api/path";
+import { getName, getVersion } from "@tauri-apps/api/app";
+import { appLocalDataDir } from "@tauri-apps/api/path";
 import invoke from "src/tauri";
 import { endpoints_config } from "src/axios/endpoints";
 
@@ -35,13 +35,13 @@ const Boostrap = () => {
     console.log("[boostrap] bootstrapping application");
 
     application.load(
-      await app.getName(),
-      await app.getVersion(),
+      await getName(),
+      await getVersion(),
       import.meta.env.MODE === "development",
       (await invoke.get_windows_version()) || 0
     );
 
-    options.fix_content_directory(await path.appLocalDataDir());
+    options.fix_content_directory(await appLocalDataDir());
   };
 
   const nil = (e: MouseEvent) => e.preventDefault();

@@ -10,7 +10,7 @@ name = "retrac_launcher_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
-tauri-build = { version = "2", features = [] }
+tauri-build = { version = "2.5", features = [] }
 
 [dependencies]
 winapi = { version = "0.3", features = ["winbase", "processthreadsapi", "handleapi", "minwindef", "synchapi", "errhandlingapi", "shellapi", "securitybaseapi"] }
@@ -23,7 +23,7 @@ regex = "1"
 md-5 = "0.10.6"
 digest = "0.10"
 
-tauri = { version = "2.5.0", features = ["protocol-asset"] }
+tauri = { version = "2.9.4", features = ["protocol-asset"] }
 tauri-plugin-deep-link = "2"
 tauri-plugin-opener = "2"
 tauri-plugin-dialog = "2"
