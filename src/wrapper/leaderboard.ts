@@ -1,22 +1,12 @@
 import { create } from "zustand";
 
 type LeaderboardState = {
-  _cached_stats: Map<string, LeaderboardStatsInformation>;
+  _cached_stats: Map<string, AggregatedStats>;
 
   _set: Map<string, LeaderboardEntry[][]>;
   _setMe: Map<string, LeaderboardRankInformation>;
-  activeSortedBy:
-    | "EliminationAll"
-    | "VictoriesAll"
-    | "AccumulatedScoreAll"
-    | "MatchesPlayedAll";
-  setSortedBy: (
-    sortedBy:
-      | "EliminationAll"
-      | "VictoriesAll"
-      | "AccumulatedScoreAll"
-      | "MatchesPlayedAll"
-  ) => void;
+  activeSortedBy: StatKey;
+  setSortedBy: (sortedBy: StatKey) => void;
 
   _pageInfo: LeaderboardPageInfo;
   setPageInfo: (pageInfo: LeaderboardPageInfo) => void;
@@ -39,8 +29,8 @@ type LeaderboardState = {
   ) => LeaderboardEntry[] | undefined;
   getMe: (type: string) => LeaderboardRankInformation | undefined;
 
-  addToStats: (response: Record<string, LeaderboardStatsInformation>) => void;
-  getCachedStats: (account: string) => LeaderboardStatsInformation | null;
+  addToStats: (response: Record<string, AggregatedStats>) => void;
+  getCachedStats: (account: string) => AggregatedStats | null;
 };
 
 export const useLeaderboard = create<LeaderboardState>((set, get) => ({

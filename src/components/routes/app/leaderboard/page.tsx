@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { useLauncherSocket } from "src/sockets";
 import { useLeaderboard } from "src/wrapper/leaderboard";
 import { useOptions } from "src/wrapper/options";
@@ -22,33 +22,31 @@ const LeaderboardPage = () => {
 
   const addToUsernames = useUsernameLookup((s) => s.add_from_response);
 
-  const onSocketLeaderboard = useCallback(
-    (data: SocketDownEventDataFromType<"leaderboard">) => {
-      if (data.leaderboard.length === 0) return;
-      leaderboard.populateLeaderboard(
-        data.page_information.sortBy,
-        data.leaderboard,
-        data.page_information.page
-      );
-      leaderboard.populateMe(data.page_information.sortBy, data.rank_information);
-      leaderboard.setPageInfo(data.page_information);
-      leaderboard.addToStats(data.leaderboard_ranks);
+  const onSocketLeaderboard = (
+    data: SocketDownEventDataFromType<"leaderboard">
+  ) => {
+    if (data.leaderboard.length === 0) return;
+    leaderboard.populateLeaderboard(
+      data.page_information.sortBy,
+      data.leaderboard,
+      data.page_information.page
+    );
+    leaderboard.populateMe(data.page_information.sortBy, data.rank_information);
+    leaderboard.setPageInfo(data.page_information);
+    leaderboard.addToStats(data.leaderboard_ranks);
 
-      socket.send({
-        id: "request_user_names",
-        userAccountIds: Object.keys(data.leaderboard_ranks),
-      } as Omit<SocketUpEventDataFromType<"request_user_names">, "version">);
-    },
-    [leaderboard, socket]
-  );
+    socket.send({
+      id: "request_user_names",
+      userAccountIds: Object.keys(data.leaderboard_ranks),
+    } as Omit<SocketUpEventDataFromType<"request_user_names">, "version">);
+  };
 
-  const onSocketUsernames = useCallback(
-    (data: SocketDownEventDataFromType<"user_names">) => {
-      console.log("binding usernames to cache");
-      addToUsernames(data.user_names);
-    },
-    [addToUsernames]
-  );
+  const onSocketUsernames = (
+    data: SocketDownEventDataFromType<"user_names">
+  ) => {
+    console.log("binding usernames to cache");
+    addToUsernames(data.user_names);
+  };
 
   useEffect(() => {
     if (!socket.socket) return;
@@ -60,7 +58,7 @@ const LeaderboardPage = () => {
       socket.unbind("leaderboard", onSocketLeaderboard);
       socket.unbind("user_names", onSocketUsernames);
     };
-  }, [socket.socket, onSocketLeaderboard, onSocketUsernames]);
+  }, [socket.socket]);
 
   useEffect(() => {
     socket.send({

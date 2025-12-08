@@ -20,11 +20,7 @@ type SocketUpEvent_RequestLeaderboard = SocketBasicUpEvent & {
   pagination: {
     page: number;
     pageSize: number;
-    sortBy:
-      | "EliminationAll"
-      | "VictoriesAll"
-      | "AccumulatedScoreAll"
-      | "MatchesPlayedAll";
+    sortBy: StatKey;
   };
 };
 
@@ -36,6 +32,10 @@ type SocketUpEvent_RequestFriendInfo = SocketBasicUpEvent & {
 type SocketUpEvent_RequestUsernames = SocketBasicUpEvent & {
   id: "request_user_names";
   userAccountIds: string[];
+};
+
+type SocketUpEvent_RequestUsernames = SocketBasicUpEvent & {
+  id: "request_stats";
 };
 
 type SocketUpEvent_RequestServers = SocketBasicUpEvent & {

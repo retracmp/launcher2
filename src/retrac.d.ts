@@ -156,22 +156,26 @@ type LeaderboardRankInformation = {
   score: number;
 };
 
-type LeaderboardStatsInformation = {
+type StatKey =
+  | "EliminationAll"
+  | "VictoriesAll"
+  | "AccumulatedScoreAll"
+  | "MatchesPlayedAll"
+  | "TimeAliveAll";
+
+type AggregatedStats = {
   account: string;
   EliminationAll: number;
   VictoriesAll: number;
   AccumulatedScoreAll: number;
   MatchesPlayedAll: number;
+  TimeAliveAll: number;
 };
 
 type LeaderboardPageInfo = {
   page: number;
   pageSize: number;
-  sortBy:
-    | "EliminationAll"
-    | "VictoriesAll"
-    | "AccumulatedScoreAll"
-    | "MatchesPlayedAll";
+  sortBy: StatKey;
   totalPages: number;
   totalResults: number;
 };
