@@ -12,13 +12,12 @@ const LootLabsWidget = () => {
   const application = useApplicationInformation();
 
   const user = useUserManager();
-  return null;
   if (user._user === null)
     return (
       console.error("cannot load loot labs widget: user._user = null") ?? null
     );
 
-  const claimed = user._user.Account.State.ClaimedPackages["lootlabs_1kvbucks"];
+  const claimed = user._user.account.perks["fiscal.last_claimed_advert"] || 0;
   const difference = new Date().getTime() - new Date(claimed || 0).getTime();
   const disabled = difference < 24 * 60 * 60 * 1000;
 
