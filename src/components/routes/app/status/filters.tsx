@@ -12,11 +12,6 @@ const FiltersWidget = () => {
 
   return (
     <div className="flex flex-col w-full overflow-hidden">
-      {/* <UI.P>
-        <span className="font-[700] text-md uppercase">
-          Server List Filters
-        </span>
-      </UI.P> */}
       <OptionGroup _first>
         <div className="flex flex-col gap-[0.2rem] p-1.5 pb-0">
           <UI.H1 className="font-[300] text-neutral-300">Server Filters</UI.H1>
@@ -25,22 +20,24 @@ const FiltersWidget = () => {
           </UI.P>
         </div>
       </OptionGroup>
-      <OptionGroup _last _first _hideBorder>
+      <OptionGroup _last _first _hideBorder _overflow>
         <BooleanOption
-          title="Gravelines, France Servers"
+          title="European Servers"
           description={
             <>
-              Show France <b>EU</b> servers in the server list.
+              Show <b>EU</b> servers in the server list. We currently host in{" "}
+              <i>France (Gravelines) and Spain (Madrid)</i>.
             </>
           }
           state={servers.show_eu_servers}
           set={servers.set_show_eu_servers}
         />
         <BooleanOption
-          title="Virginia Servers"
+          title="North America East Servers"
           description={
             <>
-              Show Virginia <b>NA</b> servers in the server list.
+              Show <b>NAE</b> servers in the server list. We currently host in{" "}
+              <i>Virginia (Vinthill)</i>.
             </>
           }
           state={servers.show_na_servers}
@@ -48,10 +45,11 @@ const FiltersWidget = () => {
         />
 
         <BooleanOption
-          title="Los Angeles Servers"
+          title="North America West Servers"
           description={
             <>
-              Show Los Angeles <b>NAW</b> servers in the server list.
+              Show <b>NAW</b> servers in the server list. We currently host in{" "}
+              <i>California (Los Angeles)</i>.
             </>
           }
           state={servers.show_naw_servers}
@@ -62,7 +60,8 @@ const FiltersWidget = () => {
           title="Sydney Servers"
           description={
             <>
-              Show Sydney <b>OCE</b> servers in the server list.
+              Show <b>OCE</b> servers in the server list. We currently host in{" "}
+              <i>Sydney</i>.
             </>
           }
           state={servers.show_oce_servers}
@@ -72,7 +71,8 @@ const FiltersWidget = () => {
           title="Middle East Servers"
           description={
             <>
-              Show Middle East <b>ME</b> servers in the server list.
+              Show <b>ME</b> servers in the server list. We currently host in{" "}
+              <i>Dubai</i>.
             </>
           }
           state={servers.show_me_servers}

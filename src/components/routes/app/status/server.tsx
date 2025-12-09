@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import UI from "src/components/core/default";
 import NumberFlow from "@number-flow/react";
+import { twJoin } from "tailwind-merge";
 
 type ServerRenderedProps = {
   server: Match;
@@ -44,8 +45,12 @@ const ServerRendered = (props: ServerRenderedProps) => {
 
       <UI.H1 className="flex flex-row items-center gap-1">
         {props.server.playlist.display_name}
-        <span className="text-[16px] font-[800] text-neutral-500">
-          • {props.server.state}
+        <span className={twJoin("text-[16px] font-[800] text-neutral-500")}>
+          •{" "}
+          {props.server.state
+            .split(/(?=[A-Z])/)
+            .join(" ")
+            .toUpperCase()}
         </span>
       </UI.H1>
       <div className="h-1 rounded-full my-0.5 bg-red-50/10 w-full overflow-hidden transition-all duration-100">
