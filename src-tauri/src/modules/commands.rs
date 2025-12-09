@@ -127,6 +127,28 @@ pub async fn cancel_download(
 }
 
 #[tauri::command]
+pub async fn pause_download(
+  manifest_id: &str,
+) -> Result<bool, String> {
+  let result = chunker::pause_download(manifest_id).await;
+  match result {
+    Ok(_) => Ok(true),
+    Err(e) => Err(e),
+  }
+}
+
+#[tauri::command]
+pub async fn resume_download(
+  manifest_id: &str,
+) -> Result<bool, String> {
+  let result = chunker::resume_download(manifest_id).await;
+  match result {
+    Ok(_) => Ok(true),
+    Err(e) => Err(e),
+  }
+}
+
+#[tauri::command]
 pub async fn open_downloads_window(
   handle: AppHandle,
 ) -> Result<bool, String> {

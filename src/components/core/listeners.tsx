@@ -24,13 +24,18 @@ const TauriListeners = () => {
       progress.payload
     );
 
-    downloadState.add_timed_metabytes(
-      progress.payload.manifest_id,
-      new Date(),
-      progress.payload.speed_mbps
-    );
+    // Only add timed megabytes if not paused (speed is 0 when paused)
+    if (!progress.payload.is_paused) {
+      downloadState.add_timed_metabytes(
+        progress.payload.manifest_id,
+        new Date(),
+        progress.payload.speed_mbps
+      );
+    }
 
-    if (progress.payload.percent === 100) {
+    // Only remove from state when download is complete (100%) and not paused
+    // Paused downloads should remain in state
+    if (progress.payload.percent === 100 && !progress.payload.is_paused) {
       downloadState.remove_active_download_progress(
         progress.payload.manifest_id
       );
@@ -42,7 +47,8 @@ const TauriListeners = () => {
     //   percent: ${progress.payload.percent}%
     //   files: [${progress.payload.current_files.join(", ")}]
     //   speed_mbps: ${progress.payload.speed_mbps}
-    //   eta_seconds: ${progress.payload.eta_seconds}`);
+    //   eta_seconds: ${progress.payload.eta_seconds}
+    //   is_paused: ${progress.payload.is_paused}`);
   }, []);
 
   const onDownloadErrorAdvancedEvent = useCallback(

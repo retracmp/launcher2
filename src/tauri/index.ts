@@ -189,6 +189,40 @@ const cancel_download = async (manifestId: string): Promise<boolean | null> => {
   return result;
 };
 
+const pause_download = async (manifestId: string): Promise<boolean | null> => {
+  const result = await i<boolean>("pause_download", { manifestId }).catch(
+    (e: string) => {
+      useBannerManager.getState().push({
+        closable: true,
+        colour: "red",
+        id: "pause_error",
+        text: `Pausing download failed with reason: ${e}`,
+        expireAfter: 5,
+      });
+      console.error("Error pausing download:", e);
+      return null;
+    }
+  );
+  return result;
+};
+
+const resume_download = async (manifestId: string): Promise<boolean | null> => {
+  const result = await i<boolean>("resume_download", { manifestId }).catch(
+    (e: string) => {
+      useBannerManager.getState().push({
+        closable: true,
+        colour: "red",
+        id: "resume_error",
+        text: `Resuming download failed with reason: ${e}`,
+        expireAfter: 5,
+      });
+      console.error("Error resuming download:", e);
+      return null;
+    }
+  );
+  return result;
+};
+
 const open_downloads_window = async (): Promise<boolean | null> => {
   const result = await i<boolean>("open_downloads_window", {}).catch(
     (e: string) => {
@@ -218,6 +252,8 @@ const invoke = {
   add_to_defender_multi,
   get_app_action,
   cancel_download,
+  pause_download,
+  resume_download,
   open_downloads_window,
 };
 

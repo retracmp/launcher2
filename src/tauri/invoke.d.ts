@@ -46,6 +46,7 @@ type ManifestProgress = {
   manifest_id: string;
   current_files: string[];
   wants_cancel: boolean;
+  is_paused: boolean;
 };
 
 type VerifyingInformation = {
