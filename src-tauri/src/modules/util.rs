@@ -71,7 +71,6 @@ fn find_subslice(haystack: &[u8], needle: &[u8]) -> Option<usize> {
 }
 
 pub fn vec_u8_as_wide_to_string(vec: Vec<u8>) -> Result<String, String> {
-    // Ensure we have an even number of bytes for UTF-16
     let vec = if vec.len() % 2 != 0 {
         let mut v = vec;
         v.push(0);
