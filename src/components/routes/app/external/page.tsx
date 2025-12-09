@@ -6,7 +6,7 @@ import { useBannerManager } from "src/wrapper/banner";
 import { OptionGroup } from "../../../core/option";
 import { motion } from "motion/react";
 import UI from "src/components/core/default";
-import Account from "src/components/core/account";
+import Account from "src/components/visual/account";
 import * as Icons from "react-icons/io5";
 
 const ExternalLoginPage = () => {

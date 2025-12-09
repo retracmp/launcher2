@@ -2,9 +2,9 @@ import { useRef, useState } from "react";
 import { useUserManager } from "src/wrapper/user";
 import { useLauncherSocket } from "src/sockets";
 
-import UI from "./default";
 import { IoCloseSharp, IoPersonSharp } from "react-icons/io5";
 import { HiCheck, HiPencilAlt } from "react-icons/hi";
+import UI from "../core/default";
 
 type AccountProps = {
   username_editable?: boolean;
@@ -16,11 +16,10 @@ const Account = (props: AccountProps) => {
 
   const [editingUsername, setEditingUsername] = useState(false);
   const [newUsername, setNewUsername] = useState(
-    user._user?.Account.DisplayName || ""
+    user._user?.account.display_name || ""
   );
   const usernameEditComponentRef = useRef<HTMLInputElement>(null);
   const [imageRendered, setImageRendered] = useState(false);
-  return null;
   if (!user._user) return null;
 
   const handleUsernameChange = async () => {
@@ -35,7 +34,7 @@ const Account = (props: AccountProps) => {
       <div className="flex items-center justify-center w-12 min-w-12 h-12 border-neutral-700/40 border-[1px] border-solid rounded-sm overflow-hidden">
         <img
           src={
-            `https://cdn.discordapp.com/avatars/${user._user.Account.Discord.ID}/${user._user.Account.Discord.Avatar}.png?size=512` ||
+            `https://cdn.discordapp.com/avatars/${user._user.account.connection_discord.id}/${user._user.account.connection_discord.avatar}.png?size=512` ||
             ""
           }
           style={{ display: imageRendered ? "block" : "none" }}
@@ -53,7 +52,6 @@ const Account = (props: AccountProps) => {
             <input
               ref={usernameEditComponentRef}
               type="text"
-              defaultValue={user._user.Account.DisplayName}
               className="bg-neutral-800 rounded-sm px-[0.2rem] py-0.5 focus:outline-none transition-colors duration-200"
               style={
                 editingUsername
@@ -69,13 +67,13 @@ const Account = (props: AccountProps) => {
               spellCheck={false}
             />
           </>
-          {!editingUsername && user._user.Account.DisplayName}{" "}
+          {!editingUsername && user._user.account.display_name}{" "}
           <span className="font-[500] text-xs text-neutral-500 h-3.5">
-            {user._user.Account.Discord.ID}
+            {user._user.account.connection_discord.id}
           </span>
         </span>
         <span className="font-[500] text-sm text-neutral-400 leading-4">
-          {user._user.ID}
+          {user._user.account.id}
         </span>
       </div>
 
@@ -87,7 +85,7 @@ const Account = (props: AccountProps) => {
               colour="green"
               on_click={() => {
                 setEditingUsername(!editingUsername);
-                setNewUsername(user._user?.Account.DisplayName || "");
+                setNewUsername(user._user?.account.display_name || "");
 
                 setTimeout(() => {
                   if (usernameEditComponentRef.current) {
@@ -108,7 +106,7 @@ const Account = (props: AccountProps) => {
                 colour="red"
                 on_click={() => {
                   setEditingUsername(false);
-                  setNewUsername(user._user?.Account.DisplayName || "");
+                  setNewUsername(user._user?.account.display_name || "");
                 }}
               >
                 <IoCloseSharp className="w-full h-full" />

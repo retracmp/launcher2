@@ -14,7 +14,7 @@ import {
 } from "src/components/core/option";
 import { IoLogOutSharp } from "react-icons/io5";
 import UI from "src/components/core/default";
-import Account from "src/components/core/account";
+import Account from "src/components/visual/account";
 
 const SettingsPage = () => {
   const application = useApplicationInformation();
@@ -25,7 +25,6 @@ const SettingsPage = () => {
   const push = useBannerManager((s) => s.push);
 
   useEffect(() => {
-    if (user.has_any_donation_tier()) return;
     if (retrac.donation_message_popped) return;
 
     push({
@@ -256,7 +255,7 @@ const SettingsPage = () => {
           _slider_values={[1.0, 1.1, 1.2, 1.3, 1.4, 1.5]}
         />
 
-        {user.has_any_donation_tier() && (
+        {true && (
           <>
             <ColourOption
               title="Hue"
@@ -349,27 +348,8 @@ const SettingsPage = () => {
           _animate
         />
 
-        {user.has_any_donation_tier() && (
+        {true && (
           <>
-            {/* <NumberOption
-              title="Leaderboard Page Size"
-              description={
-                <>
-                  Changes how many players are shown on the leaderboard per
-                  page.
-                </>
-              }
-              state={options.leaderboard_page_size}
-              set={(num) => {
-                options.set_leaderboard_page_size(
-                  Math.max(1, Math.min(num, 100))
-                );
-              }}
-              _number_max={100}
-              _number_min={1}
-              _animate
-            /> */}
-
             <SliderOption
               title="Leaderboard Page Size"
               description={
@@ -407,7 +387,7 @@ const SettingsPage = () => {
             {application.windowsVersion}
           </span>
           <span className="text-xs font-[400] text-neutral-500 select-text">
-            {user._user?.ID}
+            {user._user?.account.id}
           </span>
         </div>
 
