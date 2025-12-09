@@ -1,116 +1,61 @@
 import { useLeaderboard } from "src/wrapper/leaderboard";
-import { useUserManager } from "src/wrapper/user";
-import { useOptions } from "src/wrapper/options";
 import { useUsernameLookup } from "src/wrapper/usernames";
+import { twJoin } from "tailwind-merge";
 
-import UI from "src/components/core/default";
-
-type LeaderboardItemProps = {
-  position: number;
-  leaderboardItem: LeaderboardEntry;
-  _last?: boolean;
-  _me?: boolean;
+type LeaderboardEntryProps = {
+  entry?: LeaderboardEntry | null;
+  rank?: LeaderboardRankInformation | null;
 };
 
-const LeaderboardItem = (props: LeaderboardItemProps) => {
-  const me = useUserManager();
-  const leaderboard = useLeaderboard();
-  const options = useOptions();
+const LeaderboardEntry = (props: LeaderboardEntryProps) => {
   const usernames = useUsernameLookup();
+  const leaderboard = useLeaderboard();
 
-  const stats = leaderboard.getCachedStats(props.leaderboardItem.AccountID);
-  const username = usernames.lookup_username(props.leaderboardItem.AccountID);
-  const renderedName =
-    props._me && me._user
-      ? me._user.account.display_name || me._user.account.id
-      : username ||
-        `Player ${props.leaderboardItem.AccountID.substring(16, 20)}`;
+  if (props.entry === null && props.rank === null)
+    return <LeaderboardEntryEmpty />;
 
-  const styledPosition = {
-    1: "text-yellow-400",
-    2: "text-sky-200",
-    3: "text-orange-300",
-    10: "text-pink-100",
-    Infinity: "text-neutral-400",
-  };
-  const styledPositionClass =
-    (() => {
-      for (const [key, value] of Object.entries(styledPosition)) {
-        if (props.leaderboardItem.Rank <= Number(key)) {
-          return value;
+  const account = props.rank?.account || props.entry?.AccountID!;
+  const rank = props.rank?.current_rank || props.entry?.Rank!;
+
+  const entry_stat = leaderboard.get_cached_stats(account);
+  if (!entry_stat) return <LeaderboardEntryEmpty />;
+
+  const username = usernames.lookup_username(account) || account;
+  if (!username) return <LeaderboardEntryEmpty />;
+
+  return (
+    <tr className="odd:bg-neutral-800/10 text-neutral-300 text-sm leading-[15px]">
+      <td
+        className={twJoin(
+          "w-[1%] font-normal text-center text-neutral-400",
+          props.rank != undefined &&
+            "cursor-pointer duration-75 hover:duration-[20ms] hover:bg-neutral-800/20"
+        )}
+        onClick={() =>
+          props.rank != undefined &&
+          leaderboard.set_page(props.rank.page_number)
         }
-      }
-    })() || "";
-
-  const myPageIndex =
-    props.leaderboardItem.Rank / options.leaderboard_page_size;
-  const myPageIndexFloor = Math.ceil(myPageIndex);
-
-  return (
-    <div
-      className={`relative grid grid-cols-[48px_1fr_64px_64px] border-neutral-700/40 ${
-        !props._last ? "border-b-[1px]" : ""
-      } border-solid backdrop-blur-md ${
-        props.position % 2 === 0 ? "bg-neutral-800/20" : ""
-      }`}
-    >
-      <UI.P
-        className={`flex items-center justify-center text-center font-[600] border-neutral-700/40 border-r-[1px] border-solid text-neutral-400 ${styledPositionClass} ${
-          props._me ? "cursor-pointer hover:bg-neutral-800/20" : ""
-        }`}
-        onClick={() => {
-          if (!props._me) return;
-          leaderboard.setPage(myPageIndexFloor);
-        }}
       >
-        {props.leaderboardItem.Rank}
-      </UI.P>
-      <UI.P
-        className={`flex items-center justify-start py-2 px-3 ${
-          props.leaderboardItem.AccountID === me._user?.account.id
-            ? "font-semibold"
-            : ""
-        }`}
-      >
-        {renderedName}
-      </UI.P>
-      <UI.P className="flex items-center justify-center py-2 border-neutral-700/40 border-l-[1px] border-solid">
-        {stats?.EliminationAll || 0}
-      </UI.P>
-      <UI.P className="flex items-center justify-center py-2 border-neutral-700/40 border-l-[1px] border-solid">
-        {stats?.VictoriesAll || 0}
-      </UI.P>
-    </div>
+        {rank}
+      </td>
+      <td>{username}</td>
+      <td className="w-[1%] text-center">{entry_stat.EliminationAll}</td>
+      <td className="w-[1%] text-center">{entry_stat.VictoriesAll}</td>
+      <td className="w-[1%] text-center">{entry_stat.ArenaPointsAll}</td>
+    </tr>
   );
 };
 
-type EmptyLeaderboardItemProps = {
-  position: number;
-  _last?: boolean;
-};
-
-const EmptyLeaderboardItem = (props: EmptyLeaderboardItemProps) => {
+export const LeaderboardEntryEmpty = () => {
   return (
-    <div
-      className={`relative grid grid-cols-[48px_1fr_64px_64px] border-neutral-700/40 backdrop-blur-md ${
-        !props._last ? "border-b-[1px]" : ""
-      } border-solid ${props.position % 2 === 0 ? "bg-neutral-800/20" : ""}`}
-    >
-      <UI.P className="flex items-center justify-center text-center font-[600] border-neutral-700/40 border-r-[1px] border-solid text-neutral-500">
-        ?
-      </UI.P>
-      <UI.P className="flex items-center justify-center py-2 p-2 text-neutral-500">
-        Loading
-      </UI.P>
-      <UI.P className="flex items-center justify-center py-2 border-neutral-700/40 border-l-[1px] border-solid text-neutral-500">
-        0
-      </UI.P>
-      <UI.P className="flex items-center justify-center py-2 border-neutral-700/40 border-l-[1px] border-solid text-neutral-500">
-        0
-      </UI.P>
-    </div>
+    <tr className="odd:bg-neutral-800/10 text-neutral-500 text-sm leading-[15px]">
+      <td className="w-[1%] font-normal text-center">?</td>
+      <td>Loading</td>
+      <td className="w-[1%] text-center">0</td>
+      <td className="w-[1%] text-center">0</td>
+      <td className="w-[1%] text-center">0</td>
+    </tr>
   );
 };
 
-export { EmptyLeaderboardItem };
-export default LeaderboardItem;
+export default LeaderboardEntry;

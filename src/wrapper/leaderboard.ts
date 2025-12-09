@@ -5,8 +5,12 @@ type LeaderboardState = {
 
   _set: Map<string, LeaderboardEntry[][]>;
   _setMe: Map<string, LeaderboardRankInformation>;
-  activeSortedBy: StatKey;
-  setSortedBy: (sortedBy: StatKey) => void;
+
+  current_time_frame: TimeFrame;
+  set_time_frame: (sortedBy: TimeFrame) => void;
+
+  current_sort_key: StatKey;
+  set_sort_key: (sortedBy: StatKey) => void;
 
   _pageInfo: LeaderboardPageInfo;
   setPageInfo: (pageInfo: LeaderboardPageInfo) => void;
@@ -15,7 +19,7 @@ type LeaderboardState = {
   nextPage: () => void;
   prevPage: () => void;
   resetPage: () => void;
-  setPage: (page: number) => void;
+  set_page: (page: number) => void;
 
   populateLeaderboard: (
     type: string,
@@ -23,17 +27,24 @@ type LeaderboardState = {
     page: number
   ) => void;
   populateMe: (type: string, entry: LeaderboardRankInformation) => void;
-  getLeaderboard: (
+  get_leaderboard: (
     type: string,
     page: number
   ) => LeaderboardEntry[] | undefined;
-  getMe: (type: string) => LeaderboardRankInformation | undefined;
+  current_account_ranking: (
+    type: string
+  ) => LeaderboardRankInformation | undefined;
 
   addToStats: (response: Record<string, AggregatedStats>) => void;
-  getCachedStats: (account: string) => AggregatedStats | null;
+  get_cached_stats: (account: string) => AggregatedStats | null;
 };
 
 export const useLeaderboard = create<LeaderboardState>((set, get) => ({
+  current_time_frame: "Daily",
+  set_time_frame: (sortedBy) => {
+    set({ current_time_frame: sortedBy });
+  },
+
   _pageInfo: {
     page: 1,
     pageSize: 10,
@@ -57,15 +68,15 @@ export const useLeaderboard = create<LeaderboardState>((set, get) => ({
   resetPage: () => {
     set({ _page: 1 });
   },
-  setPage: (page) => {
+  set_page: (page) => {
     set({ _page: page });
   },
   _set: new Map(),
   _setMe: new Map(),
   _cached_stats: new Map(),
-  activeSortedBy: "EliminationAll",
-  setSortedBy: (sortedBy) => {
-    set({ activeSortedBy: sortedBy });
+  current_sort_key: "EliminationAll",
+  set_sort_key: (sortedBy) => {
+    set({ current_sort_key: sortedBy });
   },
   populateLeaderboard: (type, leaderboard, page) => {
     const _set = get()._set;
@@ -84,13 +95,13 @@ export const useLeaderboard = create<LeaderboardState>((set, get) => ({
     _set.set(type, entry);
     set({ _setMe: _set });
   },
-  getLeaderboard: (type, page) => {
+  get_leaderboard: (type, page) => {
     const _set = get()._set;
     const currentLeaderboard = _set.get(type);
     if (!currentLeaderboard) return undefined;
     return currentLeaderboard[page];
   },
-  getMe: (type) => {
+  current_account_ranking: (type) => {
     const _set = get()._setMe;
     return _set.get(type);
   },
@@ -104,7 +115,7 @@ export const useLeaderboard = create<LeaderboardState>((set, get) => ({
     set({ _cached_stats: cached });
   },
 
-  getCachedStats: (account) => {
+  get_cached_stats: (account) => {
     const _set = get()._cached_stats;
     const stat = _set.get(account);
     if (!stat) return null;

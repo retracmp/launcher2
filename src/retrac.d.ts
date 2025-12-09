@@ -161,7 +161,10 @@ type StatKey =
   | "VictoriesAll"
   | "AccumulatedScoreAll"
   | "MatchesPlayedAll"
-  | "TimeAliveAll";
+  | "TimeAliveAll"
+  | "ArenaPointsAll";
+
+type TimeFrame = "AllTime" | "Weekly" | "Daily";
 
 type AggregatedStats = {
   account: string;
@@ -170,6 +173,7 @@ type AggregatedStats = {
   AccumulatedScoreAll: number;
   MatchesPlayedAll: number;
   TimeAliveAll: number;
+  ArenaPointsAll: number;
 };
 
 type LeaderboardPageInfo = {

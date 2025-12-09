@@ -124,7 +124,7 @@ const Boostrap = () => {
       pagination: {
         page: leaderboard._page,
         pageSize: options.leaderboard_page_size,
-        sortBy: leaderboard.activeSortedBy,
+        sortBy: leaderboard.current_sort_key,
       },
     } as Omit<SocketUpEventDataFromType<"request_leaderboard">, "version">);
   };

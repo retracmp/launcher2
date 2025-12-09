@@ -21,6 +21,7 @@ type SocketUpEvent_RequestLeaderboard = SocketBasicUpEvent & {
     page: number;
     pageSize: number;
     sortBy: StatKey;
+    timeFrame: TimeFrame;
   };
 };
 

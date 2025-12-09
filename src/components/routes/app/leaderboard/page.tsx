@@ -1,26 +1,27 @@
-import { useEffect } from "react";
 import { useLauncherSocket } from "src/sockets";
 import { useLeaderboard } from "src/wrapper/leaderboard";
 import { useOptions } from "src/wrapper/options";
 import { useUsernameLookup } from "src/wrapper/usernames";
+import { useEffect } from "react";
 
 import UI from "src/components/core/default";
+import { OptionGroup } from "../../../core/option";
+import LeaderboardEntry from "./item";
+import { twJoin } from "tailwind-merge";
+import { useUserManager } from "src/wrapper/user";
 import {
   IoChevronBackSharp,
   IoChevronForwardSharp,
   IoReloadSharp,
 } from "react-icons/io5";
-import LeaderboardItem, {
-  EmptyLeaderboardItem,
-} from "src/components/routes/app/leaderboard/item";
-import { OptionGroup } from "../../../core/option";
 
 const LeaderboardPage = () => {
-  const socket = useLauncherSocket();
   const leaderboard = useLeaderboard();
+  const socket = useLauncherSocket();
   const options = useOptions();
 
-  const addToUsernames = useUsernameLookup((s) => s.add_from_response);
+  const current_account_id = useUserManager((s) => s._user?.account.id);
+  const add_to_username_cache = useUsernameLookup((s) => s.add_from_response);
 
   const onSocketLeaderboard = (
     data: SocketDownEventDataFromType<"leaderboard">
@@ -44,8 +45,7 @@ const LeaderboardPage = () => {
   const onSocketUsernames = (
     data: SocketDownEventDataFromType<"user_names">
   ) => {
-    console.log("binding usernames to cache");
-    addToUsernames(data.user_names);
+    add_to_username_cache(data.user_names);
   };
 
   useEffect(() => {
@@ -65,20 +65,29 @@ const LeaderboardPage = () => {
       pagination: {
         page: leaderboard._page,
         pageSize: options.leaderboard_page_size,
-        sortBy: leaderboard.activeSortedBy,
+        sortBy: leaderboard.current_sort_key,
+        timeFrame: leaderboard.current_time_frame,
       },
     } as Omit<SocketUpEventDataFromType<"request_leaderboard">, "version">);
   }, [
     leaderboard._page,
     options.leaderboard_page_size,
-    leaderboard.activeSortedBy,
+    leaderboard.current_sort_key,
+    leaderboard.current_time_frame,
   ]);
 
-  const currentLeaderboard = leaderboard.getLeaderboard(
-    leaderboard.activeSortedBy,
+  const current_leaderboard = leaderboard.get_leaderboard(
+    leaderboard.current_sort_key,
     leaderboard._page
   );
-  const currentMe = leaderboard.getMe(leaderboard.activeSortedBy);
+  const current_account_ranking = leaderboard.current_account_ranking(
+    leaderboard.current_sort_key
+  );
+
+  const rendering_leaderboard: Array<LeaderboardEntry | null> =
+    current_leaderboard
+      ? current_leaderboard
+      : new Array(options.leaderboard_page_size).fill(null);
 
   return (
     <>
@@ -92,83 +101,55 @@ const LeaderboardPage = () => {
         </div>
       </OptionGroup>
 
-      <OptionGroup title="Your Position">
-        <div className="border-neutral-700/40 border-[1px] border-solid rounded-sm overflow-hidden">
-          {currentMe && (
-            <LeaderboardItem
-              key={leaderboard.activeSortedBy + currentMe.account}
-              position={currentMe.current_rank}
-              leaderboardItem={{
-                AccountID: currentMe.account,
-                Rank: currentMe.current_rank,
-                Score: currentMe.score,
-              }}
-              _last
-              _me
+      <OptionGroup title="Your Position" _last>
+        <table className="w-full h-full ">
+          <thead>
+            <tr className="odd:bg-neutral-800/20 text-neutral-500 text-sm leading-[15px]">
+              <th className="w-[1%] font-normal text-center">#</th>
+              <th className="font-normal">Display Name</th>
+              <LeaderboardSortKey sort_key="EliminationAll" title="Kills" />
+              <LeaderboardSortKey sort_key="VictoriesAll" title="Wins" />
+              <LeaderboardSortKey sort_key="ArenaPointsAll" title="Hype" />
+            </tr>
+          </thead>
+
+          <tbody>
+            <LeaderboardEntry
+              rank={current_account_ranking}
+              key={current_account_id}
             />
-          )}
-
-          {!currentMe && (
-            <EmptyLeaderboardItem key="empty-me" position={1} _last />
-          )}
-        </div>
-
-        <span></span>
+          </tbody>
+        </table>
       </OptionGroup>
 
-      <OptionGroup title="Global Rankings" _last>
-        <div className="border-neutral-700/40 border-[1px] border-solid rounded-sm overflow-hidden">
-          <div
-            className={`relative grid grid-cols-[48px_1fr_64px_64px] border-neutral-700/40 border-b-[1px] border-solid bg-neutral-800/20`}
-          >
-            <UI.P className="flex items-center justify-center text-center font-[600] border-neutral-700/40 border-r-[1px] border-solid text-neutral-500">
-              #
-            </UI.P>
-            <UI.P className="flex items-center justify-center py-1.5 p-2 text-neutral-500">
-              Display Name
-            </UI.P>
-            <UI.P
-              className={`flex items-center justify-center py-1.5 border-neutral-700/40 border-l-[1px] border-solid cursor-pointer ${
-                leaderboard.activeSortedBy === "EliminationAll"
-                  ? "font-[600]"
-                  : "text-neutral-500"
-              }`}
-              onClick={() => leaderboard.setSortedBy("EliminationAll")}
-            >
-              Kills
-            </UI.P>
-            <UI.P
-              className={`flex items-center justify-center py-1.5 border-neutral-700/40 border-l-[1px] border-solid cursor-pointer ${
-                leaderboard.activeSortedBy === "VictoriesAll"
-                  ? "font-[600]"
-                  : "text-neutral-500"
-              }`}
-              onClick={() => leaderboard.setSortedBy("VictoriesAll")}
-            >
-              Wins
-            </UI.P>
-          </div>
-          {currentLeaderboard &&
-            currentLeaderboard.length > 0 &&
-            currentLeaderboard.map((leaderboardItem, index, array) => (
-              <LeaderboardItem
-                key={leaderboard.activeSortedBy + leaderboardItem.AccountID}
-                position={index + 1}
-                leaderboardItem={leaderboardItem}
-                _last={index === array.length - 1 ? true : false}
-              />
+      <OptionGroup title="Leaderboard" _last>
+        <table className="w-full h-full ">
+          <thead>
+            <tr className="odd:bg-neutral-800/20 text-neutral-500 text-sm leading-[15px]">
+              <LeaderboardTimeFrame time_frame="Daily" label="Daily" />
+              <LeaderboardTimeFrame time_frame="Weekly" label="Weekly" />
+              <LeaderboardTimeFrame time_frame="AllTime" label="All Time" />
+            </tr>
+          </thead>
+        </table>
+
+        <table className="w-full h-full ">
+          <thead>
+            <tr className="odd:bg-neutral-800/20 text-neutral-500 text-sm leading-[15px]">
+              <th className="w-[1%] font-normal text-center">#</th>
+              <th className="font-normal">Display Name</th>
+              <LeaderboardSortKey sort_key="EliminationAll" title="Kills" />
+              <LeaderboardSortKey sort_key="VictoriesAll" title="Wins" />
+              <LeaderboardSortKey sort_key="ArenaPointsAll" title="Hype" />
+            </tr>
+          </thead>
+
+          <tbody>
+            {rendering_leaderboard.map((s, i) => (
+              <LeaderboardEntry entry={s} key={s?.AccountID || i} />
             ))}
-          {(!currentLeaderboard || currentLeaderboard.length === 0) &&
-            new Array(options.leaderboard_page_size)
-              .fill(0)
-              .map((_, index, a) => (
-                <EmptyLeaderboardItem
-                  key={index}
-                  position={index + 1}
-                  _last={index === a.length - 1 ? true : false}
-                />
-              ))}
-        </div>
+          </tbody>
+        </table>
 
         <div className="flex flex-row gap-1 pt-[0.2rem]">
           <div className="backdrop-blur-md bg-transparent border-neutral-500/20 border-1 border-solid min-w-max p-0.5 px-2 rounded-sm text-neutral-300 font-plex text-[14px] text-base flex flex-row items-center justify-center gap-2 disabled:text-neutral-500 disabled:hover:bg-neutral-500/20 disabled:cursor-not-allowed">
@@ -213,6 +194,63 @@ const LeaderboardPage = () => {
         </div>
       </OptionGroup>
     </>
+  );
+};
+
+type LeaderboardSortKeyProps = {
+  title: string;
+  sort_key: StatKey;
+};
+
+const LeaderboardSortKey = (props: LeaderboardSortKeyProps) => {
+  const leaderboard = useLeaderboard();
+
+  const handleSortKeyClicked = () => {
+    leaderboard.set_sort_key(props.sort_key);
+  };
+
+  return (
+    <th
+      onClick={handleSortKeyClicked}
+      className={twJoin(
+        "w-[1%] font-normal cursor-pointer duration-75 hover:duration-[20ms] hover:bg-neutral-800/20",
+        props.sort_key === leaderboard.current_sort_key
+          ? "font-bold text-neutral-300 bg-neutral-800/20"
+          : ""
+      )}
+    >
+      {props.title}
+    </th>
+  );
+};
+
+type LeaderboardTimeFrameProps = {
+  label: string;
+  time_frame: TimeFrame;
+};
+
+const LeaderboardTimeFrame = (props: LeaderboardTimeFrameProps) => {
+  const leaderboard = useLeaderboard();
+
+  const handleTimeFrameClicked = () => {
+    leaderboard.set_time_frame(props.time_frame);
+    leaderboard.resetPage();
+  };
+
+  return (
+    <th
+      onClick={handleTimeFrameClicked}
+      className={twJoin(
+        "w-[1%] font-normal cursor-pointer duration-75 hover:duration-[20ms] hover:bg-neutral-800/20",
+        props.time_frame === leaderboard.current_time_frame
+          ? "text-neutral-300 bg-neutral-800/20"
+          : "",
+        props.time_frame === "Daily" && "round-bl",
+        props.time_frame === "AllTime" && "round-br"
+      )}
+    >
+      {props.label}
+    </th>
   );
 };
 
