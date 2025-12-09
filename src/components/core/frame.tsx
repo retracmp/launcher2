@@ -1,9 +1,9 @@
-import { useApplicationInformation } from "src/wrapper/tauri";
 import { useLauncherSocket } from "src/sockets";
 import { useUserManager } from "src/wrapper/user";
 import { useOptions } from "src/wrapper/options";
 import { twJoin } from "tailwind-merge";
 import * as rr from "@tanstack/react-router";
+
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useLayoutEffect } from "react";
 import { useNavigate, useLocation } from "@tanstack/react-router";
@@ -21,9 +21,9 @@ import FallingSnow from "src/components/visual/snow";
 import BackgroundGradient from "src/components//visual/background_gradient";
 import BackgroundImage from "src/components/visual/background_image";
 import WindowBar from "src/components/visual/navigation/window_bar";
+import Windows10BorderFix from "../visual/border_fix";
 
 const Frame = () => {
-  const application = useApplicationInformation();
   const userManager = useUserManager();
   const options = useOptions();
   const navigate = useNavigate();
@@ -52,12 +52,11 @@ const Frame = () => {
       <AuthoriseHandler />
       <BackgroundGradient />
       <BackgroundImage />
+      <Windows10BorderFix />
 
       <main
         className={twJoin(
           "flex flex-row w-full h-full max-w-[100dvw] max-h-[100dvh] overflow-hidden z-20",
-          application.windowsVersion < 22000 &&
-            "border-t-[1px] border-solid border-[#303030]",
           options.enable_background_image || options.background_gradient != ""
             ? "bg-neutral-900/20"
             : "bg-neutral-900"

@@ -96,7 +96,7 @@ const ServerRendered = (props: ServerRenderedProps) => {
               <NumberFlow
                 className="max-h-[15px]"
                 value={Math.min(
-                  props.server.live_player_count || 0,
+                  props.server.reserved_player_count || 0,
                   props.server.playlist.player_cap
                 )}
               />

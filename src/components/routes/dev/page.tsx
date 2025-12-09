@@ -60,11 +60,18 @@ const DeveloperPage = () => {
           Downloads Page
         </UI.Button>
         <UI.Button
-          onClick={() => nav("/app/clans")}
+          onClick={() => nav("/app/editor")}
           colour="invisible"
           className="p-2"
         >
           Editor
+        </UI.Button>
+        <UI.Button
+          onClick={() => nav("/app/clans")}
+          colour="invisible"
+          className="p-2"
+        >
+          Unreleased clans
         </UI.Button>
         <UI.Button
           onClick={() => nav("/app/external")}

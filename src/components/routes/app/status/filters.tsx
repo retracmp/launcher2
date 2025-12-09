@@ -57,7 +57,7 @@ const FiltersWidget = () => {
         />
 
         <BooleanOption
-          title="Sydney Servers"
+          title="Oceanic Servers"
           description={
             <>
               Show <b>OCE</b> servers in the server list. We currently host in{" "}
