@@ -45,7 +45,7 @@ const FortniteWidget = () => {
           <UI.Button
             colour="blue"
             className="p-1.5 py-1 mt-auto z-10 backdrop-blur-2xl"
-            onClick={() => navigate({ to: "/app/downloads" })}
+            onClick={() => navigate({ to: "/downloads" })}
           >
             <span className="text-neutral-300">Download Now</span>
           </UI.Button>

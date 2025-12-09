@@ -41,6 +41,38 @@ const Drawer = () => {
         },
       },
       {
+        label: "Library",
+        icon: "IoFileTrayFullSharp",
+        clicked: {
+          type: "LINK",
+          href: "/app/library",
+        },
+        notification:
+          downloadsCount > 0
+            ? {
+                colour_scheme: "grey",
+                number: downloadsCount,
+                type: "NUMBER",
+              }
+            : undefined,
+      },
+      {
+        label: "Matches",
+        icon: "IoPulseSharp",
+        clicked: {
+          type: "LINK",
+          href: "/app/status",
+        },
+        notification:
+          serverCount > 0
+            ? {
+                colour_scheme: "grey",
+                number: serverCount,
+                type: "NUMBER",
+              }
+            : undefined,
+      },
+      {
         label: "Competitive",
         icon: "IoTrophySharp",
         clicked: {
@@ -61,46 +93,6 @@ const Drawer = () => {
       //       colour_scheme: "blue",
       //     }
       //   : null,
-      {
-        label: "Library",
-        icon: "IoFileTrayFullSharp",
-        clicked: {
-          type: "LINK",
-          href: "/app/library",
-        },
-      },
-      {
-        label: "Matches",
-        icon: "IoPulseSharp",
-        clicked: {
-          type: "LINK",
-          href: "/app/status",
-        },
-        notification:
-          serverCount > 0
-            ? {
-                colour_scheme: "grey",
-                number: serverCount,
-                type: "NUMBER",
-              }
-            : undefined,
-      },
-      {
-        label: "Downloads",
-        icon: "IoArchiveSharp",
-        clicked: {
-          type: "LINK",
-          href: "/app/downloads",
-        },
-        notification:
-          downloadsCount > 0
-            ? {
-                colour_scheme: "grey",
-                number: downloadsCount,
-                type: "NUMBER",
-              }
-            : undefined,
-      },
       {
         label: "Donate",
         icon: "IoSparklesSharp",

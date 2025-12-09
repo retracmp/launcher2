@@ -24,10 +24,7 @@ const HomePage = () => {
           user={userManager._user}
           season={userManager._season}
         />
-        <StatisticsWidget
-          account={userManager._user.Account}
-          season={userManager._season}
-        />
+        <StatisticsWidget />
       </OptionGroup>
 
       <OptionGroup _row title="Play Retrac">
@@ -35,7 +32,7 @@ const HomePage = () => {
         <LootLabsWidget />
       </OptionGroup>
 
-      <OptionGroup _row title="New & Upcoming">
+      {/* <OptionGroup _row title="New & Upcoming">
         <NewsWidget />
       </OptionGroup>
 
@@ -43,7 +40,7 @@ const HomePage = () => {
         <OptionGroup _row title="Todo">
           <DonateWidget />
         </OptionGroup>
-      )}
+      )} */}
     </>
   );
 };

@@ -3,6 +3,7 @@ import { useBannerManager } from "src/wrapper/banner";
 import { useOptions } from "src/wrapper/options";
 import { useRetrac } from "src/wrapper/retrac";
 import { useLibrary } from "src/wrapper/library";
+import { useNavigate } from "@tanstack/react-router";
 
 import { SimpleUI } from "src/import/ui";
 import {
@@ -18,9 +19,15 @@ const DeveloperPage = () => {
   const push = useBannerManager((s) => s.push);
   const options = useOptions();
   const retrac = useRetrac();
+  const navigate = useNavigate();
   const launch = useLibrary((s) => s.launchBuild);
 
   const [showAdvanced, setShowAdvanced] = useState(false);
+
+  const nav = (ib: string) =>
+    navigate({
+      to: ib,
+    });
 
   return (
     <>
@@ -43,6 +50,30 @@ const DeveloperPage = () => {
         foldable="start-open"
         direction="row"
       ></SimpleUI.List>
+
+      <OptionGroup title="Other Pages" _row>
+        <UI.Button
+          onClick={() => nav("/downloads")}
+          colour="invisible"
+          className="p-2"
+        >
+          Downloads Page
+        </UI.Button>
+        <UI.Button
+          onClick={() => nav("/app/clans")}
+          colour="invisible"
+          className="p-2"
+        >
+          Editor
+        </UI.Button>
+        <UI.Button
+          onClick={() => nav("/app/external")}
+          colour="invisible"
+          className="p-2"
+        >
+          External login
+        </UI.Button>
+      </OptionGroup>
 
       <OptionGroup title="Content Options">
         <BooleanOption

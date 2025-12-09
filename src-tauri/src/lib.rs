@@ -52,6 +52,7 @@ pub fn run(
     commands::add_to_defender_multi,
     commands::get_app_action,
     commands::cancel_download,
+    commands::open_downloads_window,
   ]);
 
   builder

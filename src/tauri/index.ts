@@ -189,6 +189,23 @@ const cancel_download = async (manifestId: string): Promise<boolean | null> => {
   return result;
 };
 
+const open_downloads_window = async (): Promise<boolean | null> => {
+  const result = await i<boolean>("open_downloads_window", {}).catch(
+    (e: string) => {
+      useBannerManager.getState().push({
+        closable: true,
+        colour: "red",
+        id: "window_error",
+        text: `Opening downloads window failed with reason: ${e}`,
+        expireAfter: 5,
+      });
+      console.error("Error opening downloads window:", e);
+      return null;
+    }
+  );
+  return result;
+};
+
 const invoke = {
   get_windows_version,
   get_fortnite_version,
@@ -201,6 +218,7 @@ const invoke = {
   add_to_defender_multi,
   get_app_action,
   cancel_download,
+  open_downloads_window,
 };
 
 export default invoke;

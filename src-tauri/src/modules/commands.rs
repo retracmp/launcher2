@@ -1,6 +1,6 @@
 use std::fs::File;
 use std::io::{Read, Seek};
-use tauri::AppHandle;
+use tauri::{AppHandle, Manager};
 use winver::WindowsVersion;
 
 use crate::modules::{admin, chunker, launch, process, util 
@@ -123,5 +123,42 @@ pub async fn cancel_download(
   match result {
     Ok(_) => Ok(true),
     Err(e) => Err(e),
+  }
+}
+
+#[tauri::command]
+pub async fn open_downloads_window(
+  handle: AppHandle,
+) -> Result<bool, String> {
+  // Check if downloads window already exists
+  if let Some(existing_window) = handle.get_webview_window("downloads") {
+    if let Err(e) = existing_window.set_focus() {
+      return Err(format!("Failed to focus downloads window: {}", e));
+    }
+    return Ok(true);
+  }
+
+  match tauri::WebviewWindowBuilder::new(
+    &handle,
+    "downloads",
+    tauri::WebviewUrl::App("index.html".into()),
+  )
+  .title("Downloads")
+  .inner_size(936.0, 600.0)
+  .min_inner_size(530.0, 400.0)
+  .max_inner_size(1200.0, 800.0)
+  .theme(Some(tauri::Theme::Dark))
+  .decorations(false)
+  .shadow(true)
+  .maximizable(false)
+  .build()
+  {
+    Ok(window) => {
+      if let Err(e) = window.set_focus() {
+        return Err(format!("Failed to focus new downloads window: {}", e));
+      }
+      Ok(true)
+    }
+    Err(e) => Err(format!("Failed to create downloads window: {}", e)),
   }
 }

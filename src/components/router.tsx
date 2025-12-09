@@ -3,6 +3,7 @@ import * as rr from "@tanstack/react-router";
 import UI from "./core/default";
 import Frame from "src/components/core/frame";
 import DeveloperPage from "src/components/routes/dev/page";
+
 import HomePage from "src/components/routes/app/home/page";
 import LoginPage from "src/components/routes/login/page";
 import AppContainer from "./routes/app";
@@ -12,7 +13,7 @@ import LeaderboardPage from "./routes/app/leaderboard/page";
 import LibraryPage from "./routes/app/library/page";
 import StatusPage from "./routes/app/status/page";
 import StorePage from "./routes/app/store/page";
-import DownloadsPage from "./routes/app/downloads/page";
+import DownloadsPage from "./routes/downloads/page";
 import UpdatePage from "./routes/update/page";
 import ExternalLoginPage from "./routes/app/external/page";
 import EditorPage from "./routes/app/editor/page";
@@ -108,7 +109,7 @@ export const library = rr.createRoute({
 });
 
 export const downloads = rr.createRoute({
-  getParentRoute: () => appContainer,
+  getParentRoute: () => rootRoute,
   component: () => <DownloadsPage />,
   path: "/downloads",
 });

@@ -4,6 +4,9 @@ import { useUserManager } from "src/wrapper/user";
 import { useOptions } from "src/wrapper/options";
 import { twJoin } from "tailwind-merge";
 import * as rr from "@tanstack/react-router";
+import { getCurrentWindow } from "@tauri-apps/api/window";
+import { useLayoutEffect } from "react";
+import { useNavigate, useLocation } from "@tanstack/react-router";
 
 import UI from "src/components/core/default";
 
@@ -23,8 +26,25 @@ const Frame = () => {
   const application = useApplicationInformation();
   const userManager = useUserManager();
   const options = useOptions();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const show = userManager.access() || !userManager.loading();
+
+  useLayoutEffect(() => {
+    const checkWindowLabel = async () => {
+      try {
+        const window = getCurrentWindow();
+        if (
+          window.label === "downloads" &&
+          location.pathname !== "/downloads"
+        ) {
+          navigate({ to: "/downloads" });
+        }
+      } catch (error) {}
+    };
+    checkWindowLabel();
+  }, [navigate, location.pathname]);
 
   return (
     <>
@@ -44,7 +64,7 @@ const Frame = () => {
         )}
         data-tauri-drag-region
       >
-        <Drawer />
+        {getCurrentWindow().label !== "downloads" && <Drawer />}
         <HoverManager />
 
         <FallingSnow />
@@ -52,14 +72,16 @@ const Frame = () => {
         <div className="flex flex-1 flex-col max-w-full max-h-full overflow-hidden">
           <WindowBar />
 
-          <BannerRenderer />
+          {getCurrentWindow().label !== "downloads" && <BannerRenderer />}
 
           <div className="flex flex-row flex-1 max-w-full max-h-full overflow-hidden">
             <div className="relative flex flex-col flex-1 max-w-full max-h-full overflow-hidden overflow-y-auto @container">
               {show ? <rr.Outlet /> : <LoadingIndicator />}
             </div>
 
-            {show && <FriendsList />}
+            {show && getCurrentWindow().label !== "downloads" && (
+              <FriendsList />
+            )}
           </div>
         </div>
       </main>

@@ -6,8 +6,8 @@ import { open } from "@tauri-apps/plugin-dialog";
 import {
   IoBuildSharp,
   IoDownload,
+  IoEyeSharp,
   IoPlay,
-  IoRefreshSharp,
   IoSearchSharp,
   IoStop,
 } from "react-icons/io5";
@@ -74,6 +74,14 @@ const DownloadBuild = (props: InstalledBuildProps) => {
     }
 
     return library.createLibraryEntry(selectedPath);
+  };
+
+  const handleViewStatus = async () => {
+    try {
+      await invoke.open_downloads_window();
+    } catch (error) {
+      console.error("Error opening downloads window:", error);
+    }
   };
 
   return (
@@ -146,7 +154,7 @@ const DownloadBuild = (props: InstalledBuildProps) => {
       </div>
 
       <div className="flex flex-row items-center gap-2 ml-auto px-1">
-        {alreadyDownloaded && (
+        {alreadyDownloaded && !currentlyDownloading && (
           <>
             {!currentlyVerifying && (
               <UI.RowButton
@@ -169,7 +177,7 @@ const DownloadBuild = (props: InstalledBuildProps) => {
           </>
         )}
 
-        {!alreadyDownloaded && (
+        {!(alreadyDownloaded && !currentlyDownloading) && (
           <>
             {!currentlyDownloading && (
               <>
@@ -194,15 +202,25 @@ const DownloadBuild = (props: InstalledBuildProps) => {
             )}
 
             {currentlyDownloading && (
-              <UI.RowButton
-                colour="red"
-                on_click={handleDownload}
-                tooltip="Cancel Download"
-                disabled={!currentlyDownloading}
-                _last
-              >
-                <IoStop className="w-full h-full" />
-              </UI.RowButton>
+              <>
+                <UI.RowButton
+                  colour="blue"
+                  on_click={handleViewStatus}
+                  tooltip="View Status"
+                  disabled={!currentlyDownloading}
+                >
+                  <IoEyeSharp className="w-full h-full" />
+                </UI.RowButton>
+                <UI.RowButton
+                  colour="red"
+                  on_click={handleDownload}
+                  tooltip="Cancel Download"
+                  disabled={!currentlyDownloading}
+                  _last
+                >
+                  <IoStop className="w-full h-full" />
+                </UI.RowButton>
+              </>
             )}
           </>
         )}

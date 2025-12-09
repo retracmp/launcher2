@@ -1,10 +1,11 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "Capability for the main window",
-  "windows": ["main"],
+  "description": "Capability for the main window and downloads window",
+  "windows": ["main", "downloads"],
   "permissions": [
     "core:default",
+    "core:app:allow-name",
     "opener:default",
     "core:window:allow-start-dragging",
     "core:window:allow-close",

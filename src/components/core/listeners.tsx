@@ -18,35 +18,32 @@ const TauriListeners = () => {
   const retrac = useRetrac();
   const banners = useBannerManager();
 
-  const onDownloadEvent = useCallback(
-    (progress: Event<ManifestProgress>) => {
-      downloadState.set_active_download_progress(
-        progress.payload.manifest_id,
-        progress.payload
+  const onDownloadEvent = useCallback((progress: Event<ManifestProgress>) => {
+    downloadState.set_active_download_progress(
+      progress.payload.manifest_id,
+      progress.payload
+    );
+
+    downloadState.add_timed_metabytes(
+      progress.payload.manifest_id,
+      new Date(),
+      progress.payload.speed_mbps
+    );
+
+    if (progress.payload.percent === 100) {
+      downloadState.remove_active_download_progress(
+        progress.payload.manifest_id
       );
+    }
 
-      downloadState.add_timed_metabytes(
-        progress.payload.manifest_id,
-        new Date(),
-        progress.payload.speed_mbps
-      );
-
-      if (progress.payload.percent === 100) {
-        downloadState.remove_active_download_progress(
-          progress.payload.manifest_id
-        );
-      }
-
-      console.log(`[download] ${progress.payload.manifest_id}
-        downloaded_bytes: ${progress.payload.downloaded_bytes}
-        total_bytes: ${progress.payload.total_bytes}
-        percent: ${progress.payload.percent}%
-        files: [${progress.payload.current_files.join(", ")}]
-        speed_mbps: ${progress.payload.speed_mbps}
-        eta_seconds: ${progress.payload.eta_seconds}`);
-    },
-    []
-  );
+    // console.log(`[download] ${progress.payload.manifest_id}
+    //   downloaded_bytes: ${progress.payload.downloaded_bytes}
+    //   total_bytes: ${progress.payload.total_bytes}
+    //   percent: ${progress.payload.percent}%
+    //   files: [${progress.payload.current_files.join(", ")}]
+    //   speed_mbps: ${progress.payload.speed_mbps}
+    //   eta_seconds: ${progress.payload.eta_seconds}`);
+  }, []);
 
   const onDownloadErrorAdvancedEvent = useCallback(
     (error: Event<DOWNLOAD_ERROR>) => {
@@ -93,19 +90,16 @@ const TauriListeners = () => {
     []
   );
 
-  const onVerifyComplete = useCallback(
-    (progress: Event<VERIFYING_STATUS>) => {
-      downloadState.set_allowed_to_verify(
-        progress.payload.manifest_id,
-        progress.payload.status
-      );
+  const onVerifyComplete = useCallback((progress: Event<VERIFYING_STATUS>) => {
+    downloadState.set_allowed_to_verify(
+      progress.payload.manifest_id,
+      progress.payload.status
+    );
 
-      console.log(
-        `[verify] ${progress.payload.manifest_id} with status: ${progress.payload.status}`
-      );
-    },
-    []
-  );
+    console.log(
+      `[verify] ${progress.payload.manifest_id} with status: ${progress.payload.status}`
+    );
+  }, []);
 
   const onEasyAnticheatInitialised = useCallback(
     (progress: Event<EAC_INITIALISED>) => {

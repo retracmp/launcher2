@@ -205,7 +205,7 @@ async fn filter_missing_files_with_progress(
         checked += 1;
 
         thread::sleep(
-            std::time::Duration::from_millis(10)
+            std::time::Duration::from_millis(1)
         );
 
         let file_name = file.get_filename();

@@ -22,7 +22,9 @@ const WindowBar = () => {
         className="ml-1 mt-[2.5px] min-w-max text-neutral-500 font-plex text-[11px] text-base "
         data-tauri-drag-region
       >
-        build {application.version}
+        {application.version !== ""
+          ? `build ${application.version}`
+          : getCurrentWindow().label}
       </p>
       <s className="ml-auto" />
 
