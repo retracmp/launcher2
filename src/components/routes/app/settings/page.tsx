@@ -130,31 +130,6 @@ const SettingsPage = () => {
           _animate
         />
 
-        {/* <BooleanOption
-          title="Limit Download Speed"
-          description={
-            <>Limit the download speed to a certain amount of bandwidth.</>
-          }
-          state={options.limit_download_speed}
-          set={options.set_limit_download_speed}
-        />
-
-        {options.limit_download_speed && (
-          <NumberOption
-            title="Download Limit"
-            description={
-              <>
-                The maximum amount of bandwidth that can be used for downloads.
-              </>
-            }
-            state={options.megabyte_download_limit}
-            set={options.set_megabyte_download_limit}
-            _number_extra_text="MB/s"
-            _number_min={0}
-            _number_max={5120}
-          />
-        )} */}
-
         <FileOption
           title="Content Directory"
           description={
@@ -367,13 +342,6 @@ const SettingsPage = () => {
             />
           </>
         )}
-
-        <BooleanOption
-          title="Grid Layout for Builds"
-          description={<>Display your installed versions in a grid layout.</>}
-          state={options._tiled_builds}
-          set={options.set_tiled_builds}
-        />
       </OptionGroup>
 
       <OptionGroup title="Your Account" _last>

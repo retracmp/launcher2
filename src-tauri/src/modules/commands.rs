@@ -34,7 +34,10 @@ pub async fn get_fortnite_version(path: &str) -> Result<String, String> {
   let mut buffer = vec![0; 256];
   file.read_exact(&mut buffer).map_err(|e| e.to_string())?;
 
-  let version = util::find_fortnite_release(util::vec_u8_as_wide_to_string(buffer).as_str());
+  let wide_string = util::vec_u8_as_wide_to_string(buffer)
+    .map_err(|e| format!("Failed to convert buffer to UTF-16 string: {}", e))?;
+  
+  let version = util::find_fortnite_release(wide_string.as_str());
   if version.is_none() {
     return Err("Version not found".to_string());
   }

@@ -70,13 +70,27 @@ fn find_subslice(haystack: &[u8], needle: &[u8]) -> Option<usize> {
         .position(|window| window == needle)
 }
 
-pub fn vec_u8_as_wide_to_string(vec: Vec<u8>) -> String {
+pub fn vec_u8_as_wide_to_string(vec: Vec<u8>) -> Result<String, String> {
+    // Ensure we have an even number of bytes for UTF-16
+    let vec = if vec.len() % 2 != 0 {
+        let mut v = vec;
+        v.push(0);
+        v
+    } else {
+        vec
+    };
+
     let u16_vec: Vec<u16> = vec
         .chunks_exact(2)
         .map(|chunk| u16::from_le_bytes(chunk.try_into().unwrap()))
         .collect();
 
-    String::from_utf16(&u16_vec).expect("Invalid UTF-16")
+    match String::from_utf16(&u16_vec) {
+        Ok(s) => Ok(s),
+        Err(_) => {
+            Ok(String::from_utf16_lossy(&u16_vec))
+        }
+    }
 }
 
 pub fn find_fortnite_release(input: &str) -> Option<String> {

@@ -224,10 +224,11 @@ namespace UI {
   export const RowButton = (props: ButtonProps) => {
     const colour = (
       {
-        blue: "hover:bg-blue-400/30 text-neutral-600 hover:text-blue-200",
-        green: "hover:bg-green-400/30 text-neutral-600 hover:text-green-200",
-        red: "hover:bg-red-400/30 text-neutral-600 hover:text-red-200",
-        invisible: "hover:bg-neutral-700/10 text-neutral-400",
+        blue: "not-[:disabled]:hover:bg-blue-400/30 text-neutral-600 not-[:disabled]:hover:text-blue-200",
+        green:
+          "not-[:disabled]:hover:bg-green-400/30 text-neutral-600 not-[:disabled]:hover:text-green-200",
+        red: "not-[:disabled]:hover:bg-red-400/30 text-neutral-600 not-[:disabled]:hover:text-red-200",
+        invisible: "not-[:disabled]:hover:bg-neutral-700/10 text-neutral-400",
       } as const
     )[props.colour];
 
@@ -236,7 +237,7 @@ namespace UI {
     return (
       <>
         <button
-          className={`aspect-square min-w-max h-8 flex items-center justify-center p-1.5 bg-neutral-700/20 rounded-md ${
+          className={`aspect-square min-w-max h-8 flex items-center justify-center p-1.5 bg-neutral-700/20 rounded-md disabled: ${
             props.disabled ? "cursor-not-allowed" : "cursor-pointer"
           } transition-all ${colour}`}
           onClick={props.on_click}

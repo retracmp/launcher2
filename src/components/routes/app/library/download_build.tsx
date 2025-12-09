@@ -1,12 +1,14 @@
 import { useDownloadState } from "src/wrapper/download";
 import { useLibrary } from "src/wrapper/library";
 import { useOptions } from "src/wrapper/options";
+import { open } from "@tauri-apps/plugin-dialog";
 
 import {
   IoBuildSharp,
   IoDownload,
   IoPlay,
   IoSearchSharp,
+  IoStop,
 } from "react-icons/io5";
 import { motion } from "motion/react";
 import UI from "src/components/core/default";
@@ -28,6 +30,8 @@ const DownloadBuild = (props: InstalledBuildProps) => {
   const downloadingProgress = downloads.active_download_progress.get(
     props.entry.manifestId
   );
+  const currentlyDownloading = downloadingProgress != undefined;
+
   const verifyingState = downloads.active_verifying_progress.get(
     props.entry.manifestId
   );
@@ -58,6 +62,17 @@ const DownloadBuild = (props: InstalledBuildProps) => {
     );
 
     console.log(result, entry);
+  };
+
+  const handleFindLocation = async () => {
+    const selectedPath = await open({ directory: true, multiple: false });
+    if (!selectedPath) return;
+
+    if (Array.isArray(selectedPath)) {
+      return library.createLibraryEntry(selectedPath[0]);
+    }
+
+    return library.createLibraryEntry(selectedPath);
   };
 
   return (
@@ -117,22 +132,39 @@ const DownloadBuild = (props: InstalledBuildProps) => {
 
         {!alreadyDownloaded && (
           <>
-            <UI.RowButton
-              colour="blue"
-              on_click={handleDownload}
-              tooltip="Locate Folder"
-            >
-              <IoSearchSharp className="w-full h-full" />
-            </UI.RowButton>
+            {!currentlyDownloading && (
+              <>
+                <UI.RowButton
+                  colour="blue"
+                  on_click={handleFindLocation}
+                  tooltip="Locate Folder"
+                >
+                  <IoSearchSharp className="w-full h-full" />
+                </UI.RowButton>
 
-            <UI.RowButton
-              colour="blue"
-              on_click={handleDownload}
-              tooltip="Download & Install"
-              _last
-            >
-              <IoDownload className="w-full h-full" />
-            </UI.RowButton>
+                <UI.RowButton
+                  colour="blue"
+                  on_click={handleDownload}
+                  tooltip="Download & Install"
+                  disabled={currentlyDownloading}
+                  _last
+                >
+                  <IoDownload className="w-full h-full" />
+                </UI.RowButton>
+              </>
+            )}
+
+            {currentlyDownloading && (
+              <UI.RowButton
+                colour="red"
+                on_click={handleDownload}
+                tooltip="Cancel Download"
+                disabled={!currentlyDownloading}
+                _last
+              >
+                <IoStop className="w-full h-full" />
+              </UI.RowButton>
+            )}
           </>
         )}
       </div>

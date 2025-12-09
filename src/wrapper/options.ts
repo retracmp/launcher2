@@ -137,7 +137,7 @@ export const useOptions = create<OptionsState>()(
       show_friends: true,
       set_show_friends: (value) => set(() => ({ show_friends: value })),
 
-      leaderboard_page_size: 10,
+      leaderboard_page_size: 30,
       set_leaderboard_page_size: (value) =>
         set(() => ({ leaderboard_page_size: value })),
 

@@ -52,7 +52,6 @@ const LibraryPage = () => {
   };
 
   const sortedLibrary = library.library.sort((a, b) => {
-    // use the _order property if it exists, otherwise use the version
     const orderA = a.order !== undefined ? a.order : a.version;
     const orderB = b.order !== undefined ? b.order : b.version;
 
