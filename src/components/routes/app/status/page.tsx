@@ -16,16 +16,18 @@ const StatusPage = () => {
   const retrac = useRetrac();
 
   const loading = serverManager.servers_by_status(
-    "Initialised",
-    "AssignedParties_WaitingForGameserverSocket"
+    "CreatedNotConnected",
+    "PostMatchmakingSession",
+    "RegisteredWithWebsocket"
   );
 
   const awaitingPlayers = serverManager.servers_by_status(
-    "GameserverConfirmedParties_CanBackfill_WaitingToMatchmake",
-    "PlayersMatchmaked_WaitingForBus"
+    "IntialReservationsAllocated",
+    "ConfirmedMatchAssigned",
+    "BackfillingReservations"
   );
 
-  const active = serverManager.servers_by_status("BusStarted_WaitingToEnd");
+  const active = serverManager.servers_by_status("Concluded");
 
   const hasEnabledSomeFilters =
     !serverManager.show_eu_servers || !serverManager.show_na_servers;

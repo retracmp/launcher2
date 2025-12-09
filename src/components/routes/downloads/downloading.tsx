@@ -27,6 +27,8 @@ const DownloadingBuildUI = (props: DownloadingBuildProps) => {
     await invoke.resume_download(props.progress.manifest_id);
   };
 
+  console.log(props.information, props.progress.manifest_id);
+
   return (
     <motion.div
       className={`group flex flex-row items-center w-full gap-2 rounded-sm z-[200]`}
@@ -41,7 +43,7 @@ const DownloadingBuildUI = (props: DownloadingBuildProps) => {
     >
       <div className="relative h-11 aspect-square min-w-max min-h-9 flex items-center justify-center bg-neutral-700/20 rounded-md overflow-hidden">
         <img
-          src={props.progress.manifest_id}
+          src={props.information?.iconUrl}
           className="aboslute w-full select-none"
           draggable={false}
         />
@@ -86,7 +88,7 @@ const DownloadingBuildUI = (props: DownloadingBuildProps) => {
           </div>
         </div>
 
-        <div className="flex flex-row items-center text-xs leading-4 text-neutral-400 transition-colors duration-75 gap-1">
+        <div className="flex flex-row text-xs leading-4 text-neutral-400 transition-colors duration-75 gap-1">
           <p className="text-neutral-300 text-xs leading-4">
             {props.progress.is_paused ? "Paused" : "Downloading"}
           </p>
@@ -188,7 +190,7 @@ const DownloadingBuild = (props: DownloadingBuildProps) => {
       exit={{ opacity: 0, x: -20, transition: { duration: 0.1 } }}
       transition={{ type: "spring", stiffness: 200, damping: 19 }}
     >
-      <DownloadingBuildUI progress={props.progress} />
+      <DownloadingBuildUI {...props} />
     </motion.div>
   );
 };

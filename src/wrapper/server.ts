@@ -52,26 +52,26 @@ export const useServerManager = create<ServerManagerState>((set, get) => ({
 
   servers: () =>
     Object.values(get()._servers).sort((a, b) => {
-      if (a.name < b.name) return -1;
-      if (a.name > b.name) return 1;
+      if (new Date(a.created_at) < new Date(b.created_at)) return -1;
+      if (new Date(a.created_at) > new Date(b.created_at)) return 1;
       return 0;
     }),
 
   servers_by_status: (...statuses: string[]) => {
     return Object.values(get()._servers)
-      .filter((server) => statuses.includes(server.string_status))
+      .filter((server) => statuses.includes(server.state))
       .filter((server) => {
-        if (server.region === "EU") return get().show_eu_servers;
-        if (server.region === "NA") return get().show_na_servers;
-        if (server.region === "NAW") return get().show_naw_servers;
-        if (server.region === "OCE") return get().show_oce_servers;
-        if (server.region === "ME") return get().show_me_servers;
-        if (server.region === "SHADOW") return false;
+        if (server.pool_id.region === "EU") return get().show_eu_servers;
+        if (server.pool_id.region === "NAE") return get().show_na_servers;
+        if (server.pool_id.region === "NAW") return get().show_naw_servers;
+        if (server.pool_id.region === "OCE") return get().show_oce_servers;
+        if (server.pool_id.region === "ME") return get().show_me_servers;
+        if (server.pool_id.region === "SHADOW") return false;
         return true;
       })
       .sort((a, b) => {
-        if (a.name < b.name) return -1;
-        if (a.name > b.name) return 1;
+        if (new Date(a.created_at) < new Date(b.created_at)) return -1;
+        if (new Date(a.created_at) > new Date(b.created_at)) return 1;
         return 0;
       });
   },

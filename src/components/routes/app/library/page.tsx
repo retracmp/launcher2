@@ -10,7 +10,7 @@ import UI from "src/components/core/default";
 import FortniteBuild from "src/components/routes/app/library/installed_build";
 import DownloadBuild from "./download_build";
 
-const fake_manifest_information = [
+export const Fake_manifest_information = [
   {
     manifestId: "++Fortnite+Release-14.40-CL-14550713-Windows",
     title: "Chapter 2 Season 4",
@@ -93,7 +93,7 @@ const LibraryPage = () => {
       </OptionGroup>
 
       <OptionGroup title="Public Builds" _last>
-        {fake_manifest_information.map((s) => (
+        {Fake_manifest_information.map((s) => (
           <DownloadBuild entry={s} key={s.manifestId} />
         ))}
       </OptionGroup>

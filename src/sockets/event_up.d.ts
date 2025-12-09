@@ -27,7 +27,6 @@ type SocketUpEvent_RequestLeaderboard = SocketBasicUpEvent & {
 
 type SocketUpEvent_RequestFriendInfo = SocketBasicUpEvent & {
   id: "request_friend_info";
-  friendIds: string[];
 };
 
 type SocketUpEvent_RequestUsernames = SocketBasicUpEvent & {

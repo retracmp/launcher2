@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import { formatTime } from "src/helpers/time";
-import { useUserManager } from "src/wrapper/user";
 import { useRetrac } from "src/wrapper/retrac";
 
 import { AnimatePresence, motion } from "motion/react";
@@ -9,29 +8,28 @@ import UI from "src/components/core/default";
 import { OptionGroup } from "src/components/core/option";
 
 const RecentMatchesWidget = () => {
-  const user = useUserManager();
-  return null;
-  if (user._user === null)
-    return (
-      console.error("cannot load recent matches widget: user._user = null") ??
-      null
-    );
+  // const user = useUserManager();
+  // if (user._user === null)
+  //   return (
+  //     console.error("cannot load recent matches widget: user._user = null") ??
+  //     null
+  //   );
 
-  const stats = Object.values(user._user.Account.Stats);
-  const matches = stats
-    .flatMap((stat) => Object.values(stat.Matches))
-    .sort(
-      (matchA, matchB) =>
-        new Date(matchB.CreatedAt).getTime() -
-        new Date(matchA.CreatedAt).getTime()
-    )
-    .filter((match) => match.TimeAlive != 0);
+  // const stats = Object.values(user._user.Account.Stats);
+  // const matches = stats
+  //   .flatMap((stat) => Object.values(stat.Matches))
+  //   .sort(
+  //     (matchA, matchB) =>
+  //       new Date(matchB.CreatedAt).getTime() -
+  //       new Date(matchA.CreatedAt).getTime()
+  //   )
+  //   .filter((match) => match.TimeAlive != 0);
 
-  if (matches.length === 0)
-    return (
-      console.error("cannot load recent matches widget: matches.length = 0") ??
-      null
-    );
+  // if (matches.length === 0)
+  //   return (
+  //     console.error("cannot load recent matches widget: matches.length = 0") ??
+  //     null
+  //   );
 
   return (
     <div className="flex flex-col w-full @max-xl:w-full max-w-full @max-xl:max-w-full overflow-hidden">
@@ -44,60 +42,63 @@ const RecentMatchesWidget = () => {
         </div>
       </OptionGroup>
       <OptionGroup _first _last _hideBorder _overflow>
-        {matches.map((match) => (
+        {/* {matches.map((match) => (
           <RecentMatch match={match} key={match.ID} />
-        ))}
+        ))} */}
+        <p className="text-neutral-400 font-flex text-xs">
+          There are no matches to search for.
+        </p>
       </OptionGroup>
     </div>
   );
 };
 
-type RecentMatchProps = {
-  match: StatMatch;
-};
+// type RecentMatchProps = {
+// match: StatMatch;
+// };
 
-const RecentMatch = (props: RecentMatchProps) => {
-  const shortId = props.match.ID.slice(0, 8);
-  const niceTeamType =
-    props.match.TeamType.charAt(0).toUpperCase() +
-    props.match.TeamType.slice(1);
-  const placementSuffix =
-    props.match.Placement === 0
-      ? "st"
-      : props.match.Placement === 1
-      ? "st"
-      : props.match.Placement === 2
-      ? "nd"
-      : props.match.Placement === 3
-      ? "rd"
-      : "th";
+// const RecentMatch = (props: RecentMatchProps) => {
+//   const shortId = props.match.ID.slice(0, 8);
+//   const niceTeamType =
+//     props.match.TeamType.charAt(0).toUpperCase() +
+//     props.match.TeamType.slice(1);
+//   const placementSuffix =
+//     props.match.Placement === 0
+//       ? "st"
+//       : props.match.Placement === 1
+//       ? "st"
+//       : props.match.Placement === 2
+//       ? "nd"
+//       : props.match.Placement === 3
+//       ? "rd"
+//       : "th";
 
-  const timeAlive = formatTime(
-    new Date(props.match.TimeAlive).getTime() / 1000 / 1000,
-    0,
-    true
-  );
+//   const timeAlive = formatTime(
+//     new Date(props.match.TimeAlive).getTime() / 1000 / 1000,
+//     0,
+//     true
+//   );
 
-  return (
-    <div className="overflow-hidden whitespace-nowrap overflow-ellipsis flex flex-row items-center p-2 gap-1 w-full bg-neutral-800/30 rounded-sm border-neutral-700/10 border-1 border-solid text-neutral-700 min-h-[2.125rem]">
-      <UI.P className="font-mono text-neutral-400">{niceTeamType} •</UI.P>
-      <p className="font-plex text-[14px] text-base leading-[16px] text-neutral-400 whitespace-nowrap overflow-ellipsis overflow-hidden">
-        <span className="text-neutral-300 font-geist font-[600]">
-          {props.match.Placement || 1}
-          {placementSuffix}
-        </span>
-      </p>
-      <UI.P className="font-mono text-neutral-400">with</UI.P>
-      <p className="font-plex text-[14px] text-base leading-[16px] text-neutral-400 whitespace-nowrap overflow-ellipsis overflow-hidden">
-        <span className="text-neutral-300 flex flex-row items-center gap-0.5">
-          {props.match.Eliminations} Kills
-        </span>
-      </p>
-      <UI.P className="ml-auto font-mono text-neutral-700">{timeAlive} •</UI.P>
-      <UI.P className="font-mono text-neutral-700">{shortId}</UI.P>
-    </div>
-  );
-};
+//   return (
+//     <div className="overflow-hidden whitespace-nowrap overflow-ellipsis flex flex-row items-center p-2 gap-1 w-full bg-neutral-800/30 rounded-sm border-neutral-700/10 border-1 border-solid text-neutral-700 min-h-[2.125rem]">
+//       <UI.P className="font-mono text-neutral-400">{niceTeamType} •</UI.P>
+//       <p className="font-plex text-[14px] text-base leading-[16px] text-neutral-400 whitespace-nowrap overflow-ellipsis overflow-hidden">
+//         <span className="text-neutral-300 font-geist font-[600]">
+//           {props.match.Placement || 1}
+//           {placementSuffix}
+//         </span>
+//       </p>
+//       <UI.P className="font-mono text-neutral-400">with</UI.P>
+//       <p className="font-plex text-[14px] text-base leading-[16px] text-neutral-400 whitespace-nowrap overflow-ellipsis overflow-hidden">
+//         <span className="text-neutral-300 flex flex-row items-center gap-0.5">
+//           {props.match.Eliminations} Kills
+//         </span>
+//       </p>
+//       <UI.P className="ml-auto font-mono text-neutral-700">{timeAlive} •</UI.P>
+//       <UI.P className="font-mono text-neutral-700">{shortId}</UI.P>
+//     </div>
+//   );
+// };
 
 const RecentMatchesParent = () => {
   const retrac = useRetrac();
