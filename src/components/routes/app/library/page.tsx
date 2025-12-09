@@ -2,16 +2,9 @@ import { useLibrary } from "src/wrapper/library";
 import { useNavigate } from "@tanstack/react-router";
 import { useRetrac } from "src/wrapper/retrac";
 import { useOptions } from "src/wrapper/options";
-import { open } from "@tauri-apps/plugin-dialog";
 
 import { OptionGroup } from "src/components/core/option";
-import {
-  IoApps,
-  IoBanSharp,
-  IoFolderOpenSharp,
-  IoHammer,
-  IoLogIn,
-} from "react-icons/io5";
+import { IoApps, IoLogIn } from "react-icons/io5";
 import { AnimatePresence, motion, Reorder } from "motion/react";
 import UI from "src/components/core/default";
 import FortniteBuild from "src/components/routes/app/library/installed_build";
@@ -40,17 +33,6 @@ const LibraryPage = () => {
   const options = useOptions();
   const navigate = useNavigate();
 
-  const handleFindLocation = async () => {
-    const selectedPath = await open({ directory: true, multiple: false });
-    if (!selectedPath) return;
-
-    if (Array.isArray(selectedPath)) {
-      return library.createLibraryEntry(selectedPath[0]);
-    }
-
-    return library.createLibraryEntry(selectedPath);
-  };
-
   const sortedLibrary = library.library.sort((a, b) => {
     const orderA = a.order !== undefined ? a.order : a.version;
     const orderB = b.order !== undefined ? b.order : b.version;
@@ -76,28 +58,6 @@ const LibraryPage = () => {
 
       <OptionGroup title="Actions">
         <div className="flex flex-row gap-1 flex-wrap">
-          <UI.Button
-            colour="invisible"
-            className="py-0 px-2 mt-auto z-10 gap-0 min-w-full w-max"
-            onClick={handleFindLocation}
-          >
-            <IoFolderOpenSharp className="text-neutral-400 w-4 h-4" />
-            <span className="text-neutral-400">Find an existing version</span>
-          </UI.Button>
-
-          <UI.Button
-            colour="invisible"
-            className="py-0 px-2 mt-auto z-10 gap-0 min-w-full w-max"
-            onClick={() =>
-              navigate({
-                to: "/app/downloads",
-              })
-            }
-          >
-            <IoHammer className="text-neutral-400 w-4 h-4" />
-            <span className="text-neutral-400">Install a new version</span>
-          </UI.Button>
-
           <UI.Button
             colour="invisible"
             className="py-0 px-2 mt-auto z-10 gap-0 min-w-full w-max"

@@ -7,6 +7,7 @@ import {
   IoBuildSharp,
   IoDownload,
   IoPlay,
+  IoRefreshSharp,
   IoSearchSharp,
   IoStop,
 } from "react-icons/io5";
@@ -27,12 +28,12 @@ const DownloadBuild = (props: InstalledBuildProps) => {
     (x) => x.version === props.entry.manifestId.replace("-Windows", "")
   );
 
-  const downloadingProgress = downloads.active_download_progress.get(
+  const currentlydownloadingProgress = downloads.active_download_progress.get(
     props.entry.manifestId
   );
-  const currentlyDownloading = downloadingProgress != undefined;
+  const currentlyDownloading = currentlydownloadingProgress != undefined;
 
-  const verifyingState = downloads.active_verifying_progress.get(
+  const currentlyverifyingState = downloads.active_verifying_progress.get(
     props.entry.manifestId
   );
   const currentlyVerifying = downloads.allowed_to_verify(
@@ -106,18 +107,56 @@ const DownloadBuild = (props: InstalledBuildProps) => {
         >
           {props.entry.manifestId}
         </p>
+
+        {currentlyVerifying && currentlyverifyingState && (
+          <div className="flex flex-col w-full h-full justify-center gap-[0.05rem]">
+            <div className="w-full h-1.5 bg-neutral-800 rounded-full">
+              <motion.div
+                className="h-1.5 bg-blue-500/20 rounded-full"
+                initial={{
+                  width: `0%`,
+                }}
+                animate={{
+                  width: `${
+                    (currentlyverifyingState.checked_files /
+                      currentlyverifyingState.total_files) *
+                    100
+                  }%`,
+                }}
+              ></motion.div>
+            </div>
+          </div>
+        )}
+
+        {currentlyDownloading && currentlydownloadingProgress && (
+          <div className="flex flex-col w-full h-full justify-center gap-[0.05rem]">
+            <div className="w-full h-1.5 bg-neutral-800 rounded-full">
+              <motion.div
+                className="h-1.5 bg-green-500/20 rounded-full"
+                initial={{
+                  width: `0%`,
+                }}
+                animate={{
+                  width: `${currentlydownloadingProgress.percent}%`,
+                }}
+              ></motion.div>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="flex flex-row items-center gap-2 ml-auto px-1">
         {alreadyDownloaded && (
           <>
-            <UI.RowButton
-              colour="green"
-              tooltip="Launch Build"
-              on_click={() => null}
-            >
-              <IoPlay className="w-full h-full" />
-            </UI.RowButton>
+            {!currentlyVerifying && (
+              <UI.RowButton
+                colour="green"
+                tooltip="Launch Build"
+                on_click={() => null}
+              >
+                <IoPlay className="w-full h-full" />
+              </UI.RowButton>
+            )}
 
             <UI.RowButton
               colour="blue"

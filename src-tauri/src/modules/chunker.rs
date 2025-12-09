@@ -1,9 +1,6 @@
 use std::{
-    fs::{self},
-    io::{self, SeekFrom},
-    path::{Path, PathBuf},
-    sync::Arc,
-    time::Instant,
+    collections::VecDeque,
+    fs::{self}, io::{self, SeekFrom}, path::{Path, PathBuf}, sync::Arc, thread, time::Instant
 };
 
 use async_compression::tokio::bufread::GzipDecoder;
@@ -188,6 +185,8 @@ pub struct ManifestProgress {
     manifest_id: String,
     current_files: Vec<String>,
     wants_cancel: bool,
+    #[serde(skip)]
+    bytes_history: VecDeque<(Instant, u64)>,
 }
 
 const BASE_URL: &str = "https://cdn.atmos.chat/manifest";
@@ -204,6 +203,10 @@ async fn filter_missing_files_with_progress(
 
     for file in &manifest.Files {
         checked += 1;
+
+        thread::sleep(
+            std::time::Duration::from_millis(10)
+        );
 
         let file_name = file.get_filename();
         let _ = app_handle.emit(
@@ -327,14 +330,18 @@ async fn download_build_chunk(
             progress.downloaded_bytes += n as u64;
             progress.percent =
                 (progress.downloaded_bytes as f64 / progress.total_bytes as f64) * 100.0;
-            let elapsed = start_time.elapsed().as_secs_f64();
-            if elapsed > 0.0 {
-                let mbps = (progress.downloaded_bytes as f64 / 1024.0 / 1024.0) / elapsed;
-                progress.speed_mbps = mbps;
-                let remaining = progress
-                    .total_bytes
-                    .saturating_sub(progress.downloaded_bytes);
-                progress.eta_seconds = (remaining as f64 / 1024.0 / 1024.0 / mbps).ceil() as u64;
+            
+            let now = Instant::now();
+            let current_bytes = progress.downloaded_bytes;
+            progress.bytes_history.push_back((now, current_bytes));
+            
+            let five_seconds_ago = now - std::time::Duration::from_secs(5);
+            while let Some(&(timestamp, _)) = progress.bytes_history.front() {
+                if timestamp < five_seconds_ago {
+                    progress.bytes_history.pop_front();
+                } else {
+                    break;
+                }
             }
         }
 
@@ -527,6 +534,7 @@ pub async fn download_build_internal(
                 manifest_id: manifest_id.to_string(),
                 wants_cancel: false,
                 current_files: vec![],
+                bytes_history: VecDeque::new(),
             }));
 
             let start_time = Instant::now();
@@ -550,7 +558,42 @@ pub async fn download_build_internal(
                     loop {
                         interval.tick().await;
 
-                        let progress = progress_clone.lock().await;
+                        let mut progress = progress_clone.lock().await;
+                        let now = Instant::now();
+                        let current_bytes = progress.downloaded_bytes;
+                        
+                        let five_seconds_ago = now - std::time::Duration::from_secs(5);
+                        while let Some(&(timestamp, _)) = progress.bytes_history.front() {
+                            if timestamp < five_seconds_ago {
+                                progress.bytes_history.pop_front();
+                            } else {
+                                break;
+                            }
+                        }
+                        
+                        let mbps = if let Some(&(oldest_timestamp, oldest_bytes)) = progress.bytes_history.front() {
+                            let time_diff = (now - oldest_timestamp).as_secs_f64();
+                            if time_diff >= 5.0 {
+                                let bytes_diff = current_bytes.saturating_sub(oldest_bytes);
+                                (bytes_diff as f64 / 1024.0 / 1024.0) / 5.0
+                            } else if time_diff > 0.0 {
+                                let bytes_diff = current_bytes.saturating_sub(oldest_bytes);
+                                (bytes_diff as f64 / 1024.0 / 1024.0) / time_diff
+                            } else {
+                                0.0
+                            }
+                        } else {
+                            0.0
+                        };
+                        
+                        progress.speed_mbps = mbps;
+                        if mbps > 0.0 {
+                            let remaining = progress
+                                .total_bytes
+                                .saturating_sub(current_bytes);
+                            progress.eta_seconds = (remaining as f64 / 1024.0 / 1024.0 / mbps).ceil() as u64;
+                        }
+                        
                         if let Err(e) = handle_clone.emit("DOWNLOAD_PROGRESS", &*progress) {
                             dbg!(eprintln!("Failed to emit progress: {}", e));
                         }

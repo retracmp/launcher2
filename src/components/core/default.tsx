@@ -228,7 +228,7 @@ namespace UI {
         green:
           "not-[:disabled]:hover:bg-green-400/30 text-neutral-600 not-[:disabled]:hover:text-green-200",
         red: "not-[:disabled]:hover:bg-red-400/30 text-neutral-600 not-[:disabled]:hover:text-red-200",
-        invisible: "not-[:disabled]:hover:bg-neutral-700/10 text-neutral-400",
+        invisible: "not-[:disabled]:hover:bg-neutral-700/10 text-neutral-600",
       } as const
     )[props.colour];
 
