@@ -4,7 +4,7 @@ import { useFriends } from "src/wrapper/friends";
 import { useUserManager } from "src/wrapper/user";
 import { useOptions } from "src/wrapper/options";
 
-import { IoPerson, IoPersonAddSharp } from "react-icons/io5";
+import { IoPerson } from "react-icons/io5";
 import { motion } from "motion/react";
 import { twJoin } from "tailwind-merge";
 import { formatTime } from "src/helpers/time";
@@ -53,13 +53,13 @@ const FriendsList = () => {
     <motion.div
       className="no-scroll flex flex-col p-2 gap-2 h-full w-[58px] bg-neutral-700/10 border-l-neutral-700/40 border-l-1 border-solid overflow-y-auto overflow-x-hidden"
       initial={{
-        width: options.show_friends ? (extend ? 188 : 58) : 0,
+        width: options.show_friends ? (extend ? 208 : 58) : 0,
         paddingLeft: options.show_friends ? 8 : 0,
         paddingRight: options.show_friends ? 8 : 0,
         opacity: options.show_friends ? 1 : 0,
       }}
       animate={{
-        width: options.show_friends ? (extend ? 188 : 58) : 0,
+        width: options.show_friends ? (extend ? 208 : 58) : 0,
         paddingLeft: options.show_friends ? 8 : 0,
         paddingRight: options.show_friends ? 8 : 0,
         opacity: options.show_friends ? 1 : 0,

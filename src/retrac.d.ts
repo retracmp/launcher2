@@ -1,3 +1,25 @@
+type SavedMatchElimination = {
+  eliminated_account_id: string;
+  eliminated_at: string;
+  location_x: number;
+  location_y: number;
+};
+
+type SavedMatch = {
+  account_id: string;
+  match_id: string;
+  started_at: string;
+  ended_at: string | null;
+  eliminations: SavedMatchElimination[];
+  accumulated_score: number;
+  placement: number;
+  team_size: number;
+  victory_status: number;
+  tournament_id?: string;
+  tournament_window_id?: string;
+  arena_points_earned?: number;
+};
+
 type Grant = { backendType: string; quantity: number; template: string };
 
 type Item = {
@@ -231,7 +253,7 @@ type PoolID = {
   } | null;
 };
 
-type Match = {
+type LiveMatch = {
   id: string;
   pool_id: PoolID;
   created_at: string;

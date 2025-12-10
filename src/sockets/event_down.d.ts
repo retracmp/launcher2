@@ -69,12 +69,12 @@ type SocketDownEvent_Usernames = SocketBasicDownEvent & {
 
 type SocketDownEvent_ServerCreated = SocketBasicDownEvent & {
   id: "server_created";
-  server: Match;
+  server: LiveMatch;
 };
 
 type SocketDownEvent_ServerUpdated = SocketBasicDownEvent & {
   id: "server_updated";
-  server: Match;
+  server: LiveMatch;
 };
 
 type SocketDownEvent_ServerDeleted = SocketBasicDownEvent & {
@@ -84,7 +84,7 @@ type SocketDownEvent_ServerDeleted = SocketBasicDownEvent & {
 
 type SocketDownEvent_Servers = SocketBasicDownEvent & {
   id: "servers";
-  servers: Match[];
+  servers: LiveMatch[];
 };
 
 type SocketDownEvent_OTP = SocketBasicDownEvent & {
@@ -100,6 +100,11 @@ type SocketDownEvent_DisplayNameUpdated = SocketBasicDownEvent & {
 type SocketDownEvent_AggregatedStats = SocketBasicDownEvent & {
   id: "aggregated_stats";
   aggregated_stats: AggregatedStats;
+};
+
+type SocketDownEvent_MatchResponse = SocketBasicDownEvent & {
+  id: "match_response";
+  matches: Record<string, SavedMatch>;
 };
 
 type SocketDownEvent =
@@ -120,7 +125,8 @@ type SocketDownEvent =
   | SocketDownEvent_Servers
   | SocketDownEvent_OTP
   | SocketDownEvent_DisplayNameUpdated
-  | SocketDownEvent_AggregatedStats;
+  | SocketDownEvent_AggregatedStats
+  | SocketDownEvent_MatchResponse;
 
 type SocketDownEventType = SocketDownEvent["id"];
 type SocketDownEventDataFromType<T extends SocketDownEventType> = Prettify<

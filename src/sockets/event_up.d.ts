@@ -59,6 +59,10 @@ type SocketUpEvent_RequestAggregatedstats = SocketBasicUpEvent & {
   id: "request_aggregated_stats";
 };
 
+type SocketUpEvent_RequestMatches = SocketBasicUpEvent & {
+  id: "request_matches";
+};
+
 type SocketUpEvent =
   | SocketUpEvent_Heartbeat
   | SocketUpEvent_RequestUser
@@ -70,7 +74,8 @@ type SocketUpEvent =
   | SocketUpEvent_SubscribeOTP
   | SocketUpEvent_UnsubscribeOTP
   | SocketUpEvent_ChangeDisplayName
-  | SocketUpEvent_RequestAggregatedstats;
+  | SocketUpEvent_RequestAggregatedstats
+  | SocketUpEvent_RequestMatches;
 
 type SocketUpEventType = SocketUpEvent["id"];
 type SocketUpEventDataFromType<T extends SocketUpEventType> = Prettify<

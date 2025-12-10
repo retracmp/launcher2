@@ -4,7 +4,7 @@ import NumberFlow from "@number-flow/react";
 import { twJoin } from "tailwind-merge";
 
 type ServerRenderedProps = {
-  server: Match;
+  server: LiveMatch;
 };
 
 const ServerRendered = (props: ServerRenderedProps) => {
