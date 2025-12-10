@@ -138,9 +138,12 @@ type LauncherEventItem = {
 
 type FriendInformation = {
   accountId: string;
+  fortniteOpen: boolean;
+  launcherOpen: boolean;
   displayName: string;
   discordAvatarUrl: string;
-  currentEquippedCharacter: string;
+  currentCharacter: string;
+  lastOnline: string;
 };
 
 type LeaderboardEntry = {

@@ -39,9 +39,14 @@ type SocketDownEvent_User = SocketBasicDownEvent & {
   user: User;
 };
 
-type SocketDownEvent_FriendInfos = SocketBasicDownEvent & {
+type SocketDownEvent_FriendInfo = SocketBasicDownEvent & {
   id: "friend_infos";
   friendInformation: FriendInformation[];
+};
+
+type SocketDownEvent_FriendInfoUpdate = SocketBasicDownEvent & {
+  id: "friend_info_update";
+  friendInformation: FriendInformation;
 };
 
 type SocketDownEvent_Leaderboard = SocketBasicDownEvent & {
@@ -104,7 +109,8 @@ type SocketDownEvent =
   | SocketDownEvent_RequestHeartbeat
   | SocketDownEvent_PlayerCount
   | SocketDownEvent_User
-  | SocketDownEvent_FriendInfos
+  | SocketDownEvent_FriendInfo
+  | SocketDownEvent_FriendInfoUpdate
   | SocketDownEvent_Leaderboard
   | SocketDownEvent_Usernames
   | SocketDownEvent_Code
