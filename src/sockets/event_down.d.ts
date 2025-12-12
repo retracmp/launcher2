@@ -107,6 +107,11 @@ type SocketDownEvent_MatchResponse = SocketBasicDownEvent & {
   matches: Record<string, SavedMatch>;
 };
 
+type SocketDownEvent_PurchasedProductsResponse = SocketBasicDownEvent & {
+  id: "purchased_products_response";
+  products: PurchasedProduct[];
+};
+
 type SocketDownEvent =
   | SocketDownEvent_Close
   | SocketDownEvent_Error
@@ -126,7 +131,8 @@ type SocketDownEvent =
   | SocketDownEvent_OTP
   | SocketDownEvent_DisplayNameUpdated
   | SocketDownEvent_AggregatedStats
-  | SocketDownEvent_MatchResponse;
+  | SocketDownEvent_MatchResponse
+  | SocketDownEvent_PurchasedProductsResponse;
 
 type SocketDownEventType = SocketDownEvent["id"];
 type SocketDownEventDataFromType<T extends SocketDownEventType> = Prettify<

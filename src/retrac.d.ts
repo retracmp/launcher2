@@ -1,3 +1,19 @@
+type PurchasedProduct = {
+  product_id: string;
+  title: string;
+  description: string;
+  base_amount: number;
+  multi_purchase: boolean;
+  frontend_priority: number;
+  icon_image_url: string | null;
+  banner_image_url: string | null;
+  colour_tint_hex: string;
+  discord_role: string | null;
+  sellauth_product_id: string | null;
+  purchase_date_range: string | null;
+  purchase_grants: Grant[];
+};
+
 type SavedMatchElimination = {
   eliminated_account_id: string;
   eliminated_at: string;

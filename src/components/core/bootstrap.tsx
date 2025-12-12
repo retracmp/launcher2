@@ -16,6 +16,7 @@ import { getName, getVersion } from "@tauri-apps/api/app";
 import { appLocalDataDir } from "@tauri-apps/api/path";
 import invoke from "src/tauri";
 import { endpoints_config } from "src/axios/endpoints";
+import { usePurchasedProducts } from "src/wrapper/purchased_products";
 
 const ANTI_SHORTCUTS = ["ctrl+p", "ctrl+f", "ctrl+u", "ctrl+j"];
 const ANTI_SHORTCUTS_ALLOW_IN_DEV = ["ctrl+r", "f5"];
@@ -24,6 +25,7 @@ const Boostrap = () => {
   const application = useApplicationInformation();
   const bannerManager = useBannerManager();
   const userManager = useUserManager();
+  const products = usePurchasedProducts();
   const retrac = useRetrac();
   const socket = useLauncherSocket();
   const library = useLibrary();
@@ -110,6 +112,7 @@ const Boostrap = () => {
     userManager.set_stage(LauncherStage.AllGood);
 
     socket.send({ id: "request_user" });
+    socket.send({ id: "request_purchased_products" });
     socket.send({ id: "request_servers" });
     retrac.set_launcher_news(data.news);
     retrac.set_manifests(data.manifest_information);
@@ -183,6 +186,12 @@ const Boostrap = () => {
     });
   };
 
+  const onSocketPurchasedProducts = (
+    data: SocketDownEventDataFromType<"purchased_products_response">
+  ) => {
+    products.set_purchased_products(data.products);
+  };
+
   const syncUserStages = () => {
     if (
       userManager._token != null &&
@@ -221,6 +230,7 @@ const Boostrap = () => {
     socket.bind("server_updated", onSocketServerUpdated);
     socket.bind("server_deleted", onSocketServerDeleted);
     socket.bind("display_name_updated", onSocketDisplayNameChanged);
+    socket.bind("purchased_products_response", onSocketPurchasedProducts);
 
     return () => {
       socket.unbind("close", onSocketClose);
@@ -234,6 +244,7 @@ const Boostrap = () => {
       socket.unbind("server_updated", onSocketServerUpdated);
       socket.unbind("server_deleted", onSocketServerDeleted);
       socket.unbind("display_name_updated", onSocketDisplayNameChanged);
+      socket.unbind("purchased_products_response", onSocketPurchasedProducts);
     };
   }, []);
 

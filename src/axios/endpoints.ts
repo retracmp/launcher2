@@ -60,7 +60,7 @@ export const endpoints_config = (
     launcher_websocket_endpoint: `${hostname.websocket_protocol}://${hostname.launcher_hostname}/websocket/launcher`,
     oauth_authorise_endpoint: `${hostname.http_protocol}://${hostname.oauth_hostname}/oauth/authorise?client_id=01K5FQWCFHYHK3PNW357RE9YRZ&response_type=code&redirect_uri=retrac%3A%2F%2Fcallback`,
     oauth_token_endpoint: `${hostname.http_protocol}://${hostname.oauth_hostname}/oauth/token`,
-    fiscal_advert_endpoint: `${hostname.http_protocol}://${hostname.fiscal_hostname}/adverts/flow`,
+    fiscal_advert_endpoint: `${hostname.http_protocol}://${hostname.fiscal_hostname}/labs/flow`,
   };
 };
 

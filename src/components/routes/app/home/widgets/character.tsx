@@ -3,6 +3,8 @@ import { useRetrac } from "src/wrapper/retrac";
 
 import UI from "src/components/core/default";
 import NumberFlow from "@number-flow/react";
+import { usePurchasedProducts } from "src/wrapper/purchased_products";
+import { twJoin } from "tailwind-merge";
 
 type CharacterWidgetProps = {
   user: User;
@@ -11,6 +13,10 @@ type CharacterWidgetProps = {
 
 const CharacterWidget = (props: CharacterWidgetProps) => {
   const online = useRetrac((s) => s.players_online);
+
+  const purchases = usePurchasedProducts();
+  const best_product = purchases.highest_prioirty_product();
+  console.log("best prodicyt", best_product);
 
   const loadout = Object.values(props.user.profiles.athena.loadouts).find(
     (l) => l.index === 0
@@ -58,10 +64,14 @@ const CharacterWidget = (props: CharacterWidgetProps) => {
         <div className="flex flex-col w-full gap-0.5">
           <UI.P>
             Welcome back,
-            <span className="font-bold font-geist">
-              {" " + props.user.account.display_name}
+            <span
+              className={twJoin("font-bold font-geist")}
+              style={{
+                color: best_product ? best_product.colour_tint_hex : "",
+              }}
+            >
+              {" " + props.user.account.display_name}.
             </span>
-            .
           </UI.P>
           <UI.P className="text-neutral-500">
             There

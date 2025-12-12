@@ -15,6 +15,7 @@ import {
 import { IoLogOutSharp } from "react-icons/io5";
 import UI from "src/components/core/default";
 import Account from "src/components/visual/account";
+import { usePurchasedProducts } from "src/wrapper/purchased_products";
 
 const SettingsPage = () => {
   const application = useApplicationInformation();
@@ -22,9 +23,13 @@ const SettingsPage = () => {
   const options = useOptions();
   const retrac = useRetrac();
 
+  const purchases = usePurchasedProducts();
+  const donator = purchases.products ? purchases.products.length > 0 : false;
+
   const push = useBannerManager((s) => s.push);
 
   useEffect(() => {
+    if (donator) return;
     if (retrac.donation_message_popped) return;
 
     push({
@@ -35,7 +40,7 @@ const SettingsPage = () => {
     });
 
     retrac.set_donation_message_popped(true);
-  }, [user._user, retrac.donation_message_popped]);
+  }, [user._user, retrac.donation_message_popped, donator]);
 
   return (
     <>
@@ -230,7 +235,7 @@ const SettingsPage = () => {
           _slider_values={[1.0, 1.1, 1.2, 1.3, 1.4, 1.5]}
         />
 
-        {true && (
+        {donator && (
           <>
             <ColourOption
               title="Hue"
@@ -323,7 +328,7 @@ const SettingsPage = () => {
           _animate
         />
 
-        {true && (
+        {donator && (
           <>
             <SliderOption
               title="Leaderboard Page Size"
