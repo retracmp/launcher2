@@ -3,7 +3,7 @@ import { create } from "zustand";
 type PurchasedProductsState = {
   products: PurchasedProduct[] | null;
   set_purchased_products: (response: PurchasedProduct[]) => void;
-  highest_prioirty_product: () => PurchasedProduct | undefined;
+  highest_product: () => PurchasedProduct | undefined;
 };
 
 export const usePurchasedProducts = create<PurchasedProductsState>(
@@ -14,12 +14,17 @@ export const usePurchasedProducts = create<PurchasedProductsState>(
       set({ products: response });
     },
 
-    highest_prioirty_product: () => {
-      return get().products?.reduce((prev, current) => {
+    highest_product: () => {
+      const products = get().products;
+      if (products === null) return undefined;
+
+      return products.reduce((prev, current) => {
+        if (current === undefined) return prev;
+        if (prev === undefined) return current;
         return prev.frontend_priority > current.frontend_priority
           ? prev
           : current;
-      });
+      }, undefined as PurchasedProduct | undefined);
     },
   })
 );

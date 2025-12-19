@@ -104,9 +104,7 @@ const DeveloperPage = () => {
             colour="invisible"
             className="p-2"
           >
-            <code className="bg-neutral-950 rounded-sm px-1">
-              Nothing giftbox
-            </code>
+            Nothing giftbox
           </UI.Button>
           <UI.Button
             onClick={() =>
@@ -122,20 +120,29 @@ const DeveloperPage = () => {
             colour="invisible"
             className="p-2"
           >
-            <code className="bg-neutral-950 rounded-sm px-1">
-              Tournament Giftbox
-            </code>
+            Tournament Giftbox
           </UI.Button>
           <UI.Button
             onClick={() =>
               send_custom_message({
-                product_id: "donator_test",
+                product_id: "donator_secret",
               })
             }
             colour="invisible"
             className="p-2"
           >
             Give yourself package
+          </UI.Button>
+          <UI.Button
+            onClick={() =>
+              send_custom_message({
+                clear_purchased_bills: true,
+              })
+            }
+            colour="invisible"
+            className="p-2"
+          >
+            Clear Packages
           </UI.Button>
         </OptionGroup>
       )}

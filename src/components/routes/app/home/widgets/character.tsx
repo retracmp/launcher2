@@ -15,7 +15,7 @@ const CharacterWidget = (props: CharacterWidgetProps) => {
   const online = useRetrac((s) => s.players_online);
 
   const purchases = usePurchasedProducts();
-  const best_product = purchases.highest_prioirty_product();
+  const best_product = purchases.highest_product();
   console.log("best prodicyt", best_product);
 
   const loadout = Object.values(props.user.profiles.athena.loadouts).find(

@@ -862,16 +862,12 @@ pub async fn download_build_internal(
                 if state.is_cancel_requested(manifest_id) {
                     has_error = true;
                     error_msg = "".to_string();
-                } else if !state.is_pause_requested(manifest_id) {
-                    has_pause = false;
                 } else {
                     tokio::time::sleep(std::time::Duration::from_millis(500)).await;
                     let state = util::get_downloading_state().await;
                     if state.is_cancel_requested(manifest_id) {
                         has_error = true;
                         error_msg = "".to_string();
-                    } else if !state.is_pause_requested(manifest_id) {
-                        has_pause = false;
                     }
                 }
             }
