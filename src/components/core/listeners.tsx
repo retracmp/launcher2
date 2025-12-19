@@ -87,11 +87,6 @@ const TauriListeners = () => {
         progress.payload.manifest_id,
         progress.payload
       );
-
-      console.log(`[verify] ${progress.payload.manifest_id}
-        total_files: ${progress.payload.total_files}
-        checked_files: ${progress.payload.checked_files}
-        current_file: ${progress.payload.current_file}`);
     },
     []
   );
@@ -100,10 +95,6 @@ const TauriListeners = () => {
     downloadState.set_allowed_to_verify(
       progress.payload.manifest_id,
       progress.payload.status
-    );
-
-    console.log(
-      `[verify] ${progress.payload.manifest_id} with status: ${progress.payload.status}`
     );
   }, []);
 

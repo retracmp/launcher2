@@ -125,12 +125,28 @@ const LibraryPage = () => {
                   className="flex flex-col gap-2 w-full h-full"
                 >
                   {sortedLibrary.map((entry) => (
-                    <FortniteBuild entry={entry} key={entry.version} />
+                    <FortniteBuild
+                      entry={entry}
+                      key={entry.version}
+                      exists_in_launcher_public={
+                        Fake_manifest_information.findIndex(
+                          (x) => x.manifestId === entry.manifestId
+                        ) != -1
+                      }
+                    />
                   ))}
                 </Reorder.Group>
               ) : (
                 sortedLibrary.map((entry) => (
-                  <FortniteBuild entry={entry} key={entry.version} />
+                  <FortniteBuild
+                    entry={entry}
+                    key={entry.version}
+                    exists_in_launcher_public={
+                      Fake_manifest_information.findIndex(
+                        (x) => x.manifestId === entry.manifestId
+                      ) != -1
+                    }
+                  />
                 ))
               )}
             </AnimatePresence>

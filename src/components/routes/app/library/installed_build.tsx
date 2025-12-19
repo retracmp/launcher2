@@ -11,6 +11,7 @@ import UI from "src/components/core/default";
 
 type InstalledBuildProps = {
   entry: LibraryEntry;
+  exists_in_launcher_public: boolean;
 };
 
 const InstalledBuild = (props: InstalledBuildProps) => {
@@ -86,6 +87,8 @@ const InstalledBuild = (props: InstalledBuildProps) => {
   const closingBuildIsCurrent =
     library.launchState === LAUNCH_STATE.CLOSING &&
     props.entry.buildName === library.launchedBuild?.buildName;
+
+  if (props.exists_in_launcher_public) return;
 
   return (
     <motion.div

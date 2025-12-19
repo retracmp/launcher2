@@ -1,10 +1,11 @@
 import { useDownloadState } from "src/wrapper/download";
-import { useLibrary } from "src/wrapper/library";
+import { LAUNCH_STATE, useLibrary } from "src/wrapper/library";
 import { useOptions } from "src/wrapper/options";
 import { open } from "@tauri-apps/plugin-dialog";
 
 import {
   IoBuildSharp,
+  IoClose,
   IoDownload,
   IoEyeSharp,
   IoPlay,
@@ -84,6 +85,35 @@ const DownloadBuild = (props: InstalledBuildProps) => {
     }
   };
 
+  const entry = library.library.find(
+    (s) => s.manifestId === props.entry.manifestId
+  );
+  const launchedBuildIsCurrent =
+    library.launchState === LAUNCH_STATE.LAUNCHED &&
+    entry?.buildName === library.launchedBuild?.buildName;
+  const launchingBuildIsCurrent =
+    library.launchState === LAUNCH_STATE.LAUNCHING &&
+    entry?.buildName === library.launchedBuild?.buildName;
+  const closingBuildIsCurrent =
+    library.launchState === LAUNCH_STATE.CLOSING &&
+    entry?.buildName === library.launchedBuild?.buildName;
+
+  const launchBuild = async () => {
+    if (!entry) return;
+    await library.launchBuild(entry.version, null);
+  };
+
+  const closeBuild = async () => {
+    if (library.launchState === LAUNCH_STATE.LAUNCHED) {
+      library.setLaunchState(LAUNCH_STATE.CLOSING);
+      await invoke.close_fortnite();
+      setTimeout(() => {
+        library.setLaunchedBuild(null);
+        library.setLaunchState(LAUNCH_STATE.NONE);
+      }, 5000);
+    }
+  };
+
   return (
     <motion.div
       className={`group flex flex-row items-center w-full p-2.5 px-2 gap-2 rounded-sm border-neutral-700/10 border-[1px] border-solid bg-neutral-700/10 hover:bg-neutral-700/15 transition-colors hover:duration-[20ms] duration-150 backdrop-blur-md z-[200]`}
@@ -157,13 +187,33 @@ const DownloadBuild = (props: InstalledBuildProps) => {
         {alreadyDownloaded && !currentlyDownloading && (
           <>
             {!currentlyVerifying && (
-              <UI.RowButton
-                colour="green"
-                tooltip="Launch Build"
-                on_click={() => null}
-              >
-                <IoPlay className="w-full h-full" />
-              </UI.RowButton>
+              <>
+                {launchedBuildIsCurrent && (
+                  <UI.RowButton
+                    colour="red"
+                    on_click={closeBuild}
+                    disabled={closingBuildIsCurrent}
+                    tooltip="Close Fortnite"
+                  >
+                    <IoClose className="w-full h-full" />
+                  </UI.RowButton>
+                )}
+
+                {!launchedBuildIsCurrent && (
+                  <UI.RowButton
+                    colour="green"
+                    disabled={launchingBuildIsCurrent}
+                    tooltip="Launch Build"
+                    on_click={launchBuild}
+                  >
+                    {launchingBuildIsCurrent ? (
+                      <UI.LoadingSpinner />
+                    ) : (
+                      <IoPlay className="w-full h-full" />
+                    )}
+                  </UI.RowButton>
+                )}
+              </>
             )}
 
             <UI.RowButton

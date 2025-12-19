@@ -4,6 +4,7 @@ import { useOptions } from "src/wrapper/options";
 import { useRetrac } from "src/wrapper/retrac";
 import { useLibrary } from "src/wrapper/library";
 import { useNavigate } from "@tanstack/react-router";
+import { useLauncherSocket } from "src/sockets";
 
 import { SimpleUI } from "src/import/ui";
 import {
@@ -18,6 +19,7 @@ import UI from "src/components/core/default";
 const DeveloperPage = () => {
   const push = useBannerManager((s) => s.push);
   const options = useOptions();
+  const socket = useLauncherSocket();
   const retrac = useRetrac();
   const navigate = useNavigate();
   const launch = useLibrary((s) => s.launchBuild);
@@ -28,6 +30,15 @@ const DeveloperPage = () => {
     navigate({
       to: ib,
     });
+
+  const send_custom_message = (options: Object) => {
+    if (!socket.socket) return;
+
+    socket.send({
+      id: "custom_socket_event",
+      ...options,
+    } as Omit<SocketUpEventDataFromType<"custom_socket_event">, "version">);
+  };
 
   return (
     <>
@@ -81,6 +92,53 @@ const DeveloperPage = () => {
           External login
         </UI.Button>
       </OptionGroup>
+
+      {socket.socket && (
+        <OptionGroup title="websocket" _row>
+          <UI.Button
+            onClick={() =>
+              send_custom_message({
+                gift: "GB_MakeGood",
+              })
+            }
+            colour="invisible"
+            className="p-2"
+          >
+            <code className="bg-neutral-950 rounded-sm px-1">
+              Nothing giftbox
+            </code>
+          </UI.Button>
+          <UI.Button
+            onClick={() =>
+              send_custom_message({
+                gift: "GB_TournamentReward",
+                gift_params: {
+                  eventId: "Riot_Event",
+                  eventWindowId: "Riot_Event_Window_1",
+                  token: "",
+                },
+              })
+            }
+            colour="invisible"
+            className="p-2"
+          >
+            <code className="bg-neutral-950 rounded-sm px-1">
+              Tournament Giftbox
+            </code>
+          </UI.Button>
+          <UI.Button
+            onClick={() =>
+              send_custom_message({
+                product_id: "donator_test",
+              })
+            }
+            colour="invisible"
+            className="p-2"
+          >
+            Give yourself package
+          </UI.Button>
+        </OptionGroup>
+      )}
 
       <OptionGroup title="Content Options">
         <BooleanOption

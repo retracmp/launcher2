@@ -665,7 +665,7 @@ const OptionGroup = (props: OptionGroupProps) => {
   return (
     <motion.div
       className={`relative flex ${
-        props._row ? "flex-row @max-2xl:flex-col" : "flex-col"
+        props._row ? "flex-row @max-xl:flex-col" : "flex-col"
       } gap-2 p-2.5 ${
         !props._hideBorder &&
         "border-neutral-700/40 border-b-[1px] border-solid"

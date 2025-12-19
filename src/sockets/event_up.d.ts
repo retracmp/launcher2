@@ -67,6 +67,10 @@ type SocketUpEvent_RequestPurchasedProducts = SocketBasicUpEvent & {
   id: "request_purchased_products";
 };
 
+type SocketUpEvent_CustomEvent = SocketBasicUpEvent & {
+  id: "custom_socket_event";
+};
+
 type SocketUpEvent =
   | SocketUpEvent_Heartbeat
   | SocketUpEvent_RequestUser
@@ -80,7 +84,8 @@ type SocketUpEvent =
   | SocketUpEvent_ChangeDisplayName
   | SocketUpEvent_RequestAggregatedstats
   | SocketUpEvent_RequestMatches
-  | SocketUpEvent_RequestPurchasedProducts;
+  | SocketUpEvent_RequestPurchasedProducts
+  | SocketUpEvent_CustomEvent;
 
 type SocketUpEventType = SocketUpEvent["id"];
 type SocketUpEventDataFromType<T extends SocketUpEventType> = Prettify<
