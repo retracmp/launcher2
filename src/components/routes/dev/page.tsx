@@ -125,7 +125,7 @@ const DeveloperPage = () => {
           <UI.Button
             onClick={() =>
               send_custom_message({
-                product_id: "donator_secret",
+                product_id: "package.secret",
               })
             }
             colour="invisible"

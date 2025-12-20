@@ -23,12 +23,12 @@ export const hostname_config = (
       : `launcher-service-${enviroment}.retrac.site`,
 
     oauth_hostname: app.dev
-      ? "localhost:50055/proxy/internal"
+      ? "oauth-service-dev.localhost"
       : `oauth-service-${enviroment}.retrac.site`,
 
     fiscal_hostname: app.dev
       ? // TODO: actually make the service and add a port
-        "localhost:99999"
+        "fiscal-service-dev.localhost"
       : `fiscal-service-${enviroment}.retrac.site`,
   };
 };
