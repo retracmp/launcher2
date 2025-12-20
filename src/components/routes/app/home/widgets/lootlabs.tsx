@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useUserManager } from "src/wrapper/user";
 import { endpoints_config } from "src/axios/endpoints";
 import { useApplicationInformation } from "src/wrapper/tauri";
@@ -19,20 +19,25 @@ const LootLabsWidget = () => {
 
   const next_claim_time = user._user.account.perks["fiscal.claim_time"] || 0;
 
-  const difference =
-    new Date().getTime() - new Date(next_claim_time || 0).getTime();
-  const disabled =
-    new Date(next_claim_time || 0).getTime() > new Date().getTime();
+  const calculateTimeRemaining = useCallback(() => {
+    const now = new Date().getTime();
+    const claimTime = typeof next_claim_time === 'number' ? next_claim_time : new Date(next_claim_time).getTime();
+    return Math.max(0, claimTime - now);
+  }, [next_claim_time]);
 
-  const [originalText, setOriginalText] = useState(formatTime(difference));
+  const [timeRemaining, setTimeRemaining] = useState(calculateTimeRemaining());
+  const disabled = timeRemaining > 0;
 
   useEffect(() => {
+    // Update immediately on mount
+    setTimeRemaining(calculateTimeRemaining());
+
     const interval = setInterval(() => {
-      setOriginalText(formatTime(difference));
+      setTimeRemaining(calculateTimeRemaining());
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [difference]);
+  }, [calculateTimeRemaining]);
 
   const handleClaimOffer = async () => {
     if (user._token === null)
@@ -93,7 +98,7 @@ const LootLabsWidget = () => {
           }}
         >
           <span className="text-neutral-400">
-            Offer refreshes in {originalText}!
+            Offer refreshes in {formatTime(timeRemaining)}!
           </span>
         </UI.Button>
       )}
