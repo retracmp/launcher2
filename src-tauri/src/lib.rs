@@ -39,23 +39,42 @@ pub fn run(
     Ok(())
   });
 
-  builder = builder.invoke_handler(tauri::generate_handler![
-    #[cfg(target_os = "windows")]
-    commands::get_windows_version,
-    commands::get_fortnite_version,
-    commands::launch_retrac,
-    commands::download_build,
-    commands::delete_build,
-    commands::is_fortnite_running,
-    commands::close_fortnite,
-    commands::add_to_defender,
-    commands::add_to_defender_multi,
-    commands::get_app_action,
-    commands::cancel_download,
-    commands::pause_download,
-    commands::resume_download,
-    commands::open_downloads_window,
-  ]);
+  #[cfg(target_os = "windows")]
+  {
+    builder = builder.invoke_handler(tauri::generate_handler![
+      commands::get_windows_version,
+      commands::get_fortnite_version,
+      commands::launch_retrac,
+      commands::download_build,
+      commands::delete_build,
+      commands::is_fortnite_running,
+      commands::close_fortnite,
+      commands::add_to_defender,
+      commands::add_to_defender_multi,
+      commands::get_app_action,
+      commands::cancel_download,
+      commands::pause_download,
+      commands::resume_download,
+      commands::open_downloads_window,
+    ]);
+  }
+  #[cfg(not(target_os = "windows"))]
+  {
+    builder = builder.invoke_handler(tauri::generate_handler![
+      commands::get_fortnite_version,
+      commands::launch_retrac,
+      commands::download_build,
+      commands::delete_build,
+      commands::is_fortnite_running,
+      commands::close_fortnite,
+      commands::add_to_defender_multi,
+      commands::get_app_action,
+      commands::cancel_download,
+      commands::pause_download,
+      commands::resume_download,
+      commands::open_downloads_window,
+    ]);
+  }
 
   builder
     .run(tauri::generate_context!())

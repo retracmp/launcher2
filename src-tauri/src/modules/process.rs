@@ -31,14 +31,22 @@ pub fn is_process_running(exe_name: &str) -> bool {
     })
 }
 
+#[cfg(target_os = "windows")]
 use std::path::PathBuf;
+#[cfg(target_os = "windows")]
 use std::ptr::null_mut;
+#[cfg(target_os = "windows")]
 use widestring::U16CString;
+#[cfg(target_os = "windows")]
 use winapi::um::handleapi::CloseHandle;
+#[cfg(target_os = "windows")]
 use winapi::um::minwinbase::LPSECURITY_ATTRIBUTES;
+#[cfg(target_os = "windows")]
 use winapi::um::processthreadsapi::{CreateProcessW, PROCESS_INFORMATION, STARTUPINFOW};
+#[cfg(target_os = "windows")]
 use winapi::um::winbase::{CREATE_SUSPENDED, DETACHED_PROCESS};
 
+#[cfg(target_os = "windows")]
 fn start_internal(
     process_path: PathBuf,
     suspended: bool,
@@ -101,10 +109,17 @@ fn start_internal(
     Ok(())
 }
 
+#[cfg(target_os = "windows")]
 pub fn start(process_path: PathBuf) -> Result<(), String> {
     start_internal(process_path, false, None)
 }
 
+#[cfg(not(target_os = "windows"))]
+pub fn start(_process_path: std::path::PathBuf) -> Result<(), String> {
+    Err("Process starting is only available on Windows".to_string())
+}
+
+#[cfg(target_os = "windows")]
 pub fn start_with_args(process_path: PathBuf, args: Vec<&str>) -> Result<(), String> {
     let args = args
         .into_iter()
@@ -118,10 +133,22 @@ pub fn start_with_args(process_path: PathBuf, args: Vec<&str>) -> Result<(), Str
     start_internal(process_path, false, Some(args))
 }
 
+#[cfg(not(target_os = "windows"))]
+pub fn start_with_args(_process_path: std::path::PathBuf, _args: Vec<&str>) -> Result<(), String> {
+    Err("Process starting with args is only available on Windows".to_string())
+}
+
+#[cfg(target_os = "windows")]
 pub fn start_suspended(process_path: PathBuf) -> Result<(), String> {
     start_internal(process_path, true, None)
 }
 
+#[cfg(not(target_os = "windows"))]
+pub fn start_suspended(_process_path: std::path::PathBuf) -> Result<(), String> {
+    Err("Starting suspended processes is only available on Windows".to_string())
+}
+
+#[cfg(target_os = "windows")]
 pub fn start_suspended_with_args(process_path: PathBuf, args: Vec<&str>) -> Result<(), String> {
     let args = args
         .into_iter()
@@ -135,6 +162,12 @@ pub fn start_suspended_with_args(process_path: PathBuf, args: Vec<&str>) -> Resu
     start_internal(process_path, true, Some(args))
 }
 
+#[cfg(not(target_os = "windows"))]
+pub fn start_suspended_with_args(_process_path: std::path::PathBuf, _args: Vec<&str>) -> Result<(), String> {
+    Err("Starting suspended processes with args is only available on Windows".to_string())
+}
+
+#[cfg(target_os = "windows")]
 pub fn launch_eac_setup(
     path: &PathBuf,
     arg: &str,
@@ -202,8 +235,10 @@ pub fn launch_eac_setup(
     Ok(())
 }
 
+#[cfg(target_os = "windows")]
 use winapi::um::winuser::{MessageBoxW, MB_OK};
 
+#[cfg(target_os = "windows")]
 pub fn message_box(title: &str, body: &str) -> Result<(), String> {
     let title_wide = U16CString::from_str(title)
         .map_err(|e| format!("Failed to convert title to wide string: {}", e))?;
@@ -220,4 +255,14 @@ pub fn message_box(title: &str, body: &str) -> Result<(), String> {
     }
 
     Ok(())
+}
+
+#[cfg(not(target_os = "windows"))]
+pub fn message_box(_title: &str, _body: &str) -> Result<(), String> {
+    Err("Message boxes are only available on Windows".to_string())
+}
+
+#[cfg(not(target_os = "windows"))]
+pub fn launch_eac_setup(_path: &std::path::PathBuf, _arg: &str) -> Result<(), String> {
+    Err("EAC setup is only available on Windows".to_string())
 }

@@ -1,12 +1,16 @@
 use std::fs::File;
 use std::io::{Read, Seek};
 use tauri::{AppHandle, Manager};
+
+#[cfg(target_os = "windows")]
 use winver::WindowsVersion;
 
-use crate::modules::{admin, chunker, launch, process, util 
-  // admin
-};
+use crate::modules::{chunker, launch, process, util};
 
+#[cfg(target_os = "windows")]
+use crate::modules::admin;
+
+#[cfg(target_os = "windows")]
 #[tauri::command]
 pub async fn get_windows_version() -> Result<i32, String> {
   let version = WindowsVersion::detect().unwrap();
@@ -94,6 +98,7 @@ pub async fn close_fortnite() -> Result<bool, String> {
   }
 }
 
+#[cfg(target_os = "windows")]
 #[tauri::command]
 pub async fn add_to_defender(
   path: &str,

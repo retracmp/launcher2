@@ -13,12 +13,9 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 tauri-build = { version = "2.5", features = [] }
 
 [dependencies]
-winapi = { version = "0.3", features = ["winbase", "processthreadsapi", "handleapi", "minwindef", "synchapi", "errhandlingapi", "shellapi", "securitybaseapi"] }
-widestring = "1.0"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 sysinfo = "0.30.5"
-winver = "1.0.0"
 regex = "1"
 md-5 = "0.10.6"
 digest = "0.10"
@@ -34,6 +31,11 @@ futures-util = "0.3.31"
 tokio-util = "0.7.15"
 num_cpus = "1.16.0"
 tauri-plugin-process = "2"
+
+[target.'cfg(target_os = "windows")'.dependencies]
+winapi = { version = "0.3", features = ["winbase", "processthreadsapi", "handleapi", "minwindef", "synchapi", "errhandlingapi", "shellapi", "securitybaseapi", "winuser"] }
+winver = "1.0.0"
+widestring = "1.0"
 
 [target."cfg(any(target_os = \"macos\", windows, target_os = \"linux\"))".dependencies]
 tauri-plugin-single-instance = { version = "2.0.0", features = ["deep-link"] }
