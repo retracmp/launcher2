@@ -3,6 +3,7 @@ import { twJoin } from "tailwind-merge";
 
 const Windows10BorderFix = () => {
   const application = useApplicationInformation();
+  if (application.windowsVersion < 0) return null;
 
   return (
     <div

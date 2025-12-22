@@ -12,6 +12,7 @@
   "app": {
     "windows": [
       {
+        "label": "main",
         "title": "Retrac",
         "width": 936,
         "height": 600,
@@ -21,10 +22,17 @@
         "theme": "Dark",
         "windowClassname": "Retrac",
         "backgroundColor": "#2e2e2e",
-        "decorations": false,
-        "shadow": true,
+        "decorations": true,
+        "transparent": true,
+        "shadow": false,
         "maximizable": false,
-        "focus": true
+        "focus": true,
+        "titleBarStyle": "Overlay",
+        "hiddenTitle": true,
+        "trafficLightPosition": {
+          "x": 12,
+          "y": 15
+        }
       }
     ],
     "security": {

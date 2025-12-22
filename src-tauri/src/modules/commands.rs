@@ -165,7 +165,7 @@ pub async fn open_downloads_window(
     return Ok(true);
   }
 
-  match tauri::WebviewWindowBuilder::new(
+  let mut builder = tauri::WebviewWindowBuilder::new(
     &handle,
     "downloads",
     tauri::WebviewUrl::App("index.html".into()),
@@ -175,10 +175,23 @@ pub async fn open_downloads_window(
   .min_inner_size(530.0, 400.0)
   .max_inner_size(1200.0, 800.0)
   .theme(Some(tauri::Theme::Dark))
-  .decorations(false)
-  .shadow(true)
-  .maximizable(false)
-  .build()
+  .maximizable(false);
+
+  #[cfg(target_os = "macos")]
+  {
+    use tauri::TitleBarStyle;
+    builder = builder
+      .decorations(true)
+      .shadow(false)
+      .title_bar_style(TitleBarStyle::Overlay);
+  }
+
+  #[cfg(not(target_os = "macos"))]
+  {
+    builder = builder.decorations(false).shadow(true);
+  }
+
+  match builder.build()
   {
     Ok(window) => {
       if let Err(e) = window.set_focus() {

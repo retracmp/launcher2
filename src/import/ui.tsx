@@ -24,11 +24,13 @@ export namespace SimpleUI {
     state: (typeof DrawerState)[keyof typeof DrawerState];
     position: (typeof DrawerPosition)[keyof typeof DrawerPosition];
     items: DrawerItemsOptions;
+    margin: number;
   };
   const DefaultDrawerOptions: DrawerOptions = {
     state: DrawerState.Expanded,
     position: DrawerPosition.Left,
     items: { top: [], bottom: [] },
+    margin: 0,
   };
   export const Drawer = (props: Partial<DrawerOptions>) => {
     const options = { ...DefaultDrawerOptions, ...props };
@@ -91,6 +93,12 @@ export namespace SimpleUI {
               }
         }
       >
+        <s
+          style={{
+            marginTop: `${options.margin}px`,
+          }}
+        ></s>
+
         {options.items.top.map(render_item)}
 
         <s className="mt-auto" />

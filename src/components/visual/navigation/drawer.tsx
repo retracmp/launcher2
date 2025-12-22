@@ -229,7 +229,13 @@ const Drawer = () => {
 
   if (application.updateNeeded) return null;
 
-  return <SimpleUI.Drawer state={state} items={routes} />;
+  return (
+    <SimpleUI.Drawer
+      state={state}
+      items={routes}
+      margin={application.windowsVersion < 0 ? 20 : 0}
+    />
+  );
 };
 
 export default Drawer;

@@ -1,4 +1,6 @@
 use tauri::Manager;
+
+#[cfg(target_os = "windows")]
 use tauri_plugin_deep_link::DeepLinkExt;
 
 pub mod modules;
@@ -28,13 +30,20 @@ pub fn run(
     let handle = app.handle();
     util::set_app_handle(handle.to_owned());
 
-    let main_window = app.get_webview_window("main").expect("no main window");
-    if main_window.set_shadow(true).is_err() {
-      eprintln!("Failed to set window shadow");
+    if let Some(main_window) = app.get_webview_window("main") {
+      if main_window.set_shadow(true).is_err() {
+        eprintln!("Failed to set window shadow");
+      }
+    } else {
+      eprintln!("Warning: main window not found");
     }
 
-    #[cfg(desktop)]
-    app.deep_link().register("retrac")?;
+    #[cfg(target_os = "windows")]
+    {
+      if let Err(e) = app.deep_link().register("retrac") {
+        eprintln!("Failed to register deep link: {}", e);
+      }
+    }
 
     Ok(())
   });

@@ -40,7 +40,7 @@ const Boostrap = () => {
       await getName(),
       await getVersion(),
       import.meta.env.MODE === "development",
-      (await invoke.get_windows_version()) || 0
+      (await invoke.get_windows_version()) || -1
     );
 
     options.fix_content_directory(await appLocalDataDir());
