@@ -368,6 +368,7 @@ export namespace SimpleUI {
     scrollable: boolean;
     foldable?: "start-open" | "start-folded";
     border_hidden?: boolean;
+    children?: React.ReactNode;
   };
   export const DefaultListOptions: ListOptions = {
     direction: "column",
@@ -417,7 +418,7 @@ export namespace SimpleUI {
 
         <motion.div
           className={twJoin(
-            "relative flex flex-1 gap-2 overflow-hidden",
+            "relative flex gap-2 overflow-hidden",
             options.direction === "column" ? "flex-col" : "flex-row flex-wrap"
           )}
           animate={{
@@ -436,7 +437,9 @@ export namespace SimpleUI {
             },
             staggerChildren: 1,
           }}
-        ></motion.div>
+        >
+          {props.children!!! && props.children}
+        </motion.div>
       </div>
     );
   };

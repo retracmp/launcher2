@@ -8,7 +8,7 @@ const BannerRenderer = () => {
   const bannerValues = Object.values(banners);
 
   return (
-    <div className="flex flex-col px-1.5 pb-0">
+    <div className="flex flex-col px-2 pb-0 pt-1  ">
       <AnimatePresence>
         {bannerValues.map((banner, index) => (
           <motion.div
