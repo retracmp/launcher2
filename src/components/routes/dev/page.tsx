@@ -58,9 +58,17 @@ const DeveloperPage = () => {
 
       <SimpleUI.List
         title="hello world"
-        foldable="start-open"
+        foldable="start-folded"
         direction="row"
-      ></SimpleUI.List>
+      >
+        <UI.Button
+          onClick={() => nav("/downloads")}
+          colour="invisible"
+          className="p-2"
+        >
+          Downloads Page
+        </UI.Button>
+      </SimpleUI.List>
 
       <OptionGroup title="Other Pages" _row>
         <UI.Button
